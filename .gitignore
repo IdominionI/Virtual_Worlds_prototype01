@@ -1,0 +1,11 @@
+
+.vs/Virtual_Worlds/v17/*
+Intermediate/x64/Debug/*
+Intermediate/x64/Release/*
+Universal/ImGui/
+Universal/ImGuizmo/
+Universal/ImGuIZMO_quat/
+Universal/ImGuIZMO_exaample/
+Universal/tinyFileDialog/
+Universal/3rdparty/
+Universal/boost/
