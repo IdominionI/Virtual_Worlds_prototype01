@@ -1,0 +1,5 @@
+	vs_out.varyingColor = raw_color;
+	//vs_out.value        = vertex.z;
+
+    //gEnabledFaces = vEnabledFaces;
+}

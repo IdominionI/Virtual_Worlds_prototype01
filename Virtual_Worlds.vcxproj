@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1e3d1503-493f-467c-a3b1-64cd15764375}</ProjectGuid>
+    <RootNamespace>VirtualWorlds</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Source;$(ProjectDir)Universal\imgui;$(ProjectDir)Universal\3rdparty\include\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\Build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(ProjectDir);$(ProjectDir)Source;$(ProjectDir)Universal\imgui;$(ProjectDir)Universal\3rdparty\include\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Universal\3rdparty\libs\assimp;$(ProjectDir)\Universal\3rdparty\libs\glfw;$(ProjectDir)\Universal\3rdparty\libs\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Universal\3rdparty\libs\glfw;$(ProjectDir)Universal\3rdparty\libs\gl;$(ProjectDir)Universal\3rdparty\libs\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\Editor\Shader\shader_import_export.h" />
+    <ClCompile Include="Source\Graphics_Engine\OpenGL_window\opengl_context.cpp" />
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Render\voxel_hcp_render.h" />
+    <ClCompile Include="Universal\imGuIZMO_quat\imGuIZMOquat.cpp" />
+    <ClCompile Include="Universal\ImGui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Universal\ImGui\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="Universal\ImGui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Universal\ImGui\imgui.cpp" />
+    <ClCompile Include="Universal\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Universal\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Universal\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Universal\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Universal\ImGui\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Universal\tinyFileDialog\tinyfiledialogs.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Editor\Common\definitions.h" />
+    <ClInclude Include="Source\Editor\Common\IconsFontAwesome.h" />
+    <ClInclude Include="Source\Editor\Common\imgui_custom.h" />
+    <ClInclude Include="Source\Editor\Common\imgui_custom_definitions.h" />
+    <ClInclude Include="Source\Editor\Import_Export\vw_import_export_parameters.h" />
+    <ClInclude Include="Source\Editor\Kernal\id_key_manager.h" />
+    <ClInclude Include="Source\Editor\Kernal\outliner_manager.h" />
+    <ClInclude Include="Source\Editor\Kernal\outliner_node.h" />
+    <ClInclude Include="Source\Editor\Main_Window\main_window.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Panels\log_panel.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Panels\outliner_panel.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Panels\parameter_panel.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Panels\property_panel.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\animation_widget.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\camera_properties_wiget.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\imgui_widgets.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\lighting_properties_widget.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\log_widget.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\viewport_properties_widget.h" />
+    <ClInclude Include="Source\Editor\Object\object_basis.h" />
+    <ClInclude Include="Source\Editor\Scene\scene_manager.h" />
+    <ClInclude Include="Source\Editor\Scene\scene_entities_db_manager.h" />
+    <ClInclude Include="Source\Editor\Tools\dialogs.h" />
+    <ClInclude Include="Source\Graphics_Engine\Common\definitions.h" />
+    <ClInclude Include="Source\Graphics_Engine\Common\pch.h" />
+    <ClInclude Include="Source\Graphics_Engine\Common\user_interaction.h" />
+    <ClInclude Include="Source\Graphics_Engine\Compute\compute_shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Compute\import_compute_expression_code.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\geometry_basis.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\mesh.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\point_cloud.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\lines.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\vertex_data.h" />
+    <ClInclude Include="Source\Graphics_Engine\OpenGL_window\openGL_context.h" />
+    <ClInclude Include="Source\Graphics_Engine\OpenGL_window\opengl_window_basis.h" />
+    <ClInclude Include="Source\Graphics_Engine\OpenGL_window\ui_context.h" />
+    <ClInclude Include="Source\Graphics_Engine\Render\Buffers\frame_buffer.h" />
+    <ClInclude Include="Source\Graphics_Engine\Render\Buffers\vertex_buffer.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_manager.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_object.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\scene_node.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\camera_object.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\light_object.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\render_object.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\fragment_shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\geometry_shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\import_shader_code.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\point_geometry_shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader_components.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader_manager.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader_parameters.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\vertex_shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\vw_shader_basis.h" />
+    <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_bindings.h" />
+    <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_default_bindings.h" />
+    <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_interaction_event_binding.h" />
+    <ClInclude Include="Source\Graphics_Engine\Viewer\Extensions\viewer_grid.h" />
+    <ClInclude Include="Source\Graphics_Engine\Viewer\scene_viewer.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Animation\hex_animation_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Scene\hex_surface_scene_objects.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_rules_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_variables_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\shaders_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\shader_variables_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Functions\hex_surface_exports.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\DataTypes\dt_hex_surface_automata.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\DataTypes\dt_hex_surface_generator.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\DataTypes\dt_hex_surface_shader_parameters.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\hex_surface_data_storage.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\hex_surface_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\hex_surface_object.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\hex_surface_parameters.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Render\hex_surface_render.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Animation\voxel_animation_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\automata_byte_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\voxel_automata_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Compute\voxel_compute_generation.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_rules_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_variables_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Scene\voxel_hcp_scene_objects.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\parameters_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shaders_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shader_variables_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Functions\voxel_basic_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Functions\vw_voxel_exports.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Kernal\voxel_function_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Marching\voxel_hcp_marching_data.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_automata.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_generator.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_interaction.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\parameters.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_data_storage.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_hcp_import_export.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_hcp_object.h" />
+    <ClInclude Include="Universal\Framework\Common\FWdefinitions.h" />
+    <ClInclude Include="Universal\Framework\FWfile_tools.h" />
+    <ClInclude Include="Universal\Framework\FWstring_tools.h" />
+    <ClInclude Include="Universal\imGuIZMO_quat\imGuIZMOquat.h" />
+    <ClInclude Include="Universal\imGuIZMO_quat\vgConfig.h" />
+    <ClInclude Include="Universal\imGuIZMO_quat\vGizmo.h" />
+    <ClInclude Include="Universal\imGuIZMO_quat\vGizmoMath.h" />
+    <ClInclude Include="Universal\imGuIZMO_quat\vgMath.h" />
+    <ClInclude Include="Universal\ImGui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="Universal\ImGui\backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="Universal\ImGui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Universal\ImGui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Universal\ImGui\imconfig.h" />
+    <ClInclude Include="Universal\ImGui\imgui.h" />
+    <ClInclude Include="Universal\ImGui\imgui_internal.h" />
+    <ClInclude Include="Universal\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Universal\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Universal\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Universal\ImGui\misc\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Universal\ImGui\misc\single_file\imgui_single_file.h" />
+    <ClInclude Include="Source\vw_application.h" />
+    <ClInclude Include="Universal\tinyFileDialog\tinyfiledialogs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Universal\ImGui\.editorconfig" />
+    <None Include="Universal\ImGui\.gitattributes" />
+    <None Include="Universal\ImGui\.gitignore" />
+    <None Include="Universal\ImGui\backends\vulkan\generate_spv.sh" />
+    <None Include="Universal\ImGui\backends\vulkan\glsl_shader.frag" />
+    <None Include="Universal\ImGui\backends\vulkan\glsl_shader.vert" />
+    <None Include="Universal\ImGui\misc\debuggers\imgui.gdb" />
+    <None Include="Universal\ImGui\misc\debuggers\imgui.natstepfilter" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Universal\ImGui\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Universal\ImGui\misc\debuggers\imgui.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Universal\ImGui\misc\fonts\Cousine-Regular.ttf" />
+    <Font Include="Universal\ImGui\misc\fonts\DroidSans.ttf" />
+    <Font Include="Universal\ImGui\misc\fonts\Karla-Regular.ttf" />
+    <Font Include="Universal\ImGui\misc\fonts\ProggyClean.ttf" />
+    <Font Include="Universal\ImGui\misc\fonts\ProggyTiny.ttf" />
+    <Font Include="Universal\ImGui\misc\fonts\Roboto-Medium.ttf" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

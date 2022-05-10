@@ -1,0 +1,47 @@
+layout(points) in;
+//layout(triangle_strip, max_vertices = 48) out; // The output needs to be defined by the user in the function definitions
+
+flat in int gEnabledFaces[];// Must have as flat array otherwise will not work
+
+flat in float hexSize[];
+uniform mat4 mvpMatrix; // ************model-view-projection matrix 
+
+//hex surface display data
+uniform float hex_min_surface_display_value;
+uniform float hex_max_surface_display_value;
+
+uniform vec3 camera_loc;   // Camera location
+uniform bool use_camera_lighting;
+uniform vec3 lighting_camera_offset;
+uniform int  camera_lighting_type;
+uniform float lighting_intensity;
+uniform vec3 camera_front_vector;
+uniform vec3 camera_up_vector;
+uniform vec3 camera_right_vector;
+
+// hex surface parameter data
+uniform vec2  grid_origin;
+
+// Cannot use same variable name for in and out variables 
+// use Input and output interface blocks to solve this
+// The following input/output block is to allow  varyingColor 
+// to be passed to the fragment shader or without changing the name
+
+in VertexData
+{
+ float value;
+ vec4  varyingColor;
+} gs_in[]; // Must have as an array otherwise will not work as one for each input vertex,
+
+out VertexData
+{
+  float value;
+  vec4 varyingColor;
+} gs_out;
+
+// Lighting and light shading
+uniform bool  display_vertex_light_shading;
+uniform vec3  lighting_direction;
+uniform vec3  ambient_light;
+uniform float specular_strength;
+uniform vec3  light_color;
