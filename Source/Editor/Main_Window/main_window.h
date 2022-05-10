@@ -14,9 +14,7 @@
 #include "Panels/parameter_panel.h"
 #include "Panels/log_panel.h"
 
-//#include <Source/Graphics_Engine/Scene/scene_graph.h>
-
-#include <Source/Graphics_Engine/Geometry/mesh.h> // Testing only
+//#include <Source/Graphics_Engine/Geometry/mesh.h> // Testing only
 
 #include <Source/Modules/Module_Voxel_Byte/Functions/vw_voxel_exports.h>
 #include <Source/Modules/Module_hex_surface/Functions/hex_surface_exports.h>
@@ -28,7 +26,6 @@ public:
 
     main_window_class() : mIsRunning(true), GLFW_window_ptr(nullptr) {
         ui_context     = std::make_unique<UI_context_class>();
-        //render_context = std::make_unique<openGL_context_class>();
         render_context = new openGL_context_class;
     }
 
@@ -64,7 +61,6 @@ public:
 
         scene_view          = new scene_viewer_class(scene_graph_manager);
 
-        
         //scene_manager = std::make_unique<scene_manager_class>(); // Just too problematic to work with
 /*
         // ***
@@ -301,23 +297,6 @@ public:
 
     void handle_input()
     {
-        // TODO: move this and camera to scene UI component?
-/*
-        if (glfwGetKey(GLFW_window_ptr, GLFW_KEY_W) == GLFW_PRESS)
-        {
-            scene_view->on_mouse_wheel(-0.4f);
-        }
-
-        if (glfwGetKey(GLFW_window_ptr, GLFW_KEY_S) == GLFW_PRESS)
-        {
-            scene_view->on_mouse_wheel(0.4f);
-        }
-
-        if (glfwGetKey(GLFW_window_ptr, GLFW_KEY_F) == GLFW_PRESS)
-        {
-            scene_view->reset_view();
-        }
-*/
         double x, y;
         glfwGetCursorPos(GLFW_window_ptr, &x, &y);
 
@@ -335,12 +314,8 @@ public:
         if(scene_view->focused)  scene_view->on_mouse_wheel(delta);
     }
 
-    void on_key(int key, int scancode, int action, int mods) override
-    {
+    void on_key(int key, int scancode, int action, int mods) override {
         if (scene_view->focused) scene_view->on_key_event(key,scancode,action,mods);
-
-       // if (action == GLFW_PRESS){
-       // }
     }
 
     void on_resize(int width, int height) override
@@ -363,16 +338,13 @@ private:
 
     // Render contexts
     std::unique_ptr<UI_context_class>     ui_context;
-    //std::unique_ptr<openGL_context_class> render_context;
     openGL_context_class  *render_context;
 
     // UI components
-    //std::unique_ptr<property_panel_class> property_panel;
     property_panel_class  property_panel;
     outliner_panel_class  outliner_panel;
     parameter_panel_class parameter_panel;
     log_panel_class       *log_panel;
-    //std::unique_ptr<outliner_panel_class> outliner_panel; 
 
     scene_viewer_class   *scene_view;
 
@@ -418,13 +390,9 @@ private:
 			case ALL_EXPORT      : voxel_center_points_all(voxel_hcp_objects);	   break;
 
 		}
-
-// QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "Surface Voxels Defined", QMessageBox::Ok);
     }
 
     void voxel_center_points_selected(voxel_hcp_scene_objects_class &voxel_hcp_entities, id_type entity_id) {
-
-//printf("voxel_center_points_ply_selected 00 %i\n", entity_id);
 
         if (entity_id < 0) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: No entity selected to export\n");
@@ -433,7 +401,7 @@ private:
         }
 
         voxel_hcp_object_class *voxel_hcp_object = voxel_hcp_entities.get_voxel_hcp_object(entity_id);
-//printf("voxel_center_points_ply_selected 11 %i\n", entity_id);
+
         if (voxel_hcp_object == NULL) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Could not find entity in scene data to export\n");
             vwDialogs::message_box("Export voxel surface geometry", "Cannot export voxel point surface to file::Could not find entity in scene data to export");
