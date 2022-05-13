@@ -3,10 +3,20 @@
 #include "../Widgets/log_widget.h"
 #include <Universal/Framework/FWstring_tools.h>
 
+/*
+                            LOG PANEL
+
+    Parent class to define the application log panel that is to
+    have the application logging widgets defined within it.
+    These logging widgets are detachable windows of the docking feature
+    available in he ImGui frame work.
+*/
+
+
 class log_panel_class {
 public:
-    log_widget_class application_log;
-    log_widget_class code_log;
+    log_widget_class application_log; // Logging widget to display application messages
+    log_widget_class code_log;        // Looging widget to display shader complilation errors
 
     // Demonstrate creating a simple log window with basic filtering.
     void display_application_log() {

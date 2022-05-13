@@ -179,8 +179,8 @@
     <ClInclude Include="Source\Editor\Common\imgui_custom_definitions.h" />
     <ClInclude Include="Source\Editor\Import_Export\vw_import_export_parameters.h" />
     <ClInclude Include="Source\Editor\Kernal\id_key_manager.h" />
-    <ClInclude Include="Source\Editor\Kernal\outliner_manager.h" />
-    <ClInclude Include="Source\Editor\Kernal\outliner_node.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_manager.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_node.h" />
     <ClInclude Include="Source\Editor\Main_Window\main_window.h" />
     <ClInclude Include="Source\Editor\Main_Window\Panels\log_panel.h" />
     <ClInclude Include="Source\Editor\Main_Window\Panels\outliner_panel.h" />

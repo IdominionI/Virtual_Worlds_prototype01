@@ -6,8 +6,37 @@
 
 #include "../../Tools/dialogs.h"
 
+// Module entity data type animation functions to be animated goes here
 #include <Source/Modules/Module_Voxel_Byte/Animation/voxel_animation_functions.h>
 #include <Source/Modules/Module_Hex_Surface/Animation/hex_animation_functions.h>
+
+/*
+					SCENE ANIMATION WIDGET
+
+	A widget class that displays the controls the animation of the entities within
+	the scene so that the user can interact with the animation of the objects that
+	are visible within the scene.
+
+	Each entity data type has an animation class that defines the animation options
+	and operations. The animation widget class operates on a frame step basis that is
+	anble to perform frame step operations of entities according to those entity animation
+	class functions.
+
+	Animation steps can be recorded if the entity animation functions allow it as vertex 
+	point or vertex surfaces in .ply format.
+
+	The way that the animation actions are performed and coded is governed by the way that
+	ImGiu works. Because of this, animations are not performed in a seperate loop which
+	the control of cannot be interupted or stopped but each animation step is performed within
+	each ImGui display call that actually simplifies things.
+
+	Animation control is utilised by the status of control parameters that are set to true or
+	flase according to the user interactions. By what is set to be true, that animation function
+	that performs that task will bw performed if true.
+
+	A feature that is utilised is the ability to restore the animations that do not involve a
+	cellula automata procedure to its initial animation status.
+*/
 
 class animation_widget_class {
 public:
@@ -15,7 +44,7 @@ public:
 	~animation_widget_class() {}
 
 	scene_manager_class *scene_manager = NULL;
-	log_panel_class		*log_panel = NULL;
+	log_panel_class		*log_panel     = NULL;
 
 	id_type          current_selected_object_id      = -1;
 	id_type          current_selected_object_type_id = -1;
@@ -253,10 +282,7 @@ printf("animation_record 000 :: current_animation_frame >= end_frame\n");
 		animation_play          = false;
 		animation_record        = false;
 
-		//current_animation_frame = 0;
-
 		// This seems to work
-
 		if (vw_animation_parameters.current_frame <= end_frame && vw_animation_parameters.current_frame > start_frame)
 			reverse_end_frame = vw_animation_parameters.current_frame;
 
@@ -377,9 +403,8 @@ printf("record_animation0 1: %s \n", animation_frames_directory_pathname.c_str()
 
 		return true;
 	}
-	//------------------
-	//void step_back_animation() {
 
+	//void step_back_animation() {
 	//}
 
 	void pause_animation() {
@@ -397,9 +422,8 @@ printf("record_animation0 1: %s \n", animation_frames_directory_pathname.c_str()
 	}
 
 	//void next_step_animation() {
-
 	//}
-	//------------------
+
 	void restore_initial_frame() {
 //printf("in display_initial_frame\n");
 		vw_animation_parameters.current_frame = 0;
@@ -519,7 +543,7 @@ private:
 		//	define_animation_parameters();
 		//}
 
-		vw_animation_parameters.current_frame = current_animation_frame; // *****
+		vw_animation_parameters.current_frame = current_animation_frame;
 
 		if (vw_animation_parameters.current_frame - vw_animation_parameters.frame_step_interval >= vw_animation_parameters.frame_step_start) {
 			vw_animation_parameters.current_frame -= vw_animation_parameters.frame_step_interval;
@@ -533,7 +557,6 @@ private:
 		}
 
 		current_animation_frame = vw_animation_parameters.current_frame;
-		//vw_animation_parameters.current_frame = current_animation_frame;
 		animation_progress = ((float)vw_animation_parameters.current_frame / (float)vw_animation_parameters.frame_step_end);
 	}
 
@@ -574,7 +597,6 @@ private:
 		}
 
 		current_animation_frame = vw_animation_parameters.current_frame;
-		//vw_animation_parameters.current_frame = current_animation_frame;
 		animation_progress = ((float)vw_animation_parameters.current_frame / (float)vw_animation_parameters.frame_step_end);
 	}
 	// Initialise the entity data objects to be animated

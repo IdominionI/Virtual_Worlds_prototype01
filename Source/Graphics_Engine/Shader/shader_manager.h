@@ -4,17 +4,28 @@
 
 #include "shader.h"
 
+/*
+			Shader Manager class
+
+	Class that stores and manages all the
+	shader programs information and shader
+	programs.
+
+
+
+*/
+
 class shader_db_manager_class {
 public:
 	shader_db_manager_class() {}
 	~shader_db_manager_class() {}
 
-	shader_class shader;
+	shader_class          shader;
 
-	std::vector<idu_type> shaders;
+	std::vector<idu_type> shaders;// List of all created shader program ids
 
 	bool use_shader(int shader_program_id) {
-		if (!shader_program_exits(shader_program_id)) {
+		if (!shader_program_exists(shader_program_id)) {
 			// log message to go here
 			return false;
 		}
@@ -28,7 +39,7 @@ public:
 		shader.unload(shader_program_id);
 	}
 
-	bool shader_program_exits(int shader_program_id) {
+	bool shader_program_exists(int shader_program_id) {
 		if (shader_program_id < 0) return false;
 
 		for (int i = 0; i < shaders.size(); i++) {

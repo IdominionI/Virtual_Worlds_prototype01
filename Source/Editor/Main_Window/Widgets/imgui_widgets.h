@@ -1,10 +1,15 @@
 #pragma once
 
-//#include "../Common/pch.h"
 #include <Source/Graphics_Engine/Common/pch.h>
 
 #include <Universal/ImGui/imgui.h>
 #include <Universal/ImGui/imgui_internal.h>
+
+/*
+	Derivations of various commonly used Imgui Widgets set as a
+	function to simplify their use and reduce repetition of common
+	code blocks 
+*/
 
 enum class imgui_text_location_enum {left,right, above, below, center};
 

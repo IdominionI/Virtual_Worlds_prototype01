@@ -6,6 +6,20 @@
 #include <Universal/3rdparty/include/assimp/postprocess.h>
 #include <Universal/3rdparty/include/assimp/scene.h>
 
+/*
+                    MESH GEOMETRY CLASS
+
+    The geometry class that can be used to store and display
+    the geometry data for a mesh object data type.
+    
+    The mesh data to be stored is imported by this class by
+    use of the load function.
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+*/
+
 class mesh_class : public geometry_basis_class{
   public:
     mesh_class() = default;

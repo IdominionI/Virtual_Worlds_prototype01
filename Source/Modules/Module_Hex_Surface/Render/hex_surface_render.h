@@ -17,11 +17,22 @@
 
 #include "../Hex_surface_object/hex_surface_object.h"
 
+/*
+			Hex Surface Render Class
+
+	This class mamages the generation and deletion of the shader program
+	that is to be used to display the 2D hex surface that an instance of
+	this class is asociated with.
+
+	The user selects through the application the files that contain the
+	glsl code to be compiled and when an update to the shader program is
+	called, a new shader program is compiled, and If successful, the older
+	shader progrmam is destroyed, and the new shader program assigned to
+	the hex surface object render variable.
+*/
+
 class hex_surface_render_class {
 public:
-	//hex_surface_render_class() {}
-	//~hex_surface_render_class() {}
-
 	point_cloud_vertex_class *voxel_hcp_cloud = NULL;
 
 	std::string shader_basis_code_directory_pathname = "Resources/Shaders/Default/Hex_surface/Shader_basis_code/";
@@ -31,12 +42,10 @@ public:
 
 	std::string voxel_hcp_default_vertex_file   = "default_hex_surface_HS_VS.glsl";
 	std::string voxel_hcp_default_point_file    = "default_hex_surface_HS_PGS.glsl";
-	//std::string voxel_hcp_default_geometry_file = "default_hex_surface_HS_GS.glsl";
 	std::string voxel_hcp_default_fragment_file = "default_hex_surface_HS_FS.glsl";
 
 	std::string voxel_hcp_vertex_file           = "default_hex_surface_HS_VS.glsl";
 	std::string voxel_hcp_point_file            = "default_hex_surface_HS_PGS.glsl";
-	//std::string voxel_hcp_geometry_file         = "default_hex_surface_HS_GS.glsl";
 	std::string voxel_hcp_fragment_file         = "default_hex_surface_HS_FS.glsl";
 
 	bool define_hex_surface_render_object(scene_node_class <render_object_class> *entity_render_object,hex_surface_object_class *hex_surface_object) {
@@ -53,7 +62,7 @@ public:
 		entity_render_object->scene_graph_object.scene_object_class.geometry = voxel_hcp_cloud;
 		entity_render_object->scene_graph_object.scene_object_class.geometry->init();
 
-		define_shader_variables(entity_render_object);
+		define_shader_variables(entity_render_object);// Is this needed ????
 
 		if (!define_initial_shader_program(entity_render_object, hex_surface_object)) return false;
 
@@ -103,10 +112,6 @@ public:
 printf("hex_surface_render_class :: define_shader_program : %s\n", shader_material->point_shader_file_pathname.c_str());
 			shader_parameters.point_shader_file_pathname = shader_material->point_shader_file_pathname;
 		}
-		//if (shader_material->use_default_geometry_shader)
-		//	shader_parameters.geometry_shader_file_pathname = shader_material->default_geometry_shader_file_pathname;
-		//else
-		//	shader_parameters.geometry_shader_file_pathname = shader_material->geometry_shader_file_pathname;
 
 		if (shader_material->use_default_fragment_shader)
 			shader_parameters.fragment_shader_file_pathname = shader_material->default_fragment_shader_file_pathname;
@@ -146,8 +151,8 @@ printf("hex_surface_render_class :: define_shader_program : %s\n", shader_materi
 			return false;
 		}
 
-		//printf("VERTEX SOURCE \n%s END VERTEX SOURCE\n",vw_vertex_shader.shader_code.c_str());
-		//printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
+//printf("VERTEX SOURCE \n%s END VERTEX SOURCE\n",vw_vertex_shader.shader_code.c_str());
+//printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
 
 		// Copile the OpenGL shader and store the id reference to it to be used
 		//shader_db_manager.remove_shader_program(entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);
@@ -162,7 +167,7 @@ printf("hex_surface_render_class :: define_shader_program : %s\n", shader_materi
 		//	shader_id = shader_db_manager.shader.compile_shader_program(vw_vertex_shader.shader_code, vw_geometry_shader.shader_code, vw_fragment_shader.shader_code);
 		//}
 
-		if (!shader_id) {
+		if (!shader_id) {// Shader compilation did not succeed
 //printf("define_shader_program 22222\n");
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR :  Unable to compile shader program\n");
 
@@ -184,7 +189,7 @@ printf("hex_surface_render_class :: define_shader_program : %s\n", shader_materi
 			log_panel->display_code_errors(shader_db_manager.shader.compile_log);
 //printf("define_shader_program 22222DDDD\n");
 			return false;
-		} else {
+		} else {// Shader compilation successful
 //printf("define_shader_program 33333 %i\n", shader_id);
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : Shader program created of ID : %i\n", shader_id);
 
@@ -192,9 +197,9 @@ printf("hex_surface_render_class :: define_shader_program : %s\n", shader_materi
 
 			GLuint *program_id = &entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id;
 
-			glDeleteProgram(*program_id);
-			//*program_id = shader_id;
-			entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = shader_id;
+			glDeleteProgram(*program_id);// Delete old shader program
+
+			entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = shader_id; // Assign new shader program
 
 //printf("define_shader_program 55555 %i\n", entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);
 
@@ -237,20 +242,16 @@ private:
 		shader_material->default_vertex_shader_file_pathname   = default_shader_file_directory + voxel_hcp_default_vertex_file;
 		shader_material->point_shader_file_pathname			   = default_shader_file_directory + voxel_hcp_default_point_file;
 		shader_material->default_point_shader_file_pathname    = default_shader_file_directory + voxel_hcp_default_point_file;
-		//shader_material->geometry_shader_file_pathname         = default_shader_file_directory + voxel_hcp_default_geometry_file;
-		//shader_material->default_geometry_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_geometry_file;
 		shader_material->fragment_shader_file_pathname		   = default_shader_file_directory + voxel_hcp_default_fragment_file;
 		shader_material->default_fragment_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_fragment_file;
 
 		// Define which shaders to use and the pathname to the shader snippit  code to define the shader
 		shader_parameters.default_vertex_shader_file_pathname   = default_shader_file_directory + voxel_hcp_default_vertex_file;
 		shader_parameters.default_point_shader_file_pathname    = default_shader_file_directory + voxel_hcp_default_point_file;
-		//shader_parameters.default_geometry_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_geometry_file;
 		shader_parameters.default_fragment_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_fragment_file;
 
 		shader_parameters.vertex_shader_file_pathname = default_shader_file_directory+voxel_hcp_default_vertex_file;
 		shader_parameters.point_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_point_file;
-		//shader_parameters.geometry_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_geometry_file;
 		shader_parameters.fragment_shader_file_pathname = default_shader_file_directory + voxel_hcp_default_fragment_file;
 
 		// Generate the full shader code text file to be compiled

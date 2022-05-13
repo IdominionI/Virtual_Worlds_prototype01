@@ -2,12 +2,17 @@
 
 #include "../Common/pch.h"
 
+/*
+    Some Code retained from the original code that the 
+    Virtual Wordlds application was adapted from.
+*/
+
   enum class mouse_button_enum
   {
-    Left = 0,
-    Right = 1,
+    Left   = 0,
+    Right  = 1,
     Middle = 2,
-    None = 9
+    None   = 9
   };
 
   class user_interaction_class

@@ -1,16 +1,52 @@
 #pragma once
 
 #include "outliner_node.h"
-#include "id_key_manager.h"
+#include "../../Kernal/id_key_manager.h"
 
-#include "../Main_Window/Panels/log_panel.h" // ****
+#include "../Panels/log_panel.h"
 
-#include "../Common/imgui_custom.h"
+#include "../../Common/imgui_custom.h"
 
-#include "../Scene/scene_manager.h"
+#include "../../Scene/scene_manager.h"
 
 #include <Source/Modules/Module_Voxel_Byte/Voxel_hcp_object/voxel_hcp_import_export.h>
 #include <Source/Modules/Module_Hex_Surface/Hex_surface_object/hex_surface_import_export.h>
+
+
+/*
+							OUTLINER MANAGER
+
+	Manager Class that performs all the functionality required to display
+	and manage the application scene entities that are to have functions
+	performed on them and displayed onto the computer screen.
+
+	The ouliner manager displays stores a list of outliner nodes that
+	is a representation of all of the entities that currently exists
+	within the scene data base and scene display management systems.
+
+	As each outliner node is created and deleted, so is the entity (or
+	entities in the case of a group node) that the node represents within
+	the scene data base and scene display management systems.
+
+	The outliner also performs a selection finction to define which entity
+	is to have its parameter data displayed in the application and for
+	generation or modification of data or parameters to be performed.
+
+	The outliner is designed so that all entities must have a parent group node.
+	Thus no entity can exist within the current outliner without a parent group
+	node. A parent group node needs to be created before any entity node is.
+	This may change in the future as within the scene data base manager and scene
+	diaplay manager, only entities are defined and no the outliner groupings.
+
+	Importing and exporting of data is also managed here to save and load scene
+	entity data. Most is performed by each of the entity import/export classes, 
+	however an embedded import/export class object had to be included with the
+	outliner class to avoid problems with circular referencing that no other 
+	solution could befound.
+
+	Without this embedded import/export class, the outliner nodes could not be
+	generated upon importing data
+*/
 
 class outliner_manager_class {
 public:
@@ -59,6 +95,23 @@ public:
 	id_type current_selected_entity_type_id = -1;
 	id_type current_selected_entity_id      = -1;
 
+	//	Display outliner nodes :
+	//	To display the outliner nodes, the list of outiner tree nodes is queried and
+	//  examined. The Outliner has a current design that all entities must be defined
+	//  within a parent group node. Thus each child tree node of the ImGui root node is 
+	//  a group node to make coding the outliner easier, and less coding to deal with.
+	//  This means the code below to display the outliner tree nodes first looks at the
+	//  ImGui tree root child nodes, displays that group node, then examines the children
+	//  of that group node and displays them according to what entity data type that child
+	//  is, and the ID of that entity. With the data type and entity ID, a call to the
+	//  application scene manager is called to retireve the name and description data of
+	//  that entity is made, which can be edited and changed by the ImGui widget displaying
+	//  those parameters.
+	//
+	//  For a selection made on any ImGui tree node, an entity data type ID and entity ID value
+	//  is assigned for the application to display the entity data within a serperate parameter
+	//  panel and/or to create a menu selection to be performed within the outliner widget.
+
 	void display_nodes(log_panel_class *_log_panel = NULL) {
 		log_panel = _log_panel;
 
@@ -71,8 +124,8 @@ public:
 		outliner_node_class *entity = NULL;
 
 		bool root_node_open = ImGui::TreeNodeEx((void*)(intptr_t)0, base_flags, "root", 0);
-		if (root_node_open) {
-			for (int i = 0; i < root_node->children.size(); i++) {
+		if (root_node_open) { // Outliner ImGui root node
+			for (int i = 0; i < root_node->children.size(); i++) { // Get Outliner group node
 				group  = root_node->children[i];
 				entity = NULL;
 
@@ -97,14 +150,14 @@ public:
 				// avoid conflicts of signals to and from other widgets or application bindings. If have widgets have
 				// the same ID, the widgets will not function or crash the app. Funny enoough, this ID is displayed 
 				// unless a ### preceeds the ID text as given by id_prefix. A process of adding a unique number to this
-				// prefix ensures a unique windget id that is not duplicated.
+				// prefix ensures a unique widget id that is not duplicated.
 
 				std::string id_prefix = "###g"; std::string w_id = "";
-				ImGui::SameLine(); ImGui::Text(ICON_FA_LAYER_GROUP);
+				ImGui::SameLine(); ImGui::Text(ICON_FA_LAYER_GROUP); // Define an icon to display to indicate this node is a group node
 				ImGui::SameLine();
 				ImGui::SetNextItemWidth(75.0f);
 				w_id = id_prefix + std::to_string(i * 100);
-				char *group_name; group_name = group->name.data();
+				char *group_name; group_name = group->name.data(); // Define a variable that can be modified by ImGui Widget
 				if (ImGui::InputText(w_id.c_str(), group_name, 20, ImGuiInputTextFlags_CallbackCharFilter, Input_Filters::name)) {
 					group->name = group_name;
 				}
@@ -112,12 +165,13 @@ public:
 				ImGui::SameLine(); w_id = id_prefix + std::to_string(i * 100 + 2); ImGui::Checkbox(w_id.c_str(), &group->selected);
 
 				w_id = id_prefix + std::to_string(i * 100 + 3);
-				char *group_description; group_description = group->description.data();
+				char *group_description; group_description = group->description.data();// Define a variable that can be modified by ImGui Widget
 				ImGui::SameLine(); ImGui::SetNextItemWidth(100.0f);
 				if (ImGui::InputText(w_id.c_str(), group_description, 30, ImGuiInputTextFlags_CallbackCharFilter, Input_Filters::name)) {
 					group->description = group_description;
 				}
 
+				// Create a menu to perform actions if a group node is selected and right mouse pressed
 				if (current_selected_node_id < -1) {
 					if (ImGui::BeginPopupContextWindow("1", 1, true)) {
 						if (ImGui::BeginMenu("Add Object")) {
@@ -142,7 +196,7 @@ public:
 
 						ImGui::EndPopup();// Root
 					}
-				} else {
+				} else {// Create a menu to perform actions if an entity node is selected and right mouse pressed
 					if (current_selected_node_id > -1) {
 						if (ImGui::BeginPopupContextWindow("2", 1, true)) {
 							if (ImGui::MenuItem("Delete Object")) delete_object(current_selected_node_id);
@@ -155,7 +209,7 @@ public:
 				}
 
 				if (group_node_open) {
-					for(int j = 0; j< group->children.size();j++){
+					for(int j = 0; j< group->children.size();j++){ // Get Outliner entity node of current group node 
 						entity = group->children[j];
 
 						node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -171,17 +225,19 @@ public:
 //printf("display_nodes :: entity selected: %i  \n", current_selected_node_id); //this is the group
 						}
 
+						// Define an icon to display to indicate what type of entity data type item this ImGui tree widget represents
 						ImGui::SameLine();
 						switch (entity->category_id) {
-							case  GROUP_CATEGORY			: ImGui::Text(ICON_FA_LAYER_GROUP); break;
+							//case  GROUP_CATEGORY			: ImGui::Text(ICON_FA_LAYER_GROUP); break; // No sub groups yet implemented
 							case  ENTITY_CATEGORY_HCP_VOXEL : ImGui::Text(ICON_FA_SNOWFLAKE_O); break;
 							case  ENTITY_CATEGORY_HCP_SURF  : ImGui::Text(ICON_FA_MOUNTAIN); break;
+								// Other entity category types to be added here
 							default : ImGui::Text("!"); break;
 						}
 
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(75.0f);
-						w_id = id_prefix + std::to_string(i*100+j*10);char *entity_name; entity_name = entity->name.data();
+						w_id = id_prefix + std::to_string(i*100+j*10);char *entity_name; entity_name = entity->name.data();// Define a variable that can be modified by ImGui Widget
 						if (ImGui::InputText(w_id.c_str(), entity_name, 20, ImGuiInputTextFlags_CallbackCharFilter , Input_Filters::name)) {
 							entity->name = entity_name;
 							change_entity_name(entity->entity_id, entity->category_id, entity->name);
@@ -197,19 +253,16 @@ public:
 						}
 
 						w_id = id_prefix + std::to_string(i * 100 + j * 10 + 3);
-						ImGui::SameLine(); ImGui::SetNextItemWidth(100.0f); char *entity_description; entity_description = entity->description.data();
+						ImGui::SameLine(); ImGui::SetNextItemWidth(100.0f); char *entity_description; entity_description = entity->description.data();// Define a variable that can be modified by ImGui Widget
 						if(ImGui::InputText(w_id.c_str(), entity_description,30, ImGuiInputTextFlags_CallbackCharFilter, Input_Filters::name)){
 							entity->description = entity_description;
 							change_entity_description(entity->entity_id, entity->category_id, entity->description);
 						}
 					}
 					ImGui::TreePop();// group child node : must be within a node open test or app will crash upon clicking on toggle open close icon
-
 				}
 			}
-
 			ImGui::TreePop();// group node : must be within a node open test or app will crash upon clicking on toggle open close icon
-
 		}
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
@@ -219,6 +272,7 @@ public:
 		}
 
 		// Right-click on blank space
+		// Create a menu to perform actions if nothing is selected and right mouse pressed
 		if (ImGui::BeginPopupContextWindow(0, 1, false)) {
 			if (ImGui::MenuItem("Add Object Group"))				 add_group();
 			if (ImGui::MenuItem("Add Imported Scene"))				 add_scene();
@@ -247,13 +301,13 @@ public:
 		return NULL;
 	}
 
-	bool delete_node() {
-		return true;
-	}
+	//bool delete_node() {
+	//	return true;
+	//}
 
-	bool insert_node() {
-		return true;
-	}
+	//bool insert_node() {
+	//	return true;
+	//}
 
 	void delete_selected_nodes() {
 //printf("display_nodes :: Delete Selected Items MenuItem selected  \n");
@@ -924,9 +978,6 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 			//return read_scene_data_file(scene, scene_manager);
 			return read_scene_data_file(outliner_manager);
 		}
-
-	protected:
-
 
 	private:
 		int line_number = 0;

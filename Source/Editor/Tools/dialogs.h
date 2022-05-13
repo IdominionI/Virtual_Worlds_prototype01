@@ -2,6 +2,22 @@
 
 #include <Universal/tinyFileDialog/tinyfiledialogs.h>
 
+/*
+                APPLICATION DIALOGUE FUNCTIONS
+
+   This is a series of functions to act as a gateway to the third party
+   tinyfiledialogs tools that give the functionality similar to Qt file
+   dialogue and QMessage classes.
+
+   The file and folder dialogues give a pathnmae to a files and directories
+   to load and save data.
+
+   The MessageBox dialogue gives access to interactivly display a popup 
+   message box in which to inform the user of some aspect of the applications
+   functioning, or request the user to perform some task.
+*/
+
+
 namespace vwDialogs {
 
     char const* open_file(const char* startDir, char const* patterns[], int numPattern){
@@ -16,7 +32,7 @@ namespace vwDialogs {
         return tinyfd_selectFolderDialog("Select directory ... ", startDir);
     }
 
-    /*
+    /* Structure of the tinyfd_messageBox parameters that are needed to be defined
     int tinyfd_messageBox (
         char const * const aTitle , // ""
         char const * const aMessage , // "" may contain \n \t
@@ -30,6 +46,8 @@ namespace vwDialogs {
         return tinyfd_messageBox(title, message, dialog_type, icon_type,default_button);
     }
 
+
+    // Function to seperate a filename from the given file pathname as a standard C++ string
 
     inline std::string get_filename(std::string file_pathname, std::string deliminator) {
         int index = FW::stringtools::lastIndexOf(file_pathname, deliminator);

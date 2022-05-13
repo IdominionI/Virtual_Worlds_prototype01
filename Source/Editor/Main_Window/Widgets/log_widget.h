@@ -2,17 +2,23 @@
 
 #include <Universal/ImGui/imgui.h>
 
+// This log widget class is a class that utilises the code that is provided by
+// the Imgui Demo logging function, and  much is a stright copy of that code.
+// 
+// Future modifications if can be applied are to allow multi colored text to
+// be displayed on screen
+
+//-----------------------------------------------------------------------------
+// [SECTION] Example App: Debug Log / ShowExampleAppLog()
+//-----------------------------------------------------------------------------
+
+// Usage:
+//  static ExampleAppLog my_log;
+//  my_log.AddLog("Hello %d world\n", 123);
+//  my_log.Draw("title");
+
 class log_widget_class {
 public:
-    //-----------------------------------------------------------------------------
- // [SECTION] Example App: Debug Log / ShowExampleAppLog()
- //-----------------------------------------------------------------------------
-
- // Usage:
- //  static ExampleAppLog my_log;
- //  my_log.AddLog("Hello %d world\n", 123);
- //  my_log.Draw("title");
-
     ImGuiTextBuffer     Buf;
     ImGuiTextFilter     Filter;
     ImVector<int>       LineOffsets; // Index to lines offset. We maintain this with AddLog() calls.

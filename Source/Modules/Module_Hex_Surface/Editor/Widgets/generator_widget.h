@@ -14,6 +14,21 @@
 #include "../../Compute/hex_surface_compute_generation.h"
 #include "../../Render/hex_surface_render.h"
 
+/*
+			Hex Surface generation widget class
+
+	This class widget defines an ImGui widget and child widgets
+	that are used to define the parameters and compute shader
+	variables required to generate the values that define a
+	2D hexagonal surface.
+
+	This class widget has controls to generate the 2D hexagonal
+	surface and display the results on the computer screen in 
+	incremental steps by changing the shader variable values 
+	according to the settings that the user defines for each 
+	compute shader variable.
+*/
+
 class hex_surface_generation_widget_class {
 public:
 	hex_surface_generation_widget_class() {

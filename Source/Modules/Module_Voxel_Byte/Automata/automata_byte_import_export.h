@@ -140,14 +140,11 @@ public:
 	// -------------------------------------------------------------------
 
 	bool open_file_to_read(std::string filename) {
-		//file.setFileName(filename);
-
 		stream.open(filename, std::ios::in);
 
 		if (!stream) 
 			return false;
 		else
-			//if (!file.isOpen()) return false;
 			if (!stream.is_open()) return false;
 
 		return true;

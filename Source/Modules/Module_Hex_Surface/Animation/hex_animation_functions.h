@@ -166,9 +166,6 @@ printf("hex_animation_functions : define_active_animation_hex_surface 000\n");
 		return true;
 	}
 
-	//void perform_animation_fame(animation_texture_model_parameters_struct_type &vw_animation_parameters,
-	//							QCheckBox *use_hex_texture_cb, QCheckBox *use_hex_automata_cb, QCheckBox *use_voxel_automata_multi_thread_cb,
-	//							int frame, int max_automata_step_value, int ANIMATION_STEP)
 	void perform_animation_frame(animation_texture_model_parameters_struct_type &vw_animation_parameters,
 								bool use_hex_texture_cb, bool use_hex_automata_cb, bool use_hex_automata_multi_thread_cb,
 								int frame, int max_automata_step_value, int ANIMATION_STEP,
@@ -204,9 +201,7 @@ printf("hex_animation_functions : define_active_animation_hex_surface 000\n");
 
 printf("hex_surface_animation_functions_class :: perform_animation_frame:: 011 : %i\n",frame);
 			// Perform hex_surface automata rules on current frame step if that frame is less than the maximum permited frame of the automata rules
-			//if (use_hex_automata_cb && frame < max_automata_step_value) {
 			if (use_hex_automata_cb) {
-				//foreach(hex_surface_object_class *hex_surface_object, hex_surface_objects_to_execute) {
 				for (int i = 0; i < hex_surface_objects_to_execute.size();i++) {
 					if (hex_surface_objects_to_execute[i]->animate_automata && hex_surface_objects_to_execute[i]->automata_rule_within_frame(frame)) { // ***
 						if (!perform_hex_surface_automata_rules(frame, hex_surface_objects_to_execute[i], use_hex_automata_multi_thread_cb))
@@ -256,18 +251,12 @@ printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n"
 		if (hex_surface_objects_to_execute.size() > 0 ) {
 //QMessageBox::information(NULL, "","restore_initial_frame 00", QMessageBox::Ok);
 			if (hex_surface_objects_to_execute.size() < 1 || vw_initial_hex_surface_generator_variables_array.size() != hex_surface_objects_to_execute.size()) {
-				//if (log_widget != NULL) {
-				//	log_widget->log_message(log_display, log_message_type_enum_type::info, "editor_animation_widget_class :: Initial hex surface animation objects have changed in number");
-				//}
 				if (log_panel != NULL) log_panel->application_log.AddLog("INFO : editor_animation_widget_class::Initial hex surface animation objects have changed in number\n");
 				return;
 			}
 //QMessageBox::information(NULL, "","restore_initial_frame 01", QMessageBox::Ok);
 			if (use_hex_texture_cb) {
 				if (vw_initial_hex_surface_shader_generator_variables_array.size() != hex_surface_objects_to_execute.size()) {
-					//if (log_widget != NULL) {
-					//	log_widget->log_message(log_display, log_message_type_enum_type::error, "editor_animation_widget_class :: Could not restore initial frame conditions for object shader variables.\n  Current objects added or deleted or variables not used in initial frame ");
-					//}
 					if (log_panel != NULL) log_panel->application_log.AddLog("INFO : editor_animation_widget_class:: Could not restore initial frame conditions for object shader variables.\n  Current objects added or deleted or variables not used in initial frame \n");
 				}
 				else {
@@ -287,13 +276,6 @@ printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n"
 
 				hex_surface_generators[i]->generate_hex_surface_function();
 
-				//hex_surface_objects_to_execute[i]->update_renderer_shader_variables();
-
-				//hex_surface_objects_to_execute[i]->define_vbo_vertices(MIN_HEX_VALUE, MAX_HEX_VALUE);// need to define values for min/max hex_surface value range or have incorrect to misleading display
-				//hex_surface_objects_to_execute[i]->update_vbo_point_cloud_vertex_data();// ****
-				
-				//hex_surface_objects_to_execute[i]->update_buffer = true;
-
 				hex_surface_objects_to_execute[i]->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 			}
 		}
@@ -302,23 +284,6 @@ printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n"
 		// !!!!!!!!!!!!!!!!!!! HEX SURFACE UPDATES !!!!!!!!!!!!!!!!!!
 
 	void update_hex_surface_generator_parameter_step_values(hex_surface_generator_parameters_struct_type &hex_surface_generator_parameters, int step_action, scene_manager_class* scene_manager, id_type entity_id) {
-/*		int i = 0;
-
-		for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
-			if (variable.active_variable) {
-				if (variable.active_variable_step) {
-					if (step_action == DECREMENT_STEP)
-						variable.value = variable.value - variable.variable_step;
-					else
-						if (step_action == INCREMENT_STEP)
-							variable.value = variable.value + variable.variable_step;
-
-					hex_surface_generator_parameters.variables[i].value = variable.value;
-				}
-			}
-			i++;
-		}
-*/
 		// Get the scene render object that stores the object render properties
 		hex_surface_object_class * hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
 		if (hex_surface_object == NULL) {
@@ -339,7 +304,6 @@ printf("update_hex_surface_generator_parameter_step_values::11\n");
 							variable.value = variable.value + variable.variable_step;
 
 					hex_surface_generator_parameters.variables[i].value = variable.value;
-//					voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables[i].value = variable.value;
 //printf("update_voxel_generator_parameter_step_values::AAA %f :: %f\n", voxel_generator_parameters.variables[i].value, voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables[i].value);
 				}
 			}
@@ -533,34 +497,7 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 		}
 
 //QMessageBox::information(NULL, "","export_mesh AAA : " + std::string::number(voxel_hcp_entities_to_execute.size()), QMessageBox::Ok);
-/*
 		for (index_type i = 0; i < hex_surface_objects_to_execute.size(); i++) {
-			entity_class *entity = hex_surface_objects_to_execute[i];
-
-			hex_surface_object_class *hex_surface_object_to_execute = fp_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<hex_surface_object_class>(entity->entity_id);
-
-
-			saved_mesh_pathname = saved_mesh_pathname + "_hscp_" + entity->entity_name + "_" + std::string::number(frame) + file_format;
-
-//if (log_widget != NULL) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class ::export_voxels_center_point_data : "+ saved_mesh_pathname);
-//}
-			if (hex_surface_object_to_execute == NULL) {
-				if (log_widget != NULL) {
-					log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_center_point_data :\n Failed to export center point voxels data. Could not find voxel HCP component data");
-				}
-//QMessageBox::information(NULL, "","export_mesh : voxel_hcp_object_to_execute == NULL : " + entity->entity_name, QMessageBox::Ok);
-				return false;
-			}
-
-			export_hex_surface_geometry.export_hex_surface_center_points_to_file_ply(hex_surface_object_to_execute->hex_surface_object_data, saved_mesh_pathname);
-		}
-*/
-		for (index_type i = 0; i < hex_surface_objects_to_execute.size(); i++) {
-			//entity_class* entity = voxel_hcp_entities_to_execute[i];
-
-			//voxel_hcp_object_class* voxel_hcp_object_to_execute = fp_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<voxel_hcp_object_class>(entity->entity_id);
-
 			hex_surface_object_class *hex_surface_object = hex_surface_objects_to_execute[i];
 
 //printf("export_voxels_center_point_data BBB : %s\n ", saved_mesh_pathname.c_str());
@@ -572,7 +509,6 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 
 			saved_mesh_pathname = saved_mesh_pathname + "_hcp_" + hex_surface_object->object_name + "_" + std::to_string(frame) + file_format;
 
-			//export_voxel_geometry.export_voxel_center_points_to_file_ply(voxel_hcp_object_to_execute->voxel_object_data, saved_mesh_pathname);
 //printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str());
 			export_hex_surface_geometry.export_hex_surface_center_points_to_file_ply(hex_surface_object->hex_surface_object_data, saved_mesh_pathname);
 		}
@@ -595,26 +531,19 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 		for (index_type i = 0; i < hex_surface_objects_to_execute.size(); i++) {
 			hex_surface_object_class *hex_surface_object= hex_surface_objects_to_execute[i];
 
-			//hex_surface_object_class *hex_surface_object_to_execute = fp_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<hex_surface_object_class>(entity->entity_id);
-
-
 			saved_mesh_pathname = saved_mesh_pathname + "_hssf_" + hex_surface_object->object_name + "_" + std::to_string(frame) + file_format;
 
 //if (log_widget != NULL) {
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class ::export_voxels_center_point_data : "+ saved_mesh_pathname);
 //}
 			if (hex_surface_object == NULL) {
-				//if (log_widget != NULL) {
-				//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_center_point_data :\n Failed to export center point voxels data. Could not find voxel HCP component data");
-				//}
+
 				if (log_panel != NULL) log_panel->application_log.AddLog("DEBUG : editor_animation_widget_class : export_voxels_center_point_data :\n Failed to export center point voxels data. Could not find voxel HCP component data\n");
 
 //QMessageBox::information(NULL, "","export_mesh : voxel_hcp_object_to_execute == NULL : " + entity->entity_name, QMessageBox::Ok);
 				return false;
 			}
 
-			//export_hex_surface_geometry.export_hex_surface_faces_ply(hex_surface_object_to_execute->hex_surface_object_data, saved_mesh_pathname);
-			//export_hex_surface_geometry.export_hex_surface_faces_ply(saved_mesh_pathname, hex_surface_object_to_execute->hex_surface_object_data);
 			export_hex_surface_geometry.export_hex_surface_faces_ply(saved_mesh_pathname, hex_surface_object->hex_surface_object_data);
 		}
 

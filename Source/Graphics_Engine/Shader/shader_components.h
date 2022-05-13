@@ -1,6 +1,16 @@
 #pragma once
 
-//#include <Universal/3rdparty/include/glm/glm.hpp>
+/*
+				Shader Component structure
+
+	Structure definition to store the shader uniform variables
+	and information to be used by a shader program to render 
+	the geometry of a scene entity graphical object.
+
+	A function to pass a shader unifrom variable value to a 
+	given shader program is also present in the form of the
+	functoin update_shader_variable.
+*/
 
 #include "shader_parameters.h"
 #include "shader_manager.h"

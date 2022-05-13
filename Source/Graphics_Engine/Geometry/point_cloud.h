@@ -2,6 +2,14 @@
 
 #include "geometry_basis.h"
 
+/*
+                POINT CLOUD GEOMETRY CLASS
+
+    The geometry class that can be used to store and display
+    the geometry data for a point cloud object data type with
+    point vertex location data only.
+*/
+
 class point_cloud_class : public geometry_basis_class { // This Class not yet tested
 public:
     point_cloud_class() = default;
@@ -75,6 +83,15 @@ public:
 
 private:
 };
+
+/*
+                POINT CLOUD DATA GEOMETRY CLASS
+
+    The geometry class that can be used to store and display
+    the geometry data for a point data cloud object data type
+    with point vertex location and a data value corresponding
+    to that vertex location.
+*/
 
 class point_cloud_data_class : public geometry_basis_class {
 public:
@@ -158,6 +175,14 @@ public:
 private:
 };
 
+/*
+                POINT CLOUD VERTEX GEOMETRY CLASS
+
+    The geometry class that can be used to store and display
+    the geometry data for a point data cloud object data type
+    with point vertex location and a normal vector value 
+    corresponding to that vertex location.
+*/
 
 class point_cloud_vertex_class : public geometry_basis_class {
 public:

@@ -3,9 +3,12 @@
 #include "imgui_custom_definitions.h"
 #include "IconsFontAwesome.h"
 
+/*
+    structure of input filters to define ASCII characters that can be entered by the user using an ImGui text entry widget
+*/
+
 struct Input_Filters
 {
-    // Return 0 (pass) if the character is 'i' or 'm' or 'g' or 'u' or 'i'
     static int name(ImGuiInputTextCallbackData* data)
     {
         if (data->EventChar < 256 && strchr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789", (char)data->EventChar))
@@ -27,6 +30,10 @@ struct Input_Filters
         return 1;
     }
 };
+
+/*
+    function to customise the apperance of the ImGui interface
+*/
 
 void tron_style() {
       ImGuiStyle  &style = ImGui::GetStyle();

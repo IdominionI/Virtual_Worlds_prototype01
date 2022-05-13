@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	Definitions that define the parameters values and
+	data types that define the generation and display
+	of the 2D hex surface.
+*/
+
 //#define INVALID_HEX_VALUE 0
 //#define MIN_HEX_VALUE     1
 //#define MAX_HEX_VALUE     255

@@ -38,11 +38,6 @@
 
 class import_export_hex_surface_automata_rules_class {
 public:
-	//QFile       file;
-	//QTextStream stream;
-
-	//std::string input_line;
-
 	std::fstream stream;
 
 	std::string input_line;
@@ -69,33 +64,6 @@ public:
 	}
 
 	bool export_hcp_automata_byte_rules(std::string file_pathname) {
-/*		QFileDialog file_dialog;
-		std::string file_pathname;
-
-		file_pathname = file_dialog.getSaveFileName(NULL, "Save HEX hex surface Automata rules", "./", "automata hex surface rules (*AHSR.txt)");
-//QMessageBox::information(NULL, "", file_pathname, QMessageBox::Ok);
-
-		if (file_pathname.size() == 0) {
-			QMessageBox::information(NULL, "", "No file name defined to save data to \n Save hex surface automata rules aborted", QMessageBox::Ok);
-			return false;
-		}
-
-		if (!open_file_stream(file_pathname, OVER_WRITE_FUNCTION_FILE)) {
-			QMessageBox::information(NULL, "", "Unable to open file\n" + file_pathname +"\n to save hex surface automata data to.", QMessageBox::Ok);
-			return false;
-		}
-
-		stream << RULE_DATA_START << endl;
-
-		write_hcp_automata_byte_rules();
-
-		stream << RULE_DATA_END << endl;
-
-		close_file_stream();
-
-		return true;
-*/
-
 		if (file_pathname.size() == 0) {
 			//QMessageBox::information(NULL, "", "No file name defined to save data to \n Save voxel automata byte rules aborted", //QMessageBox::Ok);
 			return false;
@@ -211,7 +179,6 @@ public:
 			return false;
 		}
 		////QMessageBox::information(NULL,"Import Automata byte rules","Import Automata byte rules 00 :"+input_line+":", //QMessageBox::Ok);
-				//if (input_line.indexOf(RULE_DATA_START) == (std::string::npos)) {
 		if (input_line.find(RULE_DATA_START) == (std::string::npos)) {
 			//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
 			return false;
@@ -223,7 +190,6 @@ public:
 			return false;
 		}
 		////QMessageBox::information(NULL,"Import Automata byte rules01 ",input_line, //QMessageBox::Ok);
-				//while (input_line.indexOf(RULE_DATA_END) == (std::string::npos) && !file.atEnd()) {
 		while (input_line.find(RULE_DATA_END) == (std::string::npos) && !stream.eof()) {
 
 			hex_surface_automata_rule_struct_type hex_surface_automata_rule;
@@ -301,16 +267,13 @@ public:
 			return false;
 		}
 
-		//hex_surface_automata_rule.hex_self_rule_condition.lower_rule_value = rule_list.value(0).toInt();
 		hex_surface_automata_rule.hex_self_rule_condition.lower_rule_value = stoi(rule_list[0]);
-		//switch (rule_list.value(1).toInt()) {
 		switch (stoi(rule_list[1])) {
 			case HEX_NEIGHBOR_IGNOR_RULE_CODE              : hex_surface_automata_rule.hex_self_rule_condition.lower_rule = hex_lower_rule_condition_enum_type::ignore; break;
 			case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.hex_self_rule_condition.lower_rule = hex_lower_rule_condition_enum_type::LT;     break;
 			case HEX_NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : hex_surface_automata_rule.hex_self_rule_condition.lower_rule = hex_lower_rule_condition_enum_type::LTEQ;   break;
 		}
 
-		//switch (rule_list.value(2).toInt()) {
 		switch (stoi(rule_list[2])) {
 			case HEX_NEIGHBOR_IGNOR_RULE_CODE              : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::ignore; break;
 			case HEX_NEIGHBOR_NOT_EQUAL_RULE_CODE          : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::NE;     break;
@@ -318,7 +281,7 @@ public:
 			case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::LT;    break;
 			case HEX_NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::LTEQ;   break;
 		}
-		//hex_surface_automata_rule.hex_self_rule_condition.upper_rule_value = rule_list.value(3).toInt();
+
 		hex_surface_automata_rule.hex_self_rule_condition.upper_rule_value = stoi(rule_list[3]);
 
 
@@ -330,7 +293,6 @@ public:
 				return false;
 			}
 
-			//rule_list = input_line.split(RULE_DELIMINATOR);
 			std::vector<std::string> rule_list;
 			rule_list = FW::stringtools::split(input_line, RULE_DELIMINATOR);
 

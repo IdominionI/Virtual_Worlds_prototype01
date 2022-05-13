@@ -1,16 +1,6 @@
 #pragma once
-#pragma once
 
 #include <vector>
-
-//#include <Source/Common/parameters.h>
-//#include <Source/Editor/Viewer/vw_editor_viewer.h>
-
-//#include "../Voxel_hcp_object/DataTypes/dt_voxel_shader_parameters.h"
-//#include "../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
-
-//#include "../Editor_Widgets/editor_voxel_function_editor_widget.h"
-//#include "../Editor_Widgets/editor_voxel_function_shader_widget.h"
 
 #include <Source/Editor/Common/definitions.h>
 #include <Source/Editor/Scene/scene_manager.h>
@@ -55,11 +45,9 @@ public:
 	void set_display_shader_native_vertex_colors(bool display_voxel_object_data, bool display_object_renderer) {
 		for(voxel_hcp_object_class * voxel_hcp_object: voxel_hcp_objects_to_execute) {
 			voxel_hcp_object->voxel_object_data.shader_parameters.shader_display_parameters.display_default_vertex_shader = display_voxel_object_data;
-			//voxel_hcp_object->object_renderer->object_ogl_shader->vertex_shader.shader_parameters.shader_display_parameters.display_default_vertex_shader = display_object_renderer; // Need a way to directly reference object parameters without copying them ****
 		}
 	}
 
-	//void define_initial_frame_paramters(bool use_voxel_texture_cb, bool use_voxel_automata_cb, int& max_automata_step_value, int frame_step_end) {
 	void define_initial_frame_paramters(bool use_voxel_texture_cb, bool use_voxel_automata_cb, int& max_automata_step_value, int frame_step_end) {
 		vw_initial_voxel_generator_variables_array.clear();
 		vw_initial_voxel_generator_variables_array.shrink_to_fit();
@@ -345,7 +333,6 @@ public:
 							variable.value = variable.value + variable.variable_step;
 
 					voxel_generator_parameters.variables[i].value = variable.value;
-//					voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables[i].value = variable.value;
 //printf("update_voxel_generator_parameter_step_values::AAA %f :: %f\n", voxel_generator_parameters.variables[i].value, voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables[i].value);
 				}
 			}
@@ -435,14 +422,11 @@ public:
 
 	bool perform_voxel_automata_step(u_long_int step, voxel_hcp_object_class* voxel_hcp_object) {
 		voxel_automata_hcp_functions_class        voxel_automata_hcp_functions;
-		//if (log_widget != NULL) {
-		//	printf( "perform_voxel_automata_step 00 : %i \n",step);
-		//}
+//if (log_widget != NULL) {
+//	printf( "perform_voxel_automata_step 00 : %i \n",step);
+//}
 
 		if (voxel_hcp_object->voxel_object_data.voxel_matrix_data.size() == 0) {
-			//if (log_widget != NULL) {
-			//	log_widget->log_message(log_display, log_message_type_enum_type::error, "Unable to perform cellula automata step : Have undefined generation of voxels.");
-			//}
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Unable to perform cellula automata step : Have undefined generation of voxels.\n  Current objects added or deleted or variables not used in initial frame \n");
 			return false;
 		}
@@ -455,22 +439,22 @@ public:
 
 		if (!voxel_automata_hcp_functions.perform_voxel_automata_generation(step)) return false;
 
-		//QMessageBox::information(NULL, "", "Time elapsed : "+ QString::number(time.elapsed())+ " ms", QMessageBox::Ok);// testing only
-		//QMessageBox::information(NULL, "", "perform_voxel_automata_step BBB00", QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "Time elapsed : "+ QString::number(time.elapsed())+ " ms", QMessageBox::Ok);// testing only
+//QMessageBox::information(NULL, "", "perform_voxel_automata_step BBB00", QMessageBox::Ok);
 
-		//if (log_widget != NULL) {
-		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 01 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
-		//}
+//if (log_widget != NULL) {
+//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 01 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
+//}
 
 		voxel_hcp_object->voxel_object_data.delete_voxel_matrix_data();
-		//if (log_widget != NULL) {
-		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 02 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
-		//}
+//if (log_widget != NULL) {
+//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 02 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
+//}
 
 		voxel_hcp_object->voxel_object_data.voxel_matrix_data = voxel_automata_hcp_functions.voxel_automata_next_step_matrix->voxel_object_data.voxel_matrix_data;
-		//if (log_widget != NULL) {
-		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 03 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
-		//}
+//if (log_widget != NULL) {
+//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step 03 : " + QString::number(voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size()));
+//}
 
 		voxel_hcp_object->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 		
@@ -579,7 +563,7 @@ printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str(
 	}
 
 	bool export_voxels_point_surface_data(std::string saved_mesh_pathname, int frame, std::string file_format) {
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "In export_voxels_point_surface_data", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "In export_voxels_point_surface_data", QMessageBox::Ok);
 
 		voxel_surface_data_class voxel_surface_data;
 
@@ -587,19 +571,15 @@ printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str(
 		export_voxel_geometry.log_panel = log_panel;
 
 		if (voxel_hcp_objects_to_execute.size() < 1) {
-			//if (log_widget != NULL) {
-			//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_point_surface_data :\n Failed to export surface point voxels data. Could not define the HCP data to execute");
-			//}
+		//if (log_widget != NULL) {
+		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_point_surface_data :\n Failed to export surface point voxels data. Could not define the HCP data to execute");
+		//}
 			if (log_panel != NULL) log_panel->application_log.AddLog("DEBUG : editor_animation_widget_class : export_voxels_point_surface_data :\n Failed to export surface point voxels data. Could not define the HCP data to execute\n");
-			//QMessageBox::information(NULL, "","export_mesh : !define_voxel_hcp_entities_to_execute(voxel_hcp_entities_to_execute)", QMessageBox::Ok);
+//QMessageBox::information(NULL, "","export_mesh : !define_voxel_hcp_entities_to_execute(voxel_hcp_entities_to_execute)", QMessageBox::Ok);
 			return false;
 		}
 
 		for (index_type i = 0; i < voxel_hcp_objects_to_execute.size(); i++) {
-			//entity_class* entity = voxel_hcp_entities_to_execute[i];
-
-			//voxel_hcp_object_class* voxel_hcp_object_to_execute = fp_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<voxel_hcp_object_class>(entity->entity_id);
-
 			voxel_hcp_object_class *voxel_hcp_object_to_execute = voxel_hcp_objects_to_execute[i];
 
 			voxel_surface_data.cloud = voxel_hcp_object_to_execute;
@@ -623,26 +603,22 @@ printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str(
 	}
 
 	bool export_voxels_face_surface_data(std::string saved_mesh_pathname, int frame, std::string file_format) {
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "In export_voxels_surface_data", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "In export_voxels_surface_data", QMessageBox::Ok);
 		voxel_surface_face_class voxel_surface_face_data;
 
 		export_voxel_geometry_class export_voxel_geometry;
 		export_voxel_geometry.log_panel = log_panel;
 
 		if (voxel_hcp_objects_to_execute.size() < 1) {
-			//if (log_widget != NULL) {
-			//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_face_surface_data :\n Failed to export face surface voxels data. Could not define the HCP data to execute");
-			//}
+//if (log_widget != NULL) {
+//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_face_surface_data :\n Failed to export face surface voxels data. Could not define the HCP data to execute");
+//}
 			if (log_panel != NULL) log_panel->application_log.AddLog("DEBUG : editor_animation_widget_class : export_voxels_face_surface_data :\n Failed to export face surface voxels data. Could not define the HCP data to execute\n");
-			//QMessageBox::information(NULL, "","export_mesh : !define_voxel_hcp_entities_to_execute(voxel_hcp_entities_to_execute)", QMessageBox::Ok);
+//QMessageBox::information(NULL, "","export_mesh : !define_voxel_hcp_entities_to_execute(voxel_hcp_entities_to_execute)", QMessageBox::Ok);
 			return false;
 		}
 
 		for (index_type i = 0; i < voxel_hcp_objects_to_execute.size(); i++) {
-			//entity_class* entity = voxel_hcp_entities_to_execute[i];
-
-			//voxel_hcp_object_class* voxel_hcp_object_to_execute = fp_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<voxel_hcp_object_class>(entity->entity_id);
-			
 			voxel_hcp_object_class* voxel_hcp_object_to_execute = voxel_hcp_objects_to_execute[i];
 
 			voxel_surface_face_data.cloud = voxel_hcp_object_to_execute;

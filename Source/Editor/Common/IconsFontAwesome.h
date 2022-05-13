@@ -2,6 +2,9 @@
 // from https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/src/icons.yml
 // for use with https://github.com/FortAwesome/Font-Awesome/blob/master/fonts/fontawesome-webfont.ttf
 // https://fontawesome.com/v4.7.0/icons/
+
+
+
 #pragma once
 
 #define FONT_ICON_FILE_NAME_FA "fontawesome_6_solid.otf"
@@ -686,9 +689,9 @@
 #define ICON_FA_MEETUP u8"\uf2e0"
 
 
-// new defines
+// new defines add myself below
 #define ICON_FA_LAYER_GROUP			u8"\uf5fd"
 
 #define ICON_FA_MOUNTAIN			u8"\uf6fc"
 
-#define ICON_FA_RECORD_VINAL	u8"\uf8d9" // seems not correctly defined
+#define ICON_FA_RECORD_VINAL	    u8"\uf8d9" // seems not correctly defined

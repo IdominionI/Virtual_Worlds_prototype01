@@ -8,6 +8,17 @@
 #include <Universal/ImGui/backends/imgui_impl_glfw.h>
 #include <Universal/ImGui/backends/imgui_impl_opengl3.h>
 
+/*
+                        OpenGL UI Context Class
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is code that sets up and initialises and performs the
+    various basic OpenGl UI ImGui function calls required by an
+    OpenGl window to function on a basic level.
+*/
 
 class UI_context_class : public openGL_context_class{
 

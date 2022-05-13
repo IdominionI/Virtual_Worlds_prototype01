@@ -2,8 +2,15 @@
 
 #include "../Common/definitions.h"
 
-//#include <string>
 #include <vector>
+
+/*
+	Shader struture definitions that define the
+	shader uniform variables and shader parameter
+	data that is used to store shader data for
+	scene data objects and rendering functions.
+*/
+
 
 // Compilor has linking problems with using glm vec1, ivec1 and uvec1 datatypes
 // this not utilised or used !!!!
@@ -19,70 +26,85 @@ enum application_default_shader_variable_type_enum {
 	
 	//Floatv1, Intv1, UIntv1 // These may need to be deleted
 };
-//template <typename T>
+
+
+/*
+	application_default_shader_uniform_variables_struct_type
+
+	Shader uniform varaibles are stored as a void
+	pointer type pointing to the variable data value.
+	By storing the data type that a void pointer is
+	assigned to enables not having to have multiple
+	functions for each uniform data type.
+
+	Since there is a maximum of four varaibles for
+	a unifirm variable, there are four void pointers
+*/
 struct application_default_shader_uniform_variables_struct_type {
-	application_default_shader_variable_type_enum type;
+	application_default_shader_variable_type_enum type; // type of data void pointer(s) is pointing to
 
 	string_type name;
-	void       *value0, *value1, *value2, *value3;
+	void       *value0, *value1, *value2, *value3;  // pointer to uniform value of data type defined by type
 };
 
-
+/*
+	Data structure types to store application real, integer 
+	and boolean shader uniform variables and widget variable
+	values to modify that variable.
+*/
 struct shader_parameter_variable_struct_type {
-	string_type variable_name = "";
-	float   value = 0.0f;
-	float   variable_step = 0.0f;
-	bool    active_variable = false;
+	string_type variable_name    = "";
+	float   value                = 0.0f;
+	float   variable_step        = 0.0f;
+	bool    active_variable      = false;
 	bool    active_variable_step = false;
-	float   slider_min = -10;
-	float   slider_max = 10;
+	float   slider_min           = -10;
+	float   slider_max           = 10;
 
 	//bool    pass_to_voxel_geometry_shader    = false;
-	bool    pass_to_geometry_shader = false;
+	bool    pass_to_geometry_shader       = false;
 	bool    pass_to_point_geometry_shader = false;
-	bool    pass_to_fragment_shader = false;
+	bool    pass_to_fragment_shader       = false;
 };
 
 struct shader_parameter_int_variable_struct_type {
-	string_type variable_name = "";
-	int     value = 0;
-	int     variable_step = 0;
-	bool    active_variable = false;
+	string_type variable_name    = "";
+	int     value                = 0;
+	int     variable_step        = 0;
+	bool    active_variable      = false;
 	bool    active_variable_step = false;
-	int     slider_min = -10;
-	int     slider_max = 10;
+	int     slider_min           = -10;
+	int     slider_max           = 10;
 
 	//bool    pass_to_voxel_geometry_shader    = false;
-	bool    pass_to_geometry_shader = false;
+	bool    pass_to_geometry_shader       = false;
 	bool    pass_to_point_geometry_shader = false;
-	bool    pass_to_fragment_shader = false;
+	bool    pass_to_fragment_shader       = false;
 };
 
 struct shader_parameter_bool_variable_struct_type {
 	string_type variable_name = "";
-	bool    value = false;
-	bool    active_variable = false;
+	bool    value             = false;
+	bool    active_variable   = false;
 
 	//bool    pass_to_voxel_geometry_shader    = false;
-	bool    pass_to_geometry_shader = false;
+	bool    pass_to_geometry_shader       = false;
 	bool    pass_to_point_geometry_shader = false;
-	bool    pass_to_fragment_shader = false;
+	bool    pass_to_fragment_shader       = false;
 };
 
 struct shader_display_parameters_struct_type {
-	bool display_default_vertex_shader = true;
-	bool display_default_geometry_shader = true;
+	bool display_default_vertex_shader         = true;
+	bool display_default_geometry_shader       = true;
 	bool display_default_point_geometry_shader = true;
-	bool display_default_fragment_shader = true;
+	bool display_default_fragment_shader       = true;
 };
 
+/*
+	Data structure to store shader information and shader
+	uniform variable data for a scene entity object 
+*/
 struct shader_parameters_struct_type {
-	//~shader_parameters_struct_type() {
-	//	variables.clear(); variables.shrink_to_fit();
-	//	int_variables.clear(); int_variables.shrink_to_fit();
-	//	bool_variables.clear(); bool_variables.shrink_to_fit();
-	//}
-
 	string_type  vertex_shader_file_name            = "";
 	string_type  geometry_shader_file_name          = "";
 	string_type  point_geometry_shader_file_name    = "";

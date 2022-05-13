@@ -8,6 +8,15 @@
 #include <Source/Modules/Module_Voxel_Byte/Render/voxel_hcp_render.h>
 #include <Source/Modules/Module_Hex_Surface/Render/hex_surface_render.h>
 
+/*
+				SCENE MANAGER CLASS
+
+	Manager class to act as gateway to perform functions or retrieve data
+	on entity scene objects	required by the application, and to render
+	scene objects onto the computer screen.
+*/
+
+
 class scene_manager_class {
 public:
 	scene_graph_manager_class       scene_graph_manager;
@@ -130,10 +139,13 @@ public:
 		return true;
 	}
 
+	// Add MODULE SCENE ROUTINES HERE
+
 
 private:
 	// ++++++ DEFINE MODULE RENDER CLASSES HERE ++++++
 	voxel_hcp_render_class   voxel_hcp_render;
 	hex_surface_render_class hex_surface_render;
 
+	// Add MODULE render classes here
 };

@@ -1,8 +1,17 @@
 #pragma once
-//#include <Universal/ImGui/imgui.h>
+
 #include "imgui_widgets.h"
 
 #include <Source/Graphics_Engine/Scene/Scene_objects/camera_object.h>
+
+/*
+					CAMERA PROPOERTIES WIDGET
+	
+	A widget class that displays editable camera parameters or changes
+	the camera behavior such as to define the user interaction with the
+	scene camera or how the scene is depicted on the computer screen. 
+*/
+
 
 class camera_poperties_widget_class {
 public:

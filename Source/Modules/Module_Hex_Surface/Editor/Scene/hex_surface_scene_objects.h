@@ -1,23 +1,25 @@
 #pragma once
 
-
 #include <vector>
 
 #include <Source/Editor/Common/definitions.h>
 #include <Source/Editor/Shader/shader_import_export.h>
 
-//#include "../../hex_surface_object/hex_surface_object.h"
-//#include "../../Kernal/voxel_function_import_export.h"
-//#include "../../Automata/automata_byte_import_export.h"
-
 #include "../../Hex_surface_object/hex_surface_object.h"
 
+/*
+				Hex surface scene objects class
+
+	This class defines and manages the storage update and retrieval
+	of the 2D hexagonal surface data objects that are to be used by
+	the Virtual Worlds application.
+
+	The data storage model utilised is a simple C++ standard vector
+	array of data type hex_surface_object_class that the class 
+	inherits.
+*/
+
 class hex_surface_scene_objects_class : public std::vector<hex_surface_object_class*> {
-
-	//voxel_function_import_export_class      voxel_function_import_export;
-	//voxel_texture_import_export_class       voxel_texture_import_export;
-	//import_export_byte_automata_rules_class import_export_byte_automata_rules;
-
 public:
 
 	hex_surface_object_class *get_hex_surface_object(object_id_type object_id){
@@ -28,7 +30,6 @@ public:
 		return NULL;
 	}
 
-	//****
 	bool get_shader_parameters(object_id_type object_id, shader_parameters_struct_type& shader_parameters) {
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
@@ -39,7 +40,6 @@ public:
 
 		return true;
 	}
-	//****
 
 	bool save_generation_data(object_id_type object_id, string_type file_pathname) {
 		int object_index = get_object_index(object_id);
@@ -86,7 +86,6 @@ public:
 		if (!new_object) return false;
 
 		new_object->object_id = object_id;
-		//new_object->object_name = object_id;
 		//new_hcp_object.object_category_id = ; // to be determined
 		push_back(new_object);
 		return true;
@@ -122,8 +121,6 @@ public:
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
 
-		//QStringList data_list = data.split("|");
-
 		//if (data_list.size() != 15) return false;
 
 		hex_surface_object_class *hex_surface_object = at(object_index);
@@ -140,10 +137,6 @@ public:
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value    = data.min_surface_value;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value    = data.max_surface_value;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.resolution_step      = data.resolution_step;
-		//hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.generation_threshold = data.generation_threshold;
-
-		//hex_surface_object->hex_surface_object_data.display_points = data.generator_display_data.display_as_points;
-		//hex_surface_object->hex_surface_object_data.voxel_size     = data.generator_display_data.voxel_scale;
 
 		return true;
 	}
@@ -156,18 +149,9 @@ public:
 
 		if (hex_surface_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.variables.clear();
 
 		for (hex_surface_generator_parameter_variable_struct_type real_variable : data) {
-			/*voxel_generator_parameter_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.variables.push_back(real_variable);
 		}
 
@@ -182,18 +166,9 @@ public:
 
 		if (hex_surface_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.int_variables.clear();
 
 		for (hex_surface_generator_parameter_int_variable_struct_type int_variable : data) {
-			/*voxel_generator_parameter_int_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.int_variables.push_back(int_variable);
 		}
 		return true;
@@ -207,18 +182,9 @@ public:
 
 		if (hex_surface_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.bool_variables.clear();
 
 		for (hex_surface_generator_parameter_bool_variable_struct_type bool_variable : data) {
-			/*voxel_generator_parameter_bool_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.bool_variables.push_back(bool_variable);
 		}
 

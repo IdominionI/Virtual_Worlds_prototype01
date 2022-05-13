@@ -15,6 +15,19 @@
 #include "../../Automata/automata_byte_import_export.h"
 #include "../../Automata/voxel_automata_functions.h"
 
+/*
+	HCP voxel volume cellula automata rules widget class
+
+	This class widget defines a ImGui widget and child widgets
+	that are used to define one or more sets of cellula automata
+	rules that the HCP voxel volume model can be subjected to 
+	perform.
+
+	Also this widget class has controls to perform the cellula
+	automata rules one incremental step at a time according to the
+	defined cellula automata rules that are defined here.
+*/
+
 class voxel_hcp_autmoata_widget_class {
 public:
 	voxel_hcp_autmoata_widget_class() {}
@@ -53,7 +66,6 @@ public:
 
 		ImGui::SetCursorPosX(x_pos + 190);
 		ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("Animate\nAutomata###vauanim", &animate_automata);
 		ImGui::Checkbox("Animate\nAutomata###vauanim", &voxel_hcp_object_to_execute->animate_automata);
 
 		y_pos += 35;
@@ -191,10 +203,10 @@ public:
 	void pause_automata_execution() {
 //printf("paused button pressed\n");
 		automata_paused = !automata_paused;
-if(automata_paused == false)
-printf("automata_paused == false\n");
-else
-printf("automata_paused == true\n");
+//if(automata_paused == false)
+//printf("automata_paused == false\n");
+//else
+//printf("automata_paused == true\n");
 	}
 
 	void record_automata_execution() {

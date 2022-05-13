@@ -6,6 +6,18 @@
 #include "shaders_widget.h"
 #include "automata_widget.h"
 
+/*
+				Hex surface paramters widget
+
+	This widget class is a parent widget that manages the display
+	of hex generation, shader variable and cellula automata child
+	widgets via selection of ImGui tabs.
+
+	This widget class is thus the widget class that is called by
+	the main application editor to display hex surface parameter
+	data to be changed or generate data.
+*/
+
 class hex_surface_parameters_widget_class {
 public:
 	hex_surface_parameters_widget_class() {}
@@ -16,7 +28,7 @@ public:
 	log_panel_class     *log_panel     = NULL;
 
 	void display_hex_surface_generation_widget(id_type current_selected_object_id) {
-		//printf("parameter_panel_class :: display_hex_surface_generation_widget 11\n");
+//printf("parameter_panel_class :: display_hex_surface_generation_widget 11\n");
 
 		if (scene_manager == NULL) {
 		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No scene manager defined to extract scene voxel hcp object parameter data from.\n");
@@ -65,18 +77,17 @@ private:
 
 	void display_hex_surface_generation_widget(hex_surface_object_class *hex_surface_object_to_execute, id_type current_selected_object_id) {
 
-		//hex_surface_generation_widget.hex_surface_object_to_execute = scene_manager->entities_manager.get_hex_surface_entity_object(current_selected_object_id);
 		hex_surface_generation_widget.hex_surface_object_to_execute = hex_surface_object_to_execute;
 
 		if (hex_surface_generation_widget.hex_surface_object_to_execute == NULL) {
 		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hcp voxel object defined to perform voxel generation procedure on.\n");
 			return;
 		}
-		//printf("hex_surface_generation_widget.hex_surface_object_to_execute != NULL ^^^^\n");
+
 		hex_surface_generation_widget.log_panel                  = log_panel;
 		hex_surface_generation_widget.scene_manager              = scene_manager;
 		hex_surface_generation_widget.current_selected_entity_id = current_selected_object_id;
-		//printf("parameter_panel_class :: display_hex_surface_generation_widget22\n");
+
 		hex_surface_generation_widget.display();
 	}
 

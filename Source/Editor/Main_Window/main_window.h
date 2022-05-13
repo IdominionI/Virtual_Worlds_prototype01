@@ -34,11 +34,12 @@ public:
         render_context->end();
     }
 
+    // Initialise application main window panels, variables, parameters etc.
     bool init(int width, int height, const std::string& title)
     {
-        Width = width;
+        Width  = width;
         Height = height;
-        Title = title;
+        Title  = title;
 
         render_context->init(this);
 
@@ -52,7 +53,7 @@ public:
 
         scene_manager            = new scene_manager_class;
         scene_manager->log_panel = log_panel;
-        scene_graph_manager = &scene_manager->scene_graph_manager;
+        scene_graph_manager      = &scene_manager->scene_graph_manager;
 
         outliner_panel.outliner_manager.scene_manager = scene_manager;
 
@@ -195,6 +196,7 @@ public:
         return mIsRunning;
     }
 
+    // Display the application main window
     void render()
     {
         // Clear the view
@@ -203,26 +205,31 @@ public:
         // Initialize UI components
         ui_context->pre_render();
 
+        // Define interface style parameters each render pass so as
+        // to be able to change interface style or style components
         tron_style();
 
         // render scene to framebuffer and add it to scene view
         scene_view->render();// to be replaced with scene manager render
 
-        property_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// to be as a function parameter ??
-        property_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;// to be as a function parameter ??
-        property_panel.show();
+        property_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// define user selected entity data type to the property panel
+        property_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;       // define user selected entity to the property panel
+        property_panel.show(); // Display property panel with the selected entity property parameter values
 
-        outliner_panel.show(log_panel);
+        outliner_panel.show(log_panel); // Display outliner panel 
 
+        // Log panel to display application logging messages and shader code compile error messages
         log_panel->display_application_log();
         log_panel->display_code_log();
 
-        parameter_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// to be as a function parameter ??
-        parameter_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;// to be as a function parameter ??
+        parameter_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// define user selected entity data type to the paramater panel
+        parameter_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;       // define user selected entity to the paramater panel
         parameter_panel.show();
 
+        // Create application main menu
         main_menu();
 
+        // Following uncommented when investigating ImGui widget examples
         //ImGui::Begin;
         //ImGui::ShowDemoWindow();
         //ImGui::End;
@@ -360,7 +367,7 @@ private:
     export_hex_surface_geometry_class export_hex_surface_geometry;
 
     //--------- Testing only -------------
-    mesh_class *mesh;
+    //mesh_class *mesh;
 
     shader_db_manager_class shader_db_manager;
 

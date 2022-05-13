@@ -4,6 +4,13 @@
 
 #include "../voxel_hcp_object.h"
 
+/*
+		Structures of to be used in a possible future functionality
+		of HCP voxel volumes interacting with each other
+
+		No implemented or used. May change or not even be used !!!!!
+*/
+
 struct voxel_interaction_function_struct_type {
 	int     interaction_id          = 0;
 	std::string interaction_name        = "interaction";    // used for UI

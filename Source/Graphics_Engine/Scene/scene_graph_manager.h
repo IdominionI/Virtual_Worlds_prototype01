@@ -6,6 +6,18 @@
 #include "Scene_objects/light_object.h"
 #include "Scene_objects/render_object.h"
 
+/*
+			Scene graphics manager class
+
+	Manager class to handle the management of the storage
+	and rendering of all geometry objects in the scene
+
+	All scene object geometry and rendering data is defined
+	by the scene_node_class class type that stores the scene
+	geometry data and redering functionality for each 
+	individual scene data object.
+*/
+
 class scene_graph_manager_class {
 public :
 	scene_graph_manager_class() {
@@ -14,7 +26,7 @@ public :
 
 	~scene_graph_manager_class() {}
 
-	//std::vector <camera_object_class>     scene_cameras;
+	//std::vector <camera_object_class>     scene_cameras; // I have more than one camera in the scene
 	std::vector <light_object_class>        scene_lights;
 	scene_node_class <render_object_class> *scene_root_render_object=NULL;
 

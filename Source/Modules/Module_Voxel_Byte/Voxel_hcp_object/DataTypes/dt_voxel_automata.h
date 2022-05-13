@@ -1,8 +1,14 @@
 #pragma once
 #include <string>
 
-//#include "../Object/voxel_data_storage.h"
 #include "../voxel_data_storage.h"
+
+/*
+	Structures and definitions that define the parameters
+	and variables to perform cellula automata rules on a
+	HCP voxel 3D volume data, and export/import the
+	parameter data.
+*/
 
 #define NUMBER_HCP_NEIGHBOURS 12
 

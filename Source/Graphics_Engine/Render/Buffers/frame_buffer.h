@@ -2,6 +2,19 @@
 
 #include "../../Common/pch.h"
 
+/*
+                        OpenGL Frame Buffer Class
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is code that sets up and initialises and performs the
+    various basic OpenGl frame buffer function calls required 
+    for OpenGl to function on a basic level.
+*/
+
+
 class openGL_frame_buffer_class{
 public:
     openGL_frame_buffer_class() : mFBO{ 0 }, mDepthId{ 0 }{}

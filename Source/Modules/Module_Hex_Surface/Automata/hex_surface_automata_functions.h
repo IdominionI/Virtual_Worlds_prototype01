@@ -51,7 +51,6 @@ public:
 		if (hex_surface_automata_next_step_matrix == NULL) return false;
 
 		hex_surface_automata_next_step_matrix->hex_surface_object_data.hex_size       = cloud->hex_surface_object_data.hex_size;
-		//hex_surface_automata_next_step_matrix->world_location                         = cloud->world_location;
 
 		hex_surface_automata_next_step_matrix->hex_surface_object_data.grid_dimension = cloud->hex_surface_object_data.grid_dimension;
 		hex_surface_automata_next_step_matrix->hex_surface_object_data.grid_origin    = cloud->hex_surface_object_data.grid_origin;
@@ -87,10 +86,6 @@ public:
 
 //printf("hex_surface_animation_functions_class :: perform_hex_surface_automata_generation::00 \n");
 		// FOLOWING FUNCTIONS WAS PREVIOUSLY PERFORMED EXTERNALLY AFTER perform_hex_surface_automata_generation WAS CALLED
-
-		//voxel_hcp_object_to_execute->voxel_object_data.delete_voxel_matrix_data();
-		//voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data = voxel_automata_next_step_matrix->voxel_object_data.voxel_matrix_data;
-
 		if(hex_surface_object_to_execute == NULL){
 			printf("hex_surface_animation_functions_class :: perform_hex_surface_automata_generation:: ERROR: Undefined hex_surface_object_to_execute \n");
 			return false;
@@ -123,8 +118,7 @@ public:
 		hex_surface_automata_generator_parameters.x_end   = cloud->hex_surface_object_data.hex_surface_generator_parameters.x_end;
 		hex_surface_automata_generator_parameters.y_start = cloud->hex_surface_object_data.hex_surface_generator_parameters.y_start;
 		hex_surface_automata_generator_parameters.y_end   = cloud->hex_surface_object_data.hex_surface_generator_parameters.y_end;
-		//hex_surface_automata_generator_parameters.z_start = cloud->hex_surface_object_data.hex_surface_generator_parameters.z_start;
-		//hex_surface_automata_generator_parameters.z_end   = cloud->hex_surface_object_data.hex_surface_generator_parameters.z_end;
+
 		hex_surface_automata_generator_parameters.resolution_step = cloud->hex_surface_object_data.hex_surface_generator_parameters.resolution_step;
 
 //if (log_widget != NULL) {
@@ -330,78 +324,23 @@ public:
 //QMessageBox::information(0, "get_hex_surface_neighbour_index_coordinates", "here05A", QMessageBox::Ok);
 			if (y_index % 2 == 0) { // Even Y 
 				switch (neighbour) {
-					//case 0: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-					//case 1: neighbor_index_coordinate.x = x_index    ; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index + 1; break;
-					//case 2: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-
-
 					case 0: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1;  break;
 					case 1: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;      break;
 					case 2: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1;  break;
 					case 3: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index - 1;  break;
 					case 4: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;      break;
 					case 5: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index + 1;  break;
-
-					//case 9:  neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-					//case 10: neighbor_index_coordinate.x = x_index    ; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
-					//case 11: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
 				}
 			}else{// Odd Y 
 				switch (neighbour) {
-					//case 0: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-					//case 1: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index + 1;break;
-					//case 2: neighbor_index_coordinate.x = x_index ;    neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-
 					case 0: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index + 1; break;
 					case 1: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     break;
 					case 2: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index - 1; break;
 					case 3: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; break;
 					case 4: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     break;
 					case 5: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1;  break;
-
-					//case 9:  neighbor_index_coordinate.x = x_index +1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-					//case 10: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
-					//case 11: neighbor_index_coordinate.x = x_index ;   neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
 				}
 			}
-/*		} else { // Odd Z 
-			if (y_index % 2 == 0) { // Even Y 
-				switch (neighbour) {
-					case 0: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-					case 1: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index + 1; break;
-					case 2: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-
-					case 3: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
-					case 4: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-					case 5: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
-					case 6: neighbor_index_coordinate.x = x_index ;    neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
-					case 7: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-					case 8: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
-
-					case 9:  neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-					case 10: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index - 1; break;
-					case 11: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-				}
-			} else {// Odd Y
-				switch (neighbour) {
-					case 0: neighbor_index_coordinate.x = x_index-1 ; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-					case 1: neighbor_index_coordinate.x = x_index ;   neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index + 1; break;
-					case 2: neighbor_index_coordinate.x = x_index ;   neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-
-					case 3: neighbor_index_coordinate.x = x_index ;    neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
-					case 4: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-					case 5: neighbor_index_coordinate.x = x_index    ; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
-					case 6: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
-					case 7: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-					case 8: neighbor_index_coordinate.x = x_index-1  ; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
-
-					case 9:  neighbor_index_coordinate.x = x_index-1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-					case 10: neighbor_index_coordinate.x = x_index ;  neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index - 1; break;
-					case 11: neighbor_index_coordinate.x = x_index ;  neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-				}
-			}
-		}
-*/
 		return neighbor_index_coordinate;
 	}
 
@@ -410,10 +349,6 @@ public:
 	bool valid_index_coordinate(hex_index_vector hex_surface_index_coordinate) {
 //QMessageBox::information(0, "get_hex_surface_neighbour_index_coordinates", "here06", QMessageBox::Ok);
 
-		//if(hex_surface_index_coordinate.z < 0 || hex_surface_index_coordinate.z > cloud->hex_surface_object_data.grid_dimension.z-1) return false;
-		//if(hex_surface_index_coordinate.y < 0 || hex_surface_index_coordinate.x < 0) return false;
-
-//		if (hex_surface_index_coordinate.z % 2 == 0) {// even z level
 			if(hex_surface_index_coordinate.y > cloud->hex_surface_object_data.grid_dimension.y-1) return false;
 
 			if (hex_surface_index_coordinate.y % 2 == 0) { // even y coord
@@ -421,27 +356,15 @@ public:
 			}else{
 				if (hex_surface_index_coordinate.x > cloud->hex_surface_object_data.grid_dimension.x-2) return false;
 			}
-/*		} else {// odd z level
-			if(hex_surface_index_coordinate.y > cloud->hex_surface_object_data.grid_dimension.y-2) return false;
 
-			if (hex_surface_index_coordinate.y % 2 == 0) {// even y coord
-				if (hex_surface_index_coordinate.x > cloud->hex_surface_object_data.grid_dimension.x-2) return false;
-			}else{
-				if (hex_surface_index_coordinate.x > cloud->hex_surface_object_data.grid_dimension.x-1) return false;
-			}
-		}
-*/
 //QMessageBox::information(0, "get_hex_surface_neighbour_index_coordinates", "here06A", QMessageBox::Ok);
 		return true;
 	}
 
 	void assign_no_hex_state_change(hex_index_vector hex_surface_data_index_coord) {
 		hex_surface_data_type hex_surface_activation_status = cloud->hex_surface_object_data.hex_surface_matrix_coordinate_activation_status(hex_surface_data_index_coord);
-		//hex_surface_data_type default_inactive_value = DEFAULT_INACTIVE_VALUE;
-		//if(hex_surface_activation_status > DEFAULT_INACTIVE_VALUE) // *** Need to change this for a valid activation value
-			hex_surface_automata_next_step_matrix->hex_surface_object_data.activate_hex_surface_matrix_coordinate(hex_surface_data_index_coord, hex_surface_activation_status);
-		//else
-		//	hex_surface_automata_next_step_matrix->hex_surface_object_data.deactivate_hex_surface_matrix_coordinate(hex_surface_data_index_coord);
+
+		hex_surface_automata_next_step_matrix->hex_surface_object_data.activate_hex_surface_matrix_coordinate(hex_surface_data_index_coord, hex_surface_activation_status);
 	}
 
 	// Copy into the cellular automata data structure variable hex_surface_automata_initial_data the cellula automata parameter values

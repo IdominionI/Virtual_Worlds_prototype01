@@ -4,6 +4,12 @@
 
 #include <Source/Graphics_Engine/Shader/shader_components.h>
 
+/*
+					SCENE LIGHTING PROPOERTIES WIDGET
+
+	A widget class that displays editable scene lighting parameters that
+	define the lighting of entity objects in the scene.
+*/
 
 class lighting_properties_widget_class {
 public:
@@ -113,22 +119,22 @@ private:
 
 
 	// ********** Color Picker definitions *****************
-	bool alpha_preview = true;
+	bool alpha_preview      = true;
 	bool alpha_half_preview = false;
-	bool drag_and_drop = true;
-	bool options_menu = true;
-	bool hdr = false;
+	bool drag_and_drop      = true;
+	bool options_menu       = true;
+	bool hdr                = false;
 
 	ImGuiColorEditFlags misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (drag_and_drop ? 0 : ImGuiColorEditFlags_NoDragDrop) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
 
 	//ImGui::Text("Color picker:");
-	bool alpha = true;
-	bool alpha_bar = true;
-	bool side_preview = true;
-	bool ref_color = false;
+	bool alpha         = true;
+	bool alpha_bar     = true;
+	bool side_preview  = true;
+	bool ref_color     = false;
 	ImVec4 ref_color_v = { 1.0f, 0.0f, 1.0f, 0.5f };
-	int display_mode = 0;
-	int picker_mode = 0;
+	int display_mode   = 0;
+	int picker_mode    = 0;
 
 	//if (!alpha)            flags |= ImGuiColorEditFlags_NoAlpha;        // This is by default if you call ColorPicker3() instead of ColorPicker4()
 	//if (alpha_bar)         flags |= ImGuiColorEditFlags_AlphaBar;

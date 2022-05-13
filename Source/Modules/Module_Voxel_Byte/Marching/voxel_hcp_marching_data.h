@@ -1,9 +1,4 @@
 #pragma once
-//#include <QVector>
-//#include <QVector3D>
-
-//#include <vector>
-//#include <Universal/3rdparty/include/glm/glm.hpp>
 
 /*
 	Sets of static unchanging data structures that define the uniform unit vertex

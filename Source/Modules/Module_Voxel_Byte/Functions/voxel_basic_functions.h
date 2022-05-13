@@ -15,8 +15,6 @@
 class voxel_basic_functions_class {
 
 public:
-
-	//voxel_object_data_class *surface_voxels_copy(voxel_object_data_class *voxel_object_data) {
 	voxel_object_data_class* surface_voxels_copy(voxel_hcp_object_class* cloud, voxel_data_type surface_value = 0) {
 		voxel_object_data_class* voxel_object_data_copy = new voxel_object_data_class;
 		voxel_object_data_copy->voxel_size = cloud->voxel_object_data.voxel_size;
@@ -24,51 +22,44 @@ public:
 		//voxel_object_data_copy->matrix_coordinate_scale_factors = { 1.0,1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
 		voxel_object_data_copy->matrix_dimension = cloud->voxel_object_data.matrix_dimension;
 
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "Here 01", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "Here 01", QMessageBox::Ok);
 
-				//if (!get_surface_voxels(cloud->voxel_object_data, true, voxel_object_data_copy)) {
 		if (!get_surface_voxels(cloud, surface_value, true, voxel_object_data_copy)) {
 			delete voxel_object_data_copy;
 			voxel_object_data_copy = NULL;
 		}
 
-		//int n = 0;
-		//for (int voxel_index = 0; voxel_index < voxel_object_data_copy->voxel_matrix_data.size(); voxel_index++) {
-		//	if (voxel_object_data_copy->voxel_matrix_data[voxel_index] < 0) n++;
-		//}
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "surface_voxels_copy AAAA : " + QString::number(n), QMessageBox::Ok);
+//int n = 0;
+//for (int voxel_index = 0; voxel_index < voxel_object_data_copy->voxel_matrix_data.size(); voxel_index++) {
+//	if (voxel_object_data_copy->voxel_matrix_data[voxel_index] < 0) n++;
+//}
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "surface_voxels_copy AAAA : " + QString::number(n), QMessageBox::Ok);
 
 		return voxel_object_data_copy;
 	}
 
-	//bool get_surface_voxels(voxel_object_data_class* voxel_object_data, bool make_copy = false, voxel_object_data_class *voxel_object_surface_data_copy = NULL) {
 	bool get_surface_voxels(voxel_hcp_object_class *cloud, voxel_data_type surface_value, bool make_copy = false, voxel_object_data_class* voxel_object_surface_data_copy = NULL) {
-		//std::vector <voxel_data_type>  voxel_matrix_surface_data;
 		std::vector <voxel_data_type>  voxel_matrix_surface_data;
 		index_data_type            voxel_index = 0;
-		//size_t                     number_voxels = voxel_object_data->voxel_matrix_data.size();
 		size_t                     number_voxels = cloud->voxel_object_data.voxel_matrix_data.size();
 		voxel_data_type non_surface_value = DEFAULT_INACTIVE_VALUE;
 
 		voxel_matrix_surface_data = std::vector<voxel_data_type>(number_voxels, non_surface_value); // allocate Vector of size number_voxels and set values to not_surface_value
 
 		if (voxel_matrix_surface_data.size() == 0) return false;
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 00 "+ QString::number(voxel_matrix_surface_data.size()) +":"+ QString::number(number_voxels), QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 00 "+ QString::number(voxel_matrix_surface_data.size()) +":"+ QString::number(number_voxels), QMessageBox::Ok);
 
 		int n = 0;
 		for (voxel_index = 0; voxel_index < number_voxels; voxel_index++) {
-			//if (!inside_voxel_volume(voxel_object_data, voxel_index))
 			if (!inside_voxel_volume(cloud, voxel_index, surface_value))
-				//voxel_matrix_surface_data[voxel_index] = cloud->voxel_object_data.voxel_matrix_data[voxel_index];
 				voxel_matrix_surface_data[voxel_index] = cloud->voxel_object_data.extract_voxel_data_element_value(data_storage_type_enum::value, voxel_index); // ****
 			else {
 				voxel_matrix_surface_data[voxel_index] = non_surface_value;
-				//cloud->voxel_object_data.deactivate_voxel_matrix_coordinate(voxel_index);
 				n++;
 			}
 
 		}
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 01 : "+ QString::number(n), QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 01 : "+ QString::number(n), QMessageBox::Ok);
 		if (make_copy) {
 			voxel_object_surface_data_copy->voxel_matrix_data.clear();
 			voxel_object_surface_data_copy->voxel_matrix_data.shrink_to_fit();
@@ -76,15 +67,12 @@ public:
 			voxel_object_surface_data_copy->voxel_matrix_data = voxel_matrix_surface_data;
 		}
 		else {
-			//voxel_object_data->voxel_matrix_data.clear();
 			cloud->voxel_object_data.voxel_matrix_data.clear();
-			//voxel_object_data->voxel_matrix_data.shrink_to_fit();
 			cloud->voxel_object_data.voxel_matrix_data.shrink_to_fit();
 
-			//voxel_object_data->voxel_matrix_data = voxel_matrix_surface_data;
 			cloud->voxel_object_data.voxel_matrix_data = voxel_matrix_surface_data;
 		}
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 02", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "get_surface_voxels 02", QMessageBox::Ok);
 		return true;
 	}
 
@@ -116,7 +104,7 @@ public:
 			}
 		}
 
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "inside_voxel_volume 04" + QString::number(inside_volume_voxel), QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "inside_voxel_volume 04" + QString::number(inside_volume_voxel), QMessageBox::Ok);
 
 		return inside_volume_voxel;
 	}
@@ -192,7 +180,7 @@ public:
 
 		clear_data();
 
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_data 00", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_data 00", QMessageBox::Ok);
 		return create_voxel_surface_faces_data();
 
 		//return false;
@@ -205,7 +193,6 @@ public:
 
 //QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
 		int neighbour;
-		//index_vector voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
 		int valid_neighbours = 0;
 
 		// Need to also cater for a valid voxel threshold value 
@@ -238,7 +225,6 @@ public:
 
 //printf("create_voxel_surface_face_point_data 00 : %i\n", number_voxels);
 		for (voxel_index = 0; voxel_index < number_voxels; voxel_index++) {
-			//if (cloud->voxel_object_data.voxel_matrix_data[voxel_index] != INVALID_VOXEL_VALUE) {
 			if (cloud->voxel_object_data.extract_voxel_data_element_value(data_storage_type_enum::value, voxel_index) != INVALID_VOXEL_VALUE) {
 //printf("create_voxel_surface_face_point_data 11 : %i\n", number_voxels);
 				voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
@@ -287,9 +273,8 @@ public:
 
 		index_vector voxel_hcp_neighbours_face_connection_coord[2];
 
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface2_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface2_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
 		for (voxel_index = 0; voxel_index < number_voxels; voxel_index++) {
-			//if (cloud->voxel_object_data.voxel_matrix_data[voxel_index] != INVALID_VOXEL_VALUE) {
 			if (cloud->voxel_object_data.extract_voxel_data_element_value(data_storage_type_enum::value, voxel_index) != INVALID_VOXEL_VALUE) { // *****
 
 				voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
@@ -341,10 +326,6 @@ public:
 
 								// step 3 : perform a dot product of vertex normal to its neighbours of 2 and if the dot product > 0 for both voxels neighbours then construct a face and designate
 								//          vertex data , face data to store
-
-								//float surface_neighbor_0_angle = voxel_normal.dotProduct(voxel_normal, surface_neighbor_0_normal);// (voxel_normal.length() * surface_neighbor_0_normal.length());
-								//float surface_neighbor_1_angle = voxel_normal.dotProduct(voxel_normal, surface_neighbor_1_normal);// / (voxel_normal.length() * surface_neighbor_1_normal.length());
-
 								float surface_neighbor_0_angle = glm::dot(voxel_normal, surface_neighbor_0_normal);// (voxel_normal.length() * surface_neighbor_0_normal.length());
 								float surface_neighbor_1_angle = glm::dot(voxel_normal, surface_neighbor_1_normal);// / (voxel_normal.length() * surface_neighbor_1_normal.length());
 
@@ -361,19 +342,14 @@ public:
 // + "\n" + QString::number(voxel_hcp_neighbours_face_connection_coord[1].x) + " : " + QString::number(voxel_hcp_neighbours_face_connection_coord[1].y) + " : " + QString::number(voxel_hcp_neighbours_face_connection_coord[1].z), QMessageBox::Ok);
 //}
 
-									//if ((neighbor_0_index > -1 && neighbor_0_index < number_voxels) && (neighbor_1_index > -1 && neighbor_1_index < number_voxels)) {
-
 										surface_face.face_id = face_id;
 										surface_face.voxel_index = { voxel_index,neighbor_1_index,neighbor_0_index };
 										surface_faces.push_back(surface_face);
 
 										face_id++;
-									//}
 								}
-
 							}
 						}
-
 					}
 				}
 			}
@@ -385,17 +361,12 @@ public:
 		else
 			return true;
 	}
-	//*****
-
 
 	glm::vec3 calc_voxel_normal_vector(index_vector voxel_coordinate) {
 		glm::vec3 voxel_normal = { 0.0f,0.0f,0.0f };
 
-		//if (cloud->voxel_object_data.voxel_matrix_data[voxel_index] != INVALID_VOXEL_VALUE) {
-
 //QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
 		int neighbour;
-		//index_vector voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
 
 		// Need to also cater for a valid voxel threshold value 
 		for (neighbour = 0; neighbour < NUMBER_HCP_NEIGHBOURS; neighbour++) {
@@ -409,9 +380,7 @@ public:
 
 			}
 		}
-		//}
 
-		//return voxel_normal.normalized();
 		return glm::normalize(voxel_normal);
 	}
 
@@ -419,7 +388,6 @@ public:
 	glm::vec3 calc_Face_normals_from_vertex_normals(glm::vec3 vertex0, glm::vec3 vertex1, glm::vec3 vertex2) {
 		glm::vec3 face_normal = (vertex0 + vertex1 + vertex2);
 
-		//return face_normal.normalized();
 		return glm::normalize(face_normal);
 	}
 
@@ -465,7 +433,7 @@ public:
 
 		clear_data();
 
-		//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_data 00", QMessageBox::Ok);
+//QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_data 00", QMessageBox::Ok);
 		return create_voxel_surface_faces();
 
 	}
@@ -486,20 +454,12 @@ public:
 		faces.clear();
 		faces.shrink_to_fit();
 
-		//surface_vertices_struct_type        surface_vertex;
-		//surface_vertices_normal_struct_type surface_vertex_normal;
-
 		bool surface_defined = false;
-
-		//glm::vec3 voxel_normal = { 0.0f,0.0f,0.0f };// , surface_neighbor_0_normal = { 0.0f,0.0f,0.0f }, surface_neighbor_1_normal = { 0.0f,0.0f,0.0f };
-
-		//index_vector voxel_hcp_neighbours_face_connection_coord[2];
 
 //QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface2_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
 		for (voxel_index = 0; voxel_index < number_voxels; voxel_index++) {
 
 //QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_faces() 00 :" + QString::number(number_voxels), QMessageBox::Ok);
-			//if (cloud->voxel_object_data.voxel_matrix_data[voxel_index] != INVALID_VOXEL_VALUE) {// Inside voxel volume or is a surface voxel
 			if (cloud->voxel_object_data.extract_voxel_data_element_value(data_storage_type_enum::value,voxel_index) != INVALID_VOXEL_VALUE) {// Inside voxel volume or is a surface voxel // *****
 
 				voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
@@ -527,8 +487,6 @@ public:
 		int vertex_index = vertices.size();
 		std::array<int, 4> vertex_face;
 
-		//if (neighbour < 10) {
-		//if (neighbour == 3 || neighbour == 4 || neighbour == 5 || neighbour == 6 || neighbour == 7 || neighbour == 8) {
 		if (voxel_coordinate.z % 2 == 0) {// even z level
 			vertices.push_back(voxel_cartesian_coordinate + voxel_hcp_even_surface_element[neighbour][0] * cloud->voxel_object_data.voxel_size);
 			vertices.push_back(voxel_cartesian_coordinate + voxel_hcp_even_surface_element[neighbour][1] * cloud->voxel_object_data.voxel_size);
@@ -558,8 +516,6 @@ public:
 		vertex_face[3] = vertex_index + 3;
 
 		faces.push_back(vertex_face);
-		//}
-	//}
 	}
 
 	// A simple algorithim to remove duplicate vertex points for a suface of non duplicate faces
@@ -606,9 +562,7 @@ public:
 		vertices = new_vertices;
 		normals = new_normals;
 
-		//normalize_vertex_normals();
-
-		//QMessageBox::information(NULL, "", "in remove_duplicate_vertices 02 : "+ QString::number(vertices.size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "in remove_duplicate_vertices 02 : "+ QString::number(vertices.size()), QMessageBox::Ok);
 	}
 
 	// Return the vertex index in the new vertices array that the coordinate of the face of face_index
@@ -642,11 +596,8 @@ public:
 	}
 
 	bool is_voxel_surface_vertex(index_vector voxel_coordinate) {
-		//if (cloud->voxel_object_data.voxel_matrix_data[voxel_index] == INVALID_VOXEL_VALUE) return false;
-
 //QMessageBox::information(NULL, "Voxel Volume to Voxel Surface", "create_voxel_surface_vertex_data 00 :" + QString::number(number_voxels), QMessageBox::Ok);
 		int neighbour;
-		//index_vector voxel_coordinate = cloud->voxel_object_data.get_matrix_coordinate(voxel_index);
 		int valid_neighbours = 0;
 
 		// Need to also cater for a valid voxel threshold value 

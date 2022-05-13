@@ -3,6 +3,13 @@
 
 #include "../hex_surface_data_storage.h"
 
+/*
+	Structures and definitions that define the parameters
+	and variables to perform cellula automata rules on a
+	hexagonal 2d surface data, and export/import the 
+	parameter data.
+*/
+
 #define NUMBER_HEX_NEIGHBOURS 6
 
 #define GENERATED_HEX_SURFACE 0
@@ -34,7 +41,6 @@ struct hex_automata_neighbour_rule_condition_struct_type {
 	hex_surface_data_type upper_rule_value        = hex_surface_data_type(0);
 };
 
-//struct hex_surface_automata_byte_rule_struct_type {
 struct hex_surface_automata_rule_struct_type {
 	std::string           name                     = "rule";
 	bool                  active_rule              = false;

@@ -13,10 +13,6 @@
 
 #include <Source/Graphics_Engine/Viewer/scene_viewer.h>
 
-//#include "../../../Common/Utilities/widgets.h"
-
-//#include <Universal/Include/Qt_Widget_Classes/Utilities/logger_widget.h>
-
 /*
 	export_voxel_geometry_class
 
@@ -33,11 +29,6 @@
 	A mesh of triangles that make up the surface of Trapezo-rhombic dodecahedral shapes of the
 	generated hcp point cloud object.
 */
-
-//#define SELECTED_EXPORT 0
-//#define ACTIVE_EXPORT   1
-//#define ALL_EXPORT      2
-
 
 class export_voxel_geometry_class {
 public:
@@ -160,14 +151,6 @@ public:
 			vwDialogs::message_box("Export voxel surface geometry", "Cannot export voxel surface to file :\n No voxel vertex data to export ");
 			return false;
 		}
-
-		//if (voxel_surface2_data.surface_faces.size() < 1) {
-		//	vwDialogs::message_box("Export voxel surface geometry", "Cannot export voxel surface to file :\n No voxel surface face data to export ");
-		//	return false;
-		//}
-
-		//mesh_file_dialog_class export_file_dialog("Model (*.obj)");
-		//filename_to_write = export_file_dialog.get_export_file_pathname();
 
 		char const* patterns[] = { "*.obj" };
 		char const* filename_to_write = vwDialogs::save_file("./", patterns, 1);
@@ -434,19 +417,12 @@ public:
 		return false;
 	}
 
-	//bool export_voxel_surface_faces_ply(std::vector<entity_class*> voxel_hcp_entities_to_export, vw_editor_viewer_class* vw_viewer) {
 	bool export_voxel_surface_faces_ply(voxel_hcp_scene_objects_class &voxel_hcp_entities_to_export) {
-		//mesh_file_dialog_class export_file_dialog;
-
-		//std::string directory_pathname = export_file_dialog.get_export_file_directory_pathname();
-		
 		std::string directory_pathname = vwDialogs::select_directory("./");
 		bool exported_all = true;
 
 		for (index_type i = 0; i < voxel_hcp_entities_to_export.size(); i++) {
 			voxel_hcp_object_class *voxel_entity_to_export = voxel_hcp_entities_to_export[i];
-
-			//voxel_hcp_object_class *voxel_hcp_object_to_export = vw_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<voxel_hcp_object_class>(voxel_entity_to_export->entity_id);
 			
 			if (voxel_entity_to_export->voxel_object_data.voxel_matrix_data.size() > 0) {
 		
@@ -542,7 +518,6 @@ private:
 	// --------------- Export voxel point cloud ------------------------
 
 	bool export_point_cloud(std::string file_pathname, voxel_object_data_class& voxel_object_data, bool export_colors, bool notification = true) {
-		//int i = file_pathname.lastIndexOf(".ply");
 		int i = FW::stringtools::lastIndexOf(file_pathname,".ply");
 		std::string file_name;
 
@@ -556,10 +531,6 @@ private:
 
 	bool export_ply_data(std::string object_file_name, voxel_object_data_class& voxel_object_data, bool notification, bool export_colors) {
 		if (!open_file_stream(object_file_name)) {
-		//	qInfo().noquote() << "ERROR: Export object data \n"
-		//		"Failed to open file \n" + object_file_name +
-		//		"to write to.\n";
-
 			//vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n%s\nto write to", object_file_name.c_str());
 			std::string str = "export point cloud object ERROR:\n Failed to open file \n" + object_file_name + "\nto write to.";
 			vwDialogs::message_box("export_node", str.c_str());
@@ -676,7 +647,6 @@ private:
 	//  --------------- Export Voxel surface2 obj ------------------------
 
 	bool export_voxel_surface_obj(std::string file_pathname, voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data) {
-		//int i = file_pathname.lastIndexOf(".obj");
 		int i = FW::stringtools::lastIndexOf(file_pathname, ".obj");
 		std::string file_name;
 
@@ -690,10 +660,6 @@ private:
 
 	bool export_voxel_surface2_obj_data(std::string object_file_name, voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data) {
 		if (!open_file_stream(object_file_name)) {
-			//qInfo().noquote() << "ERROR: Export object data \n"
-			//	"Failed to open file \n" + object_file_name +
-			//	"to write to.\n";
-
 			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n % s\nto write to", object_file_name.c_str());
 			return false;
 		}
@@ -754,7 +720,6 @@ private:
 	//  --------------- Export Voxel surface2 ply ------------------------
 
 	bool export_voxel_point_surface_ply(std::string file_pathname, voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data, bool export_colors, bool export_faces, bool notification = true) {
-		//int i = file_pathname.lastIndexOf(".ply");
 		int i = FW::stringtools::lastIndexOf(file_pathname, ".ply");
 		std::string file_name;
 
@@ -769,10 +734,6 @@ private:
 	bool export_voxel_point_surface_ply_data(std::string object_file_name, voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data, bool export_colors, bool export_faces,bool notification) {
 
 		if (!open_file_stream(object_file_name)) {
-			//qInfo().noquote() << "ERROR: Export object data \n"
-			//	"Failed to open file \n" + object_file_name +
-			//	"to write to.\n";
-
 			//vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n %s \nto write to",object_file_name.c_str());
 			std::string str = "export point cloud object ERROR:\n Failed to open file \n" + object_file_name +"\nto write to.";
 			vwDialogs::message_box("export_node", str.c_str());
@@ -927,7 +888,6 @@ private:
 	//  --------------- EXPORT VOXEL FACES PLY ------------------------
 
 	bool export_voxel_faces_ply(std::string file_pathname, voxel_object_data_class &voxel_object_data, voxel_surface_face_class &voxel_face_data, bool notification = true) {
-		//int i = file_pathname.lastIndexOf(".ply");
 		int i = FW::stringtools::lastIndexOf(file_pathname, ".ply");
 		std::string file_name;
 
@@ -941,10 +901,6 @@ private:
 
 	bool export_voxel_face_ply_data(std::string object_file_name, voxel_object_data_class &voxel_object_data, voxel_surface_face_class& voxel_face_data, bool notification) {
 		if (!open_file_stream(object_file_name)) {
-			//qInfo().noquote() << "ERROR: Export object data \n"
-			//	"Failed to open file \n" + object_file_name +
-			//	"to write to.\n";
-
 			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n %s\nto write to",object_file_name.c_str());
 			return false;
 		}
@@ -1015,7 +971,6 @@ private:
 		for (index = 0; index < number_faces_to_export; index++) {
 			stream << "4 " << faces[index][0] << " " << faces[index][1] << " " << faces[index][2] << " " << faces[index][3] << endl;
 		}
-
 	}
 
 };

@@ -4,6 +4,14 @@
 
 #include "imgui_widgets.h"
 
+/*
+					SCENE VIEWPORT PROPOERTIES WIDGET
+
+	A widget class that displays scene viewport extensions and modifications
+	that define what is to be displayed in the viewport and on the computer
+	screen.
+*/
+
 class viewport_properties_widget_class {
 public:
 	viewport_properties_widget_class() {}
@@ -207,13 +215,13 @@ private:
 	ImGuiColorEditFlags misc_flags = (hdr ? ImGuiColorEditFlags_HDR : 0) | (drag_and_drop ? 0 : ImGuiColorEditFlags_NoDragDrop) | (alpha_half_preview ? ImGuiColorEditFlags_AlphaPreviewHalf : (alpha_preview ? ImGuiColorEditFlags_AlphaPreview : 0)) | (options_menu ? 0 : ImGuiColorEditFlags_NoOptions);
 
 	//ImGui::Text("Color picker:");
-	bool alpha = true;
-	bool alpha_bar = true;
-	bool side_preview = true;
-	bool ref_color = false;
+	bool alpha         = true;
+	bool alpha_bar     = true;
+	bool side_preview  = true;
+	bool ref_color     = false;
 	ImVec4 ref_color_v = { 1.0f, 0.0f, 1.0f, 0.5f };
-	int display_mode = 0;
-	int picker_mode = 0;
+	int display_mode   = 0;
+	int picker_mode    = 0;
 
 	//if (!alpha)            flags |= ImGuiColorEditFlags_NoAlpha;        // This is by default if you call ColorPicker3() instead of ColorPicker4()
 	//if (alpha_bar)         flags |= ImGuiColorEditFlags_AlphaBar;

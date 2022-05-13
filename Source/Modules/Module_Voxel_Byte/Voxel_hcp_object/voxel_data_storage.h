@@ -336,9 +336,9 @@ public:
 		//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "activate_voxel_matrix_coordinate01 :"+ QString::number(voxel_matrix_data_index) + " :" + QString::number(voxel_matrix_data[voxel_matrix_data_index]), QMessageBox::Ok);
 
 		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-			//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
-			//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
-						//return -127;
+//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+			//return -127;
 			return DEFAULT_INACTIVE_VALUE;
 		}
 
@@ -352,8 +352,8 @@ public:
 		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
 
 		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-			//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
-			//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
 			return;
 		}
 
@@ -362,7 +362,7 @@ public:
 
 	voxel_element_data_type voxel_matrix_coordinate_activation_status(index_data_type voxel_matrix_data_index) {
 		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-			//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "voxel_matrix_data_index >= voxel_matrix_data.size() :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "voxel_matrix_data_index >= voxel_matrix_data.size() :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
 			return INVALID_VOXEL_VALUE;
 		}
 

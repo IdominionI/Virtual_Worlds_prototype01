@@ -5,16 +5,20 @@
 #include <Source/Editor/Common/definitions.h>
 #include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
 
-//#include "../../Voxel_hcp_object/DataTypes/dt_voxel_automata.h"
 #include "../../Hex_surface_object/DataTypes/dt_hex_surface_automata.h"
+
+/*
+		Hexagonal cellula automata rules widget class
+
+	This class widget defines an ImGui widget that is used to define
+	a set of cellula automata rules that the hexagonal 2D surface 
+	grid model can be subjected to perform.
+*/
+
 
 class hex_surface_automata_rules_widget_class {
 public:
-	//hcp_automata_rules_widget_class() {}
-	//~hcp_automata_rules_widget_class() {}
-
 	int current_selected_var_id      = -1;
-
 
 	bool rules_manager(std::vector<hex_surface_automata_rule_struct_type> &automata_rules) {
 		bool  value_changed = false;
@@ -145,8 +149,6 @@ printf("Rule button pressed\n");
 							}
 							// *************************************************************************
 							//  -------- Combo box to select lower rule condition
-	
-
 							ImGui::SameLine(); ImGui::SetCursorPosY(ypos - t_height - b_height - 5); r_id = rid_prefix + std::to_string(i * 10 + 4); ImGui::SetNextItemWidth(50);
 							
 							ImGui::Combo(r_id.c_str(), &lower_rule[i], &Funcs::ItemGetter, lower_rule_items, IM_ARRAYSIZE(lower_rule_items));

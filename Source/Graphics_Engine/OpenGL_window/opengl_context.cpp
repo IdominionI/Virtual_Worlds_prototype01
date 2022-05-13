@@ -3,6 +3,18 @@
 
 #include "openGL_window_basis.h"
 
+/*
+                        OpenGL Context
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is code that sets up and initialises and performs the 
+    various basic OpenGl function calls required for OpenGl to
+    function on a basic level.
+*/
+
   static void on_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
   {
     auto pWindow = static_cast<openGl_window_basis_class*>(glfwGetWindowUserPointer(window));

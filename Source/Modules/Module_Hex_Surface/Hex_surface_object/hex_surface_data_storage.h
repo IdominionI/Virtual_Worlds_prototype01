@@ -1,9 +1,4 @@
 #pragma once
-
-//#include <std::vector>
-//#include <glm::vec2>
-//#include <glm::vec3>
-
 #include <vector>
 
 #include <Universal/3rdparty/include/glm/glm.hpp>
@@ -98,55 +93,11 @@ public:
 		// ***************** HEX SURFACE DATA ELEMENT FUNCTIONS TO COMPRESS INTO AND FROM DEFINED hex_surface_data_type storage data type of a unsigned integer *************************
 
 	surface_element_data_type extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum hex_surface_data_element_value_type, hex_surface_index_data_type hex_surface_matrix_data_index) {
-		//if (hex_surface_matrix_data_index < 0 || hex_surface_matrix_data_index >= hex_surface_matrix_data.size())
-		//	return INVALID_HEX_SURFACE_VALUE;
-
-		//switch (hex_surface_data_element_value_type) {
-		//	case hex_surface_data_storage_type_enum::alpha :
-		//	case hex_surface_data_storage_type_enum::value : return (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x000000ff);       break; // First 8 bits of 32 bit unsigned integer
-
-		//	case hex_surface_data_storage_type_enum::red   : return  hex_surface_matrix_data[hex_surface_matrix_data_index] >> 24;               break; // Last 8 bits of 32 bit unsigned integer
-		//	case hex_surface_data_storage_type_enum::green : return (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x00ff0000) >> 16; break; // Thrid 8 bits of 32 bit unsigned integer
-		//	case hex_surface_data_storage_type_enum::blue  : return (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x0000ff00) >> 8;  break; // second 8 bits of 32 bit unsigned integer
-		//	
-		//	default : return INVALID_HEX_SURFACE_VALUE;
-		//}
-
 		return hex_surface_matrix_data[hex_surface_matrix_data_index];
 	}
-	/*
-	std::vector<surface_element_data_type> extract_hex_surface_data_element_values(hex_surface_index_data_type hex_surface_matrix_data_index) {
-		std::vector<surface_element_data_type> hex_surface_data_element_values = { INVALID_HEX_SURFACE_VALUE,INVALID_HEX_SURFACE_VALUE,INVALID_HEX_SURFACE_VALUE,INVALID_HEX_SURFACE_VALUE };
-
-		if (hex_surface_matrix_data_index >= 0 && hex_surface_matrix_data_index < hex_surface_matrix_data.size()) {
-			hex_surface_data_element_values[0] = (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x000000ff);       // alpha - hex surface value;
-			hex_surface_data_element_values[1] = (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x0000ff00) >> 8;  // blue
-			hex_surface_data_element_values[2] = (hex_surface_matrix_data[hex_surface_matrix_data_index] & 0x00ff0000) >> 16; // green
-			hex_surface_data_element_values[3] = hex_surface_matrix_data[hex_surface_matrix_data_index] >> 24;                // red
-		}
-			
-		return hex_surface_data_element_values;
-	}
-	*/
 
 	hex_surface_data_type insert_hex_surface_data_element_value(hex_surface_data_storage_type_enum hex_surface_data_element_value_type, hex_surface_index_data_type hex_surface_matrix_data_index, surface_element_data_type value) {
-		//std::vector<surface_element_data_type> hex_surface_data_element_values = extract_hex_surface_data_element_values(hex_surface_matrix_data_index);
-
-		//switch (hex_surface_data_element_value_type) {
-		//	case hex_surface_data_storage_type_enum::alpha :
-		//	case hex_surface_data_storage_type_enum::value : hex_surface_data_element_values[0] = value; break; // First 8 bits of 32 bit unsigned integer
-		//	case hex_surface_data_storage_type_enum::blue  : hex_surface_data_element_values[1] = value; break;  // second 8 bits of 32 bit unsigned integer
-		//	case hex_surface_data_storage_type_enum::green : hex_surface_data_element_values[2] = value; break; // Thrid 8 bits of 32 bit unsigned integer
-		//	case hex_surface_data_storage_type_enum::red   : hex_surface_data_element_values[3] = value; break; // Last 8 bits of 32 bit unsigned integer
-		//}
-
-		//hex_surface_matrix_data[hex_surface_matrix_data_index] = hex_surface_data_element_values[3] << 24 | // red
-		//												   hex_surface_data_element_values[2] << 16 | // green
-		//												   hex_surface_data_element_values[1] << 8 |  // blue
-		//												   hex_surface_data_element_values[0];        // alpha - hex surface value
-
 		hex_surface_matrix_data[hex_surface_matrix_data_index] = value;
-
 		return hex_surface_matrix_data[hex_surface_matrix_data_index];
 	}
 

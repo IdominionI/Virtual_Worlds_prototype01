@@ -13,6 +13,21 @@
 #include "generator_variables_widget.h"
 #include "../../Compute/voxel_compute_generation.h"
 
+/*
+		HCP Voxel Volume generation widget class
+
+	This class widget defines an ImGui widget and child widgets
+	that are used to define the parameters and compute shader
+	variables required to generate the values that define a
+	3D HCP Voxel Volume.
+
+	This class widget has controls to generate the 3D HCP Voxel
+	Volume and display the results on the computer screen in
+	incremental steps by changing the shader variable values
+	according to the settings that the user defines for each
+	compute shader variable.
+*/
+
 class voxel_hcp_generation_widget_class {
 public:
 	voxel_hcp_generation_widget_class() {
@@ -224,7 +239,6 @@ public:
 			}
 
 			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			//GLuint shader_program_id = scene_voxel_object->scene_graph_object.scene_object_class.shader_material.shader_program_id;
 			application_default_shader_uniform_variables_struct_type uniform_variable;
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
@@ -366,7 +380,6 @@ private:
 			return;
 		}
 		else
-			//printf("save_generation_parameters != NULL %s \n", file_pathname);
 			printf("load_generation_parameters != NULL  \n");
 
 		voxel_function_import_export.import_voxel_genereated_function(voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters, file_pathname);

@@ -1,11 +1,22 @@
 #pragma once
 
 #include "../../Common/pch.h"
-
-//#include "object_basis.h"
-//#include "../Shader/shader_util.h"
-
 #include "../../Shader/shader.h"
+
+/*
+                 Light Object Class
+
+    A Scene object class to define a light to be used to render
+    an OpenGL scene
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    As Yet this scene object class is not used, but is retained
+    for expectation of future utilisation.
+*/
+
 
 class light_object_class //: public object_basis_class
 {

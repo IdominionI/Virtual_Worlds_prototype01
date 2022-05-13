@@ -5,17 +5,24 @@
 #include <Source/Editor/Object/object_basis.h>
 #include <Source/Graphics_Engine/Geometry/point_cloud.h>
 
+
+/*
+	voxel_hcp_object_class
+
+	C++ class that represents and manages a HCP voxel volume data object
+	to be displayed and processed in and by the Virtual Worlds application.
+*/
+
+
 class voxel_hcp_object_class : public object_basis_class {
 public:
 	point_cloud_data_class  point_cloud;
 	voxel_object_data_class voxel_object_data;
 
-
-
 	bool  active_object = false;
 	bool  display_voxel_object_as_points = false;
 
-	bool  animate_automata = false; // ***
+	bool  animate_automata = false;
 
 	bool update_buffer = false;
 
@@ -48,9 +55,9 @@ public:
 
 //printf("voxel_hcp_object_class : define_vbo_vertices 000 : %i\n", voxel_data.voxel_matrix_data.size());
 
-		//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudA "+QString::number(voxel_data.voxel_matrix_data.size()), QMessageBox::Ok);
-		//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudB "+QString::number(voxel_data.voxel_object_data[0].size()), QMessageBox::Ok);
-		//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudC "+QString::number(voxel_data.voxel_object_data[0][0].size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudA "+QString::number(voxel_data.voxel_matrix_data.size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudB "+QString::number(voxel_data.voxel_object_data[0].size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudC "+QString::number(voxel_data.voxel_object_data[0][0].size()), QMessageBox::Ok);
 
 		//float sqrt3 = sqrt(3.0),third = 1.0/3.0, z_mult = 2.0*sqrt(6.0)/3.0, sqrt3_2=sqrt(1.5);// This original lagacy code left here until found to be totaly uneccesary to keep
 		bool even_z_level;
@@ -114,10 +121,10 @@ public:
 						}
 					}
 
-					//if(vbo_vertices.size()<1)
-					//QMessageBox::information(NULL, "voxelBS03", "vbo_vertices.size()<1"+ QString::number(n)+" : "+ QString::number(offset)+" : "+QString::number(x)+"::"+QString::number(y)+"::"+QString::number(z), QMessageBox::Ok);
-					//QMessageBox::information(NULL, "voxelBS03", "voxelBS03C :"+ QString::number(n)+" : "+ QString::number(offset)+" : "+QString::number(vbo_vertices[0].x())+"::"+QString::number(vbo_vertices[0].y())+"::"+QString::number(vbo_vertices[0].z()), QMessageBox::Ok);
-					//QMessageBox::information(NULL, "voxelBS04","voxelBS04 :"+ QString::number(offset)+" : "+QString::number(cloud->vertices[n].world_location.y())+" : "+QString::number(cloud->vertices[n].world_location.z()), QMessageBox::Ok);
+//if(vbo_vertices.size()<1)
+//QMessageBox::information(NULL, "voxelBS03", "vbo_vertices.size()<1"+ QString::number(n)+" : "+ QString::number(offset)+" : "+QString::number(x)+"::"+QString::number(y)+"::"+QString::number(z), QMessageBox::Ok);
+//QMessageBox::information(NULL, "voxelBS03", "voxelBS03C :"+ QString::number(n)+" : "+ QString::number(offset)+" : "+QString::number(vbo_vertices[0].x())+"::"+QString::number(vbo_vertices[0].y())+"::"+QString::number(vbo_vertices[0].z()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "voxelBS04","voxelBS04 :"+ QString::number(offset)+" : "+QString::number(cloud->vertices[n].world_location.y())+" : "+QString::number(cloud->vertices[n].world_location.z()), QMessageBox::Ok);
 
 					voxel_index++;
 
@@ -126,11 +133,11 @@ public:
 		}
 
 //printf("voxel_hcp_object_class : define_vbo_vertices 111 : %i\n", point_cloud.vertices.size());
-		//QMessageBox::information(NULL, "define_vbo_vertices","define_vbo_vertices05 :"+QString::number(i)+" : "+QString::number(j)+" : "+QString::number(k)+" : "+QString::number(voxel_index)+" : "+QString::number(vertices.size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "define_vbo_vertices","define_vbo_vertices05 :"+QString::number(i)+" : "+QString::number(j)+" : "+QString::number(k)+" : "+QString::number(voxel_index)+" : "+QString::number(vertices.size()), QMessageBox::Ok);
 
-				//if (point_cloud.n_vertices() < 1)
-				//	return false; // need better handling here
-				//else
+		//if (point_cloud.n_vertices() < 1)
+		//	return false; // need better handling here
+		//else
 		return true;
 	}
 

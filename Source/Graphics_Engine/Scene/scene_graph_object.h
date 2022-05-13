@@ -1,5 +1,21 @@
 #pragma once
 
+/*
+		Scene graphics object class
+
+	Class to store a scene grpahics object of any type
+
+	Reason for this class is to be able to define the 
+	graphics object as any data type by ising a C++
+	template declaration. 
+
+	Not sure this is the best or a good method of use.
+	Future versions or development may see this class
+	removed and incorporated or embedded into another 
+	class.
+*/
+
+
 // Followig enum to be used if have more than one scene_graph_object_class data type to store
 //enum class scene_object_type_enum { Node, Light, Camera, Render_object };
 //enum class scene_render_object_type_enum { Node, mesh, points };

@@ -10,6 +10,19 @@
 #include "../../Kernal/voxel_function_import_export.h"
 #include "../../Automata/automata_byte_import_export.h"
 
+/*
+				HCP voxel volume scene objects class
+
+	This class defines and manages the storage update and retrieval
+	of the 3D HCP Voxel volume data objects that are to be used by
+	the Virtual Worlds application.
+
+	The data storage model utilised is a simple C++ standard vector
+	array of data type voxel_hcp_object_class that the class 
+	inherits.
+*/
+
+
 class voxel_hcp_scene_objects_class : public std::vector<voxel_hcp_object_class*> {
 
 	voxel_function_import_export_class      voxel_function_import_export;
@@ -26,7 +39,6 @@ public:
 		return NULL;
 	}
 
-	//****
 	bool get_shader_parameters(object_id_type object_id, shader_parameters_struct_type& shader_parameters) {
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
@@ -37,7 +49,6 @@ public:
 
 		return true;
 	}
-	//****
 
 	bool save_generation_data(object_id_type object_id, string_type file_pathname) {
 		int object_index = get_object_index(object_id);
@@ -82,8 +93,6 @@ public:
 		if (!new_object) return false;
 
 		new_object->object_id = object_id;
-		//new_object->object_name = object_id;
-		//new_hcp_object.object_category_id = ; // to be determined
 		push_back(new_object);
 		return true;
 	}
@@ -117,8 +126,6 @@ public:
 	bool define_hcp_parameter_values(object_id_type object_id, voxel_generator_parameters_struct_type data) {
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
-
-		//QStringList data_list = data.split("|");
 
 		//if (data_list.size() != 15) return false;
 
@@ -154,18 +161,9 @@ public:
 
 		if (voxel_hcp_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables.clear();
 
 		for (voxel_generator_parameter_variable_struct_type real_variable : data) {
-			/*voxel_generator_parameter_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			voxel_hcp_object->voxel_object_data.voxel_generator_parameters.variables.push_back(real_variable);
 		}
 
@@ -180,18 +178,9 @@ public:
 
 		if (voxel_hcp_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.int_variables.clear();
 
 		for (voxel_generator_parameter_int_variable_struct_type int_variable : data) {
-			/*voxel_generator_parameter_int_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			voxel_hcp_object->voxel_object_data.voxel_generator_parameters.int_variables.push_back(int_variable);
 		}
 		return true;
@@ -205,18 +194,9 @@ public:
 
 		if (voxel_hcp_object == NULL) return false;
 
-		//QStringList var_data_list = data.split("|");
-
 		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.bool_variables.clear();
 
 		for (voxel_generator_parameter_bool_variable_struct_type bool_variable : data) {
-			/*voxel_generator_parameter_bool_variable_struct_type real_variable;
-			real_variable.variable_name        = variable.variable_name;
-			real_variable.value                = variable.value;
-			real_variable.variable_step        = variable.variable_step;
-			real_variable.active_variable      = variable.active_variable;
-			real_variable.active_variable_step = variable.variable_step;*/
-
 			voxel_hcp_object->voxel_object_data.voxel_generator_parameters.bool_variables.push_back(bool_variable);
 		}
 

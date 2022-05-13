@@ -9,6 +9,15 @@
 
 #include <Universal/3rdparty/include/gl/glew.h>
 
+/*
+                COMPUTER SHADER CLASS    
+
+    class that defines and creates a compute shader 
+    program based upon a supplied path to a file with
+    the required source code.
+*/
+
+
 enum class compute_ogl_version_enum { v43, v45 };
 
 class compute_shader_class {
@@ -29,10 +38,6 @@ public:
         std::fstream csFile(shader_pathname.c_str(), std::ios::in);
 
         if (!csFile.good()) {
-            //if (log_widget != NULL) {
-           //     log_widget->log_message(log_display, log_message_type_enum_type::error, "compute_service_class:: compute glsl file does not exist " + csFile.fileName());
-           // }
-
             printf("Error :\n compute_service_class:: compute glsl file %s does not exist.\n", shader_pathname.c_str());
             return false;
         }

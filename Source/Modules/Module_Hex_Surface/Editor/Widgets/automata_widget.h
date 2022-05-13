@@ -15,11 +15,22 @@
 #include "../../Automata/automata_hex_surface_import_export.h"
 #include "../../Automata/hex_surface_automata_functions.h"
 
+/*
+		Hexagonal cellula automata rules widget class
+
+	This class widget defines a ImGui widget and child widgets
+	that are used to define one or more sets of cellula automata
+	rules that the hexagonal 2D surface grid model can be subjected
+	to perform.
+
+	Also this widget class has controls to perform the cellula
+	automata rules one incremental step at a time according to the
+	defined cellula automata rules that are defined here.
+*/
+
+
 class hex_surface_autmoata_widget_class {
 public:
-	//voxel_hcp_autmoata_widget_class() {}
-	//~voxel_hcp_autmoata_widget_class() {}
-
 	log_panel_class *log_panel = NULL;
 	
 	hex_surface_automata_rules_widget_class  hex_surface_automata_rules_widget;

@@ -73,6 +73,9 @@ private:
 };
 
 
+//  Management of a negative id key type where new key ids are a decrement of the currently
+//  newest used negative id key
+
 class neg_id_key_manager_class {
 public:
 

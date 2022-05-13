@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <windows.h>// Required for multithreading but get compiler errors
-
 #include <vector>
 
 #include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
@@ -53,13 +51,12 @@ public:
 		if (voxel_automata_next_step_matrix == NULL) return false;
 
 		voxel_automata_next_step_matrix->voxel_object_data.voxel_size = cloud->voxel_object_data.voxel_size;
-		//voxel_automata_next_step_matrix->world_location                     = cloud->world_location;
 
 		voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension = cloud->voxel_object_data.matrix_dimension;
 		voxel_automata_next_step_matrix->voxel_object_data.matrix_origin = cloud->voxel_object_data.matrix_origin;
 		voxel_automata_next_step_matrix->voxel_object_data.create_empty_volume_cubic(cloud->voxel_object_data.matrix_dimension.x, cloud->voxel_object_data.matrix_dimension.y, cloud->voxel_object_data.matrix_dimension.z);
 
-		//QMessageBox::information(0, "Function Expression Success", "next_step_matrix 00: "+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.x)+":"+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.y)+":"+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.z)+":", QMessageBox::Ok);
+//QMessageBox::information(0, "Function Expression Success", "next_step_matrix 00: "+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.x)+":"+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.y)+":"+QString::number(voxel_automata_next_step_matrix->voxel_object_data.matrix_dimension.z)+":", QMessageBox::Ok);
 
 
 		if (voxel_automata_next_step_matrix->voxel_object_data.voxel_matrix_data.size() > 0)
@@ -72,14 +69,7 @@ public:
 
 
 	bool perform_voxel_automata_generation(u_long_int automata_step) {
-/*		file.setFileName("auto_step_result.txt"); // testing only
-		if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {// testing only
-			QMessageBox::information(0, "Function Automata", "Could not open file to write test results to", QMessageBox::Ok);
-			return false;
-		}
-		stream.setDevice(&file);// testing only
-*/
-printf("in perform_voxel_automata_generation 00 : \n");
+//printf("in perform_voxel_automata_generation 00 : \n");
 		if (cloud == NULL) {
 			printf("Function Automata : ERROR: Have not defined an initial voxel matrix\n");
 			return false;
@@ -97,20 +87,20 @@ printf("in perform_voxel_automata_generation 00 : \n");
 
 		//file.close();// testing only
 
-printf("in perform_voxel_automata_generation 03 : \n");
-if (voxel_hcp_object_to_execute == NULL) {
-	printf("in perform_voxel_automata_generation 03AAA : voxel_hcp_object_to_execute == NULL \n");
-	return false;
-}
+//printf("in perform_voxel_automata_generation 03 : \n");
+//if (voxel_hcp_object_to_execute == NULL) {
+//	printf("in perform_voxel_automata_generation 03AAA : voxel_hcp_object_to_execute == NULL \n");
+//	return false;
+//}
 		// FOLOWING FUNCTIONS WAS PREVIOUSLY PERFORMED EXTERNALLY AFTER perform_voxel_automata_generation WAS CALLED
 
 		voxel_hcp_object_to_execute->voxel_object_data.delete_voxel_matrix_data();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data = voxel_automata_next_step_matrix->voxel_object_data.voxel_matrix_data;
-printf("in perform_voxel_automata_generation 04 : \n");
+//printf("in perform_voxel_automata_generation 04 : \n");
 		//voxel_hcp_object_to_execute->update_renderer_shader_variables(); // Not present for QML version
 		voxel_hcp_object_to_execute->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 
-printf("in perform_voxel_automata_generation 05 : \n");
+//printf("in perform_voxel_automata_generation 05 : \n");
 
 		return true;
 	}
@@ -123,9 +113,9 @@ printf("in perform_voxel_automata_generation 05 : \n");
 			return false;
 		}
 
-		//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00", QMessageBox::Ok);
 
-				// Define the volume that the cellula automata rules are to be conducted in
+		// Define the volume that the cellula automata rules are to be conducted in
 		voxel_automata_generator_parameters.x_start = cloud->voxel_object_data.voxel_generator_parameters.x_start;
 		voxel_automata_generator_parameters.x_end = cloud->voxel_object_data.voxel_generator_parameters.x_end;
 		voxel_automata_generator_parameters.y_start = cloud->voxel_object_data.voxel_generator_parameters.y_start;
@@ -134,9 +124,9 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		voxel_automata_generator_parameters.z_end = cloud->voxel_object_data.voxel_generator_parameters.z_end;
 		voxel_automata_generator_parameters.resolution_step = cloud->voxel_object_data.voxel_generator_parameters.resolution_step;
 
-		//if (log_widget != NULL) {
-		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step_generation 00 : " + QString::number(voxel_automata_generator_parameters.x_start) + " : "+ QString::number(voxel_automata_generator_parameters.resolution_step));
-		//}
+//if (log_widget != NULL) {
+//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step_generation 00 : " + QString::number(voxel_automata_generator_parameters.x_start) + " : "+ QString::number(voxel_automata_generator_parameters.resolution_step));
+//}
 
 				//define the voxel iteration parameters that define the voxel matrix that apply to the cellula automata rules
 				// Same as for the hcp voxel point cloud generation and thus use point cloud generation parameter data
@@ -195,8 +185,8 @@ printf("in perform_voxel_automata_generation 05 : \n");
 					dim_x = (iY + 1) % 2 * (data_set_x_size - 1) + (iY % 2) * data_set_x_size;
 				}
 				iX = 0;
-				//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00A :"+QString::number(iX)+":"+QString::number(iY)+":"+QString::number(iZ)+":", QMessageBox::Ok);
-				//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00AAA"+QString::number(fX)+":"+QString::number(fY)+":"+QString::number(voxel_automata_generator_parameters.z_start)+":", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00A :"+QString::number(iX)+":"+QString::number(iY)+":"+QString::number(iZ)+":", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00AAA"+QString::number(fX)+":"+QString::number(fY)+":"+QString::number(voxel_automata_generator_parameters.z_start)+":", QMessageBox::Ok);
 				for (fX = voxel_automata_generator_parameters.x_start; fX < voxel_automata_generator_parameters.x_end && iX < dim_x; fX = fX + x_res_step) {
 					perform_voxel_automata_rules(step, iX, iY, iZ);
 					iX++;
@@ -204,9 +194,9 @@ printf("in perform_voxel_automata_generation 05 : \n");
 				iY++;
 			}
 			iZ++;
-			//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00B", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00B", QMessageBox::Ok);
 		}
-		//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00C", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00C", QMessageBox::Ok);
 		return true;
 	}
 
@@ -221,10 +211,10 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		//if( z_index == INVETSIGATE_Z)// testing only
 		//stream << "step : " << step << " | inex x: " << x_index <<" : " << y_index << " : " << z_index << '\n';// testing only
 
-				// The first automata activation rule in the order of rules given that is valid or true is the rule that is applied.
-				// A future implementation considered is to put all rules that are met into an array and through a selection process the rule that is applied is chosen
-				// via an option of first rule or by a randome process that can include biased outcomes
-		//QMessageBox::information(0, "perform_voxel_automata_rules", "here01", QMessageBox::Ok);
+		// The first automata activation rule in the order of rules given that is valid or true is the rule that is applied.
+		// A future implementation considered is to put all rules that are met into an array and through a selection process the rule that is applied is chosen
+		// via an option of first rule or by a randome process that can include biased outcomes
+//QMessageBox::information(0, "perform_voxel_automata_rules", "here01", QMessageBox::Ok);
 		for (voxel_hcp_automata_byte_rule_struct_type voxel_hcp_automata_rule : voxel_hcp_automata_rules) {
 			if (voxel_hcp_automata_rule.active_rule && !automata_rule_met) {
 				if (voxel_automata_rule_met(voxel_hcp_automata_rule, step, x_index, y_index, z_index)) {
@@ -235,11 +225,11 @@ printf("in perform_voxel_automata_generation 05 : \n");
 				}
 			}
 		}
-		//QMessageBox::information(0, "perform_voxel_automata_rules", "here01A: "+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index)+":", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_rules", "here01A: "+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index)+":", QMessageBox::Ok);
 
-				// This method of determining the value of the voxel status when more than one rule is met can be chnaged
-				// If a rule is met then a chnage of the voxel status value is made to the accumulation of all the rule values that has been met
-				// otherwise leave the voxel status value unchanged
+		// This method of determining the value of the voxel status when more than one rule is met can be chnaged
+		// If a rule is met then a chnage of the voxel status value is made to the accumulation of all the rule values that has been met
+		// otherwise leave the voxel status value unchanged
 		if (automata_rule_met) {
 			if (rule_met_status > MAX_VOXEL_VALUE)
 				rule_met_status = MAX_VOXEL_VALUE;
@@ -247,16 +237,16 @@ printf("in perform_voxel_automata_generation 05 : \n");
 				if (rule_met_status < INVALID_VOXEL_VALUE)
 					rule_met_status = INVALID_VOXEL_VALUE;
 
-			//stream << "perform_voxel_automata_rules 00 : rule met : " << QString::number(rule_met_status)<< ":" + QString::number(x_index) + ":" << QString::number(y_index) << ":" + QString::number(z_index) << '\n';// testing only
+//stream << "perform_voxel_automata_rules 00 : rule met : " << QString::number(rule_met_status)<< ":" + QString::number(x_index) + ":" << QString::number(y_index) << ":" + QString::number(z_index) << '\n';// testing only
 			voxel_data_type value = voxel_automata_next_step_matrix->voxel_object_data.activate_voxel_matrix_coordinate(voxel_data_index_coord, rule_met_status); // majority rule to activate voxel state
 // stream << "perform_voxel_automata_rules 00 : rule met A: " << QString::number(value) << '\n';// testing only
 		}
 		else {
-			//stream <<"perform_voxel_automata_rules 01 : rule not met : "  <<  QString::number(x_index) << ":" << QString::number(y_index) << ":" + QString::number(z_index) << '\n';// testing only
+//stream <<"perform_voxel_automata_rules 01 : rule not met : "  <<  QString::number(x_index) << ":" << QString::number(y_index) << ":" + QString::number(z_index) << '\n';// testing only
 
 			assign_no_voxel_state_change(voxel_data_index_coord); // no majority rule or rule to apply so have no change in voxel state 
 		}
-		//QMessageBox::information(0, "perform_voxel_automata_rules", "here01B", QMessageBox::Ok);
+//QMessageBox::information(0, "perform_voxel_automata_rules", "here01B", QMessageBox::Ok);
 		return true;
 	}
 
@@ -264,9 +254,9 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	// A cellular automata rule is met if all nieghbor hcp voxel cells rules apply
 	bool voxel_automata_rule_met(voxel_hcp_automata_byte_rule_struct_type voxel_hcp_automata_byte_rule, u_long_int step, index_data_type x_index, index_data_type y_index, index_data_type z_index) {
 		if (step >= voxel_hcp_automata_byte_rule.end_step || step < voxel_hcp_automata_byte_rule.start_step) return false;
-		//QMessageBox::information(0, "voxel_autoamta_rule_met", "voxel_automata_rule_met 000 "+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
+//QMessageBox::information(0, "voxel_autoamta_rule_met", "voxel_automata_rule_met 000 "+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
 		std::vector<voxel_data_type> voxel_neighbours_state = get_voxel_neighbours_state(x_index, y_index, z_index);
-		//QMessageBox::information(0, "voxel_autoamta_rule_met", "voxel_automata_rule_met "+QString::number(voxel_neighbours_state), QMessageBox::Ok);
+//QMessageBox::information(0, "voxel_autoamta_rule_met", "voxel_automata_rule_met "+QString::number(voxel_neighbours_state), QMessageBox::Ok);
 
 		short neighbours_activity_rule = 0;
 
@@ -303,7 +293,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	// Get all the voxel neighbor cell values of hcp voxel at matrix location x_index, y_index, z_index stored in a std::vector list
 	std::vector<voxel_data_type> get_voxel_neighbours_state(index_data_type x_index, index_data_type y_index, index_data_type z_index) {
 		std::vector<voxel_data_type> neighbours_activity;
-		//QMessageBox::information(0, "get_voxel_neighbours_state", "here03", QMessageBox::Ok);
+//QMessageBox::information(0, "get_voxel_neighbours_state", "here03", QMessageBox::Ok);
 		for (size_t neighbour = 0; neighbour < NUMBER_HCP_NEIGHBOURS; neighbour++) {
 
 			voxel_data_type voxel_state = get_voxel_neighbour_state(neighbour, x_index, y_index, z_index);
@@ -314,7 +304,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 
 		}
 
-		//stream << "| neighbours_activity :"<< neighbours_activity << '\n'; // testing only
+//stream << "| neighbours_activity :"<< neighbours_activity << '\n'; // testing only
 		return neighbours_activity;
 	}
 
@@ -322,36 +312,36 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	voxel_data_type get_voxel_neighbour_state(size_t neighbour, index_data_type x_index, index_data_type y_index, index_data_type z_index) {
 		index_vector voxel_neighbour_index_coord = get_voxel_neighbour_index_coordinates(neighbour, x_index, y_index, z_index);
 
-		//if( z_index == INVETSIGATE_Z)// testing only
-		//stream << "| neighbour : " << neighbour << " inex x: " << voxel_neighbour_index_coord.x <<" y: " << voxel_neighbour_index_coord.y << " z: " << voxel_neighbour_index_coord.z ;// testing only
+//if( z_index == INVETSIGATE_Z)// testing only
+//stream << "| neighbour : " << neighbour << " inex x: " << voxel_neighbour_index_coord.x <<" y: " << voxel_neighbour_index_coord.y << " z: " << voxel_neighbour_index_coord.z ;// testing only
 
 		if (!valid_index_coordinate(voxel_neighbour_index_coord)) {
 
-			//if(z_index == 1 && y_index == 2 && x_index == 8)
-			//QMessageBox::information(0, "get_voxel_neighbour_state", "get_voxel_neighbour_state00 invalid  Cloud : " + QString::number(neighbour) + ":" + QString::number(x_index) + ":" + QString::number(y_index) + ":" + QString::number(z_index) +
-			//							" \nneighbour :" + QString::number(voxel_neighbour_index_coord.x) + ":" + QString::number(voxel_neighbour_index_coord.y) + ":" + QString::number(voxel_neighbour_index_coord.z) +
-			//							"\n activation status:" + QString::number(INVALID_VOXEL_VALUE), QMessageBox::Ok);
+//if(z_index == 1 && y_index == 2 && x_index == 8)
+//QMessageBox::information(0, "get_voxel_neighbour_state", "get_voxel_neighbour_state00 invalid  Cloud : " + QString::number(neighbour) + ":" + QString::number(x_index) + ":" + QString::number(y_index) + ":" + QString::number(z_index) +
+//							" \nneighbour :" + QString::number(voxel_neighbour_index_coord.x) + ":" + QString::number(voxel_neighbour_index_coord.y) + ":" + QString::number(voxel_neighbour_index_coord.z) +
+//							"\n activation status:" + QString::number(INVALID_VOXEL_VALUE), QMessageBox::Ok);
 
 			return INVALID_VOXEL_VALUE; // *** Need to change this for a non valid value
 		}
 
-		//if( z_index == INVETSIGATE_Z)// testing only
-		//stream << " | Cloud : " << " inex x: " << voxel_data_index_coord.x <<" y: " << voxel_data_index_coord.y << " z: " << voxel_data_index_coord.z ;// testing only
+//if( z_index == INVETSIGATE_Z)// testing only
+//stream << " | Cloud : " << " inex x: " << voxel_data_index_coord.x <<" y: " << voxel_data_index_coord.y << " z: " << voxel_data_index_coord.z ;// testing only
 
-		//if( z_index == INVETSIGATE_Z)// testing only
-		//	stream << " | Index : " << cloud->voxel_object_data.get_voxel_matrix_data_index(voxel_data_index_coord); ;// testing only
+//if( z_index == INVETSIGATE_Z)// testing only
+//	stream << " | Index : " << cloud->voxel_object_data.get_voxel_matrix_data_index(voxel_data_index_coord); ;// testing only
 
-		//if(z_index == 1 && y_index == 2 && x_index == 8)
-		//QMessageBox::information(0, "get_voxel_neighbour_state", "get_voxel_neighbour_state01 valid Cloud : " + QString::number(neighbour) + ":" + QString::number(x_index) + ":" + QString::number(y_index) + ":" + QString::number(z_index) + 
-		//							" \nneighbour :" + QString::number(voxel_neighbour_index_coord.x) + ":" + QString::number(voxel_neighbour_index_coord.y) + ":" + QString::number(voxel_neighbour_index_coord.z) + 
-		//							"\n activation status:" + QString::number(cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_neighbour_index_coord)), QMessageBox::Ok);
+//if(z_index == 1 && y_index == 2 && x_index == 8)
+//QMessageBox::information(0, "get_voxel_neighbour_state", "get_voxel_neighbour_state01 valid Cloud : " + QString::number(neighbour) + ":" + QString::number(x_index) + ":" + QString::number(y_index) + ":" + QString::number(z_index) + 
+//							" \nneighbour :" + QString::number(voxel_neighbour_index_coord.x) + ":" + QString::number(voxel_neighbour_index_coord.y) + ":" + QString::number(voxel_neighbour_index_coord.z) + 
+//							"\n activation status:" + QString::number(cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_neighbour_index_coord)), QMessageBox::Ok);
 
 		return cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_neighbour_index_coord);
 	}
 
 	index_vector get_voxel_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index) {
 		index_vector neighbor_index_coordinate;
-		//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05 "+QString::number( neighbour)+":"+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
+//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05 "+QString::number( neighbour)+":"+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
 		if (z_index % 2 == 0) {  // Even Z 
 //QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05A", QMessageBox::Ok);
 			if (y_index % 2 == 0) { // Even Y 
@@ -437,7 +427,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	// Determine if hcp voxel cell index coordinate voxel_index_coordinate is valid or not
 	// Ie if it is outside the volume and limits of the hcp voxel matrix 
 	bool valid_index_coordinate(index_vector voxel_index_coordinate) {
-		//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06", QMessageBox::Ok);
+//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06", QMessageBox::Ok);
 
 		if (voxel_index_coordinate.z < 0 || voxel_index_coordinate.z > cloud->voxel_object_data.matrix_dimension.z - 1) return false;
 		if (voxel_index_coordinate.y < 0 || voxel_index_coordinate.x < 0) return false;
@@ -463,7 +453,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 			}
 		}
 
-		//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06A", QMessageBox::Ok);
+//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06A", QMessageBox::Ok);
 		return true;
 	}
 
@@ -495,12 +485,12 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		cloud->voxel_object_data.voxel_matrix_data.clear();
 		cloud->voxel_object_data.voxel_matrix_data.shrink_to_fit();
 		if (!create_voxel_matrix()) return false;
-		//QMessageBox::information(NULL, "","load_voxel_automata_initial_data 002", QMessageBox::Ok);
+//QMessageBox::information(NULL, "","load_voxel_automata_initial_data 002", QMessageBox::Ok);
 		index_data_type iX = 0, iY, iZ;
 
-		//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002 : " + QString::number(origin_offset.x())+":"+QString::number(coordinate_offset.x())+":"+QString::number(coordinate_offset_xi), QMessageBox::Ok);
-		//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002AA : " + QString::number(cloud->voxel_object_data.matrix_dimension.x)+":"+QString::number(cloud->voxel_object_data.matrix_dimension.y)+":"+QString::number(cloud->voxel_object_data.matrix_dimension.z), QMessageBox::Ok);
-		//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002AAB : " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()), QMessageBox::Ok);
+//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002 : " + QString::number(origin_offset.x())+":"+QString::number(coordinate_offset.x())+":"+QString::number(coordinate_offset_xi), QMessageBox::Ok);
+//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002AA : " + QString::number(cloud->voxel_object_data.matrix_dimension.x)+":"+QString::number(cloud->voxel_object_data.matrix_dimension.y)+":"+QString::number(cloud->voxel_object_data.matrix_dimension.z), QMessageBox::Ok);
+//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 002AAB : " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()), QMessageBox::Ok);
 
 		index_data_type data_set_x_size, data_set_y_size, data_set_z_size;
 		index_data_type  dim_x, dim_y;
@@ -535,7 +525,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 				}
 			}
 		}
-		//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 003", QMessageBox::Ok);
+//QMessageBox::information(NULL, "","assign_no_voxel_state_chnage 003", QMessageBox::Ok);
 		return true;
 
 	}
@@ -570,17 +560,16 @@ printf("in perform_voxel_automata_generation 05 : \n");
 			data_set_z_size = (int)(z_size / z_res_step) + 1;
 		else
 			data_set_z_size = (int)(z_size / z_res_step);
-		//QMessageBox::information(0, "Automata", "Automata create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
+//QMessageBox::information(0, "Automata", "Automata create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
 
 		glm::vec3 origin = { voxel_automata_generator_parameters.x_start,voxel_automata_generator_parameters.y_start,voxel_automata_generator_parameters.z_start };
 
 		cloud->voxel_object_data.voxel_size = voxel_automata_generator_parameters.resolution_step;
-		//cloud->world_location = origin;
 
 		cloud->voxel_object_data.matrix_dimension = { data_set_x_size,data_set_y_size,data_set_z_size };
 		cloud->voxel_object_data.matrix_origin = origin;
 		cloud->voxel_object_data.create_empty_volume_cubic(data_set_x_size, data_set_y_size, data_set_z_size);
-		//QMessageBox::information(0, "Automata", "Automata create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
+//QMessageBox::information(0, "Automata", "Automata create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
 
 
 		if (cloud->voxel_object_data.voxel_matrix_data.size() > 0)
@@ -592,10 +581,8 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	// QOBJECT Stuff added below
 
 
-private:
+//private:
 
-
-	//voxel_hcp_object_class* voxel_hcp_object_to_execute = NULL;	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
 };
 

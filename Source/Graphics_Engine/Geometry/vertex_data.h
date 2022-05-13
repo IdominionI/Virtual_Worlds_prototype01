@@ -2,7 +2,17 @@
 
 #include "../Common/pch.h"
 
-// class vertex_data_class{
+/*
+    Vertex data classes that define the data storage of data to
+    be stored by the application geometry classes and copied to
+    a vertex buffer object for importation into an OpenGL shader
+    program.
+
+    Other vertex data classes can be added here or referenced from
+    another C++ .h file as an include statement.
+*/
+
+// class to store vertex location and surface normal data
 class point_vertex_class{// was vertex_data_class
 
 public:
@@ -25,11 +35,9 @@ public:
     glm::vec3 mPos;
 
     glm::vec3 mNormal;
-
-    // TODO
-    // glm::vec2 mUV;
 };
 
+// class to store vertex location data
 class point_data_class {
 
 public:
@@ -44,6 +52,8 @@ public:
     glm::vec3 mPos;
 };
 
+// class to store vertex location and an integer data value associated
+// with that vertex location.
 class point_data_value_class {
 
 public:
@@ -60,6 +70,8 @@ public:
     int       mvalue;
 };
 
+// class to store vertex location, surface normal data and an integer 
+// data value associated with that vertex location.
 class point_vertex_data_class {
 
 public:

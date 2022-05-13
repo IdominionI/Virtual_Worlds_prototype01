@@ -3,6 +3,12 @@
 #include <string>
 #include <vector>
 
+/*
+	Structures and definitions that define the parameters
+	and variables used to generate a HCP voxel volume data
+	and export/import the generation parameter data.
+*/
+
 struct voxel_generator_parameter_variable_struct_type {
 	std::string variable_name    = "float_var";
 	float   value                = 0.0f;
@@ -38,7 +44,6 @@ struct voxel_generator_function_variable_struct_type {
 struct voxel_generator_display_struct_type {
 	bool  display_as_points = false;
 	float voxel_scale       = 1000.0;
-	//float voxel_scale       = 1.0;
 	float min_scale_value = 1.0, max_scale_value = 1000.0;
 };
 
@@ -47,8 +52,6 @@ struct voxel_generator_parameters_struct_type {
 
 	std::string  expression_file_pathname = "";
 	std::string  expression_file_name     = "...";
-
-	//std::string expression_text; // not unitlised
 
 	float	 x_start = -1.0f, x_end = 1.0f;
 	float	 y_start = -1.0f, y_end = 1.0f;
@@ -61,7 +64,6 @@ struct voxel_generator_parameters_struct_type {
 	int   invocation = 256;// this value may need to be changed to a maximum value
 
 	//voxel_data_type 
-	//float	max_surface_value = 255.0f , min_surface_value = 0.0f; // *****
 	int	max_surface_value = 255, min_surface_value = 1; // *****
 
 	std::vector<voxel_generator_parameter_variable_struct_type>      variables;

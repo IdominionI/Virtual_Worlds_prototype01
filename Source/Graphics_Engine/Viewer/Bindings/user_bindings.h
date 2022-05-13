@@ -3,6 +3,15 @@
 #include "user_default_bindings.h"
 #include "user_interaction_event_binding.h"
 
+/*
+						User Bindings class
+
+	Class that sets the default mouse and key bindings that the application
+	uses to allow the user to interact with the scene camera and rendering
+	of the viewer overlays
+
+*/
+
 class user_binding_class : public user_interaction_event_binding_class {
 public:
 

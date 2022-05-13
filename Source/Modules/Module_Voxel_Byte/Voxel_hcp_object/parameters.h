@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	Definitions that define the parameters values and
+	data types that define the generation and display
+	of a 3D HCP voxel volume.
+*/
+
 enum class data_storage_type_enum { red, green, blue, alpha, value };
 
 //typedef uint8_t voxel_data_type;

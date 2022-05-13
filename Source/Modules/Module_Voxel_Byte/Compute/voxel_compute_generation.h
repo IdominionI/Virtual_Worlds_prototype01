@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <Universal/3rdparty/include/gl/glew.h>
-
 #include <Graphics_Engine/Compute/compute_shader.h>
 #include <Graphics_Engine/Compute/import_compute_expression_code.h>
 
@@ -11,7 +9,7 @@
 #include <Graphics_Engine/Shader/shader.h>
 
 /*
-	voxel_compute_generator_class
+							voxel_compute_generator_class
 
 	C++ class that generates by use of a glsl compute shader program the hcp voxel point cloud
 	data and stores the results in the hcp voxel class point cloud data matrix.
@@ -31,10 +29,6 @@
 class voxel_compute_generator_class : public compute_shader_class{
 public:
 	voxel_hcp_object_class *cloud = NULL;// pointer to the hcp voxel class in the virtual worlds scene data model
-
-	//voxel_compute_generator_class(log_widget_class *log_widget_ = NULL) {
-	//	log_widget = log_widget_;
-	//}
 
 	voxel_generator_parameters_struct_type voxel_generator_parameters; //****
 
@@ -69,19 +63,13 @@ public:
 		create_compute_shader_source_code();
 
 		if (!define_compute_program()) {
-			//if (log_widget != NULL) {
-				printf("critical, voxel_generation : generate_voxel_function::Could not create the compute shader program to generate voxel matrix.\n");
-				//log_widget->log_message(log_display, log_message_type_enum_type::critical, "voxel_generation : generate_voxel_function :: Could not create the compute shader program to generate voxel matrix.");
-			//}
+			printf("critical, voxel_generation : generate_voxel_function::Could not create the compute shader program to generate voxel matrix.\n");
 			return false;
 		}
 
 		if (!create_voxel_matrix(cloud, voxel_generator_parameters)) {
-			//if (log_widget != NULL) {
-				//log_widget->log_message(log_display, log_message_type_enum_type::critical, "voxel_compute_generator_class : generate_voxel_function :: Could not create initial voxel data matrix ");
-				printf("critical, voxel_generation : generate_voxel_function::Could not create initial voxel data matrix.\n");
-				return false;
-			//}
+			printf("critical, voxel_generation : generate_voxel_function::Could not create initial voxel data matrix.\n");
+			return false;
 		}
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
@@ -177,89 +165,51 @@ public:
             return false;
         }
 
+		glUseProgram(progHandle);
 
+		glGenBuffers(1, &ssbo);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
 
-           //QOpenGLFunctions_4_5_Core *f = dynamic_cast<QOpenGLFunctions_4_5_Core*> (context.versionFunctions());
-			//****
-			//glfwInit();
-			//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-			//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-			//****
-            
-			//f->glUseProgram(compute_program->programId());
-			glUseProgram(progHandle);
+        //f->glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, voxel_matrix_data.data(), GL_DYNAMIC_READ); // this method does not work
+        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
 
-            // reserve space on the GPU
-            //f->glGenBuffers(1, &ssbo);
-            //f->glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
-            //f->glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
+		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_size, "voxel_size"); // this works unsigned int shader_program_id, float v, const std::string& name
+		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.generation_threshold, "threshold"); // this works
+		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.min_surface_value, "min_surface_value"); // this works
+		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.max_surface_value, "max_surface_value"); // this works
+		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.e_time, "e_time"); // this works
+		shader.set_i1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.frame, "frame"); // this works
 
-			glGenBuffers(1, &ssbo);
-			glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
-			glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
+		shader.set_vec3(progHandle, cloud->voxel_object_data.matrix_origin, "origin"); // this works
+		shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.x, "matrix_dimension_x"); // this works
+		shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.y, "matrix_dimension_y"); // this works
+		shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.z, "matrix_dimension_z"); // this works
+		shader.set_i1(progHandle, MIN_VOXEL_VALUE, "min_voxel_value"); // this works
+		shader.set_i1(progHandle, MAX_VOXEL_VALUE, "max_voxel_value"); // this works
+		shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_voxel_value"); // this works
 
-            //f->glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, voxel_matrix_data.data(), GL_DYNAMIC_READ); // this method does not work
-            //f->glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
-            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
+		// +++++++++++ User dynamicly defined uniforms ++++++++++++++
+		for(voxel_generator_parameter_variable_struct_type variable : voxel_generator_parameters.variables) {
+			shader.set_f1(progHandle, variable.value, variable.variable_name);
+		}
 
-            //f->glUniform1f(1, a);  // 0 corresponds to location = 1 in the compute shader as a uniform data reference
-/*            compute_program->setUniformValue("voxel_size", cloud->voxel_object_data.voxel_size); // this works
-            compute_program->setUniformValue("threshold",         cloud->voxel_object_data.voxel_generator_parameters.generation_threshold); // this works
-            compute_program->setUniformValue("min_surface_value", cloud->voxel_object_data.voxel_generator_parameters.min_surface_value); // this works
-            compute_program->setUniformValue("max_surface_value", cloud->voxel_object_data.voxel_generator_parameters.max_surface_value); // this works
-            compute_program->setUniformValue("e_time",            cloud->voxel_object_data.voxel_generator_parameters.e_time); // this works
-            compute_program->setUniformValue("frame",             cloud->voxel_object_data.voxel_generator_parameters.frame); // this works
-            
-            compute_program->setUniformValue("origin",             cloud->voxel_object_data.matrix_origin); // this works
-            compute_program->setUniformValue("matrix_dimension_x", cloud->voxel_object_data.matrix_dimension.x); // this works
-            compute_program->setUniformValue("matrix_dimension_y", cloud->voxel_object_data.matrix_dimension.y); // this works
-            compute_program->setUniformValue("matrix_dimension_z", cloud->voxel_object_data.matrix_dimension.z); // this works
-            compute_program->setUniformValue("min_voxel_value",    MIN_VOXEL_VALUE); // this works
-            compute_program->setUniformValue("max_voxel_value",    MAX_VOXEL_VALUE); // this works
-            compute_program->setUniformValue("invalid_voxel_value",INVALID_VOXEL_VALUE); // this works
-*/
-			shader.set_f1(progHandle, cloud->voxel_object_data.voxel_size, "voxel_size"); // this works unsigned int shader_program_id, float v, const std::string& name
-			shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.generation_threshold, "threshold"); // this works
-			shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.min_surface_value, "min_surface_value"); // this works
-			shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.max_surface_value, "max_surface_value"); // this works
-			shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.e_time, "e_time"); // this works
-			shader.set_i1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.frame, "frame"); // this works
+		for (voxel_generator_parameter_int_variable_struct_type int_variable : voxel_generator_parameters.int_variables) {
+			shader.set_i1(progHandle, int_variable.value, int_variable.variable_name);
+		}
 
-			shader.set_vec3(progHandle, cloud->voxel_object_data.matrix_origin, "origin"); // this works
-			shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.x, "matrix_dimension_x"); // this works
-			shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.y, "matrix_dimension_y"); // this works
-			shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.z, "matrix_dimension_z"); // this works
-			shader.set_i1(progHandle, MIN_VOXEL_VALUE, "min_voxel_value"); // this works
-			shader.set_i1(progHandle, MAX_VOXEL_VALUE, "max_voxel_value"); // this works
-			shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_voxel_value"); // this works
+		for(voxel_generator_parameter_bool_variable_struct_type bool_variable : voxel_generator_parameters.bool_variables) {
+			shader.set_b1(progHandle, bool_variable.value, bool_variable.variable_name);
+		}
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-			// +++++++++++ User dynamicly defined uniforms ++++++++++++++
-			for(voxel_generator_parameter_variable_struct_type variable : voxel_generator_parameters.variables) {
-				shader.set_f1(progHandle, variable.value, variable.variable_name);
-			}
+        //Tweak the geometry to the size of the buffer and its layout
+		glDispatchCompute(number_work_groups, 1, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
-			for (voxel_generator_parameter_int_variable_struct_type int_variable : voxel_generator_parameters.int_variables) {
-				shader.set_i1(progHandle, int_variable.value, int_variable.variable_name);
-			}
-
-			for(voxel_generator_parameter_bool_variable_struct_type bool_variable : voxel_generator_parameters.bool_variables) {
-				shader.set_b1(progHandle, bool_variable.value, bool_variable.variable_name);
-			}
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-            //Tweak the geometry to the size of the buffer and its layout
-            //f->glDispatchCompute(number_work_groups, 1, 1);
-            //f->glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-
-			glDispatchCompute(number_work_groups, 1, 1);
-			glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-
-            // this gets the data from the GPU
-            //f->glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
-            //f->glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-
-			glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
-			glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+        // this gets the data from the GPU
+		glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
 		return true;
     }
@@ -300,7 +250,6 @@ public:
 		glm::vec3 origin = { voxel_generator_parameters.x_start,voxel_generator_parameters.y_start,voxel_generator_parameters.z_start };
 
         cloud->voxel_object_data.voxel_size = voxel_generator_parameters.resolution_step;
-        //cloud->world_location = origin;
 
         cloud->voxel_object_data.matrix_dimension = { data_set_x_size,data_set_y_size,data_set_z_size };
         cloud->voxel_object_data.matrix_origin    = origin;
@@ -354,8 +303,6 @@ public:
 
 private:
 	shader_class shader;
-
-	//voxel_generator_parameters_struct_type voxel_generator_parameters;
 
 	std::vector <voxel_generator_function_variable_struct_type> function_variables;
 

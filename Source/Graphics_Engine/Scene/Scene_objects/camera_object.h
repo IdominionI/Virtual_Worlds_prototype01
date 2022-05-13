@@ -6,15 +6,33 @@
 #include <Universal/3rdparty/include/glm/gtx/rotate_vector.hpp>
 
 #include "../../Common/user_interaction.h"
-//#include "object_basis.h"
-//#include "../Shader/shader_util.h"
-
 #include "../../Shader/shader.h"
+
+/*
+					Camera Object Class
+
+	The camera class that defines the user scene view viewport
+	and the user interaction that can occur within the scene.
+
+	This class function is to store camera information and
+	paramters that and export this information to an OpenGL
+	glsl shader program to be used to render the scene.
+
+
+	This code is a heavily modified adaptation of the original 
+	source code of the JGL openGL demo camera class. Much of
+	the added and modified code is a migration of the superior
+	camera class from the Qt virtual worlds version the preceeded.
+
+	The original code had many features needed missing from it
+	and existing code that was less than adequate. Never the less
+	much of the original code is retained even if not used.
+*/
 
 enum class camera_ailgnment_type_enum {none, xy_plane, xz_plane, yz_plane };
 enum class camera_movement_mode_enum { free, xy_plane, xz_plane, yz_plane, orbital, none };
 
-class camera_object_class //: public object_basis_class
+class camera_object_class
 {
 public:
 	glm::vec3 mPosition = { 0.0f, 0.0f, 8.0f };
@@ -251,22 +269,15 @@ printf("Camera location 1111 %f:%f:%f\n", mPosition.x, mPosition.y, mPosition.z)
       return mProjection * get_view_matrix();
     }
 
-	// Alternative methods of getting Up, Right and Forward direction vectors given
 	glm::vec3 get_up() const{
-		//return glm::rotate(get_orientation(), cUp);
-		//return glm::vec3(mViewMatrix[0][1], mViewMatrix[1][1], mViewMatrix[2][1]);
 		return cUp;
 	}
 
 	glm::vec3 get_right() const{
-		//return glm::rotate(get_orientation(), cRight);
-		//return glm::vec3(mViewMatrix[0][0], mViewMatrix[1][0], mViewMatrix[2][0]);
 		return cRight;
 	}
 
 	glm::vec3 get_forward() const{
-		//return glm::rotate(get_orientation(), cForward);
-		//return glm::vec3(-mViewMatrix[0][2], -mViewMatrix[1][2], -mViewMatrix[2][2]);
 		return cForward;
 	}
 
@@ -295,8 +306,6 @@ printf("Camera location 1111 %f:%f:%f\n", mPosition.x, mPosition.y, mPosition.z)
 		//mDistance = 5.0f;
 		update_view_matrix();
 	}
-
-
 
 	void on_mouse_move(float x, float y, mouse_button_enum button){
 //printf("on_mouse_move\n");
@@ -333,10 +342,10 @@ printf("Camera location 1111 %f:%f:%f\n", mPosition.x, mPosition.y, mPosition.z)
 			mDistance = glm::distance(mPosition ,look_at_location);
 			mFocus    = look_at_location;
 			//mPosition = mFocus - get_forward() * mDistance;
-			mPosition = mFocus - cForward * mDistance;// ****
+			mPosition = mFocus - cForward * mDistance;
 		}
 
-		mViewMatrix = glm::lookAt(mPosition, mPosition + cForward, cUp); // ****
+		mViewMatrix = glm::lookAt(mPosition, mPosition + cForward, cUp);
 
 		//glm::quat orientation = get_orientation();
 		//mViewMatrix = glm::translate(glm::mat4(1.0f), mPosition) * glm::toMat4(orientation);
@@ -357,8 +366,8 @@ private:
 
 	glm::vec2 mCurrentPos2d = { 0.0f, 0.0f };
 
-	glm::vec3 cRight = { 1.0f, 0.0f, 0.0f };
-	glm::vec3 cUp = { 0.0f, 1.0f, 0.0f };
+	glm::vec3 cRight   = { 1.0f, 0.0f, 0.0f };
+	glm::vec3 cUp      = { 0.0f, 1.0f, 0.0f };
 	glm::vec3 cForward = { 0.0f, 0.0f, -1.0f };
 
 	const float movement_multiplier = 0.05f;

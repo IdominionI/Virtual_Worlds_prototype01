@@ -2,6 +2,16 @@
 
 #include "geometry_basis.h"
 
+
+/*
+				LINE GEOMETRY CLASS
+
+	The geometry class that can be used to store and display
+	the geometry data that is defined to render lines.
+
+	!!!!! NOTE :: This class has not been tested yet. !!!!!
+*/
+
 class line_class : public geometry_basis_class { // Not yet tested
 public:
 	line_class() {}

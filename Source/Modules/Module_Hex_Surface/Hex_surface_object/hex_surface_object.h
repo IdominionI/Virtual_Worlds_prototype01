@@ -1,12 +1,4 @@
 #pragma once
-//#include <QOpenGLBuffer>
-//#include <QMessageBox>
-//
-//#include <VW_Graphics/Viewer/Camera/camera.h>
-//#include <VW_Graphics/Scene_Graph/Objects/object_basis.h>
-//#include <VW_Graphics/Scene_Graph/Point_Cloud/point_cloud.h>
-//
-//#include "../Render/hex_surface_render.h"
 
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
@@ -31,21 +23,14 @@ enum class hex_surface_vertex_order_enum { none, face, points, line };
 class hex_surface_object_class : public object_basis_class {
 
 public:
-	//log_widget_class       *log_panel = NULL;
 	log_panel_class       *log_panel = NULL;
-	//log_display_struct_type log_display;
 
-	//point_cloud_class<hex_surface_data_type> point_cloud;
 	point_cloud_vertex_class                 point_cloud;
 	std::vector<int>                         vertex_indicies;
 	hex_surface_object_data_class            hex_surface_object_data;
-	//hex_surface_object_renderer_class       *object_renderer = NULL;
 	camera_object_class                     *camera = NULL;
 
 	int number_faces = 0;
-
-	//QSurface *open_GL_surface = NULL;
-
 	
 	hex_surface_vertex_order_enum  point_cloud_order = hex_surface_vertex_order_enum::none;
 
@@ -79,23 +64,8 @@ public:
 //	log_panel->log_message(log_display, log_message_type_enum_type::debug, "hex_surface_object_class :: define_vbo_vertices00 :"+QString::number(point_cloud.vertices.size()));
 //}
 
-		//if (point_cloud.vertices.size() > 0) {
-			point_cloud.vertices.clear();
-			point_cloud.vertices.shrink_to_fit();
-		//}
-		// *********
-/*		
-		hex_surface_data_type  hex_surface_value = 0.0;
-
-		index_vector hex_coordinate;
-		glm::vec3    hex_cartesian_coordinate;
-
-		size_t number_vertices_to_export = hex_surface_object_data.hex_surface_matrix_data.size();
-		for (size_t hex_index = 0; hex_index < number_vertices_to_export; hex_index++) {
-			add_hex_surface_vbo_vertex(hex_index);
-		}
-*/
-		// *********
+		point_cloud.vertices.clear();
+		point_cloud.vertices.shrink_to_fit();
 
 //if (log_panel != NULL) {
 //	log_panel->log_message(log_display, log_message_type_enum_type::debug, "define_vbo_vertices 00 : " + QString::number(min_hex_surface_value) + " : " + QString::number(max_hex_surface_value));
@@ -138,7 +108,6 @@ public:
 	bool add_hex_surface_vbo_vertex(size_t index) {
 		float x, y, z;
 
-		//point_cloud_vertex_struct_type<hex_surface_data_type> *vertex;
 		point_vertex_class vertex;
 
 		glm::vec3                     hex_surface_cartesian_coord;
@@ -154,9 +123,7 @@ public:
 		y = hex_surface_object_data.grid_origin.y + hex_surface_cartesian_coord.y;
 		z = surface_data;
 
-		//vertex = point_cloud.add_new_vertex({ x,y,z });
 		vertex.mPos   = { x,y,z };
-		//vertex.mvalue = surface_data;
 
 		point_cloud.add_vertex(vertex);
 		
@@ -164,8 +131,6 @@ public:
 		//	return false;
 		//else
 		//	vertex->value = surface_data;
-
-
 
 		return true;
 	}
@@ -185,10 +150,8 @@ public:
 //	//log_display.dialog = true;
 //	log_panel->log_message(log_display, log_message_type_enum_type::debug, "hex_surface_object_class :: define_vbo_faces 00 :" + QString::number(point_cloud.vertices.size()));
 //}
-		//if (point_cloud.vertices.size() > 0) {
-			point_cloud.vertices.clear();
-			point_cloud.vertices.shrink_to_fit();
-		//}
+		point_cloud.vertices.clear();
+		point_cloud.vertices.shrink_to_fit();
 
 		for (int j = 0; j < y_dim; j++) {
 			int x_d = x_dim - j % 2;
@@ -270,10 +233,6 @@ public:
 
 				if (j % 2 == 0 && j > 0) { // have even row
 					if (i > 0) {
-						//vertex_0 = point_cloud.vertices[n - x_dim].mPos;
-						//vertex_1 = point_cloud.vertices[n].mPos;
-						//vertex_2 = point_cloud.vertices[n - 1].mPos;
-
 						vertex_0 = point_cloud.vertices[n - x_dim].mPos;
 						vertex_1 = point_cloud.vertices[n].mPos;
 						vertex_2 = point_cloud.vertices[n - 1].mPos;
@@ -304,10 +263,6 @@ public:
 
 				if (j % 2 != 0) {// have odd row
 					if (i > 0) {
-						//add_hex_surface_vbo_vertex(n - x_dim);
-						//add_hex_surface_vbo_vertex(n);
-						//add_hex_surface_vbo_vertex(n - 1);
-
 						vertex_0 = point_cloud.vertices[n - x_dim].mPos;
 						vertex_1 = point_cloud.vertices[n].mPos;
 						vertex_2 = point_cloud.vertices[n - 1].mPos;
@@ -318,12 +273,8 @@ public:
 						point_cloud.vertices[n].mNormal         = normal;
 						point_cloud.vertices[n - 1].mNormal     = normal;
 
-						//stream << "3 " << n - x_dim << " " << n << " " <<  n - 1 << endl;
+//stream << "3 " << n - x_dim << " " << n << " " <<  n - 1 << endl;
 					}
-
-					//add_hex_surface_vbo_vertex(n - x_dim + 1);
-					//add_hex_surface_vbo_vertex(n);
-					//add_hex_surface_vbo_vertex(n - x_dim);
 
 					vertex_0 = point_cloud.vertices[n - x_dim + 1].mPos;
 					vertex_1 = point_cloud.vertices[n].mPos;
@@ -335,7 +286,7 @@ public:
 					point_cloud.vertices[n].mNormal           = normal;
 					point_cloud.vertices[n - x_dim].mNormal   = normal;
 
-					//stream << "3 " << n - x_dim + 1 << " " << n << " " << n - x_dim << endl;
+//stream << "3 " << n - x_dim + 1 << " " << n << " " << n - x_dim << endl;
 				}
 				n++;
 			}

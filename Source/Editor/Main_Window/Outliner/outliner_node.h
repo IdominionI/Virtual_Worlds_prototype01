@@ -1,8 +1,21 @@
 #pragma once
 
-#include "../Common/definitions.h"
+#include "../../Common/definitions.h"
 
 #include <vector>
+
+/*
+							OUTLINER NODE
+
+	Class to define the basic outliner node used in the outliner
+	manager to hold the attributes and parameters, as well as 
+	perform basic management functions of an outliner node to
+	be displayed in the outliner manager class.
+
+	The outliner node is a representation of an entity that exists
+	within the application scene manager data base to be selected 
+	for processing and displayed on screen.
+*/
 
 enum class outliner_node_type_enum {root, group, entity };
 

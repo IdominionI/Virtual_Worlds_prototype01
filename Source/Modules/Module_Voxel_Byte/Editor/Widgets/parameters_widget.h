@@ -6,6 +6,18 @@
 #include "shaders_widget.h"
 #include "automata_widget.h"
 
+/*
+				HCP voxel volume paramters widget
+
+	This widget class is a parent widget that manages the display
+	of HCP voxel generation, shader variable and cellula automata child
+	widgets via selection of ImGui tabs.
+
+	This widget class is thus the widget class that is called by
+	the main application editor to display hex surface parameter
+	data to be changed or generate data.
+*/
+
 class voxel_hcp_parameters_widget_class {
 public:
 	voxel_hcp_parameters_widget_class() {}
@@ -16,7 +28,7 @@ public:
 	log_panel_class     *log_panel     = NULL;
 
 	void display_voxel_hcp_generation_widget(id_type current_selected_object_id) {
-		//printf("parameter_panel_class :: display_voxel_hcp_generation_widget 11\n");
+//printf("parameter_panel_class :: display_voxel_hcp_generation_widget 11\n");
 
 		if (scene_manager == NULL) {
 		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No scene manager defined to extract scene voxel hcp object parameter data from.\n");
@@ -64,19 +76,17 @@ private:
 	voxel_hcp_autmoata_widget_class	  voxel_hcp_autmoata_widget;
 
 	void display_voxel_generation_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
-
-		//voxel_hcp_generation_widget.voxel_hcp_object_to_execute = scene_manager->entities_manager.get_voxel_hcp_entity_object(current_selected_object_id);
 		voxel_hcp_generation_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
 
 		if (voxel_hcp_generation_widget.voxel_hcp_object_to_execute == NULL) {
 		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hcp voxel object defined to perform voxel generation procedure on.\n");
 			return;
 		}
-		//printf("voxel_hcp_generation_widget.voxel_hcp_object_to_execute != NULL ^^^^\n");
+//printf("voxel_hcp_generation_widget.voxel_hcp_object_to_execute != NULL ^^^^\n");
 		voxel_hcp_generation_widget.log_panel                  = log_panel;
 		voxel_hcp_generation_widget.scene_manager              = scene_manager;
 		voxel_hcp_generation_widget.current_selected_entity_id = current_selected_object_id;
-		//printf("parameter_panel_class :: display_voxel_hcp_generation_widget22\n");
+//printf("parameter_panel_class :: display_voxel_hcp_generation_widget22\n");
 		voxel_hcp_generation_widget.display();
 	}
 

@@ -5,6 +5,33 @@
 #include "vertex_data.h"
 #include "../Render/Buffers/vertex_buffer.h"
 
+/*
+				GEOMETRY BASIS CLASS
+
+	This basis class is the class that is used to render any
+	and all vertex graphics data types to the computer screen.
+
+	All geometry object classes that are used to store and display
+	an entity geometry on the computer screen must inherit this
+	class, and then define for each scene geometry object the code 
+	for the vertex data type that is defined in the	vertex_data.h
+	file.
+	
+	Then the required and mandatory virtual functions in this
+	class need to be indivually coded to accomadate the functionality
+	required to render the graphics object. These are
+
+	init()
+	add_geometry_data()
+	update_geometry()
+	create_buffers()
+	delete_buffers()
+	bind()
+	unbind()
+
+*/
+
+
 class geometry_basis_class {
 public :
 	geometry_basis_class() {
@@ -21,7 +48,6 @@ public :
 		return true;
 	}
 
-	//virtual bool load(const std::string& filepath) { return false; }
 	virtual bool load(const std::string& filepath, float x_off ) { return false; }
 	virtual bool save(const std::string& filepath) { return false; }
 
@@ -37,7 +63,7 @@ public :
 	virtual bool delete_buffers() = 0;
 
 	virtual void render(int shader_program_id) {
-		//printf("MESH render %i\n", vertex_indices.size());
+//printf("MESH render %i\n", vertex_indices.size());
 
 		switch (geometry_type) {
 			case geometry_type_enum::points    : {if(vertex_buffer != NULL) vertex_buffer->draw_points(number_vertices, shader_program_id);

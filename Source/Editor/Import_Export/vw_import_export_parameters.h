@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	Import-Export ASCII data block ID to identify the 
+	start and end of various data blocks or other data
+	import - export requirements
+*/
+
 //#define endl "\n"
 //#define ENDL "\n"
 

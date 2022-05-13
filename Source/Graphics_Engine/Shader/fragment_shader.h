@@ -15,6 +15,7 @@
 	into a single Qt QString class storage variable ready for adding to a OpenGL shader program for
 	compilation
 */
+
 class vw_fragment_shader_class : public vw_shader_basis_class {
 public:
 	bool generate_fragment_shader_code() {

@@ -12,7 +12,20 @@
 
 #include <Universal/ImGui/imgui.h>
 #include "../Widgets/imgui_widgets.h"
-//#include <Universal/3rdParty/Plugins/ImGui/ImFileBrowser.h>
+
+/*
+                            PARAMETER PANEL
+
+    Parent class to define the application property panel that is the parent
+    "window widget" for the display of the application scene lighting, camera
+    and viewer display paramters that are used to display the graphics onto
+    the computer screen. This panel can be detached from the main window according
+    to the docking features of the ImGui framework.
+
+    It is also here that an animation widget to perform basic interactive animations
+    is added.
+*/
+
 
   class property_panel_class
   {
@@ -21,17 +34,17 @@
   property_panel_class() {}
   ~property_panel_class() {}
 
-    log_panel_class      *log_panel = NULL;
     universal_shader_variables_struct_type *universal_shader_variables = NULL;
+
+    log_panel_class      *log_panel      = NULL;
     openGL_context_class *openGL_context = NULL;
-    scene_viewer_class   *scene_viewer = NULL;
+    scene_viewer_class   *scene_viewer   = NULL;
 
     id_type          current_selected_object_id      = -1;
 	id_type          current_selected_object_type_id = -1;
 
     scene_manager_class *scene_manager = NULL;
 
-    //void show(scene_viewer_class *scene_view) {
     void show() {
 //printf("property_panel_class :: display 000\n");
         if (scene_viewer == NULL) {

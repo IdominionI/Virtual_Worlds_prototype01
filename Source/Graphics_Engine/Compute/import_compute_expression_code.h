@@ -97,30 +97,14 @@ public:
 	bool define_function_block_code() {
 		if (FW::stringtools::contains(expression_string,START_COMPUTE_FUNCTION_BLOCK_FLAG)) {    // look for start of function section flag in imported file
 			if (!FW::stringtools::contains(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG)) { // look for end of function section flag in imported file
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-					//log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-					//	filename_to_read +
-					//	"\n has a function block with no end of function block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n has a function block with no end of function block flag.\n", filename_to_read);
-
 				return false;
 			}
 
 			// Make sure end of function block does not preceed start of function block
 			//if (expression_string.indexOf(END_COMPUTE_FUNCTION_BLOCK_FLAG, 0) < expression_string.indexOf(START_COMPUTE_FUNCTION_BLOCK_FLAG, 0)) {
 			if (FW::stringtools::indexOf(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG, 0) < FW::stringtools::indexOf(expression_string,START_COMPUTE_FUNCTION_BLOCK_FLAG, 0)) {
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-				//	log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-				//		filename_to_read +
-				//		"\n has a function block with end of function block flag occururing before the start function block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n has a function block with end of function block flag occururing before the start function block flag.\n", filename_to_read);
-
 				return false;
 			}
 
@@ -130,15 +114,7 @@ public:
 		}
 		else {
 			if (FW::stringtools::contains(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG)) { // Have no begin function section flag, but do have end of function section flag
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-				//	log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-				//		filename_to_read +
-				//		"\n has a function block with an end of function block flag, but no start of function block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n  has a function block with an end of function block flag, but no start of function block flag.\n", filename_to_read);
-
 				return false;
 			}
 		}
@@ -153,11 +129,9 @@ public:
 		std::string start_block_string = START_COMPUTE_FUNCTION_BLOCK_FLAG;
 		numchar = FW::stringtools::indexOf(expression_string, END_COMPUTE_FUNCTION_BLOCK_FLAG, 0);
 //printf("import_compute_expression_class :: import_function_block 000\n %s: %i \n", expression_string.c_str(), numchar);
-		//function_code = expression_string.left(numchar);
 		function_code = expression_string.substr(0,numchar);
 		numchar = (FW::stringtools::indexOf(function_code,START_COMPUTE_FUNCTION_BLOCK_FLAG, 0) + start_block_string.length());
 //printf("import_compute_expression_class :: import_function_block 111 %s: %i %i %i\n",function_code.c_str(), function_code.length(), FW::stringtools::indexOf(function_code, START_COMPUTE_FUNCTION_BLOCK_FLAG, 0), start_block_string.length());
-		//function_code = function_code.right(numchar);
 		function_code = function_code.substr(numchar, function_code.length());
 //printf("import_compute_expression_class :: import_function_block 222: %s\n",function_code.c_str());
 	}
@@ -165,29 +139,13 @@ public:
 	bool define_expression_code() {
 		if (FW::stringtools::contains(expression_string, START_COMPUTE_EXPRESSION_BLOCK_FLAG)) {    // look for start of main function section flag in imported file
 			if (!FW::stringtools::contains(expression_string,END_COMPUTE_EXPRESSION_BLOCK_FLAG)) { // look for end of main function section flag in imported file
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-				//	log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-				//		filename_to_read +
-				//		"\n has a expression block with no end of expression block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n  has a expression block with no end of expression block flag.\n", filename_to_read);
-
 				return false;
 			}
 
 			// Make sure end of main function block does not preceed start of function block
 			if (FW::stringtools::indexOf(expression_string, END_COMPUTE_EXPRESSION_BLOCK_FLAG, 0) < FW::stringtools::indexOf(expression_string,START_COMPUTE_EXPRESSION_BLOCK_FLAG, 0)) {
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-				//	log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-				//		filename_to_read +
-				//		"\n has a expression block with end of expression block flag occururing before the start expression block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read);
-
 				return false;
 			}
 
@@ -197,15 +155,7 @@ public:
 		}
 		else {
 			if (FW::stringtools::contains(expression_string,END_COMPUTE_EXPRESSION_BLOCK_FLAG)) {// Have no begin main function section flag, but do have end of function section flag
-				//if (log_widget != NULL) {
-				//	log_display.dialog = true;
-				//	log_widget->log_message(log_display, log_message_type_enum_type::error, " Import of the compute file \n" +
-				//		filename_to_read +
-				//		"\n has a expression block with an end of expression block flag, but no start of expression block flag.");
-				//}
-
 				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read);
-
 				return false;
 			}
 		}
@@ -221,12 +171,10 @@ public:
 
 		numchar = FW::stringtools::indexOf(expression_string, END_COMPUTE_EXPRESSION_BLOCK_FLAG, 0);
 //printf("import_compute_expression_class :: import_expression_block 000\n %s: %i \n", expression_string.c_str(), numchar);
-		//expression_code = expression_string.left(numchar);
 		expression_code = expression_string.substr(0, numchar);
 //printf("import_compute_expression_class :: import_function_block 111 %s: %i %i %i\n", expression_code.c_str(), expression_code.length(), FW::stringtools::indexOf(expression_code, START_COMPUTE_FUNCTION_BLOCK_FLAG, 0), start_block_string.length());
 
 		numchar = (FW::stringtools::indexOf(expression_string, START_COMPUTE_EXPRESSION_BLOCK_FLAG, 0) + start_block_string.length());
-		//expression_code = expression_code.right(numchar);
 		expression_code = expression_code.substr(numchar, expression_code.length());
 //printf("import_compute_expression_class :: import_function_block 222: %s\n", expression_code.c_str());
 	}

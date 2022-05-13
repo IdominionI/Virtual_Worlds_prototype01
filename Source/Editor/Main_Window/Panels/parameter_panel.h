@@ -5,11 +5,21 @@
 #include <Universal/ImGui/imgui.h>
 #include "../Widgets/imgui_widgets.h"
 
-#include "../../Kernal/outliner_manager.h"
+#include "../Outliner/outliner_manager.h"
 
-
+// Include the entity data type main parameter widget class to be displayed in
+// the application here.
 #include <Source/Modules/Module_Voxel_Byte/Editor/Widgets/parameters_widget.h>
 #include <Source/Modules/Module_Hex_Surface/Editor/Widgets/hex_parameters_widget.h>
+
+/*
+							PARAMETER PANEL
+
+	Parent class to define the application parameter panel that is the parent 
+	"window widget" for the application to display the entity parameter data
+	into and enable whatever functions. procedures etc top be performed for
+	that entity
+*/
 
 class parameter_panel_class {
 public:
@@ -23,8 +33,9 @@ public:
 
 	id_type          current_selected_object_id      = -1;
 	id_type          current_selected_object_type_id = -1;
-	log_panel_class *log_panel = NULL;
-	log_panel_class *code_panel = NULL;
+
+	log_panel_class *log_panel  = NULL; // Define the application log panel to display application messages to
+	log_panel_class *code_panel = NULL; // Define the application log panel to display application shder or other code error messages to
 
 	void show() {
 
@@ -36,8 +47,7 @@ public:
 			case ENTITY_CATEGORY_HCP_VOXEL : display_voxel_hcp_parameters_widget();   break;
 			case ENTITY_CATEGORY_HCP_SURF  : display_hex_surface_parameters_widget(); break;
 			
-				//other types to go here
-			
+				//other types to go here		
 		}
 
 		ImGui::End();

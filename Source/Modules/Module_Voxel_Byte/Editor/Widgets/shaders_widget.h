@@ -14,6 +14,19 @@
 #include "../../Voxel_hcp_object/voxel_hcp_object.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
+/*
+			HCP voxel volume shader widget class
+
+	This class widget defines an ImGui widget and child widgets
+	that are used to define the parameters and shader variables
+	required to display a 3D HCP voxel volume surface.
+
+	This class widget has controls to change the display of the
+	3D HCP voxel volume on the computer screen in incremental
+	steps by changing the shader variable values according to
+	the settings that the user defines for each shader variable.
+*/
+
 class voxel_shaders_widget_class {
 public:
 	voxel_shaders_widget_class() {}
@@ -43,7 +56,6 @@ public:
 
 		ImGui::SetCursorPosX(x_pos + 220);
 		ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("###sdisplas", &animate_shaders);
 		ImGui::Checkbox("###sdisplas", &voxel_shader_parameters->animate_shaders);
 
 		y_pos += 20;
@@ -52,7 +64,7 @@ public:
 		y_pos += 20;
 		text("Vertex  :", x_pos, y_pos);
 
-		//printf("voxel_shaders_widget_class 0000 %s.\n", voxel_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
+//printf("voxel_shaders_widget_class 0000 %s.\n", voxel_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
 		if (ex_button(voxel_shader_parameters->vertex_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20)) 
 			select_vertex_shader_file();
 
@@ -211,23 +223,23 @@ public:
 	}
 
 	void update_voxel_shaders(bool notification = true) {
-printf("execute_shader_function button clicked\n");
+//printf("execute_shader_function button clicked\n");
 
 		if (voxel_shader_parameters == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel shader parameter data is undefined. Cannot update voxel shaders\n");
-printf("voxel_shaders_widget_class :: initialise_parameters : voxel_shader_parameters == NULL\n");
+//printf("voxel_shaders_widget_class :: initialise_parameters : voxel_shader_parameters == NULL\n");
 			return;
 		}
 
 		if (scene_manager == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Scene manager is undefined. Cannot update voxel shaders\n");
-printf("voxel_shaders_widget_class::initialise_parameters :scene_manager == NULL\n");
+//printf("voxel_shaders_widget_class::initialise_parameters :scene_manager == NULL\n");
 			return;
 		}
 
 		if (current_selected_enity_id < 0) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : There is no defined current selected entity. Cannot update voxel shaders\n");
-printf("voxel_shaders_widget_class::initialise_parameters :current_selected_enity_id < 0 %i\n", current_selected_enity_id);
+//printf("voxel_shaders_widget_class::initialise_parameters :current_selected_enity_id < 0 %i\n", current_selected_enity_id);
 			return;
 		}
 
@@ -235,7 +247,7 @@ printf("voxel_shaders_widget_class::initialise_parameters :current_selected_enit
 		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_enity_id);                  
 		if (entity_render_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update voxel shaders\n");
-printf("voxel_shaders_widget_class::initialise_parameters :entity_render_object == NULL\n");
+//printf("voxel_shaders_widget_class::initialise_parameters :entity_render_object == NULL\n");
 			return;
 		}
 
@@ -255,7 +267,6 @@ printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %i:\n", voxel_
 		voxel_hcp_render.define_shader_program(entity_render_object,log_panel);
 	}
 
-	//bool initialise_parameters(shader_parameters_struct_type *voxel_shader_parameters) {
 	bool initialise_parameters() {
 		if (voxel_hcp_object_to_execute == NULL) {
 //printf("voxel_shaders_widget_class :: initialise_parameters :voxel_hcp_object_to_execute == NULL\n");
@@ -336,7 +347,7 @@ private:
 	}
 
 	void select_vertex_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
+//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 //printf("select_vertex_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = {"*_VS.glsl"};
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -357,8 +368,7 @@ private:
 	}
 
 	void select_point_geometry_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
-
+//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 //printf("select_point_geometry_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = { "*_PGS.glsl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -370,7 +380,6 @@ private:
 		//		else
 //printf("point_geometry_shader_file_pathname != NULL %s:\n", file_pathname);
 
-		//voxel_shader_parameters->point_shader_file_pathname = file_pathname;
 		std::string s                                            = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->point_shader_file_pathname      = s;
 		voxel_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
@@ -378,8 +387,7 @@ private:
 	}
 
 	void select_geometry_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
-
+//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 //printf("select_geometry_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = { "*_GS.glsl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -425,14 +433,3 @@ printf("Clear Variables clicked");// replace with clear variables
 	}
 
 };
-
-
-//int value = 1,value2 = 5;
-
-//float fvalue = 1.0f, fvalue2 = 5.0;
-
-//integer_input_delta("###test", value, 2, 100.0f, 100.0f, 70.0f, ICON_FA_CARET_UP"###itest", ICON_FA_CARET_DOWN"###dtest");
-//integer_input_delta("###test2", value2, 4, 100.0f, 130.0f, 70.0f, ICON_FA_CARET_UP"###itest2", ICON_FA_CARET_DOWN"###dtest2");
-
-//float_input_delta("###ftest", fvalue, 0.4, 100.0f, 200.0f, 70.0f, ICON_FA_CARET_UP"###iftest", ICON_FA_CARET_DOWN"###dftest");
-//float_input_delta("###ftest2", fvalue2, 1.75, 100.0f, 230.0f, 70.0f, ICON_FA_CARET_UP"###iftest2", ICON_FA_CARET_DOWN"###dftest2");

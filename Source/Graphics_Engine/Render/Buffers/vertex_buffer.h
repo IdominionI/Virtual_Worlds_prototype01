@@ -3,6 +3,22 @@
 #include "../../Common/pch.h"
 #include "../../Geometry/vertex_data.h"
 
+/*
+                        OpenGL Vetex Buffer Objects Class
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is code that sets up and initialises and performs the
+    various basic OpenGl vertex buffer object function calls 
+    required to be performed to store data that is used in a glsl
+    shader program, and delete the VBO when no longer needed.
+
+    This class also manages the display of the VBO by the specified
+    glsl shader program id number.
+*/
+
 class openGL_vertex_Index_buffer_class //: public vertex_index_buffer_class
 {
 public:

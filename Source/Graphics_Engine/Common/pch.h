@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	A set of various required includes and defines that was retained and modified
+	from the original code that the Virtual Wordlds application was adapted from.
+*/
+
+
 // Std includes
 #include <string>
 #include <algorithm>

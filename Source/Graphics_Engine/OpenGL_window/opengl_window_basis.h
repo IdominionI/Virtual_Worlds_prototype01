@@ -2,6 +2,18 @@
 
 #include <string>
 
+
+/*
+                        OpenGL Window Class
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is a basis class that defines the required bais functions
+    that an OpenGl window would need so as to function .
+*/
+
 class openGl_window_basis_class
 {
 public:

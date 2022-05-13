@@ -2,6 +2,19 @@
 
 #include "openGL_window_basis.h"
 
+
+/*
+                        OpenGL Context Class
+
+    This code is an adaptation of the original source code of
+    the JGL openGL demo from which the Virtual Worlds application
+    used as a basis to evolve from.
+
+    This is code that sets up and initialises and performs the
+    various basic OpenGl function calls required for OpenGl to
+    function on a basic level.
+*/
+
 class openGL_context_class
 {
 

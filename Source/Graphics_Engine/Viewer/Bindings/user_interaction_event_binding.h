@@ -4,7 +4,11 @@
 
 #include "user_default_bindings.h"
 
-
+/*
+	Set of structures to define mouse and key bindings and
+	user interaction with the application viewport camera
+	and other viewport functionality.
+*/
 
 #define ACTION_TYPE_NONE   -1
 

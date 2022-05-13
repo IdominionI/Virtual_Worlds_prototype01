@@ -4,6 +4,25 @@
 #include "../../Scene/Scene_objects/camera_object.h"
 #include "../../Scene/scene_graph_manager.h"
 
+/*
+				Viewer Grid Class
+
+	A set of definitions and class to define the
+	vertices and shader variabels that are used by
+	the grid shader program code in the resources 
+	directory
+
+				Resources/Shaders/Default/Grid/
+	
+	of this application
+
+	The shader program uses some basic point data
+	from a point data render object and with the
+	defined uniform variable option and camera data
+	renders an axis grid for one or more or no axis.
+*/
+
+
 static const char* grid_vertex_shader =
 "uniform mat4 mvpMatrix;\n" //model-view-projection matrix
 "in vec4 vertex;\n"         //vertex that the shader is processing
@@ -54,8 +73,10 @@ public:
 		delete viewer_grid_render_object; 
 	}
 
+	// Default grid shader program directory path
 	std::string shader_file_directory = "Resources/Shaders/Default/Grid/";
 
+	// Default grid shader program source code files
 	std::string grid_vertex_file   = "grid_vertex_shader.glsl";
 	std::string grid_geometry_file = "grid_geometry_shader.glsl";
 	std::string grid_fragment_file = "grid_fragment_shader.glsl";
@@ -75,8 +96,8 @@ public:
 	//         Thus when assigning values to update shader variables, assign the value of a variable to a local variable to
 	//         be passed to the update_shader_variable function as in the subroutines below. 
 
-	bool display_xy_plane = true, display_xz_plane = false, display_yz_plane = false;
-	bool  relative_xy_grid = false, relative_xz_grid = false, relative_yz_grid = false;
+	bool display_xy_plane = true,  display_xz_plane = false, display_yz_plane = false;
+	bool relative_xy_grid = false, relative_xz_grid = false, relative_yz_grid = false;
 	
 	float relative_xy_grid_dist = -3.0f, relative_xz_grid_dist = 3.0f, relative_yz_grid_dist = 3.0f;
 	glm::vec3 xy_grid_origin = { 0.0f,0.0f,0.0f }, xz_grid_origin = { 0.0f,0.0f,0.0f }, yz_grid_origin = { 0.0f,0.0f,0.0f };

@@ -1,17 +1,4 @@
 #pragma once
-//#include <QFile>
-//#include <QTextStream>
-//#include <QGraphicsScene>
-//#include <QMessageBox>
-//
-//#include <std::string>
-//#include <QPoint>
-//
-//#include <Source/Common/Utilities/widgets.h>
-//
-//#include <Universal/Include/Qt_Widget_Classes/Utilities/logger_widget.h>
-
-
 #include <fstream>
 #include <string>
 #include <vector>
@@ -22,7 +9,6 @@
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
 #include <Source/Graphics_Engine/Viewer/scene_viewer.h>
-
 
 /*
 	export_hex_surface_geometry_class
@@ -41,13 +27,6 @@
 
 class export_hex_surface_geometry_class {
 public:
-	//QFile       file;
-	//std::string     filename_to_write;
-	//QTextStream stream;
-
-	//log_widget_class *log_widget = NULL;
-	//log_display_struct_type log_display;
-
 	std::string  filename_to_write;
 	std::fstream stream;
 
@@ -328,11 +307,7 @@ private:
 
 	bool export_ply_data(std::string object_file_name, hex_surface_object_data_class &hex_surface_object_data, bool notification, bool export_colors) {
 		if (!open_file_stream(object_file_name)) {
-			//	qInfo().noquote() << "ERROR: Export object data \n"
-			//		"Failed to open file \n" + object_file_name +
-			//		"to write to.\n";
-
-				//vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n%s\nto write to", object_file_name.c_str());
+			//vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n%s\nto write to", object_file_name.c_str());
 			std::string str = "export point cloud object ERROR:\n Failed to open file \n" + object_file_name + "\nto write to.";
 			vwDialogs::message_box("export_node", str.c_str());
 			return false;
@@ -373,7 +348,7 @@ private:
 		last_hex_export_index++;
 		//hex_surface_element_data_type red_value = 255, green_value = 255, blue_value = 255, hex_surface_value = 255;
 		hex_surface_data_type  hex_surface_value = 0.0;
-		//for (hex_surface_index = first_hex_surface_export_index; hex_surface_index < last_hex_surface_export_index; hex_surface_index++) {
+
 		for (hex_index = 0; hex_index < number_hexes_to_export; hex_index++) {
 			//if (export_colors){
 			//	red_value   = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::red,   hex_surface_index);
@@ -381,7 +356,6 @@ private:
 			//	blue_value  = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::blue,  hex_surface_index);
 			//}
 
-			//hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::value, hex_surface_index);
 			hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum::value, hex_index);
 			//if (hex_surface_value != DEFAULT_INACTIVE_VALUE) {
 
@@ -422,48 +396,11 @@ private:
 	}
 
 	size_t number_export_hex_surface(hex_surface_object_data_class &hex_surface_object_data, index_data_type &first_hex_surface_export_index, index_data_type &last_hex_surface_export_index) {
-		//size_t          number_hexs_to_export = 0, number_hexes = hex_surface_object_data.hex_surface_matrix_data.size();
-		//index_data_type hex_surface_index = 0;
-		//bool            first_hex_surface_index = true;
-
-		//first_hex_surface_export_index = 0;
-		//last_hex_surface_export_index  = 0;
-
-		//for (hex_surface_index = 0; hex_surface_index < number_hexes; hex_surface_index++) {
-		//	hex_surface_data_type hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum::value, hex_surface_index);
-
-		//	if (hex_surface_value != DEFAULT_INACTIVE_VALUE) {
-		//		if (first_hex_surface_index) {
-		//			first_hex_surface_export_index = hex_surface_index;
-		//			first_hex_surface_index = false;
-		//		}
-
-		//		last_hex_surface_export_index = hex_surface_index;
-
-		//		number_hexs_to_export += 1;
-		//	}
-		//}
-
-		//return number_hexs_to_export;
-
 		return hex_surface_object_data.hex_surface_matrix_data.size();
 	}
 
 	//  --------------- END Export Voxel surface2 ply------------------------
-/*
-	index_data_type get_vertex_index(QVector<surface_vertices_struct_type> &surface_vertices, index_data_type hex_surface_index) {
-		size_t i, number_vertices = surface_vertices.size();
 
-		for (i = 0; i < number_vertices; i++) {
-			if (surface_vertices[i].hex_surface_index == hex_surface_index) {
-				return surface_vertices[i].vertex_id;
-				break;
-			}
-		}
-
-		return -1;
-	}
-*/
 	//  --------------- EXPORT HEX SURFACE FACES PLY ------------------------
 
 	bool export_hex_surface(std::string file_pathname, hex_surface_object_data_class &hex_surface_object_data) {
@@ -481,12 +418,7 @@ private:
 
 	bool export_hex_surface_face_ply_data(std::string object_file_name, hex_surface_object_data_class &hex_surface_object_data, bool notification = true) {
 		if (!open_file_stream(object_file_name)) {
-			//qInfo().noquote() << "ERROR: Export object data \n"
-			//	"Failed to open file \n" + object_file_name +
-			//	"to write to.\n";
-
 			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n % s\nto write to\n", object_file_name.c_str());
-
 			return false;
 		}
 
@@ -506,13 +438,12 @@ private:
 		index_data_type first_hex_surface_export_index, last_hex_surface_export_index;
 
 		size_t number_vertices_to_export = hex_surface_object_data.hex_surface_matrix_data.size();
-		//size_t number_vertex_normals_to_export = hex_surface_face_data.normals.size();
 		size_t number_faces_to_export = get_number_hex_surface_faces_to_export(hex_surface_object_data);
 
-		//if (number_vertices_to_export != number_vertex_normals_to_export) {
-		//	QMessageBox::information(NULL, "export_node", "ERROR : Number of vertices do not match number vertex normals to export.\n Voxel surface expor aborted.", QMessageBox::Ok);
-		//	return false;
-		//}
+//if (number_vertices_to_export != number_vertex_normals_to_export) {
+//	QMessageBox::information(NULL, "export_node", "ERROR : Number of vertices do not match number vertex normals to export.\n Voxel surface expor aborted.", QMessageBox::Ok);
+//	return false;
+//}
 
 		create_hex_face_ply_header(number_vertices_to_export, number_faces_to_export);
 
@@ -540,8 +471,6 @@ private:
 	}
 
 	size_t get_number_hex_surface_faces_to_export(hex_surface_object_data_class &hex_surface_object_data) {
-		//size_t number_vertices_to_export = hex_surface_object_data.hex_surface_matrix_data.size();
-
 		size_t x_dim = hex_surface_object_data.grid_dimension.x;
 		size_t y_dim = hex_surface_object_data.grid_dimension.y;
 
@@ -598,14 +527,9 @@ private:
 					}
 					stream << "3 " << n - x_dim + 1 << " " << n << " " << n - x_dim << endl;
 				}
-
 				n++;
 			}
-
-
 		}
-
-
 	}
 
 };

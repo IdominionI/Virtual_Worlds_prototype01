@@ -3,6 +3,12 @@
 #include <string>
 #include <vector>
 
+/*
+	Structures and definitions that define the parameters
+	and variables used to generate a hexagonal 2d surface 
+	and export/import the generation parameter data.
+*/
+
 struct hex_surface_generator_parameter_variable_struct_type {
 	std::string variable_name;
 	float   value;

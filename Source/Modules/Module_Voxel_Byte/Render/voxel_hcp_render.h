@@ -17,6 +17,20 @@
 
 #include "../Voxel_hcp_object/voxel_hcp_object.h"
 
+/*
+			HCP voxel volume Render Class
+
+	This class mamages the generation and deletion of the shader program
+	that is to be used to display the 3D HCP voxel volume that an instance
+	of this class is asociated with.
+
+	The user selects through the application the files that contain the
+	glsl code to be compiled and when an update to the shader program is
+	called, a new shader program is compiled, and if successful, the older
+	shader progrmam is destroyed, and the new shader program assigned to
+	the hex surface object render variable.
+*/
+
 class voxel_hcp_render_class {
 public:
 	voxel_hcp_render_class() {}
@@ -53,7 +67,7 @@ public:
 		entity_render_object->scene_graph_object.scene_object_class.geometry = voxel_hcp_cloud;
 		entity_render_object->scene_graph_object.scene_object_class.geometry->init();
 
-		define_shader_variables(entity_render_object);
+		define_shader_variables(entity_render_object);// Is this needed ??????
 
 		if (!define_initial_shader_program(entity_render_object, voxel_hcp_object)) return false;
 
@@ -145,8 +159,8 @@ public:
 			return false;
 		}
 
-		//printf("VERTEX SOURCE \n%s END VERTEX SOURCE\n",vw_vertex_shader.shader_code.c_str());
-		//printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
+//printf("VERTEX SOURCE \n%s END VERTEX SOURCE\n",vw_vertex_shader.shader_code.c_str());
+//printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
 
 		// Copile the OpenGL shader and store the id reference to it to be used
 		//shader_db_manager.remove_shader_program(entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);

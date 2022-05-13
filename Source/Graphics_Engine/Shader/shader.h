@@ -2,11 +2,23 @@
 
 #include "../Common/pch.h"
 
-// Utitlity class to load, compile and attach a vertex- and fragment shader to a program
-// NOTE: Absolutly critical that all datatypes to openGL shader compilaions are of type
-//       GLuint or there are problems that can arise such as not being able to change
-//       the shader program in a hot reload. Crazy openGL that uses numbers insead of
-//       pointers and makes things all that more diffucult.
+/*
+						Shader Class
+ 
+	Class to load, compile and attach a vertex, geometry and fragment shader to a program
+	and to define and assign glsl unifor shader variables to a shader program of a given
+	shader program id.
+
+	If a compilation of a shader program fails, the compilation error log is stored in the
+	string variable compile_log that can be referenced by the calling function.
+	
+	NOTE: Absolutly critical that all datatypes to openGL shader compilaions are of type
+		  GLuint or there are problems that can arise such as not being able to change
+          the shader program in a hot reload. Crazy openGL that uses numbers insead of
+          pointers and makes things all that more diffucult.
+*/
+
+
 class shader_class
 {
 public:

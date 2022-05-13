@@ -7,6 +7,23 @@
 #include "scene_graph_object.h"
 
 /*
+				Scene Node Class
+
+	Class that defines a data structure to define 
+	the storage node data element of a scene object
+	that can be of any type, and manage the nodes
+	data.
+
+	The original data structure model was to be of a
+	tree type structure with parent child realtionship,
+	but problems beyond ability to solve downgraded the
+	data storage model to a C++ vector list. Thus some 
+	of the code may be redundant and not needed but kept
+	with the view it may be needed at some time.
+*/
+
+
+/*
 	failed to debug why in original tree model of scene graph the scene_node_entity_id 
 	caused rendering geometry to be found to a null value and crash the app despite tests
 	that data was defined correctly on setup.

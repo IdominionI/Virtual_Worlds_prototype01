@@ -14,18 +14,26 @@
 #include "../../Hex_surface_object/hex_surface_object.h"
 #include "../../Kernal/hex_surface_function_import_export.h"
 
+/*
+			Hex Surface shader widget class
+
+	This class widget defines an ImGui widget and child widgets
+	that are used to define the parameters and shader variables
+	required to display a 2D hexagonal surface.
+
+	This class widget has controls to change the display of the
+	2D hexagonal surface on the computer screen in incremental 
+	steps by changing the shader variable values according to 
+	the settings that the user defines for each shader variable.
+*/
+
 class hex_surface_shaders_widget_class {
 public:
-	//hex_shaders_widget_class() {}
-	//~hex_shaders_widget_class() {}
-
 	shader_parameters_struct_type *hex_surface_shader_parameters = NULL;
 	shader_variables_widget_class  shader_variables_widget;
 	log_panel_class               *log_panel = NULL;
 
-	//bool animate_shaders             = false;
-
-	id_type                   current_selected_enity_id   = -1;   // entity id of the selected entity to display/modify
+	id_type                   current_selected_enity_id     = -1;   // entity id of the selected entity to display/modify
 	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
 	scene_manager_class      *scene_manager = NULL;
@@ -52,7 +60,7 @@ public:
 		y_pos += 20;
 		text("Vertex  :", x_pos, y_pos);
 
-		//printf("voxel_shaders_widget_class 0000 %s.\n", hex_surface_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
+//printf("voxel_shaders_widget_class 0000 %s.\n", hex_surface_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
 		if (ex_button(hex_surface_shader_parameters->vertex_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20)) 
 			select_vertex_shader_file();
 
@@ -422,14 +430,3 @@ private:
 	}
 
 };
-
-
-//int value = 1,value2 = 5;
-
-//float fvalue = 1.0f, fvalue2 = 5.0;
-
-//integer_input_delta("###test", value, 2, 100.0f, 100.0f, 70.0f, ICON_FA_CARET_UP"###itest", ICON_FA_CARET_DOWN"###dtest");
-//integer_input_delta("###test2", value2, 4, 100.0f, 130.0f, 70.0f, ICON_FA_CARET_UP"###itest2", ICON_FA_CARET_DOWN"###dtest2");
-
-//float_input_delta("###ftest", fvalue, 0.4, 100.0f, 200.0f, 70.0f, ICON_FA_CARET_UP"###iftest", ICON_FA_CARET_DOWN"###dftest");
-//float_input_delta("###ftest2", fvalue2, 1.75, 100.0f, 230.0f, 70.0f, ICON_FA_CARET_UP"###iftest2", ICON_FA_CARET_DOWN"###dftest2");

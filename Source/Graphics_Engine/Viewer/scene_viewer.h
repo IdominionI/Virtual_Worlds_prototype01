@@ -18,6 +18,29 @@
 // !!!! THIS IS THE SAME CLASS AS THE vw_viewer class in Virtual Worlds QT !!!!
 // !!!! TO ACHEIVE THE SAME FUCNTIONALITY TO DRAW AND DISPLAY ALL OPENGL   !!!!
 // !!!! RENDERING FUNCTIONS AND CALLS.
+
+/*
+                   Scene Viewer Class
+
+    The Scene viewport Class that displays and renders the scene as
+    defined by the camera class object.
+
+    Within this scene viewer class the user intereacts with the scene
+    through the mouse and keyboard controls. Additional gpahic overlays
+    of cross hairs, camera information text and a navigational gimbal
+    is displayed through this class.
+
+    The navigational Gimbal is a small ImGui tool obtained from github
+    called imGuIZMO by Cedric Guillemet.
+
+    Note : class not complete and will have future updates applied.
+
+    This is a heavily modified and altered version of the viewport
+    rendering code that was in the JGL Demo project from which formed
+    the basis of this application.
+*/
+
+
 class scene_viewer_class
 {
 public:
@@ -44,9 +67,11 @@ public:
 
        scene_graph_manager = _scene_manager;
 
+       // Initialise key bindings
        user_bindings.set_default_key_press_bindings();
        user_bindings.set_default_mouse_bindings();
 
+       // Define a grid axis to be displayed
        viewer_grid.scene_graph_manager = scene_graph_manager;
        viewer_grid.initialise();
     }
@@ -97,7 +122,7 @@ public:
         ImGuiContext* g = ImGui::GetCurrentContext();
         ImGuiWindow* window = g->CurrentWindow;
 
-        if (display_crosshairs) {
+        if (display_crosshairs) {// Draw crosshairs at center of viewport 
             auto draw = ImGui::GetForegroundDrawList(window->Viewport);
 
             ImVec2 p1 = { window->DC.CursorPos.x + size.x / 2 - 7, window->DC.CursorPos.y + size.y / 2 };
@@ -111,7 +136,7 @@ public:
 
         //draw->AddCircle(ImVec2(1920 / 2, 1080 / 2), 6, IM_COL32(255, 0, 0, 255), 100, 0.0f);
         
-        if (display_camera_info) {
+        if (display_camera_info) {// Display an overlay on viewport of camera informantion
             ImVec2 p1 = { window->DC.CursorPos.x + 5, window->DC.CursorPos.y + size.y - 110 };
             ImGui::SetNextWindowPos(p1, ImGuiCond_Always, { 0.0f,0.0f });
 
@@ -143,7 +168,7 @@ public:
             ImGui::End();
         }
 
-        if (display_gimbal) {
+        if (display_gimbal) {// Display an overlay on viewport of navigation gimbal
              ImVec2 p2 = { window->DC.CursorPos.x + size.x / 2.0f - 50.0f , window->DC.CursorPos.y + size.y - 120.0f };
             ImGui::SetNextWindowPos(p2, ImGuiCond_Always, { 0.0f,0.0f });
             ImGui::SetNextWindowBgAlpha(0.1f); // Transparent background
@@ -266,11 +291,9 @@ private:
 
     ImGuiWindowFlags overlay_window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 
+    light_object_class *default_light = NULL;
 
-    
-    light_object_class                     *default_light = NULL;
-
-    user_binding_class user_bindings;
+    user_binding_class  user_bindings;
 
 
  

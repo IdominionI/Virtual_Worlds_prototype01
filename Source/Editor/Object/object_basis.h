@@ -1,25 +1,22 @@
 #pragma once
 
-//#include <QVector>
-//#include <QString>
-
 #include "../Common/definitions.h"
+
+/*
+					OBJECT BASIS
+
+	A basis class of common attributes, parameters etd
+	that all entity objects must have and thus inherit
+*/
+
 
 class object_basis_class {
 public:
 
-	object_id_type  	object_id = 0;
+	object_id_type  	object_id          = 0;
 	category_id_type	object_category_id = 0;
-	name_type			object_name = "object";
+	name_type			object_name        = "object";
 	description_type	object_description = "";
-
-	//vertex_data_type            local_location;
-	//vertex_data_type            world_location;
-	//direction_vector_data_type  forward_normal;
-	//rotation_data_type          local_rotation;
-
-	//bool						hide_object     = false;
-	//bool						object_editable = false;
 
 	object_basis_class() {
 	}

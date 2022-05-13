@@ -7,6 +7,14 @@
 
 #include "../../Voxel_hcp_object/DataTypes/dt_voxel_automata.h"
 
+/*
+			HCP Voxel cellula automata rules widget class
+
+	This class widget defines an ImGui widget that is used to define
+	a set of cellula automata rules that the hcp voxel volume matrix
+	model can be subjected to perform.
+*/
+
 class hcp_automata_rules_widget_class {
 public:
 	hcp_automata_rules_widget_class() {
@@ -15,7 +23,6 @@ public:
 	~hcp_automata_rules_widget_class() {
 	}
 
-	//int current_selected_var_type_id = -1;
 	int current_selected_var_id      = -1;
 
 
@@ -43,9 +50,8 @@ public:
 			std::string id_prefix = "###vaur"; std::string w_id = ""; std::string w_id2 = "";
 
 			if (ImGui::IsItemClicked() || ImGui::IsItemHovered()) {
-				//current_selected_var_type_id = real_var_type_id;
 				current_selected_var_id = j;
-				//printf("display_nodes :: entity selected: %i  \n", current_selected_node_id); //this is the group
+//printf("display_nodes :: entity selected: %i  \n", current_selected_node_id); //this is the group
 			}
 
 			
@@ -57,7 +63,7 @@ public:
 			if (ImGui::InputText(w_id.c_str(), rule_name, 20, ImGuiInputTextFlags_CallbackCharFilter, Input_Filters::name)) automata_rule->name = rule_name;
 			ImGui::SameLine(); w_id = "Neighbour Rules" + id_prefix + std::to_string(j * 20 + 1);
 			if (ImGui::Button(w_id.c_str(), { 130,20 })) {
-printf("Rule button pressed\n");
+//printf("Rule button pressed\n");
 				w_id = id_prefix + std::to_string(j * 20+12);
 				ImGui::OpenPopup(w_id.c_str());
 			}
@@ -112,13 +118,11 @@ printf("Rule button pressed\n");
 					y_pos += 30;
 					text("Lower Rule      Upper Rule", 50, y_pos);
 					for (int i = 0; i < NUMBER_HCP_NEIGHBOURS + 1; i++) {
-						///hcp_automata_neighbour_rule_condition_struct_type hcp_automata_neighbour_rule_condition = 
+						
 						if (i == 3 || i == 9) ImGui::Separator();
-						//if (i == 12) { 
-						//	ImGui::Text("Voxel Self Rule"); 
-						//}
-						
-						
+//if (i == 12) { 
+//	ImGui::Text("Voxel Self Rule"); 
+//}
 
 						if(i< NUMBER_HCP_NEIGHBOURS){
 							ImGui::Text("%d", i);
@@ -214,16 +218,11 @@ printf("Rule button pressed\n");
 							}
 							// *************************************************************************
 							//  -------- Combo box to select lower rule condition
-
-							//const char* lower_rule_items[] = { "-", "<", "<=" };// This cannot be defined outside this function	
-
 							ImGui::SameLine(); ImGui::SetCursorPosY(ypos - t_height - b_height - 5); r_id = rid_prefix + std::to_string(i * 10 + 4); ImGui::SetNextItemWidth(50);
 							
 							ImGui::Combo(r_id.c_str(), &self_lower_rule, &Funcs::ItemGetter, lower_rule_items, IM_ARRAYSIZE(lower_rule_items));
 
 							ImGui::SameLine(); ImGui::Text(" VV ");
-
-							//const char* upper_rule_items[] = { "-", "=", "!=","<","<="};// This cannot be defined outside this function	
 
 							ImGui::SameLine(); r_id = rid_prefix + std::to_string(i * 10 + 5); ImGui::SetNextItemWidth(50);
 
@@ -388,15 +387,11 @@ printf("Rule button pressed\n");
 			ImGui::Checkbox(w_id.c_str(), &automata_rule->active_rule);
 
 		}
-		//ImGui::TreePop();
 
 		if (current_selected_var_id > -1) {
 			//printf("current_selected_var_id : %i\n", current_selected_var_id);
 			if (ImGui::BeginPopupContextWindow("vautosr1", 1, true)) {
-				//if (ImGui::BeginMenu("Delete Variable")) {
 				if (ImGui::MenuItem("Delete Rule")) delete_rule(current_selected_var_id, automata_rules);
-				//	ImGui::EndMenu();
-				//};
 				ImGui::EndPopup();// Root
 			}
 		}
@@ -409,7 +404,6 @@ printf("Rule button pressed\n");
 		}
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
-			//current_selected_var_type_id = -1;
 			current_selected_var_id = -1;
 		}
 
@@ -418,7 +412,7 @@ printf("Rule button pressed\n");
 	}
 
 	void add_rule(std::vector<voxel_hcp_automata_byte_rule_struct_type> &automata_rules) {
-		//printf("in add variabel %i\n", var_type_id);
+//printf("in add variabel %i\n", var_type_id);
 
 		voxel_hcp_automata_byte_rule_struct_type automata_rule;
 		automata_rule.name += std::to_string(automata_rules.size());
@@ -427,7 +421,7 @@ printf("Rule button pressed\n");
 	}
 
 	void delete_rule(int var_id, std::vector<voxel_hcp_automata_byte_rule_struct_type> &automata_rules) {
-		//printf("in delete variabel %i : %i\n", var_type_id, var_id);
+//printf("in delete variabel %i : %i\n", var_type_id, var_id);
 
 		automata_rules.erase(automata_rules.begin() + var_id);
 	}

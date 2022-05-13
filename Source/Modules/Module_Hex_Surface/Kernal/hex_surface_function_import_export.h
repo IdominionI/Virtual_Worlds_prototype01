@@ -9,7 +9,6 @@
 
 #include <Source/Graphics_Engine/Shader/shader_parameters.h>
 #include "../Hex_surface_object/DataTypes/dt_hex_surface_generator.h"
-//#include "../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 
 #define OVER_WRITE_FUNCTION_FILE    100
 #define READ_FUNCTION_FILE          101
@@ -95,13 +94,10 @@ public:
 		stream << hex_surface_generator_parameters.x_end   << ENDL;
 		stream << hex_surface_generator_parameters.y_start << ENDL;
 		stream << hex_surface_generator_parameters.y_end   << ENDL;
-		//stream << hex_surface_generator_parameters.z_start << ENDL;
-		//stream << hex_surface_generator_parameters.z_end   << ENDL;
 
 		stream << hex_surface_generator_parameters.invocation << ENDL;
 
 		stream << hex_surface_generator_parameters.resolution_step      << ENDL;
-		//stream << hex_surface_generator_parameters.generation_threshold << ENDL;
 
 		stream << hex_surface_generator_parameters.min_surface_value << ENDL;
 		stream << hex_surface_generator_parameters.max_surface_value << ENDL;
@@ -201,13 +197,10 @@ public:
 		generator_parameters.x_end   = stof(lines[line_number]); line_number++;
 		generator_parameters.y_start = stof(lines[line_number]); line_number++;
 		generator_parameters.y_end   = stof(lines[line_number]); line_number++;
-		//generator_parameters.z_start = stof(lines[line_number]); line_number++;
-		//generator_parameters.z_end   = stof(lines[line_number]); line_number++;
 
 		generator_parameters.invocation = stoi(lines[line_number]); line_number++;
 
 		generator_parameters.resolution_step      = stof(lines[line_number]); line_number++;
-		//generator_parameters.generation_threshold = stof(lines[line_number]); line_number++;
 
 		generator_parameters.min_surface_value    = stof(lines[line_number]); line_number++;
 		generator_parameters.max_surface_value    = stof(lines[line_number]); line_number++;

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <imgui.h>
 
 // Following color definitions as defined by specification given by Scalable Vector Graphics

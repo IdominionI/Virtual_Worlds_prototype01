@@ -1,20 +1,6 @@
 #pragma once
 
-//#include <QFile>
-//#include <QTextStream>
-//
-//#include <std::string>
-//#include <QPoint>
-//
-//#include <QMessageBox>
-
 #include "hex_surface_object.h"
-
-//#include <VW_Graphics/Scene_Graph/Objects/vw_object_group.h>
-//
-//#include <Source/Editor/Scene/vw_scene.h>
-//#include <Source/Editor/Viewer/vw_editor_viewer.h>
-//#include <Source/Editor/Import_Export/vw_import_export_parameters.h>
 
 #include <Source/Editor/Tools/dialogs.h>
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
@@ -40,16 +26,6 @@
 
 class hex_surface_import_export_class {
 public:
-	//QFile       file;
-	//std::string     filename_to_write;
-	//QTextStream stream;
-
-	//log_panel_class       *log_widget = NULL;
-	//log_display_struct_type log_display;
-
-	//int line_number = 0;
-	//std::stringList lines;
-
 	int line_number = 0;
 	std::vector<std::string> lines;
 
@@ -118,46 +94,6 @@ public:
 	}
 
 	// IMPORT FUNCTIONS
-/*
-	bool import_hex_surface_object(vw_editor_viewer_class *fp_viewer, id_type object_group_id,entity_class &entity) {
-		if (fp_viewer == NULL) {
-			if (log_widget != NULL) {
-				log_widget->log_message(log_display, log_message_type_enum_type::error, "Unable to import voxel object: The display viewer is undefined");
-			}
-			return false;
-		}
-
-		QFileDialog file_dialog;
-		std::string file_pathname;
-
-		file_pathname = file_dialog.getOpenFileName(NULL, "Import hex surface object", "./", "Voxel object (*.vwho)");
-//QMessageBox::information(NULL, "", file_pathname, QMessageBox::Ok);
-
-		if (file_pathname.size() == 0) {
-			QMessageBox::information(NULL, "", "No file name defined to import data from \n Import Generated Function aborted", QMessageBox::Ok);
-			return false;
-		}
-
-		std::string hex_surface_object_string;
-
-		QFile hex_surface_object_file(file_pathname);
-
-		if (!hex_surface_object_file.open(QFile::ReadOnly)) {
-			QMessageBox::information(NULL, "Import voxel object", "Import voxel object ERROR : \n Could not find/read hex surface object defined in file \n" + file_pathname, QMessageBox::Ok);
-			return false;
-		}
-
-		QTextStream working_model(&hex_surface_object_file);
-		hex_surface_object_string = working_model.readAll();
-
-		lines       = hex_surface_object_string.split('\n');// Create a list of strings for each line in the expression code
-		line_number = 0;
-
-		return read_hex_surface_object_file(fp_viewer, object_group_id,entity);
-
-		// !!!!!!!!!!!!!!!! EITHER HERE OR IN read_hex_surface_object_file ADD THE DATA TO THE SCENE !!!!!!!!!!!!!!!!!
-	}
-*/
 
 	// EXPORT FUNCTIONS
 
@@ -191,9 +127,6 @@ private:
 		stream << hex_surface_object->object_description   << endl;
 		stream << category                                 << endl;
 
-//		stream << hex_surface_object->active_object      << endl;
-//		stream << hex_surface_object->display_hex_surface_object_as_points << endl;
-
 		stream << DATA_BLOCK_END << endl;
 
 		return true;
@@ -215,13 +148,10 @@ private:
 		stream << hex_surface_generator_parameters.x_end   << endl;
 		stream << hex_surface_generator_parameters.y_start << endl;
 		stream << hex_surface_generator_parameters.y_end   << endl;
-		//stream << hex_surface_generator_parameters.z_start << endl;
-		//stream << hex_surface_generator_parameters.z_end   << endl;
 
 		stream << hex_surface_generator_parameters.invocation << endl;
 
 		stream << hex_surface_generator_parameters.resolution_step      << endl;
-		//stream << hex_surface_generator_parameters.generation_threshold << endl;
 
 		stream << hex_surface_generator_parameters.min_surface_value << endl;
 		stream << hex_surface_generator_parameters.max_surface_value << endl;
@@ -261,8 +191,6 @@ private:
 		stream << BOOL_VARIABLE_BLOCK_END << endl;
 
 		stream << DATA_BLOCK_END << endl;
-
-		//close_file_stream();
 
 		return true;
 	}
@@ -398,51 +326,22 @@ private:
 		}
 
 		stream << DATA_BLOCK_START << endl;
-/*
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname   << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name       << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_pathname   << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_name       << endl;
-
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_pathname << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name << endl;
-
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name << endl;
-
-		stream << render_object_ogl_shader->default_vertex_shader.shader_parameters.vertex_shader_file_pathname << endl;
-		stream << render_object_ogl_shader->default_vertex_shader.shader_parameters.vertex_shader_file_name     << endl;
-
-		stream << render_object_ogl_shader->default_geometry_shader.shader_parameters.geometry_shader_file_pathname << endl;
-		stream << render_object_ogl_shader->default_geometry_shader.shader_parameters.geometry_shader_file_name << endl;
-
-		stream << render_object_ogl_shader->default_geometry_point_shader.shader_parameters.point_geometry_shader_file_pathname << endl;
-		stream << render_object_ogl_shader->default_geometry_point_shader.shader_parameters.point_geometry_shader_file_name << endl;
-
-		stream << render_object_ogl_shader->default_fragment_shader.shader_parameters.fragment_shader_file_pathname << endl;
-		stream << render_object_ogl_shader->default_fragment_shader.shader_parameters.fragment_shader_file_name << endl;
-*/
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_vertex_shader_file_pathname << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_geometry_shader_file_pathname << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_name << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_point_shader_file_pathname << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_fragment_shader_file_pathname << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_pathname << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname << endl;
 
-
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_vertex_shader << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_point_shader << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_geometry_shader << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_fragment_shader << endl;
 
 		stream << DATA_BLOCK_END << endl;
@@ -458,8 +357,6 @@ public:
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_voxel_object_file 00");
 //}
 
-		//group_object.object_type = object_type_enum::voxel;
-		//  hex_surface_object_class *hex_surface_object = new   hex_surface_object_class(log_widget, fp_viewer->viewer_surface);
 //QMessageBox::information(NULL, "Import voxel object", "read_voxel_object_file 02  " + std::string::number(line_number), QMessageBox::Ok);
 		if (hex_surface_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Hex surface object to import data into is undefined\n");
@@ -495,9 +392,6 @@ public:
 //}
 
 		// !!!!!!!!!!!!!!!!!!!!! FOR FUTURE MODIFICATION AND UPGRADE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-		// if(category == HCP_VOXEL_CATEGORY) read_hcp_voxel_component_data();
-		// other entity categories 
 
 //if (log_widget != NULL) {
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_voxel_object_file 01B");
@@ -547,132 +441,7 @@ public:
 
 		return true;
 	}
-/*
-	bool read_hex_surface_object_group_file(vw_editor_viewer_class *fp_viewer,vw_object_group_class *object_group) {
-		// Find the line or index number in the list of lines of the expression that has the expression variable list defined 
-		while (!lines[line_number].contains(OBJECT_GROUP_BLOCK_START))
-			line_number++;
 
-		// If have not found a defined expression return an error
-		if (line_number >= lines.size()) {
-//QMessageBox::information(NULL, "Import voxel object", "Import voxel generation model ERROR : \n Could not find start block to import parameter data.", QMessageBox::Ok);
-			if (log_widget != NULL) {
-				log_display.dialog = true;
-				log_widget->log_message(log_display, log_message_type_enum_type::error, "Could not find object start block to import parameter data.");
-			}
-			return false;
-		}
-
-		line_number++;
-		if (lines.size() < line_number + 5) {
-//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n missing parameter data for filename and matrix definitions.", QMessageBox::Ok);
-			if (log_widget != NULL) {
-				log_display.dialog = true;
-				log_widget->log_message(log_display, log_message_type_enum_type::error, "Object data file is incorrectly defined. Cannot load file : voxel general data");
-			}
-			return false;
-		}
-
-//if (log_widget != NULL) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 01 " + std::string::number(line_number) + " : " + lines[line_number]);
-//}
-
-		std::string line = lines[line_number];  line.truncate(line.size() - 1); // get rid of end of line char
-		object_group->object_group_name        = line;         line_number++;
-		line = lines[line_number];  line.truncate(line.size() - 1); // get rid of end of line char
-		object_group->object_group_description = line;         line_number++;
-
-//if (log_widget != NULL) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 02 " + std::string::number(line_number) + " : " + lines[line_number]);
-//}
-
-		while(!lines[line_number].contains(OBJECT_GROUP_BLOCK_END)){
-//QMessageBox::information(NULL, "Import voxel object", "read_hex_surface_object_group_file 00  " + std::string::number(line_number), QMessageBox::Ok);
-			entity_class entity;
-
-			if (!read_hex_surface_object_file(fp_viewer, object_group->object_group_id, entity)) {
-				// error message
-				//delete entities
-				//delete group
-				return false;
-			}
-
-//QMessageBox::information(NULL, "Import voxel object", "hcp_voxel_import_export_class:: read_hex_surface_object_group_file 01  " + std::string::number(entity.entity_id), QMessageBox::Ok);
-
-			object_group->add_object_to_group(entity.entity_id);
-		
-			line_number++;
-//QMessageBox::information(NULL, "Import voxel object", "read_hex_surface_object_group_file 01  " + std::string::number(line_number) + " : "  + lines[line_number], QMessageBox::Ok);
-//if (log_widget != NULL && line_number < lines.size()) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 03 " + std::string::number(line_number) + " : " + lines[line_number]);
-//}else
-//log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 03 " + std::string::number(line_number));
-
-			if (line_number >= lines.size()) {
-				if (log_widget != NULL) {
-					log_display.dialog = true;
-					log_widget->log_message(log_display, log_message_type_enum_type::error, "importing group object data has ill defined data. Reached unexpeced end of data file while importing object group.");
-				}
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	bool read_virtual_world_scene_file(vw_editor_viewer_class *fp_viewer,vw_scene_class *scene,vw_object_groups_class &vw_object_groups) {
-		while (!lines[line_number].contains(SCENE_BLOCK_START))
-			line_number++;
-
-		// If have not found a defined expression return an error
-		if (line_number >= lines.size()) {
-			if (log_widget != NULL) {
-				log_display.dialog = true;
-				log_widget->log_message(log_display, log_message_type_enum_type::error, "Could not find scene start block to import parameter data.");
-			}
-			return false;
-		}
-
-		// If have scene data to be imported it would go here. Presently none reqiured as multiple scenes not implemented
-		line_number++;
-		while (!lines[line_number].contains(SCENE_BLOCK_END)) {
-//QMessageBox::information(NULL, "Import voxel object", "read_virtual_world_scene_file 00  " + std::string::number(line_number), QMessageBox::Ok);
-
-			vw_object_group_class scene_object_group = scene->add_new_object_group();
-
-			if (!read_hex_surface_object_group_file(fp_viewer ,&scene_object_group)) {
-				scene->clear_scene(); // this has problems that need to be fixed
-
-				vw_object_groups.object_groups.clear();
-//if (log_widget != NULL) {
-//	log_display.dialog = true;
-//	log_widget->log_message(log_display, log_message_type_enum_type::error, "Could not find scene start block to import parameter data.");
-//}
-				return false;
-			}
-
-			vw_object_groups.object_groups.push_back(scene_object_group);
-
-			line_number++;
-//QMessageBox::information(NULL, "Import voxel object", "read_virtual_world_scene_file 01  " + std::string::number(line_number) + " : "  + lines[line_number], QMessageBox::Ok);
-//if (log_widget != NULL && line_number < lines.size()) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 03 " + std::string::number(line_number) + " : " + lines[line_number]);
-//}
-//else
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in read_hex_surface_object_group_file 03 " + std::string::number(line_number));
-
-			if (line_number >= lines.size()) {
-				if (log_widget != NULL) {
-					log_display.dialog = true;
-					log_widget->log_message(log_display, log_message_type_enum_type::error, "importing scene data has ill defined data. Reached unexpeced end of data file while importing virtual world scene.");
-				}
-				return false;
-			}
-		}
-
-		return true;
-	}
-*/
 private:
 	bool define_hex_surface_general_data(hex_surface_object_class *hex_surface_object, id_type &category) {
 		line_number++;
@@ -698,10 +467,6 @@ private:
 
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size()); // get rid of end of line char
 		category = std::stoi(line); line_number++;
-
-
-//		hex_surface_object->active_object                        = lines[line_number].toInt(); line_number++;
-//		hex_surface_object->display_hex_surface_object_as_points = lines[line_number].toInt(); line_number++;
 
 
 //if (log_widget != NULL) {
@@ -735,14 +500,6 @@ private:
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name = line;
 
-		//line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_pathname = line;
-
-		//line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_name = line;
-
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_point_shader_file_pathname = line;
@@ -766,10 +523,6 @@ private:
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname = line;
 
-		//line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.geometry_shader_file_pathname = line;
-
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname = line;
@@ -788,10 +541,6 @@ private:
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_point_shader = stoi(line);
-
-		//line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_geometry_shader = stoi(line);
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
