@@ -114,12 +114,15 @@ public:
 		
 		y_pos += 30;
 		text("Voxel Scale", x_pos+130, y_pos);
-
+		
 		y_pos += 20;
-
 		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, voxel_scale_value, 50.0f)) {
 			update_voxel_size();// needs testing 
 		}
+
+		y_pos += 20;
+		text("Voxel Generattion Variables", x_pos + 45, y_pos);
+		y_pos += 20;
 
 		ImGui::BeginChild("outer_child", ImVec2(320,300.0f), true);
 

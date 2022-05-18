@@ -398,7 +398,7 @@ public:
 		else {
 			if (current_selected_var_id < 0)
 				if (ImGui::BeginPopupContextWindow("sr2", 1, true)) {
-					if (ImGui::MenuItem("Add Variable")) add_rule( automata_rules);
+					if (ImGui::MenuItem("Add Rule")) add_rule( automata_rules);
 					ImGui::EndPopup();// Root
 				}
 		}

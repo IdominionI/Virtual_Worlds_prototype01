@@ -118,6 +118,9 @@ public:
 			update_hex_size();// needs testing 
 		}
 
+		y_pos += 20;
+		text("Hex Generattion Variables", x_pos + 50, y_pos);
+
 		ImGui::BeginChild("outer_child", ImVec2(320,300.0f), true);
 
 			hex_surface_generator_variables_widget_class.variables_manager(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters);

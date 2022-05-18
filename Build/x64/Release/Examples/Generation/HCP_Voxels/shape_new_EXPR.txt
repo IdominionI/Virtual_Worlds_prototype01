@@ -1,0 +1,22 @@
+begin_function
+
+end_function
+
+begin_expression
+	
+	float x1 = x/10.0;
+	float y1 = y/10.0;
+	float z1 = z/10.0;
+
+	float w1 = x1*x1+y1*y1;
+
+	float v = w1*w1-x1*x1+y1*y1;
+
+	//if( v*v + z1*z1 - 0.01 <= 0.0){
+	if( v*v + z1*z1 - b/100 <= 0.0){
+		value = 1;
+	}else{
+		value = invalid_voxel_value;
+	}
+	
+end_expression

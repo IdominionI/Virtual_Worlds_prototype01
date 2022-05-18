@@ -1,0 +1,16 @@
+begin_function
+
+end_function
+
+begin_expression
+	
+	//float a = 5.0f;
+	//if((a*a-(x*x*b+y*y+z*z)) > 0){
+	if((a*a-(x*x+y*y+z*z)) > 0){
+		value = uint(abs(a*a- (x*x+y*y+z*z)));
+		//value = 0;
+	} else
+		//value = 1;
+		value = invalid_voxel_value;
+	
+end_expression

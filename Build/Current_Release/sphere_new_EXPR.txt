@@ -1,0 +1,16 @@
+begin_function
+
+end_function
+
+begin_expression
+	
+	if((a*a-(x*x+y*y+z*z)) > 0){
+		//value = uint(abs(a*a- (x*x+y*y+z*z)));
+		value = 1;
+		red   = 128;
+		green = 50;
+		blue  = 180;
+	} else
+		value = invalid_voxel_value;
+	
+end_expression
