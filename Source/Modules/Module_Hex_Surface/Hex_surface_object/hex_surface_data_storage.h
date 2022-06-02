@@ -39,12 +39,12 @@ typedef index_struct_type3 index_vector3;
 class hex_surface_object_data_class {
 public:
 
-	float	      hex_size   = 1.0f;
-	glm::vec2     grid_origin = { 0.0,0.0 };
+	float	      hex_size                      = 1.0f;
+	glm::vec2     grid_origin                   = { 0.0,0.0 };
 	glm::vec2     grid_coordinate_scale_factors = { 1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	index_vector3 grid_dimension     = { 0,0,0 };  // NEED TO CHANGE THIS
-	bool	      perfom_rounding_up   = true;
-	bool	      hex_surface_surface_volume = false;
+	index_vector3 grid_dimension                = { 0,0,0 };  // NEED TO CHANGE THIS
+	bool	      perfom_rounding_up            = true;
+	bool	      hex_surface_surface_volume    = false;
 
 	// Strange penomenom occurs that if have a class global variable within of exactly the same as below
 	// the code will compile without notice of a variable of the same name already defined, but there is an
@@ -306,7 +306,125 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		return hex_surface_matrix_coordinate_activation_status(hex_surface_matrix_data_index);
 	}
 
-protected:
+	// ++++++++++++++++++++ FUNCTIONS TO FIND HEX STORAGE INDEX LOCATIONS OF   +++++++++++++++++++++
+	// ++++++++++++++++++++    A CARTESIAN COORDINATE POINT P IN 2D SPACE      +++++++++++++++++++++
+
+	/*
+		Following code is to find which hex cell of a defined hex size, origin and dimensions
+		that a point P of Cartesian coordinate (x,y) is to occupy.
+
+		!!!!!!!!!!!!!! NOT YET FULLY TESTED !!!!!!!!!!!!!!!
+
+		Usage
+
+		//Get the index of the one dimensiona vector array that the point P of coordinate (x,y)
+		//is designated to be assigned to
+		hex_surface_index_data_type index = index_of_hex_cell_with_cartesian_coord(x,y);
+
+		if index > -1 then perform whatever task is required to assign a value to the vector array element
+		hex_surface_matrix_data[index];
+	*/
+
+	// Find the index of the one dimensional vertex vector array that a point P of cartesian coordinte
+	// (x,y) will be within the bounds of a 2D hegagon voxel cell.
+	hex_surface_index_data_type index_of_hex_cell_with_cartesian_coord(float x, float y) {
+		index_vector3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
+
+		if (cartesian_coord_within_grid_bounds(hex_coord))
+			return get_index_value(hex_coord.x, hex_coord.y, hex_coord.z);
+		else
+			return - 1;
+	}
+
+	// Determine if a point P of cartesian coordinte (x,y) is within the limits of
+	// the dimensions of the hexagonal grid that is stored in the computer memory
+	bool cartesian_coord_within_grid_bounds(float x, float y) {
+		index_vector3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
+
+		return cartesian_coord_within_grid_bounds(hex_coord);
+	}
+
+	bool cartesian_coord_within_grid_bounds(index_vector3 hex_coord) {
+		if (hex_coord.x < 0 || hex_coord.y < 0) return false;
+
+		if (hex_coord.y % 2 == 0)// even row
+			if (hex_coord.x > grid_dimension.x) return false;
+			else // odd row
+				if (hex_coord.x > grid_dimension.x - 1) return false;
+
+		if (hex_coord.y > grid_dimension.y) return false;
+
+		return true;
+	}
+	
+	// Obtain the hex grid index coordinates of the hex grid that a point P of cartesian coordinte
+	// (x,y) will be found to be within the bounds of a 2D hexgagon voxel cell.
+	index_vector3 hexagon_cell_coord_from_cartesian(float x, float y) {
+		float grid_radius = hex_size / 2.0;
+		float grid_height = grid_radius * (sqrt(3.0f));
+		float c           = grid_radius / (sqrt(3.0f));
+		
+printf("hexagon_cell_coord_from_cartesian 000 voxel_size : %f :grid_height %f : grid_radius %f : c %f \n", hex_size, grid_height, grid_radius,c);
+printf("hexagon_cell_coord_from_cartesian 111 grid_origin :x %f :y %f \n", grid_origin.x, grid_origin.y);
+
+		float grid_x = x - grid_origin.x;
+		float grid_y = y - grid_origin.y;
+
+printf("hexagon_cell_coord_from_cartesian 222 :x %f :y %f \n", grid_x, grid_y);
+
+		int row;
+		int column;
+
+		if (grid_y < -1.0 / sqrt(3.0))
+			row = (int)((grid_y - grid_height) / grid_height);
+		else
+			row = (int)(grid_y / grid_height);
+
+		bool row_is_odd = abs(row % 2) == 1;
+
+		if (row_is_odd)
+			column = (int)floor(grid_x / hex_size);
+		else
+			column = (int)floor((grid_x + grid_radius) / hex_size);
+
+printf("hexagon_cell_coord_from_cartesian 333 :row %i :col %i \n",row, column);
+		// Position of point relative to box it is in
+		float rel_y = grid_y - (row * grid_height);
+		float rel_x;
+
+		if (row_is_odd)
+			rel_x = (grid_x - ((column * hex_size) + grid_radius));
+		else
+			rel_x = grid_x - (column * hex_size);
+
+		float m = 1.0f / sqrt(3.0f);
+
+printf("hexagon_cell_coord_from_cartesian 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
+		// Work out if the point is above either of the hexagon's top edges
+		if (rel_y >= (m * rel_x + 2.0 * c) && rel_x < 0){ // LEFT edge
+printf("hexagon_cell_coord_from_cartesian 555 :row %i :col %i \n",row, column);
+			row++;
+			if (!row_is_odd)
+				column--;
+		} else {
+			if (rel_y >= (-m * rel_x) + 2.0 * c && rel_x >= 0) { // RIGHT edge
+printf("hexagon_cell_coord_from_cartesian 666 :row %i :col %i \n", row, column);
+				row++;
+				if (row_is_odd)
+					column++;
+			}
+		}
+
+		index_vector3 hex_coord;
+		hex_coord.x = column;
+		hex_coord.y = row;
+		hex_coord.z = 0;
+
+		return hex_coord;
+	}
+
+	// +++++++++++++++++++++++++++++++++++++++++
+
 private:
 	void create_hex_surface_grid(hex_surface_data_type volume_data_storage, size_t xdim, size_t ydim) {
 		if (!xdim || !ydim) return;

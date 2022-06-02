@@ -660,7 +660,8 @@ private:
 
 	bool export_voxel_surface2_obj_data(std::string object_file_name, voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data) {
 		if (!open_file_stream(object_file_name)) {
-			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n % s\nto write to", object_file_name.c_str());
+			std::string str = "export point cloud object ERROR:\n Failed to open file \n" + object_file_name + "\nto write to.";
+			vwDialogs::message_box("export_node", str.c_str());
 			return false;
 		}
 
@@ -901,7 +902,9 @@ private:
 
 	bool export_voxel_face_ply_data(std::string object_file_name, voxel_object_data_class &voxel_object_data, voxel_surface_face_class& voxel_face_data, bool notification) {
 		if (!open_file_stream(object_file_name)) {
-			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n %s\nto write to",object_file_name.c_str());
+			std::string str = "export point cloud object ERROR:\n Failed to open file\n" + object_file_name + "\nto write to";
+			vwDialogs::message_box("export_node", str.c_str());
+			//vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n %s\nto write to",object_file_name.c_str());
 			return false;
 		}
 
@@ -912,8 +915,10 @@ private:
 
 		close_file_stream();
 
-		if(notification)
-			vwDialogs::message_box("export_node", "Finished exporting voxel surface data to file %s\n", object_file_name.c_str());
+		if (notification) {
+			std::string str = "Finished exporting voxel surface data to file" + object_file_name;
+			vwDialogs::message_box("export_node", str.c_str());
+		}
 
 		return true;
 	}

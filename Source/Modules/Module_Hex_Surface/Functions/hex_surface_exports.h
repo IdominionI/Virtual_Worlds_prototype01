@@ -418,7 +418,8 @@ private:
 
 	bool export_hex_surface_face_ply_data(std::string object_file_name, hex_surface_object_data_class &hex_surface_object_data, bool notification = true) {
 		if (!open_file_stream(object_file_name)) {
-			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n % s\nto write to\n", object_file_name.c_str());
+			std::string str = "export point cloud hex surface object ERROR:\n Failed to open file \n" + object_file_name + "\nto write to.";
+			vwDialogs::message_box("export_node", str.c_str());
 			return false;
 		}
 
@@ -429,8 +430,11 @@ private:
 
 		close_file_stream();
 
-		if (notification)
-			vwDialogs::message_box("export_node", "Finished exporting hex surface surface data to file\n", object_file_name.c_str());
+		if (notification) {
+			std::string str = "Finished exporting hex surface surface data to file\n" + object_file_name;
+			vwDialogs::message_box("export_node", str.c_str());
+		}
+
 		return true;
 	}
 

@@ -215,12 +215,19 @@ printf("hex_surface_generation_widget_class :: execute_hex_surface_function 1111
 		// set voxel_generation object id to execute funtion data on
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters = hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters;
 		hex_surface_compute_generator.cloud = hex_surface_object_to_execute;
+
+// *************** test code only :: Delete when finished ***************************
+test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
+
 printf("hex_surface_generation_widget_class :: execute_hex_surface_function %s 2222\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname.c_str());
 		if (!hex_surface_compute_generator.generate_hex_surface_function()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Create hex surface function of %s failed.\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str());
 			return;
 		}
 printf("hex_surface_generation_widget_class :: execute_hex_surface_function 3333\n");
+
+// *************** test code only :: Delete when finished ***************************
+//test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
 
 		hex_surface_object_to_execute->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 printf("hex_surface_generation_widget_class :: execute_hex_surface_function 4444\n");
@@ -314,6 +321,34 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
 			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		}
+	}
+
+	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
+	void test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_data_class hex_surface_object_data) {
+		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
+		glm::vec2 points[10];
+
+		points[0] = { 6.95,-0.5 };
+		points[1] = { 6.95,-0.57 };
+		points[2] = { 6.95,-0.6 };
+		points[3] = { 7.05,0.5 };
+		points[4] = { 7.05,0.57 };
+		points[5] = { 7.05,0.6 };
+		points[6] = { 7.05,-.5 };
+		points[7] = { 7.05,-0.57 };
+		points[8] = { 7.05,-0.6 };
+		points[9] = { 6.95,-2.0 };
+
+		printf("test_hex_hexagon_cell_coord_from_cartesian()111\n");
+		printf("Origin : x %f : y %f \n", hex_surface_object_data.grid_origin.x, hex_surface_object_data.grid_origin.y);
+		printf("grid dim : x %i : y %i \n", hex_surface_object_data.grid_dimension.x, hex_surface_object_data.grid_dimension.y);
+		printf("hex size : %f\n", hex_surface_object_data.hex_size);
+
+		index_vector3 iv;
+		for (int i = 0; i < 10; i++) {
+			iv= hex_surface_object_data.hexagon_cell_coord_from_cartesian(points[i].x, points[i].y);
+			printf("point %i x : %f y : %f :: hexagon_cell_coord_from_cartesian  x : %i y : %i \n",i, points[i].x, points[i].y, iv.x, iv.y);
 		}
 	}
 

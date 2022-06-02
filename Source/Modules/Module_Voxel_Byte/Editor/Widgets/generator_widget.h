@@ -215,6 +215,10 @@ public:
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters = voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters;
 		voxel_generator.cloud = voxel_hcp_object_to_execute;
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function %s 2222\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_pathname.c_str());
+
+// *************** test code only :: Delete when finished ***************************
+test_voxel_cell_coord_from_cartesian(voxel_hcp_object_to_execute->voxel_object_data); // ***********
+
 		if (!voxel_generator.generate_voxel_function()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Create Voxel function of %s failed.\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name.c_str());
 			return;
@@ -299,6 +303,78 @@ public:
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		}
+	}
+
+	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
+	void test_voxel_cell_coord_from_cartesian(voxel_object_data_class voxel_object_data) {
+		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
+		glm::vec3 points[10];
+/*		// even level test
+		points[0] = { 7.05,1.0,0.0 };
+		points[1] = { 7.05,1.14,0.0 };
+		points[2] = { 7.05,1.2,0.0 };
+		points[3] = { 6.95,1.0,0.0 };
+		points[4] = { 6.95,1.14,0.0 };
+		points[5] = { 6.95,1.2,0.0 };
+//		points[6] = { 7.05,1.5,0.0 };
+//		points[7] = { 7.05,2.0,0.0 };
+//		points[8] = { 0.24,0.0 ,0.0 };
+//		points[9] = { 0.35,1.5 ,0.0 };
+		points[6] = { 6.95,-1.0,0.0 };
+		points[7] = { 6.95,-2.0,0.0 };
+		points[8] = { -0.24,0.0 ,0.0 };
+		points[9] = { -1.35,1.5 ,0.0 };
+*/
+/*		// odd level test
+		points[0] = { 7.55,0.53,1.5 };
+		points[1] = { 7.55,1.153,1.5 };
+		points[2] = { 7.55,1.6,1.5 };
+		points[3] = { 7.45,0.53,1.5 };
+		points[4] = { 7.45,1.153,1.5 };
+		points[5] = { 7.45,1.6,1.5 };
+//		points[6] = { 7.05,1.5 + 0.577,1.5 };
+//		points[7] = { 7.05,2.0 + 0.577,1.5 };
+//		points[8] = { 0.24,0.0 + 0.577 ,1.5 };
+//		points[9] = { 0.35,1.5 + 0.577 ,1.5 };
+		points[6] = { 6.95,-1.0,1.5 };
+		points[7] = { 6.95,-2.0,1.5 };
+		points[8] = { -0.24,0.0 ,1.5 };
+		points[9] = { -1.35,1.5 ,1.5 };
+*/
+/*		// even to odd level test
+		points[0] = { 7.05,0.0 , 0.5 };
+		points[1] = { 7.05,0.0 , 1.0 };
+		points[2] = { 7.05,0.0, 1.3 };
+		points[3] = { 7.00,0.05, 0.5 };
+		points[4] = { 7.00,0.05 , 1.0 };
+		points[5] = { 7.00,0.05 , 1.3 };
+		points[6] = { 6.95,0.0 , 0.5 };
+		points[7] = { 6.95,0.0 , 1.0 };
+		points[8] = { 6.95,0.0, 1.3 };
+		points[9] = { 6.95,0.0 , -1.3 };
+*/
+		// odd to even level test
+		points[0] = { 7.55,0.0 , 2.0 };
+		points[1] = { 7.55,0.0 , 2.5 };
+		points[2] = { 7.55,0.0, 2.6 };
+		points[3] = { 7.45,0.0, 2.0 };
+		points[4] = { 7.45,0.0 , 2.5 };
+		points[5] = { 7.45,0.0 , 2.6 };
+		points[6] = { 7.5,0.55 ,2.0 };
+		points[7] = { 7.5,0.55 , 2.5 };
+		points[8] = { 7.5,0.55, 2.6 };
+		points[9] = { 6.95,0.0 , -1.3 };
+
+		printf("test_voxel_cell_coord_from_cartesian()111\n");
+		printf("Origin : x %f : y %f : z %f\n", voxel_object_data.matrix_origin.x, voxel_object_data.matrix_origin.y, voxel_object_data.matrix_origin.z);
+		printf("grid dim : x %i : y %i : y %i \n", voxel_object_data.matrix_dimension.x, voxel_object_data.matrix_dimension.y, voxel_object_data.matrix_dimension.z);
+		printf("voxel size : %f\n", voxel_object_data.voxel_size);
+
+		index_vector iv;
+		for (int i = 0; i < 10; i++) {
+			iv= voxel_object_data.hcp_voxel_cell_coord_from_cartesian(points[i].x, points[i].y, points[i].z);
+			printf("point %i x : %f y : %f z : %f :: voxel_coord_from_cartesian  x : %i y : %i z %i\n",i, points[i].x, points[i].y, points[i].z, iv.x, iv.y,iv.z);
 		}
 	}
 
