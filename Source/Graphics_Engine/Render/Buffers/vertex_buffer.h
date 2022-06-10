@@ -23,7 +23,6 @@ class openGL_vertex_Index_buffer_class //: public vertex_index_buffer_class
 {
 public:
     openGL_vertex_Index_buffer_class() : mVBO{ 0 }, mVAO{ 0 }, mIBO{ 0 } {}
-    // openGL_vertex_Index_buffer_class() : vertex_index_buffer_class() {}
 
     void create_point_vertex_buffer(const std::vector<point_data_class>& vertices) {// need to change this data class
         glGenVertexArrays(1, &mVAO); //generate vertex array of n object names stored in index referenced by &mVAO: Not sure need this
@@ -62,10 +61,13 @@ public:
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(point_data_value_class), vertices.data(), GL_STATIC_DRAW);// Define buffer storage type, size, data to store and use
 
         glEnableVertexAttribArray(0); //use currently bound vertex array object for the operation of index 0
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(point_data_value_class), (void*)0);//define an array of generic vertex attribute data :: see parameter list at bottom
+        //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(point_data_value_class), (void*)0);//define an array of generic vertex attribute data :: see parameter list at bottom
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(point_data_value_class), (void*)0);//define an array of generic vertex attribute data :: see parameter list at bottom
 
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 1, GL_INT, GL_FALSE, sizeof(point_data_value_class), (void*)offsetof(point_data_value_class, mvalue));
+        // Cannot get this integer data definition to pass integer data into a vertex shader to work :: Usual opengl-glsl BS where no clue
+        // of what is going wrong, if anything, and how to fix it !!!!!!!
+        //glEnableVertexAttribArray(1);
+        //glVertexAttribPointer(1, 1, GL_INT, GL_FALSE, sizeof(point_data_value_class), (void*)offsetof(point_data_value_class, mvalue));
 
         glBindVertexArray(0);
 
@@ -88,9 +90,18 @@ public:
     }
 
     // -------------------------------------------------------------------------------------------
+/*
+    This funtion is not tested and going by inability to pass
+    an integer value to a shader, the same may apply for passing
+    a normal vector to a shader.
 
+    This function may not be necessary and is thus commented out
+*/
+/*
     void create_point_normal_vertex_buffer(const std::vector<point_vertex_data_class>& vertices) {
         // Generate buffers and store opengl index of the buffer to use later on in the variable &variable_name 
+        // Not tested
+
         glGenVertexArrays(1, &mVAO); //generate vertex array of n object names stored in index referenced by &mVAO
 
         glGenBuffers(1, &mVBO);
@@ -107,7 +118,7 @@ public:
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(point_vertex_data_class), (void*)offsetof(point_vertex_data_class, mNormal));
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 1, GL_INT, GL_FALSE, sizeof(point_data_value_class), (void*)offsetof(point_data_value_class, mvalue));
+        glVertexAttribPointer(1, 1, GL_INT, GL_FALSE, sizeof(point_vertex_data_class), (void*)offsetof(point_vertex_data_class, mvalue));
 
         glBindVertexArray(0);
     }
@@ -121,11 +132,12 @@ public:
         glDeleteBuffers(1, &mVBO);
         glDeleteVertexArrays(1, &mVAO);
     }
-
+*/
     // -------------------------------------------------------------------------------------------
-
     void create_point_normal_vertex_buffer(const std::vector<point_vertex_class>& vertices) {
-        // Generate buffers and store opengl index of the buffer to use later on in the variable &variable_name 
+        // Generate buffers and store opengl index of the buffer to use later on in the variable &variable_name
+        // Not tested
+
         glGenVertexArrays(1, &mVAO); //generate vertex array of n object names stored in index referenced by &mVAO
 
         glGenBuffers(1, &mVBO);
@@ -221,6 +233,7 @@ public:
 
         // the vertices as line loop
 //printf("draw_triangles_array %i\n", index_count);
+ 
         glDrawArrays(GL_TRIANGLES, 0, index_count);
 
         unbind();
@@ -229,7 +242,8 @@ public:
     virtual void draw_points(int index_count, int shader_program_id) {
         bind();
 //printf("draw_points %i\n", index_count);
-        glDrawArrays(GL_POINTS,0, index_count);
+       glDrawArrays(GL_POINTS,0, index_count);
+       // glDrawElements(GL_POINTS, index_count, GL_UNSIGNED_INT, nullptr); // this causes a crash
 
         unbind();
     }
@@ -246,6 +260,7 @@ protected:
     GLuint mVBO;// Storage id of vertex buffer object that stores geometry vertex data
     GLuint mVAO;// Storage id of vertex array object that stores geometry vertex data
     GLuint mIBO;// Storage id of vertex index buffer object that stores geometry vertex indices data for drawing triangles
+    //GLuint mDBO;// Storage id of vertex data buffer object that stores data for each vertex point // *****
 };
 
 

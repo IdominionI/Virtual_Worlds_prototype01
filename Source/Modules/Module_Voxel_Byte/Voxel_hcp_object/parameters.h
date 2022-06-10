@@ -9,7 +9,8 @@
 enum class data_storage_type_enum { red, green, blue, alpha, value };
 
 //typedef uint8_t voxel_data_type;
-typedef uint8_t voxel_element_data_type; // For color r,g,b, and alpha or voxel value data type
+//typedef uint8_t voxel_element_data_type; // For color r,g,b, and alpha or voxel value data type
+typedef int voxel_element_data_type; // For color r,g,b, and alpha or voxel value data type
 
 // voxel_data_type and voxel_GLdata_type must be of the same equivalent data type 
 typedef int   voxel_data_type;   // CPU  

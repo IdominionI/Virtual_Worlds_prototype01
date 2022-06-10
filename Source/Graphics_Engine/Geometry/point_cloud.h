@@ -115,8 +115,9 @@ public:
         for (float i = -0.5f; i < 0.5f; i+=0.1f) {
             for (float j = -0.5f; j < 0.5f; j += 0.1f) {
                 for (float k = -0.5f; k < 0.5f; k += 0.1f) {
-                    vertex.mPos   = {i,j,k};
-                    vertex.mvalue = 1;
+                    vertex.mPos   = {i,j,k,1.0f};
+                    //vertex.mPos   = {i,j,k};
+                    //vertex.mvalue = 1;
 
                     add_vertex(vertex);
                 }
@@ -265,6 +266,9 @@ public:
 
 private:
 };
+
+
+
 /*
 class point_cloud_vertex_data_class : public geometry_basis_class {
 public:

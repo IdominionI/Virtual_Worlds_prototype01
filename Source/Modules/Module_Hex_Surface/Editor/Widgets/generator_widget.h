@@ -217,7 +217,7 @@ printf("hex_surface_generation_widget_class :: execute_hex_surface_function 1111
 		hex_surface_compute_generator.cloud = hex_surface_object_to_execute;
 
 // *************** test code only :: Delete when finished ***************************
-test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
+//test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
 
 printf("hex_surface_generation_widget_class :: execute_hex_surface_function %s 2222\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname.c_str());
 		if (!hex_surface_compute_generator.generate_hex_surface_function()) {

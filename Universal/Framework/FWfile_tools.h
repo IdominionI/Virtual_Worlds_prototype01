@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <filesystem>
 #include <string>
 #include <sys/stat.h>
 
@@ -17,6 +18,11 @@ namespace FW {
         inline bool directory_exists(std::string dir_pathname) {
             struct stat buffer;
             return (stat(dir_pathname.c_str(), &buffer) == 0);
+        }
+
+        inline bool file_exists(std::string file_pathname) {
+             return std::filesystem::exists(file_pathname);
+            //return false;
         }
 
     }

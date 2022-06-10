@@ -3,21 +3,29 @@ layout(points) in;
 //layout(points, max_vertices = 1) out;    // This required to display a voxel center of 1 point
 //layout(points) out;    // This required to display a voxel center of 1 point
 
-flat in int gEnabledFaces[];// Must have as flat array otherwise will not work
+//flat in int gEnabledFaces[];// Must have as flat array otherwise will not work
 
-flat in float hexSize[];
+//flat in float hexSize[];
+uniform float hexSize;
+
+//hex surface display data
+uniform float hex_min_surface_display_value;
+uniform float hex_max_surface_display_value;
+
 uniform mat4 mvpMatrix; // ************model-view-projection matrix 
 
 uniform vec3 camera_loc;   // Camera location
+
 uniform bool use_camera_lighting;
 uniform vec3 lighting_camera_offset;
 uniform int  camera_lighting_type;
 uniform float lighting_intensity;
+
 uniform vec3 camera_front_vector;
 uniform vec3 camera_up_vector;
 uniform vec3 camera_right_vector;
 
-uniform vec3 voxel_origin;
+uniform vec2  grid_origin;
 uniform float voxel_hcp_z_increment;
 
 // Cannot use same variable name for in and out variables 
@@ -27,19 +35,23 @@ uniform float voxel_hcp_z_increment;
 
 in VertexData
 {
-  float value;
+ // float value;
   vec4 varyingColor;
 } gs_in[]; // Must have as an array otherwise will not work as one for each input vertex,
 
 out VertexData
 {
-  float value;
+//  float value;
   vec4 varyingColor;
 } gs_out;
 
 // Lighting and light shading
 uniform bool  display_vertex_light_shading;
 uniform vec3  lighting_direction;
-uniform vec3  ambient_light;
+uniform float ambience;
 uniform float specular_strength;
-uniform vec3  light_color;
+uniform vec4  light_color;
+
+uniform int   t_frame;
+
+uniform vec2  resolution;

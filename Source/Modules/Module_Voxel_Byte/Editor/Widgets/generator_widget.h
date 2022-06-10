@@ -117,7 +117,7 @@ public:
 		
 		y_pos += 20;
 		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, voxel_scale_value, 50.0f)) {
-			update_voxel_size();// needs testing 
+			update_voxel_size();
 		}
 
 		y_pos += 20;
@@ -162,6 +162,7 @@ public:
 			if (scene_voxel_object != NULL && scene_manager != NULL) {
 				scene_voxel_object->scene_graph_object.scene_object_class.shader_material.use_point_shader = display_as_points;
 				scene_manager->update_shader(scene_voxel_object, ENTITY_CATEGORY_HCP_VOXEL);
+
 				update_voxel_size();
 			}
 	}
@@ -217,7 +218,7 @@ public:
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function %s 2222\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_pathname.c_str());
 
 // *************** test code only :: Delete when finished ***************************
-test_voxel_cell_coord_from_cartesian(voxel_hcp_object_to_execute->voxel_object_data); // ***********
+//test_voxel_cell_coord_from_cartesian(voxel_hcp_object_to_execute->voxel_object_data); // ***********
 
 		if (!voxel_generator.generate_voxel_function()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Create Voxel function of %s failed.\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name.c_str());
@@ -266,8 +267,8 @@ test_voxel_cell_coord_from_cartesian(voxel_hcp_object_to_execute->voxel_object_d
 			float v_min = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_min_surface_display_value"; uniform_variable.value0 = &v_min;
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-			float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_min_surface_display_value"; uniform_variable.value0 = &v_max;
+			float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value;
+			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_max_surface_display_value"; uniform_variable.value0 = &v_max;
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 6666\n");
@@ -302,6 +303,10 @@ test_voxel_cell_coord_from_cartesian(voxel_hcp_object_to_execute->voxel_object_d
 			application_default_shader_uniform_variables_struct_type uniform_variable;
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
+			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
+			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_hcp_z_increment"; uniform_variable.value0 = &voxel_hcp_z_increment;
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 		}
 	}

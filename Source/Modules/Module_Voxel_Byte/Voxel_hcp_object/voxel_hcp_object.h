@@ -111,9 +111,10 @@ public:
 						if (lower_range == INVALID_VOXEL_VALUE) lower_range = INVALID_VOXEL_VALUE + 1;
 						if (n < MAX_VOXEL_VERTICES && volume_data_value >= lower_range && volume_data_value <= upper_range) {
 
-							vertex.mPos   = { x,y,z };
+							vertex.mPos   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable
 
-							vertex.mvalue = volume_data;
+							//vertex.mPos   = { x,y,z };
+							//vertex.mvalue = volume_data;
 
 //printf("define_vbo_vertices : %f : %f : % f :: %i\n", x,y,z, volume_data_value);
 							point_cloud.add_vertex(vertex);

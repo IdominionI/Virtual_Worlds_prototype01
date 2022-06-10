@@ -10,6 +10,10 @@ public:
 
 	// Define application
 	vw_Application(const std::string& app_name) {
+		//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);// *****
+		//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);// *****
+		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);// *****
+
 		main_window = std::make_unique<main_window_class>();
 		main_window->init(1700, 1000, app_name);
 	}

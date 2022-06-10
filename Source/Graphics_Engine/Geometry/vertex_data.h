@@ -54,24 +54,40 @@ public:
 
 // class to store vertex location and an integer data value associated
 // with that vertex location.
+/*
+    This class is designed to store a value in the vev4 pos.W variable
+    At some future time when it is faund how to pass an integer value
+    to a shader using this class, this may change.
+*/
 class point_data_value_class {
 
 public:
-    point_data_value_class() : mPos(), mvalue() {}
-
-    point_data_value_class(const glm::vec3& pos,const int &value) 
-        : mPos(pos), mvalue(value)
+    point_data_value_class() : mPos(){}
+   
+    point_data_value_class(const glm::vec4& pos) 
+        //: mPos(pos), mvalue(value)
+        : mPos(pos)
     {
     }
 
     ~point_data_value_class() = default;
 
-    glm::vec3 mPos;
-    int       mvalue;
+    glm::vec4 mPos;
+    //glm::vec3 mPos;
+    //int       mvalue;
 };
+
 
 // class to store vertex location, surface normal data and an integer 
 // data value associated with that vertex location.
+/*
+    This class is not tested and going by inability to pass
+    an integer value to a shader, the same may apply for passing
+    a normal vector to a shader.
+
+    This function may not be necessary and is thus commented out
+*/
+/*
 class point_vertex_data_class {
 
 public:
@@ -87,3 +103,4 @@ public:
     glm::vec3 mPos,mNormal;
     int       mvalue;
 };
+*/

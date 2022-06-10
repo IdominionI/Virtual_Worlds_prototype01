@@ -378,6 +378,56 @@ public:
 		return voxel_matrix_coordinate_activation_status(voxel_matrix_data_index);
 	}
 
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//bool create_voxel_matrix(voxel_hcp_object_class* cloud, voxel_generator_parameters_struct_type  voxel_generator_parameters) {
+	bool create_voxel_matrix() {
+		voxel_matrix_data.clear();   // ******
+		voxel_matrix_data.shrink_to_fit(); // ******
+
+
+		// ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
+		float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
+		float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
+		float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
+		float z_mult = 2.0 * sqrt(6.0) / 3.0;
+
+		float x_res_step = voxel_generator_parameters.resolution_step * 2.0;
+		float y_res_step = voxel_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
+
+		int data_set_x_size, data_set_y_size, data_set_z_size;
+
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+			data_set_x_size = (int)(x_size / x_res_step) + 1;
+		else
+			data_set_x_size = (int)(x_size / x_res_step);
+
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+			data_set_y_size = (int)(y_size / y_res_step) + 1;
+		else
+			data_set_y_size = (int)(y_size / y_res_step);
+
+		if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0)
+			data_set_z_size = (int)(z_size / z_res_step) + 1;
+		else
+			data_set_z_size = (int)(z_size / z_res_step);
+//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
+
+		glm::vec3 origin = { voxel_generator_parameters.x_start,voxel_generator_parameters.y_start,voxel_generator_parameters.z_start };
+
+		voxel_size = voxel_generator_parameters.resolution_step;
+
+		matrix_dimension = { data_set_x_size,data_set_y_size,data_set_z_size };
+		matrix_origin = origin;
+		create_empty_volume_cubic(data_set_x_size, data_set_y_size, data_set_z_size);
+//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
+
+		if (voxel_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	// ++++++++++++++++++++ FUNCTIONS TO FIND VOXEL STORAGE INDEX LOCATIONS OF   +++++++++++++++++++++
 	// ++++++++++++++++++++    A CARTESIAN COORDINATE POINT P IN 3D SPACE        +++++++++++++++++++++
@@ -385,8 +435,6 @@ public:
 	/*
 		Following code is to find which voxel cell of a defined voxel size, origin and dimensions
 		that a 3D point P of Cartesian coordinate (x,y,z) is to occupy.
-
-		!!!!!!!!!!!!!! NOT YET FULLY TESTED !!!!!!!!!!!!!!!
 
 		Usage
 
@@ -401,8 +449,9 @@ public:
 	// Find the index of the one dimensional vertex vector array that a point P of cartesian coordinte
 	// (x,y,z) will be within the bounds of a 3D voxel cell.
 	index_data_type index_of_voxel_cell_with_cartesian_coord(float x, float y,float z) {
+//printf("index_of_voxel_cell_with_cartesian_coord 000 :x %f :y %f :z %f \n", x, y, z);
 		index_vector voxel_coord = hcp_voxel_cell_coord_from_cartesian(x,y,z);
-
+//printf("index_of_voxel_cell_with_cartesian_coord 111 :x %i :y %i :z %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 		if (cartesian_coord_within_matrix_bounds(voxel_coord))
 			return get_voxel_matrix_data_index(voxel_coord);
 		else
@@ -412,6 +461,7 @@ public:
 	// Determine if a point P of cartesian coordinte (x,y,z) is within the limits of
 	// the dimensions of the voxel matrix that is stored in the computer memory
 	bool cartesian_coord_within_matrix_bounds(float x, float y,float z) {
+
 		index_vector voxel_coord = hcp_voxel_cell_coord_from_cartesian(x, y, z);
 
 		return cartesian_coord_within_matrix_bounds(voxel_coord);
@@ -421,18 +471,21 @@ public:
 		if (voxel_coord.x < 0 || voxel_coord.y < 0 || voxel_coord.z < 0) return false;
 
 		if (voxel_coord.z % 2 == 0) {// even level
-			if (voxel_coord.y % 2 == 0)// even row
-				if (voxel_coord.x > matrix_dimension.x) return false;
-				else // odd row
-					if (voxel_coord.x > matrix_dimension.x - 1) return false;
+			if (voxel_coord.y % 2 == 0){// even row
+				if (voxel_coord.x >= matrix_dimension.x) return false;
+			} else {// odd row
+				if (voxel_coord.x >= matrix_dimension.x - 1) return false;
+			}
 		} else {// odd level
-			if(voxel_coord.y % 2 == 0)// even row
-				if (voxel_coord.x > matrix_dimension.x-1) return false;
-				else // odd row
-					if (voxel_coord.x > matrix_dimension.x ) return false;
+			if(voxel_coord.y % 2 == 0){// even row
+				if (voxel_coord.x >= matrix_dimension.x-1) return false;
+			}
+			else {// odd row
+				if (voxel_coord.x >= matrix_dimension.x) return false;
+			}
 		}
 
-		if (voxel_coord.y > matrix_dimension.y || voxel_coord.z > matrix_dimension.z) return false;
+		if (voxel_coord.y >= matrix_dimension.y || voxel_coord.z >= matrix_dimension.z) return false;
 
 		return true;
 	}
@@ -440,7 +493,7 @@ public:
 	// Obtain the voxel matrix index coordinates of the voxel matrix that a point P of cartesian coordinte
 	// (x,y,z) will be found to be within the bounds of a 3D voxel cell.
 	index_vector hcp_voxel_cell_coord_from_cartesian(float x, float y, float z) {
-		float voxel_radius = voxel_size / 2.0;
+		float voxel_radius = voxel_size;
 		float voxel_height = voxel_radius * (sqrt(1.5f) + sqrt(6) / 3);
 		float grid_x, grid_y;
 
@@ -467,13 +520,13 @@ public:
 	}
 
 	index_vector get_hcp_voxel_cell_coord_even_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
-		float grid_radius = voxel_size / 2.0;
+		float grid_radius = voxel_size;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));
 
-printf("get_hcp_voxel_cell_coord_even_level 000 hex_size : %f :grid_height %f : grid_radius %f : c %f \n", voxel_size, grid_height, grid_radius,c);
-printf("get_hcp_voxel_cell_coord_even_level 111 grid_origin :x %f :y %f :z %f \n", matrix_origin.x, matrix_origin.y, matrix_origin.z);
-printf("get_hcp_voxel_cell_coord_even_level 222 :x %f :y %f :z %f \n", grid_x, grid_y, grid_z);
+//printf("get_hcp_voxel_cell_coord_even_level 000 hex_size : %f :grid_height %f : grid_radius %f : c %f \n", voxel_size, grid_height, grid_radius,c);
+//printf("get_hcp_voxel_cell_coord_even_level 111 grid_origin :x %f :y %f :z %f \n", matrix_origin.x, matrix_origin.y, matrix_origin.z);
+//printf("get_hcp_voxel_cell_coord_even_level 222 :x %f :y %f :z %f \n", grid_x, grid_y, grid_z);
 
 		int row;// = (int)(grid_y / grid_height);
 		int column;
@@ -486,34 +539,34 @@ printf("get_hcp_voxel_cell_coord_even_level 222 :x %f :y %f :z %f \n", grid_x, g
 		bool row_is_odd = abs(row % 2) == 1;
 
 		if (row_is_odd) {
-			column = (int)floor(grid_x / voxel_size);
+			column = (int)floor(grid_x / (voxel_size*2));
 		} else {
-			column = (int)floor((grid_x + grid_radius) / voxel_size);
+			column = (int)floor((grid_x + grid_radius) / (voxel_size * 2));
 		}
 
 		
-printf("get_hcp_voxel_cell_coord_even_level 333 :row %i :col %i :level %i \n", row, column, level);
+//printf("get_hcp_voxel_cell_coord_even_level 333 :row %i :col %i :level %i \n", row, column, level);
 		// Position of point relative to box it is in
 		float rel_y = grid_y - (row * grid_height);
 		float rel_x;
 		float rel_z = grid_z - (level * voxel_height);
 
 		if (row_is_odd){
-			rel_x = grid_x - ((column * voxel_size) + grid_radius);
+			rel_x = grid_x - ((column * (voxel_size*2)) + grid_radius);
 		} else {
-			rel_x = grid_x - (column * voxel_size);
+			rel_x = grid_x - (column * (voxel_size * 2));
 		}
 
 		float m = 1.0f / sqrt(3.0f);
 
-printf("get_hcp_voxel_cell_coord_even_level 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
+//printf("get_hcp_voxel_cell_coord_even_level 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
 		// Work out if the point is above either of the hexagon's top edges
 		if (rel_y >= (m * rel_x + 2.0 * c) && rel_x < 0) { // LEFT edge
 			row++;
 			if (!row_is_odd) { // Have even row
 				column--;
 				row_is_odd = true;
-				rel_x = grid_x - ((column * voxel_size) + grid_radius);
+				rel_x = grid_x - ((column * (voxel_size * 2)) + grid_radius);
 			}else
 				rel_x = rel_x + grid_radius;
 			
@@ -524,7 +577,7 @@ printf("get_hcp_voxel_cell_coord_even_level 444 :rel_x %f :rel_y %f : m %f : lin
 				if (row_is_odd) {
 					column++;
 					row_is_odd = false;
-					rel_x = grid_x - (column * voxel_size);
+					rel_x = grid_x - (column * (voxel_size * 2));
 				} else
 					rel_x = rel_x - grid_radius;
 				
@@ -535,8 +588,9 @@ printf("get_hcp_voxel_cell_coord_even_level 444 :rel_x %f :rel_y %f : m %f : lin
 		index_vector voxel_coord;
 		voxel_coord.x = column;
 		voxel_coord.y = row;
-		
-printf("get_hcp_voxel_cell_coord_even_level 555 :row %i :col %i \n",row, column);
+
+//printf("get_hcp_voxel_cell_coord_even_level 4AA :rel_x %f :rel_y %f : rel_z %f \n", rel_x,rel_y,rel_z);
+//printf("get_hcp_voxel_cell_coord_even_level 555 :row %i :col %i \n",voxel_coord.y, column);
 		// Get voxel z coord
 		// Find distance to upper plane of the zone that the point exists in of the voxel
 		// and if it is below the plane (ie distance negative) it is in the voxel, otherwise
@@ -556,7 +610,7 @@ printf("get_hcp_voxel_cell_coord_even_level 555 :row %i :col %i \n",row, column)
 				voxel_coord.z = level + 1;
 				if (row_is_odd)	voxel_coord.x++;
 			}
-printf("get_hcp_voxel_cell_coord_even_level 666 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_even_level 666 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 
@@ -569,7 +623,7 @@ printf("get_hcp_voxel_cell_coord_even_level 666 :row %i :col %i :level %i \n", r
 				voxel_coord.y--;
 				voxel_coord.z = level + 1;
 			}
-printf("get_hcp_voxel_cell_coord_even_level 777 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_even_level 777 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 
@@ -582,21 +636,22 @@ printf("get_hcp_voxel_cell_coord_even_level 777 :row %i :col %i :level %i \n", r
 				voxel_coord.z = level + 1;
 				if (!row_is_odd) voxel_coord.x--; 
 			}
-printf("get_hcp_voxel_cell_coord_even_level 888 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_even_level 888 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 	}
 
 	index_vector get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
-		float grid_radius = voxel_size / 2.0;
+		float grid_radius = voxel_size;
+		//float grid_radius = voxel_size / 2.0;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));
 
-printf("get_hcp_voxel_cell_coord_odd_level 000 hex_size : %f :grid_height %f : grid_radius %f : c %f \n", voxel_size, grid_height, grid_radius,c);
-printf("get_hcp_voxel_cell_coord_odd_level 111 grid_origin :x %f :y %f :z %f \n", matrix_origin.x, matrix_origin.y, matrix_origin.z);
-printf("get_hcp_voxel_cell_coord_odd_level 222 :x %f :y %f :z %f \n", grid_x, grid_y, grid_z);
+//printf("get_hcp_voxel_cell_coord_odd_level 000 hex_size : %f :grid_height %f : grid_radius %f : c %f \n", voxel_size, grid_height, grid_radius,c);
+//printf("get_hcp_voxel_cell_coord_odd_level 111 grid_origin :x %f :y %f :z %f \n", matrix_origin.x, matrix_origin.y, matrix_origin.z);
+//printf("get_hcp_voxel_cell_coord_odd_level 222 :x %f :y %f :z %f \n", grid_x, grid_y, grid_z);
 
-		int row;// = (int)(grid_y / grid_height);
+		int row;
 		int column;
 
 		if (grid_y < -1.0 / sqrt(3.0))
@@ -606,9 +661,9 @@ printf("get_hcp_voxel_cell_coord_odd_level 222 :x %f :y %f :z %f \n", grid_x, gr
 
 		bool row_is_odd = abs(row % 2) == 1;
 
-		column = (int)floor((grid_x + grid_radius) / voxel_size);
+		column = (int)floor((grid_x + grid_radius) / (voxel_size * 2));
 
-printf("get_hcp_voxel_cell_coord_odd_level 333 :row %i :col %i :level %i \n", row, column, level);
+//printf("get_hcp_voxel_cell_coord_odd_level 333 :row %i :col %i :level %i \n", row, column, level);
 
 		// Position of point relative to box it is in
 		float rel_y = grid_y - (row * grid_height);
@@ -616,21 +671,21 @@ printf("get_hcp_voxel_cell_coord_odd_level 333 :row %i :col %i :level %i \n", ro
 		float rel_z = grid_z - (level * voxel_height);
 
 		if (row_is_odd){
-			rel_x = grid_x - (column * voxel_size) + grid_radius;
+			rel_x = grid_x - (column * (voxel_size * 2)) + grid_radius;
 		} else {
-			rel_x = grid_x - (column * voxel_size);
+			rel_x = grid_x - (column * (voxel_size * 2));
 		}
 
 		float m = 1.0f / sqrt(3.0f);
 
-printf("get_hcp_voxel_cell_coord_odd_level 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
+//printf("get_hcp_voxel_cell_coord_odd_level 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
 		// Work out if the point is above either of the hexagon's top edges
 		if (rel_y >= (m * rel_x + 2.0 * c) && rel_x < 0) { // LEFT edge
 			row++;
 			if (row_is_odd) { // Have even row
 				column--;
 				row_is_odd = true;
-				rel_x = grid_x - ((column * voxel_size) + grid_radius);
+				rel_x = grid_x - ((column * (voxel_size * 2)) + grid_radius);
 			}else
 				rel_x = rel_x + grid_radius;
 			
@@ -641,7 +696,7 @@ printf("get_hcp_voxel_cell_coord_odd_level 444 :rel_x %f :rel_y %f : m %f : line
 				if (!row_is_odd) {
 					column++;
 					row_is_odd = false;
-					rel_x = grid_x - (column * voxel_size);
+					rel_x = grid_x - (column * (voxel_size * 2));
 				} else
 					rel_x = rel_x - grid_radius;
 				
@@ -653,7 +708,8 @@ printf("get_hcp_voxel_cell_coord_odd_level 444 :rel_x %f :rel_y %f : m %f : line
 		voxel_coord.x = column;
 		voxel_coord.y = row;
 
-printf("get_hcp_voxel_cell_coord_odd_level 555 :row %i :col %i \n",row, column);
+//printf("get_hcp_voxel_cell_coord_odd_level 4AA :rel_x %f :rel_y %f : rel_z %f \n", rel_x,rel_y,rel_z);
+//printf("get_hcp_voxel_cell_coord_odd_level 555 :row %i :col %i \n",row, column);
 		
 		// Get voxel z coord
 		// Find distance to upper plane of the zone that the point exists in of the voxel
@@ -674,7 +730,7 @@ printf("get_hcp_voxel_cell_coord_odd_level 555 :row %i :col %i \n",row, column);
 				voxel_coord.z = level + 1;
 				if (row_is_odd) voxel_coord.x--;
 			}
-printf("get_hcp_voxel_cell_coord_odd_level 666 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_odd_level 666 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 
@@ -687,29 +743,29 @@ printf("get_hcp_voxel_cell_coord_odd_level 666 :row %i :col %i :level %i \n", ro
 				voxel_coord.y++;
 				voxel_coord.z = level + 1;
 			}
-printf("get_hcp_voxel_cell_coord_odd_level 777 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_odd_level 777 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 
 		if (rel_x > 0 && rel_y <= m1 * rel_x) {// region 2 
 			glm::vec3 normal_vector = { 1.0f,1.0f / sqrt(3.0f),(2.0 * sqrt(6.0f)) / 3.0f };
-			glm::vec3 pq_vector = { rel_x,rel_y,rel_z - sqrt(1.5f) }; //distance vector from rel_z to top voxel vertex point.
-
+			
 			if (distance_to_plane(normal_vector, pq_vector) < 0)
 				voxel_coord.z = level;
 			else {
 				voxel_coord.z = level + 1;
 				if (!row_is_odd) voxel_coord.x++;
 			}
-printf("get_hcp_voxel_cell_coord_odd_level 888 :row %i :col %i :level %i \n", row, column, voxel_coord.z);
+//printf("get_hcp_voxel_cell_coord_odd_level 888 :col %i :row %i:level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
 	}
 
 	float distance_to_plane(glm::vec3 normal_vector, glm::vec3 pq_vector) {
-		float normal_vector_length = normal_vector.length();
+		float normal_vector_length = sqrt(normal_vector.x* normal_vector.x+normal_vector.y* normal_vector.y+ normal_vector.z* normal_vector.z);
 		float normal_dot_pq        = dot(pq_vector, normal_vector);
 
+//printf("distance_to_plane : %f : %f :%f \n", normal_vector_length, normal_dot_pq,normal_dot_pq / normal_vector_length);
 		return normal_dot_pq / normal_vector_length;
 	}
 

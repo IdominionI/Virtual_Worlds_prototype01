@@ -1,36 +1,24 @@
 begin_function
 
-// ****
-//mat4 mvpMatrix;
-// ****
-
 void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
-     //vec3 diffuse;
-     vec4 diffuse; // ****
+
+     vec4 diffuse;
      float NdotL;
      vec3 viewDir;
      vec3 reflectDir;
-     //vec3 light_intensity;
      vec4 light_intensity;
-	 //vec3 camera_light_intensity;
 	 vec4 camera_light_intensity;
 	 vec3 light_direction_vector;
 	 
      NdotL   = max(dot(normalize(vertex_normal), normalize(-lighting_direction)), 0.0);
-	 //NdotL   = max(dot(normalize(vertex_normal), normalize(-light_direction_vector)), 0.0);
      diffuse = NdotL * light_color;
 
      viewDir    = normalize(camera_loc - vec3(vertex.xyz));
      reflectDir = reflect(normalize(-lighting_direction), vertex_normal);
-	 //reflectDir = reflect(normalize(-light_direction_vector), normalize(vertex_normal));
 
-     //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-     //vec3 specular = specular_strength * spec * light_color;
      vec4 specular = specular_strength * spec * light_color;
 
-	 //light_intensity = light_intensity + (ambient_light + diffuse + specular);
-	 //light_intensity = (ambient_light + diffuse + specular)*lighting_intensity*0.5;//*.25
 	 light_intensity = (ambience + diffuse + specular)*lighting_intensity*0.5;//*.25
 
 	 camera_light_intensity = vec4(0.0,0.0,0.0,1.0);
@@ -66,15 +54,7 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 
 float sqrt_3 = sqrt(3.0);
 float sqrt_6 = sqrt(6.0);
-/*
-vec4 point_0 = vec4(0.0,0.0,(1.0/sqrt_6+sqrt_6/3.0),0.0)* voxSize[0];
-vec4 point_1 = vec4(0.0,2.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize[0];
-vec4 point_2 = vec4(1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize[0];
-vec4 point_3 = vec4(1.0,-1.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize[0];
-vec4 point_4 = vec4(0.0,-2.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize[0];
-vec4 point_5 = vec4(-1.0,-1.0/sqrt_3,(sqrt_6/3.0),0.0)* voxSize[0];
-vec4 point_6 = vec4(-1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize[0];
-*/
+
 vec4 point_0 = vec4(0.0,0.0,(1.0/sqrt_6+sqrt_6/3.0),0.0)* voxSize;
 vec4 point_1 = vec4(0.0,2.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize;
 vec4 point_2 = vec4(1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
@@ -83,12 +63,6 @@ vec4 point_4 = vec4(0.0,-2.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
 vec4 point_5 = vec4(-1.0,-1.0/sqrt_3,(sqrt_6/3.0),0.0)* voxSize;
 vec4 point_6 = vec4(-1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
 
-// vec3 plane_normal(vec3 a, vec3 b, vec3 c){
-	// vec3 ab = b-a;
-	// vec3 ac = c-a;
-
-	// return normalize(cross(ab,ac));
-// }
 
 void add_top_bottom(vec4 center, int top_bottom, int sector){
 	
@@ -102,7 +76,7 @@ void add_top_bottom(vec4 center, int top_bottom, int sector){
 				vec3 vertex_normal = -vec3(-0.5,-0.2886751346,-0.8164965809);
 			
 				use_lighting(center, vertex_normal,gs_in[0].varyingColor);
-				//use_lighting(center, vertex_normal,varyingColor[0]);
+
 				gl_Position = mvpMatrix*(center + vec4(point_1.x,point_1.y,-point_1.z,1.0));
 				EmitVertex();
 				
@@ -588,31 +562,16 @@ end_function
 begin_expression
     vec4 center = gl_in[0].gl_Position;
 	
-	//mvpMatrix = projection * view * model; // ****
+	 for(int sector = 0; sector<3;sector++){
+		 add_top_bottom(center,1,sector); // top surface elelment
+	 }
 	
-	//if (gEnabledFaces[0] != 0){
-		//if(gs_in[0].value >= voxel_min_surface_display_value && gs_in[0].value <= voxel_max_surface_display_value){
-		//if(value[0] >= voxel_min_surface_display_value && value[0] <= voxel_max_surface_display_value){
-		
-			 for(int sector = 0; sector<3;sector++){
-				 add_top_bottom(center,1,sector); // top surface elelment
-			 }
-			
-			for(int sector = 0; sector<3;sector++){
-				 add_top_bottom(center,-1,sector); // bottom surface elelment
-			}
-			
-			for(int side = 0; side<6;side++){
-				add_side(center,side); // side surface elelment
-			}
-		//}
-	//} //else {
-		//add_point(center);
-		//gs_out.varyingColor = vec4(1.0,1.0,1.0,1.0);
-		//gs_out.varyingColor = gs_in[0].varyingColor;
-		//gl_Position = mvpMatrix*(center+vec4(0.0,0.0,0.0,1.0));
-		//EmitVertex();
-		//EndPrimitive();
-	//}
+	for(int sector = 0; sector<3;sector++){
+		 add_top_bottom(center,-1,sector); // bottom surface elelment
+	}
+	
+	for(int side = 0; side<6;side++){
+		add_side(center,side); // side surface elelment
+	}
 	
 end_expression

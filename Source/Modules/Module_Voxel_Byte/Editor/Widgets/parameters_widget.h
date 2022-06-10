@@ -2,6 +2,7 @@
 
 #include <Source/Editor/Scene/scene_manager.h>
 
+#include "cart_to_voxel_generator.h"
 #include "generator_widget.h"
 #include "shaders_widget.h"
 #include "automata_widget.h"
@@ -49,6 +50,11 @@ public:
 
 		if (ImGui::BeginTabBar("##hcp_voxel_tabs", ImGuiTabBarFlags_None))
 		{
+			if (ImGui::BeginTabItem("Cartesian##cart_to_voxel_tab")) {
+				display_cart_to_voxel_widget(voxel_hcp_object_to_execute, current_selected_object_id);
+				ImGui::EndTabItem();
+			}
+			
 			if (ImGui::BeginTabItem("Voxel##hcp_voxel_tab")){
 				display_voxel_generation_widget(voxel_hcp_object_to_execute, current_selected_object_id);
 				ImGui::EndTabItem();
@@ -71,9 +77,25 @@ public:
 
 
 private:
+	cart_to_voxel_widget_class		  cart_to_voxel_widget;//*****
 	voxel_hcp_generation_widget_class voxel_hcp_generation_widget;
 	voxel_shaders_widget_class		  voxel_shaders_widget;
 	voxel_hcp_autmoata_widget_class	  voxel_hcp_autmoata_widget;
+
+	void display_cart_to_voxel_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
+		cart_to_voxel_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
+
+		if (cart_to_voxel_widget.voxel_hcp_object_to_execute == NULL) {
+		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hcp voxel object defined to perform voxel generation procedure on.\n");
+			return;
+		}
+//printf("voxel_hcp_generation_widget.voxel_hcp_object_to_execute != NULL ^^^^\n");
+		cart_to_voxel_widget.log_panel                  = log_panel;
+		cart_to_voxel_widget.scene_manager              = scene_manager;
+		cart_to_voxel_widget.current_selected_entity_id = current_selected_object_id;
+//printf("parameter_panel_class :: display_voxel_hcp_generation_widget22\n");
+		cart_to_voxel_widget.display();
+	}
 
 	void display_voxel_generation_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
 		voxel_hcp_generation_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;

@@ -211,12 +211,7 @@ public:
 
 		// If have not found a defined expression return an error
 		if (line_number >= lines.size()) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start block to import parameter data.", //QMessageBox::Ok);
-			return false;
-		}
-
-		if (lines.size() < line_number + 7) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n missing parameter data for filename and matrix definitions.", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start block to import parameter data.", //QMessageBox::Ok);
 			return false;
 		}
 
@@ -251,12 +246,7 @@ public:
 
 		// If have not found a defined expression return an error
 		if (line_number >= lines.size()) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n Could not find start block to import integer parameter data.", //QMessageBox::Ok);
-			return false;
-		}
-
-		if (lines.size() < line_number + 9) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n missing parameter integer data.", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n Could not find start block to import integer parameter data.", //QMessageBox::Ok);
 			return false;
 		}
 
@@ -265,7 +255,7 @@ public:
 		////QMessageBox::information(NULL, "Import voxel generation model", "Here 001: " + std::string::number(line_number), //QMessageBox::Ok);
 
 		while (!FW::stringtools::contains(lines[line_number], INT_SHADER_BLOCK_END)) {
-			if (line_number + 6 > lines.size()) {
+			if (line_number + 8 > lines.size()) {
 				//QMessageBox::information(NULL, "Import voxel texture model", "Import virtual painter parameter ERROR : \n Have integer variable data incorrectly defined.", //QMessageBox::Ok);
 				////QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
 				return false;
@@ -281,9 +271,9 @@ public:
 			variable.slider_min = stoi(lines[line_number]); line_number++;
 			variable.slider_max = stoi(lines[line_number]); line_number++;
 
-////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
 			texture_parameters.int_variables.push_back(variable);
-////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 		}
 
 
@@ -293,23 +283,18 @@ public:
 
 		// If have not found a defined expression return an error
 		if (line_number >= lines.size()) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n Could not find start block to import boolean parameter data.", //QMessageBox::Ok);
-			return false;
-		}
-
-		if (lines.size() < line_number + 3) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n missing parameter boolean data.", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Import virtual painter generation model ERROR : \n Could not find start block to import boolean parameter data.", //QMessageBox::Ok);
 			return false;
 		}
 
 		line_number++;
 
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 001: " + std::string::number(line_number), //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 001: " + std::string::number(line_number), //QMessageBox::Ok);
 
 		while (!FW::stringtools::contains(lines[line_number], BOOL_SHADER_BLOCK_END)) {
-			if (line_number + 2 > lines.size()) {
-				//QMessageBox::information(NULL, "Import voxel texture model", "Import virtual painter parameter ERROR : \n Have boolean variable data incorrectly defined.", //QMessageBox::Ok);
-				////QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
+			if (line_number + 4 > lines.size()) {
+//QMessageBox::information(NULL, "Import voxel texture model", "Import virtual painter parameter ERROR : \n Have boolean variable data incorrectly defined.", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
 				return false;
 			}
 
@@ -319,9 +304,9 @@ public:
 			variable.variable_name = line; line_number++;
 			variable.value = stoi(lines[line_number]); line_number++;
 
-////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
 			texture_parameters.bool_variables.push_back(variable);
-////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
+//QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 		}
 
 		return true;

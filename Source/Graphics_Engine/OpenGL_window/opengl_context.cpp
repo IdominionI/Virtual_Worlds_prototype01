@@ -51,6 +51,10 @@
       return false;
     }
 
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);// *****
+   // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);// *****
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);// *****
+
     // Create the window and store this window as window pointer
     // so that we can use it in callback functions
     auto glWindow = glfwCreateWindow(window->Width, window->Height, window->Title.c_str(), nullptr, nullptr);

@@ -9,8 +9,9 @@ in vec3 normal;        //vertex that the shader is processing
 // hex surface parameter data
 uniform vec2  grid_origin;
 
-in float hex_size;
-flat out float hexSize; 
+//in float hex_size;
+//flat out float hexSize; 
+uniform float hexSize; 
 
 //hex surface display data
 uniform float hex_min_surface_display_value;
@@ -22,7 +23,6 @@ uniform vec3  camera_loc;         // Camera location
 uniform bool  use_camera_lighting;
 uniform vec3  lighting_camera_offset;
 uniform int   camera_lighting_type;
-uniform float lighting_intensity;
 uniform vec3  camera_front_vector;
 uniform vec3  camera_up_vector;
 uniform vec3  camera_right_vector;
@@ -33,7 +33,7 @@ uniform vec3  camera_right_vector;
 // a geometry shader to be psssed on to the fragment shader, or to the fragemt alone
 out VertexData
 {
-  float  value;
+//  float  value;
   vec4 varyingColor;
 } vs_out;
 
@@ -51,29 +51,30 @@ in int shader_parameters_frame;
 
 
 uniform int   t_frame;
-uniform float t_e_time;
-uniform float t_c_time;
+//uniform float t_e_time;
+//uniform float t_c_time;
 
-uniform vec2  origin;
+//uniform vec2  origin;
 uniform vec2  resolution;
 
-uniform float float_va[10];
-uniform int   int_va[10];
-uniform int   bool_va[10];
+//uniform float float_va[10];
+//uniform int   int_va[10];
+//uniform int   bool_va[10];
 
 // ************************************************************
 
 // ******* END TESTING PARAMETER TRANSFER
 //in int vEnabledFaces; // ********** NEW attribute to be defined ***********
-in int vEnabledFaces; // ********** NEW attribute to be defined ***********
-flat out int gEnabledFaces; // **********
+//in int vEnabledFaces; // ********** NEW attribute to be defined ***********
+//flat out int gEnabledFaces; // **********
+uniform int display_as_points;
 
-// Lighting and light shading
-uniform bool  display_vertex_light_shading;
-uniform vec3  lighting_direction;
-uniform vec3  ambient_light;
-uniform float specular_strength;
-uniform vec3  light_color;
+// reserved light variables
+uniform vec4  light_color;        // ****
+uniform vec3  lighting_direction; // ****
+uniform float ambience;           //****  change shaders ambient_light to ambience
+uniform float specular_strength;  //****
+uniform float lighting_intensity;    //****
 
  //color of vertex that shader is processing
 uniform vec4  color;			       
