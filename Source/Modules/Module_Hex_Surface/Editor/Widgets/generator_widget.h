@@ -106,7 +106,7 @@ public:
 		ImGui::SetCursorPosX(x_pos + 120);
 		ImGui::SetCursorPosY(y_pos);
 		if(ImGui::Checkbox("Display as points###hgdisplpts", &display_as_points)) {
-			change_voxels_display();
+			change_hex_display();
 		}
 
 		y_pos += 30;
@@ -153,7 +153,7 @@ public:
 
 	}
 
-	void change_voxels_display() {
+	void change_hex_display() {
 			scene_node_class <render_object_class> *scee_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
 			if (scee_hex_surface_object != NULL && scene_manager != NULL) {
@@ -164,6 +164,8 @@ public:
 				int displ_as_points = display_as_points;
 				uniform_variable.type = application_default_shader_variable_type_enum::Int1; uniform_variable.name = "display_as_points"; uniform_variable.value0 = &displ_as_points;
 				scee_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+				update_hex_size();// *****
 			}
 	}
 

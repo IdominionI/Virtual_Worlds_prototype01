@@ -157,7 +157,7 @@ public:
 	}
 
 	void change_voxels_display() {
-			scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
+			scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 			if (scene_voxel_object != NULL && scene_manager != NULL) {
 				scene_voxel_object->scene_graph_object.scene_object_class.shader_material.use_point_shader = display_as_points;

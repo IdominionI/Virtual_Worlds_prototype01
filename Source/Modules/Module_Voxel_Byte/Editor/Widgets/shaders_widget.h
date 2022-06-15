@@ -32,8 +32,9 @@ public:
 	voxel_shaders_widget_class() {}
 	~voxel_shaders_widget_class() {}
 
-	shader_parameters_struct_type *voxel_shader_parameters = NULL;
-	shader_variables_widget_class  shader_variables_widget;
+	shader_parameters_struct_type     *voxel_shader_parameters = NULL;
+	shader_variables_widget_class      shader_variables_widget;
+	voxel_hcp_generation_widget_class *voxel_hcp_generation_widget;
 	log_panel_class               *log_panel = NULL;
 
 	//bool animate_shaders             = false;
@@ -45,6 +46,7 @@ public:
 
 	void display() {
 //printf("voxel_shaders_widget_class::display() 0000 :current_selected_enity_id < 0 %i\n", current_selected_enity_id);
+
 		initialise_parameters();
 
 		float x_pos = 10.0f, y_pos = 70.0f;
@@ -260,11 +262,14 @@ public:
 		// ########         which uses identical data class and code.
 
 		*shader_parameters = *voxel_shader_parameters; // copy the current shader code file data mnd variable data to the object render node storage that is used to render the object to screen
-printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", voxel_shader_parameters->default_point_shader_file_pathname.c_str());
-printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %i:\n", voxel_shader_parameters->variables.size());
-
+//printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", voxel_shader_parameters->default_point_shader_file_pathname.c_str());
+//printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %i:\n", voxel_shader_parameters->variables.size());
 
 		voxel_hcp_render.define_shader_program(entity_render_object,log_panel);
+
+		// Following required as generating a new shader program also needs to up date default shader variables
+		// that are defined in the Hex Generation widget
+		voxel_hcp_generation_widget->change_voxels_display();
 	}
 
 	bool initialise_parameters() {

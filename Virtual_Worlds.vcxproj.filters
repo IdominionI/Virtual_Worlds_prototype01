@@ -443,6 +443,9 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\cart_to_voxel_generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Universal\ImGui\.editorconfig" />

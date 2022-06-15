@@ -16,9 +16,9 @@
 #include "shader_manager.h"
 
 struct shader_component_struct_type : shader_parameters_struct_type {
-	GLuint	    shader_program_id = 0;				   // ID number of shader program witrh the
+	GLuint	    shader_program_id  = 0;				   // ID number of shader program witrh the
 	idu_type    entity_category_id = NULL_CATEGORY_ID; // Data type that the shader can be applied to
-	string_type shader_name = "";				       // The name of the shader program
+	string_type shader_name        = "";				       // The name of the shader program
 	string_type shader_description = "";			   // A descripriton of the shader program
 
 	bool update_shader_variables() {

@@ -528,8 +528,7 @@ public:
 //printf("get_hcp_voxel_cell_coord_even_level 111 grid_origin :x %f :y %f :z %f \n", matrix_origin.x, matrix_origin.y, matrix_origin.z);
 //printf("get_hcp_voxel_cell_coord_even_level 222 :x %f :y %f :z %f \n", grid_x, grid_y, grid_z);
 
-		int row;// = (int)(grid_y / grid_height);
-		int column;
+		int row, column;
 
 		if (grid_y < -1.0 / sqrt(3.0))
 			row = (int)((grid_y - grid_height) / grid_height);

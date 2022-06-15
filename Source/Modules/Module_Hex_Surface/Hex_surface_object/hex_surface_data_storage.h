@@ -306,6 +306,49 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		return hex_surface_matrix_coordinate_activation_status(hex_surface_matrix_data_index);
 	}
 
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	bool create_hex_grid() {
+		hex_surface_matrix_data.clear();
+		hex_surface_matrix_data.shrink_to_fit();
+
+
+		// ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
+		float x_size = hex_surface_generator_parameters.x_end - hex_surface_generator_parameters.x_start;
+		float y_size = hex_surface_generator_parameters.y_end - hex_surface_generator_parameters.y_start;
+
+		float x_res_step = hex_surface_generator_parameters.resolution_step * 2.0;
+		float y_res_step = hex_surface_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+
+		int data_set_x_size, data_set_y_size, data_set_z_size;
+
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+			data_set_x_size = (int)(x_size / x_res_step) + 1;
+		else
+			data_set_x_size = (int)(x_size / x_res_step);
+
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+			data_set_y_size = (int)(y_size / y_res_step) + 1;
+		else
+			data_set_y_size = (int)(y_size / y_res_step);
+
+//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
+
+		glm::vec3 origin = { hex_surface_generator_parameters.x_start,hex_surface_generator_parameters.y_start,0.0 };
+
+		hex_size = hex_surface_generator_parameters.resolution_step;
+
+		grid_dimension = { data_set_x_size,data_set_y_size};
+		grid_origin = origin;
+		create_empty_surface_cubic(data_set_x_size, data_set_y_size);
+//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
+
+		if (hex_surface_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	// ++++++++++++++++++++ FUNCTIONS TO FIND HEX STORAGE INDEX LOCATIONS OF   +++++++++++++++++++++
 	// ++++++++++++++++++++    A CARTESIAN COORDINATE POINT P IN 2D SPACE      +++++++++++++++++++++
 
@@ -347,33 +390,35 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	bool cartesian_coord_within_grid_bounds(index_vector3 hex_coord) {
 		if (hex_coord.x < 0 || hex_coord.y < 0) return false;
 
-		if (hex_coord.y % 2 == 0)// even row
+		if (hex_coord.y % 2 == 0){// even row
 			if (hex_coord.x > grid_dimension.x) return false;
-			else // odd row
-				if (hex_coord.x > grid_dimension.x - 1) return false;
+		}
+		else {// odd row
+			if (hex_coord.x > grid_dimension.x - 1) return false;
+		}
 
 		if (hex_coord.y > grid_dimension.y) return false;
 
 		return true;
 	}
-	
+
 	// Obtain the hex grid index coordinates of the hex grid that a point P of cartesian coordinte
 	// (x,y) will be found to be within the bounds of a 2D hexgagon voxel cell.
 	index_vector3 hexagon_cell_coord_from_cartesian(float x, float y) {
-		float grid_radius = hex_size / 2.0;
+		//float grid_radius = hex_size / 2.0;
+		float grid_radius = hex_size ;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));
 		
-printf("hexagon_cell_coord_from_cartesian 000 voxel_size : %f :grid_height %f : grid_radius %f : c %f \n", hex_size, grid_height, grid_radius,c);
-printf("hexagon_cell_coord_from_cartesian 111 grid_origin :x %f :y %f \n", grid_origin.x, grid_origin.y);
+//printf("hexagon_cell_coord_from_cartesian 000 voxel_size : %f :grid_height %f : grid_radius %f : c %f \n", hex_size, grid_height, grid_radius,c);
+//printf("hexagon_cell_coord_from_cartesian 111 grid_origin :x %f :y %f \n", grid_origin.x, grid_origin.y);
 
 		float grid_x = x - grid_origin.x;
 		float grid_y = y - grid_origin.y;
 
-printf("hexagon_cell_coord_from_cartesian 222 :x %f :y %f \n", grid_x, grid_y);
+//printf("hexagon_cell_coord_from_cartesian 222 :x %f :y %f \n", grid_x, grid_y);
 
-		int row;
-		int column;
+		int row, column;
 
 		if (grid_y < -1.0 / sqrt(3.0))
 			row = (int)((grid_y - grid_height) / grid_height);
@@ -383,32 +428,32 @@ printf("hexagon_cell_coord_from_cartesian 222 :x %f :y %f \n", grid_x, grid_y);
 		bool row_is_odd = abs(row % 2) == 1;
 
 		if (row_is_odd)
-			column = (int)floor(grid_x / hex_size);
+			column = (int)floor(grid_x / (hex_size*2.0f));
 		else
-			column = (int)floor((grid_x + grid_radius) / hex_size);
+			column = (int)floor((grid_x + grid_radius) / (hex_size * 2.0f));
 
-printf("hexagon_cell_coord_from_cartesian 333 :row %i :col %i \n",row, column);
+//printf("hexagon_cell_coord_from_cartesian 333 :row %i :col %i \n",row, column);
 		// Position of point relative to box it is in
 		float rel_y = grid_y - (row * grid_height);
 		float rel_x;
 
 		if (row_is_odd)
-			rel_x = (grid_x - ((column * hex_size) + grid_radius));
+			rel_x = (grid_x - ((column * (hex_size * 2.0f)) + grid_radius));
 		else
-			rel_x = grid_x - (column * hex_size);
+			rel_x = grid_x - (column * (hex_size * 2.0f));
 
 		float m = 1.0f / sqrt(3.0f);
 
-printf("hexagon_cell_coord_from_cartesian 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
+//printf("hexagon_cell_coord_from_cartesian 444 :rel_x %f :rel_y %f : m %f : line %f :%f \n", rel_x,rel_y, m, m * rel_x + 2.0*c, -m * rel_x + 2.0 * c);
 		// Work out if the point is above either of the hexagon's top edges
 		if (rel_y >= (m * rel_x + 2.0 * c) && rel_x < 0){ // LEFT edge
-printf("hexagon_cell_coord_from_cartesian 555 :row %i :col %i \n",row, column);
+//printf("hexagon_cell_coord_from_cartesian 555 :row %i :col %i \n",row, column);
 			row++;
 			if (!row_is_odd)
 				column--;
 		} else {
 			if (rel_y >= (-m * rel_x) + 2.0 * c && rel_x >= 0) { // RIGHT edge
-printf("hexagon_cell_coord_from_cartesian 666 :row %i :col %i \n", row, column);
+//printf("hexagon_cell_coord_from_cartesian 666 :row %i :col %i \n", row, column);
 				row++;
 				if (row_is_odd)
 					column++;

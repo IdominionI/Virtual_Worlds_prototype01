@@ -260,6 +260,7 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Compute\voxel_compute_generation.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_rules_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\cart_to_voxel_generator.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_variables_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_widget.h" />

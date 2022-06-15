@@ -16,13 +16,13 @@
 #include "../../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
-#include "generator_variables_widget.h"
-#include "../../Compute/voxel_compute_generation.h"
+//#include "generator_variables_widget.h"
+//#include "../../Compute/voxel_compute_generation.h"
 
 
 class cart_to_voxel_widget_class {
 public:
-	generator_variables_widget_class  generator_variables_widget_class;
+	//generator_variables_widget_class  generator_variables_widget_class;
 	log_panel_class* log_panel = NULL;
 
 	id_type                 current_selected_entity_id = -1;  // entity id of the selected entity to display/modify
@@ -107,7 +107,7 @@ public:
 		y_pos += 30;
 		if (ex_button("Generate Voxels", x_pos + 70, y_pos, 150, 20))
 			cartesian_to_voxel();
-
+/*
 		y_pos += 30;
 		text("Voxel Scale", x_pos + 130, y_pos);
 
@@ -115,7 +115,7 @@ public:
 		if (float_min_max_slider("vs", x_pos, y_pos, 200.0f, min_vscale, max_vscale, voxel_scale_value, 50.0f)) {
 			update_voxel_size();
 		}
-
+*/
 		y_pos += 30;
 		text("Data Range", x_pos, y_pos);
 		integer_input("###ctvmindr", min_data_value, x_pos + 100, y_pos, 45.0f);
@@ -329,7 +329,7 @@ private:
 	int min_data_value=1, max_data_value = 100;
 
 	voxel_hcp_render_class   voxel_hcp_render;
-
+/*
 	void update_voxel_size() {
 		scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
@@ -340,7 +340,7 @@ private:
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 		}
 	}
-
+*/
 	void get_ply_file() {
 		char const* patterns[] = { "*.ply","*.obj","*.stl"};
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -424,7 +424,7 @@ printf("Expression file button clicked");// replace with get file pathname tool
 
         if (pScene && pScene->HasMeshes())
         {
-			cartesian_point_data.coordinates.clear();
+			cartesian_point_data.reset();
 
             auto* mesh = pScene->mMeshes[0];
 

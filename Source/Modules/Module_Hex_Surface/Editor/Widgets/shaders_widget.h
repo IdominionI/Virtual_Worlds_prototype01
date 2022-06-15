@@ -29,9 +29,10 @@
 
 class hex_surface_shaders_widget_class {
 public:
-	shader_parameters_struct_type *hex_surface_shader_parameters = NULL;
-	shader_variables_widget_class  shader_variables_widget;
-	log_panel_class               *log_panel = NULL;
+	shader_parameters_struct_type       *hex_surface_shader_parameters = NULL;
+	shader_variables_widget_class        shader_variables_widget;
+	hex_surface_generation_widget_class *hex_surface_generation_widget;
+	log_panel_class                     *log_panel = NULL;
 
 	id_type                   current_selected_enity_id     = -1;   // entity id of the selected entity to display/modify
 	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
@@ -252,12 +253,14 @@ public:
 																																				     // stores the shader code files and shader variables used
 		
 		*shader_parameters = *hex_surface_shader_parameters; // copy the current shader code file data mnd variable data to the object render node storage that is used to render the object to screen
-printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", hex_surface_shader_parameters->default_point_shader_file_pathname.c_str());
-printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %s:\n", hex_surface_shader_parameters->point_shader_file_pathname.c_str());
+//printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", hex_surface_shader_parameters->default_point_shader_file_pathname.c_str());
+//printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %s:\n", hex_surface_shader_parameters->point_shader_file_pathname.c_str());
 
 		hex_surface_render.define_shader_program(entity_render_object,log_panel);
 
-		//entity_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variables();
+		// Following required as generating a new shader program also needs to up date default shader variables
+		// that are defined in the Hex Generation widget
+		hex_surface_generation_widget->change_hex_display();
 	}
 
 	//bool initialise_parameters(shader_parameters_struct_type *hex_surface_shader_parameters) {
