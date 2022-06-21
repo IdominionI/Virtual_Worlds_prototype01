@@ -55,6 +55,16 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 float sqrt_3 = sqrt(3.0);
 float sqrt_6 = sqrt(6.0);
 
+float sf     = 20.0f;//1.0f/0.48f *10.0f;
+
+vec4 point_0 = vec4(0.0,0.0,(1.0/sqrt_6+sqrt_6/3.0),0.0)* voxSize*sf;
+vec4 point_1 = vec4(0.0,2.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize*sf;
+vec4 point_2 = vec4(1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize*sf;
+vec4 point_3 = vec4(1.0,-1.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize*sf;
+vec4 point_4 = vec4(0.0,-2.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize*sf;
+vec4 point_5 = vec4(-1.0,-1.0/sqrt_3,(sqrt_6/3.0),0.0)* voxSize*sf;
+vec4 point_6 = vec4(-1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize*sf;
+/*
 vec4 point_0 = vec4(0.0,0.0,(1.0/sqrt_6+sqrt_6/3.0),0.0)* voxSize;
 vec4 point_1 = vec4(0.0,2.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize;
 vec4 point_2 = vec4(1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
@@ -62,13 +72,17 @@ vec4 point_3 = vec4(1.0,-1.0/sqrt_3,sqrt_6/3.0,0.0)* voxSize;
 vec4 point_4 = vec4(0.0,-2.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
 vec4 point_5 = vec4(-1.0,-1.0/sqrt_3,(sqrt_6/3.0),0.0)* voxSize;
 vec4 point_6 = vec4(-1.0,1.0/sqrt_3,(sqrt_6/3.0-1.0/sqrt_6),0.0)* voxSize;
-
+*/
 
 void add_top_bottom(vec4 center, int top_bottom, int sector){
 	
 	// glsl has rounding and accuracy problems with converting float to int and need to add 0.5 so any values
 	// very close to an integer value but just below it are not floored
-	int hcp_layer = int ((center.z-voxel_origin.z)/voxel_hcp_z_increment+0.5); 
+	//int hcp_layer = int ((center.z-voxel_origin.z)/voxel_hcp_z_increment+0.5);
+	
+	//float layer = (center.z-voxel_origin.z*sf)/(voxel_hcp_z_increment*sf);
+	
+	int hcp_layer = int (abs(center.z-voxel_origin.z*sf)/(voxel_hcp_z_increment*sf)+0.5); 
 	
 	if(top_bottom == 1){
 		if(sector == 0 ){
@@ -348,7 +362,8 @@ void add_top_bottom(vec4 center, int top_bottom, int sector){
 
 void add_side(vec4 center,int side){
 
-	int hcp_layer = int ((center.z-voxel_origin.z)/voxel_hcp_z_increment+0.5);
+	//int hcp_layer = int ((center.z-voxel_origin.z)/voxel_hcp_z_increment+0.5);
+	int hcp_layer = int (abs(center.z-voxel_origin.z*sf)/(voxel_hcp_z_increment*sf)+0.5); 
 
 	if(side == 0){
 		vec3 vertex_normal = -vec3(-0.5,-0.8660254038,0.0);
@@ -560,7 +575,8 @@ void add_side(vec4 center,int side){
 end_function
 
 begin_expression
-    vec4 center = gl_in[0].gl_Position;
+    //vec4 center = gl_in[0].gl_Position;
+    vec4 center = gl_in[0].gl_Position*sf;
 	
 	 for(int sector = 0; sector<3;sector++){
 		 add_top_bottom(center,1,sector); // top surface elelment

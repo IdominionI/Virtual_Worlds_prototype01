@@ -154,16 +154,17 @@ public:
 	}
 
 	void change_hex_display() {
-			scene_node_class <render_object_class> *scee_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
+			scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
-			if (scee_hex_surface_object != NULL && scene_manager != NULL) {
-				//scee_hex_surface_object->scene_graph_object.scene_object_class.shader_material.use_point_shader = display_as_points;
-				//scene_manager->update_shader(scee_hex_surface_object, ENTITY_CATEGORY_HCP_SURF);
+			if (scene_hex_surface_object != NULL && scene_manager != NULL) {
+				scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.use_default_point_shader = display_as_points;
 
 				application_default_shader_uniform_variables_struct_type uniform_variable;
 				int displ_as_points = display_as_points;
 				uniform_variable.type = application_default_shader_variable_type_enum::Int1; uniform_variable.name = "display_as_points"; uniform_variable.value0 = &displ_as_points;
-				scee_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+				scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+				scene_manager->update_shader(scene_hex_surface_object, ENTITY_CATEGORY_HCP_SURF);
 
 				update_hex_size();// *****
 			}
@@ -211,7 +212,7 @@ public:
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not perform voxel generation. No entity selected.\n");
 			return;
 		}
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function 1111\n");
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 1111\n");
 		define_voxel_generation_parameters(); // Only need to define invocation values
 //editor_logging_panel.add_log_message("INFO","Execute Buttton 111 : " + voxel_generation_item.current_selected_component_name);
 		// set voxel_generation object id to execute funtion data on
@@ -221,33 +222,33 @@ printf("hex_surface_generation_widget_class :: execute_hex_surface_function 1111
 // *************** test code only :: Delete when finished ***************************
 //test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
 
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function %s 2222\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname.c_str());
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function %s 2222\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname.c_str());
 		if (!hex_surface_compute_generator.generate_hex_surface_function()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Create hex surface function of %s failed.\n", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str());
 			return;
 		}
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function 3333\n");
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 3333\n");
 
 // *************** test code only :: Delete when finished ***************************
 //test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
 
 		hex_surface_object_to_execute->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function 4444\n");
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 4444\n");
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
 		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function 5555\n");
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 5555\n");
 
 		if (scene_hex_surface_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find hex surface in the scene to update geometry data.\n");
-printf("scee_hex_surface_object == NULL.\n");
+//printf("scee_hex_surface_object == NULL.\n");
 		}
 		else {
-printf("scee_hex_surface_object != NULL.\n");
+//printf("scee_hex_surface_object != NULL.\n");
 
 			if (!hex_surface_render.update_geometry_vertex_cloud_data(&hex_surface_object_to_execute->point_cloud, scene_hex_surface_object, log_panel)) {
 				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene hex surface object geometry could not be updated.\n");
-printf("scee_hex_surface_object not updated\n");
+//printf("scee_hex_surface_object not updated\n");
 				return;
 			}
 
@@ -269,7 +270,7 @@ printf("scee_hex_surface_object not updated\n");
 			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hex_min_surface_display_value"; uniform_variable.value0 = &v_max;
 			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 
-printf("hex_surface_generation_widget_class :: execute_hex_surface_function 6666\n");
+//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 6666\n");
 		}
 
 		if (notification)
@@ -455,7 +456,7 @@ printf("hex surface : Expression file button clicked");// replace with get file 
 	}
 
 	void clear_variables() {
-		printf("Clear Variables clicked");// replace with clear variables
+		//printf("Clear Variables clicked");// replace with clear variables
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.int_variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.bool_variables.clear();

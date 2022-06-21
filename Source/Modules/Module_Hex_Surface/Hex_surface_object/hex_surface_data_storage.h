@@ -53,8 +53,8 @@ public:
 	// std::vector<hex_surface_automata_rule_struct_type> hex_surface_automata_rules;
 	// defined in editor_hex_surface_automata_editor.h thinking this will cause no problems but it did.
 
-	hex_surface_generator_parameters_struct_type   hex_surface_generator_parameters;
-	shader_parameters_struct_type	               hex_surface_shader_parameters;
+	hex_surface_generator_parameters_struct_type       hex_surface_generator_parameters;
+	shader_parameters_struct_type	                   hex_surface_shader_parameters;
 	std::vector<hex_surface_automata_rule_struct_type> hex_surface_automata_rules;
 
 	index_vector3			         hex_surface_matrix_coord_index_vector;
@@ -63,6 +63,9 @@ public:
 	~hex_surface_object_data_class() {
 		hex_surface_matrix_data.clear();
 		hex_surface_matrix_data.shrink_to_fit();
+
+		hex_surface_automata_rules.clear();
+		hex_surface_automata_rules.shrink_to_fit();
 	}
 
 

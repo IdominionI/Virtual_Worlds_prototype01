@@ -160,13 +160,11 @@ vec4 get_vertex_raw_color(){
 end_function
 
 begin_expression
-
-	//gl_Position = vertex; // required as a min
-
-	//raw_color = get_vertex_raw_color();
 	
-	gl_Position = vec4(vertex, 1.0f); // required as a min
-	value = voxel_value;              // required as a min
+	vertex = vec3(vertex_data.x,vertex_data.y,vertex_data.z);// required as a min
+	
+	gl_Position = vec4(vertex, 1.0f);             // required as a min
+	value = int(vertex_data.w);                   // required as a min
 	//vs_out.varyingColor = vec4(1.0,1.0,1.0,1.0);
 	
 	vs_out.varyingColor = get_vertex_raw_color();

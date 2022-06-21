@@ -106,10 +106,11 @@ public:
 		else
 			shader_parameters.vertex_shader_file_pathname = shader_material->vertex_shader_file_pathname;
 
-		if (shader_material->use_default_point_shader)
+		if (shader_material->use_default_point_shader) {
+//printf("hex_surface_render_class :: define_shader_programAAA : %s\n", shader_material->default_point_shader_file_pathname.c_str());
 			shader_parameters.point_shader_file_pathname = shader_material->default_point_shader_file_pathname;
-		else {
-printf("hex_surface_render_class :: define_shader_program : %s\n", shader_material->point_shader_file_pathname.c_str());
+		} else {
+//printf("hex_surface_render_class :: define_shader_programBBB : %s\n", shader_material->point_shader_file_pathname.c_str());
 			shader_parameters.point_shader_file_pathname = shader_material->point_shader_file_pathname;
 		}
 

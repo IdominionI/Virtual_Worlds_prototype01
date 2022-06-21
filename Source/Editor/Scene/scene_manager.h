@@ -93,7 +93,7 @@ public:
 	void update_shader(scene_node_class <render_object_class> *entity_render_object, id_type category) {
 		switch (category) {
 			case ENTITY_CATEGORY_HCP_VOXEL : voxel_hcp_render.define_shader_program(entity_render_object, log_panel); break;
-			//case ENTITY_CATEGORY_HCP_SURF  : hex_surface_render.define_shader_program(entity_render_object, log_panel); break;
+			case ENTITY_CATEGORY_HCP_SURF  : hex_surface_render.define_shader_program(entity_render_object, log_panel); break;
 
 			// Other render object category types to go here as needed;
 		}

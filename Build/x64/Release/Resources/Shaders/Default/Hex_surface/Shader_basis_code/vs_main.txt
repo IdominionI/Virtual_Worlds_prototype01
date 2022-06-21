@@ -1,2 +1,2 @@
 void main(){
-	hexSize   = hex_size;
+	//hexSize   = hex_size;

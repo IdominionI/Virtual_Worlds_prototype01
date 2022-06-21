@@ -105,6 +105,15 @@ struct shader_display_parameters_struct_type {
 	uniform variable data for a scene entity object 
 */
 struct shader_parameters_struct_type {
+	~shader_parameters_struct_type() { //*****
+		variables.clear();
+		variables.shrink_to_fit();
+		int_variables.clear();
+		int_variables.shrink_to_fit();
+		bool_variables.clear();
+		bool_variables.shrink_to_fit();
+	}
+
 	string_type  vertex_shader_file_name            = "";
 	string_type  geometry_shader_file_name          = "";
 	string_type  point_geometry_shader_file_name    = "";

@@ -149,7 +149,10 @@ public:
 		y_pos += 30;
 		ImGui::SetCursorPosX(x_pos + 120);
 		ImGui::SetCursorPosY(y_pos);
-		ImGui::Checkbox("Orbit\nRotation###cro", &universal_shader_variables->camera->orbital_rotation);
+		if (ImGui::Checkbox("Orbit\nRotation###cro", &universal_shader_variables->camera->orbital_rotation)) {
+			universal_shader_variables->camera->set_orbit_distance();
+		}
+			
 
 		return true;
 	}

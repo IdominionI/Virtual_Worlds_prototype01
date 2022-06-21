@@ -1,6 +1,8 @@
 
-layout(location = 0) in vec3 vertex;
-layout(location = 1) in int  voxel_value;
+layout(location = 0) in vec4 vertex_data;
+vec3 vertex;
+//layout(location = 0) in vec3 vertex;
+//layout(location = 1) in int  voxel_value;
 
 out int value;
 
@@ -20,17 +22,17 @@ uniform vec3  camera_right_vector;
 
 
 // reserved light variables
-uniform vec4  light_color;        // ****
-uniform vec3  lighting_direction; // ****
-uniform float ambience;           //****  change shaders ambient_light to ambience
-uniform float specular_strength;  //****
-uniform float lighting_intensity;    //****
+uniform vec4  light_color;
+uniform vec3  lighting_direction;
+uniform float ambience;
+uniform float specular_strength;
+uniform float lighting_intensity;
 
 
 // reserved camera light variables
-uniform int   camera_lighting_type;   //**** camera_lighting_type - done
-uniform int   use_camera_lighting;     //**** chnage to use_camera_lighting -done
-uniform vec3  lighting_camera_offset; //**** lighting_camera_offset -done
+uniform int   camera_lighting_type;
+uniform int   use_camera_lighting;
+uniform vec3  lighting_camera_offset;
 
 uniform int   t_frame;
 

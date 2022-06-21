@@ -1116,12 +1116,14 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 					
 					voxel_hcp_object_class *voxel_hcp_object = outliner_manager->scene_manager->get_voxel_hcp_entity_object(entity->entity_id);
 
-					// For some god foresaken reason, after carefull checking and finding that somehow by changing the view of voxels from points to
-					// voxels in the voxel generation panel, and then deleting the voxel_hcp_object and then importing it, the voxel shader parameters
-					// for variables can still be retained and added to the imported data. Can only conclude this is some how a VS2022 compilation error or that memory
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					// For some god foresaken reason, after carefull checking and finding that somehow by generating the shader program, and then deleting the voxel_hcp_object 
+					// and then importing it, the hex shader parameters for variables can still be retained and added to the imported data. 
+					// Can only conclude this is some how a VS2022 compilation error or that memory
 					// was not deallocated corectly by the CPU. It seems on recreating a voxel_hcp_object in the scene manager, it can reference the memory deallocated that still
 					// retains the shader parameter data. So need to clear it out before proceeding to import voxel_hcp_object data. Utterly wierd as am finding
-					// some other code functioning with wierd unexplained behavior. 
+					// some other code functioning with wierd unexplained behavior.
+
 //printf("Outliner Manager :: read_object_group_file 55 %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
 					if (voxel_hcp_object != NULL && voxel_hcp_object->voxel_object_data.shader_parameters.variables.size() > 0) {
 						voxel_hcp_object->voxel_object_data.shader_parameters.variables.clear(); voxel_hcp_object->voxel_object_data.shader_parameters.variables.shrink_to_fit();
@@ -1134,6 +1136,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 					if (voxel_hcp_object != NULL && voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.size() > 0) {
 						voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.clear(); voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.shrink_to_fit();
 					}
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //printf("Outliner Manager :: read_object_group_file 55AA %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
 					if (!hcp_voxel_import_export.read_voxel_object_file(voxel_hcp_object)) {
@@ -1166,7 +1169,27 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 						return false;
 					}
 					hex_surface_object_class *hex_surface_object = outliner_manager->scene_manager->get_hex_surface_entity_object(entity->entity_id);
+					
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					// For some god foresaken reason, after carefull checking and finding that somehow by generating the shader program, and then deleting the hex_surface_object 
+					// and then importing it, the hex shader parameters for variables can still be retained and added to the imported data. 
+					// Can only conclude this is some how a VS2022 compilation error or that memory
+					// was not deallocated corectly by the CPU. It seems on recreating a hex_surface_object in the scene manager, it can reference the memory deallocated that still
+					// retains the shader parameter data. So need to clear it out before proceeding to import voxel_hcp_object data. Utterly wierd as am finding
+					// some other code functioning with wierd unexplained behavior. 
+//printf("Outliner Manager :: read_object_group_file 55 %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
+					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.size() > 0) {
+						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.shrink_to_fit();
+					}
 
+					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.size() > 0) {
+						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.shrink_to_fit();
+					}
+
+					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.size() > 0) {
+						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.shrink_to_fit();
+					}
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //printf("Outliner Manager :: read_object_group_file 55 \n");
 //if(hex_surface_object == NULL )printf("hex_surface_object == NULL\n");
 					if (!hex_surface_import_export.read_hex_surface_object_file(hex_surface_object)) {
