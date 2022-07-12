@@ -45,13 +45,15 @@ public:
 	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 	scene_manager_class      *scene_manager                 = NULL;
 
+	float hex_scale_value = 1.0f;
+
 	void display() {
 		if (hex_surface_object_to_execute == NULL) {
 			return;
 		}
 
 		const char* invocation_items[] = { "1", "32", "64", "128", "256", "512", "1024" };// This cannot be defined outside this function	
-		float x_pos = 10.0f, y_pos = 70.0f;
+		float x_pos = 10.0f, y_pos = 260.0f;
 
 		text("Expression : ", x_pos, y_pos);
 		//if (ex_button(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
@@ -101,7 +103,7 @@ public:
 		//y_pos += 25;
 		//text("Treshold", x_pos + 30, y_pos);
 		//float_input("###gthres", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.generation_threshold, x_pos + 160, y_pos, 75.0f);
-
+/*
 		y_pos += 30;
 		ImGui::SetCursorPosX(x_pos + 120);
 		ImGui::SetCursorPosY(y_pos);
@@ -117,7 +119,7 @@ public:
 		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, hex_scale_value, 50.0f)) {
 			update_hex_size();// needs testing 
 		}
-
+*/
 		y_pos += 20;
 		text("Hex Generattion Variables", x_pos + 50, y_pos);
 
@@ -152,7 +154,7 @@ public:
 			load_generation_parameters();
 
 	}
-
+/*
 	void change_hex_display() {
 			scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
@@ -169,7 +171,7 @@ public:
 				update_hex_size();// *****
 			}
 	}
-
+*/
 	void perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (hex_surface_generator_parameter_variable_struct_type &variable : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables) {
@@ -296,8 +298,8 @@ public:
 		}
 	}
 
-	void update_hex_size() {
-		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
+//	void update_hex_size() {
+//		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		// This method of using a unversal array of unform variables that can be used between classes or modules or funtions etc has been found to be no
 		// better than just a direct use of updating uniforms through manual manipulation of widgets that change uniform variable values !!!!
@@ -319,13 +321,13 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 		}
 */
 
-		if (scene_hex_surface_object != NULL) {
-			application_default_shader_uniform_variables_struct_type uniform_variable;
-			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-		}
-	}
+//		if (scene_hex_surface_object != NULL) {
+//			application_default_shader_uniform_variables_struct_type uniform_variable;
+//			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
+//			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
+//			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+//		}
+//	}
 
 	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
 	void test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_data_class hex_surface_object_data) {
@@ -358,7 +360,7 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 private:
 	int invocation = 4;
 
-	float hex_scale_value = 1.0f;
+	//float hex_scale_value = 1.0f;
 	float min_vscale = 0.001f, max_vscale = 1.000f;
 
 	struct Funcs { static bool ItemGetter(void* data, int n, const char** out_str) { *out_str = ((const char**)data)[n]; return true; } };

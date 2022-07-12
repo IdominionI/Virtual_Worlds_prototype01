@@ -14,6 +14,8 @@
 #include "../../Hex_surface_object/hex_surface_object.h"
 #include "../../Kernal/hex_surface_function_import_export.h"
 
+#include "generation_selection_widget.h"
+
 /*
 			Hex Surface shader widget class
 
@@ -31,10 +33,12 @@ class hex_surface_shaders_widget_class {
 public:
 	shader_parameters_struct_type       *hex_surface_shader_parameters = NULL;
 	shader_variables_widget_class        shader_variables_widget;
-	hex_surface_generation_widget_class *hex_surface_generation_widget;
+	//hex_surface_generation_widget_class *hex_surface_generation_widget;
+	hex_surface_genertion_selection_widget_class *hex_surface_generation_widget;// ****
+
 	log_panel_class                     *log_panel = NULL;
 
-	id_type                   current_selected_enity_id     = -1;   // entity id of the selected entity to display/modify
+	id_type                   current_selected_entity_id    = -1;   // entity id of the selected entity to display/modify
 	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
 	scene_manager_class      *scene_manager = NULL;
@@ -54,6 +58,25 @@ public:
 		ImGui::SetCursorPosY(y_pos);
 		//ImGui::Checkbox("###sdisplas", &animate_shaders);
 		ImGui::Checkbox("###sdisplas", &hex_surface_shader_parameters->animate_shaders);
+
+		y_pos += 30;
+		text("Display Bounding Area : ", x_pos + 80, y_pos);
+
+		ImGui::SetCursorPosX(x_pos + 273);
+		ImGui::SetCursorPosY(y_pos);
+		if (ImGui::Checkbox("###sdisplbv", &display_bounding_area)) {
+			if (scene_manager != NULL) {
+				// Commented out code for possible dissable of function if hcp voxel is not displayed.
+				//scene_node_class <render_object_class> *hcp_voxel_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id);
+				scene_node_class <render_object_class>* bv_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id + BOUNDING_GEOMETRY_OFFSET);
+
+				//if (hcp_voxel_render_object != NULL && hcp_voxel_render_object->scene_graph_object.scene_object_class.visible) {
+
+				if (bv_render_object != NULL)
+					bv_render_object->scene_graph_object.scene_object_class.visible = display_bounding_area;
+				//}
+			}
+		}
 
 		y_pos += 20;
 		text("Shader Files", x_pos + 100, y_pos);
@@ -203,7 +226,7 @@ public:
 	void update_shader_variables() { // not sure this is needed as render node does this task
 //printf("voxel_shaders_widget_class::update voxel shaders clicked\n");// replace with update variables
 		// Get the scene render object that stores the object render properties
-		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_enity_id);                  
+		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_entity_id);
 		if (entity_render_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update voxel shaders\n");
 //printf("voxel_shaders_widget_class::update_shader_variables :entity_render_object == NULL\n");
@@ -234,14 +257,14 @@ public:
 			return;
 		}
 
-		if (current_selected_enity_id < 0) {
+		if (current_selected_entity_id < 0) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : There is no defined current selected entity. Cannot update voxel shaders\n");
 //printf("voxel_shaders_widget_class::initialise_parameters :current_selected_enity_id < 0 %i\n", current_selected_enity_id);
 			return;
 		}
 
 		// Get the scene render object that stores the object render properties
-		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_enity_id);                  
+		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_entity_id);
 		if (entity_render_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update voxel shaders\n");
 //printf("voxel_shaders_widget_class::initialise_parameters :entity_render_object == NULL\n");
@@ -293,11 +316,15 @@ public:
 			hex_surface_shader_parameters->fragment_shader_file_name = "...###hsf3";
 		else
 			hex_surface_shader_parameters->fragment_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->fragment_shader_file_pathname, "/");
+		
+		return true;
 	}
 
 private:
 	voxel_texture_import_export_class  hex_surface_texture_import_export_data;
 	hex_surface_render_class	       hex_surface_render;
+
+	bool display_bounding_area;
 
 	void save_shader_parameters() {
 //printf("save button clicked\n");// replace with clear variables

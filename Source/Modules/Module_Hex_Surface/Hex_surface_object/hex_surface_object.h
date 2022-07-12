@@ -10,6 +10,8 @@
 
 #include "hex_surface_data_storage.h"
 
+#include <Source/Graphics_Engine/Scene/Scene_objects/bounding_area_object.h>
+
 enum class hex_surface_vertex_order_enum { none, face, points, line };
 
 /*
@@ -33,6 +35,8 @@ public:
 	int number_faces = 0;
 	
 	hex_surface_vertex_order_enum  point_cloud_order = hex_surface_vertex_order_enum::none;
+
+	bounding_area_class bounding_area;
 
 	bool active_object                  = false;
 	bool display_hex_surface_object_as_points = false;
@@ -101,7 +105,11 @@ public:
 		//if (point_cloud.n_vertices() < 1)
 		//	return false; // need better handling here
 		//else
-			return true;
+
+
+		update_bounding_area();
+
+		return true;
 	}
 
 	//bool add_hex_surface_vbo_face_vertex(size_t index, int i, int j) {
@@ -322,5 +330,17 @@ public:
 
 		return true;
 	}
+
+	//******
+	void update_bounding_area() {
+		float min_x = hex_surface_object_data.hex_surface_generator_parameters.x_start;
+		float min_y = hex_surface_object_data.hex_surface_generator_parameters.y_start;
+
+		float max_x = hex_surface_object_data.hex_surface_generator_parameters.x_end;
+		float max_y = hex_surface_object_data.hex_surface_generator_parameters.y_end;
+
+		bounding_area.update_limits(glm::vec3(min_x, min_y,0.0), glm::vec3(max_x, max_y,0.0));
+	}
+	//******
 
 };

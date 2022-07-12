@@ -38,7 +38,8 @@ public:
 	generator_variables_widget_class  generator_variables_widget_class;
 	log_panel_class				     *log_panel = NULL;
 
-	bool display_as_points = true;
+	//bool display_as_points = true;
+	float voxel_scale_value = 1.0f;// *****
 	
 	id_type                  current_selected_entity_id   = -1;  // entity id of the selected entity to display/modify
 	voxel_hcp_object_class  *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
@@ -50,7 +51,7 @@ public:
 		}
 
 		const char* invocation_items[] = { "1", "32", "64", "128", "256", "512", "1024" };// This cannot be defined outside this function	
-		float x_pos = 10.0f, y_pos = 70.0f;
+		float x_pos = 10.0f, y_pos = 260.0f;
 
 		text("Expression : ", x_pos, y_pos);
 		if (ex_button(voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
@@ -104,7 +105,7 @@ public:
 		y_pos += 25;
 		text("Treshold", x_pos + 30, y_pos);
 		float_input("###gthres", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.generation_threshold, x_pos + 160, y_pos, 75.0f);
-
+/*
 		y_pos += 30;
 		ImGui::SetCursorPosX(x_pos + 120);
 		ImGui::SetCursorPosY(y_pos);
@@ -119,7 +120,7 @@ public:
 		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, voxel_scale_value, 50.0f)) {
 			update_voxel_size();
 		}
-
+*/
 		y_pos += 20;
 		text("Voxel Generattion Variables", x_pos + 45, y_pos);
 		y_pos += 20;
@@ -155,7 +156,7 @@ public:
 			load_generation_parameters();
 
 	}
-
+/*
 	void change_voxels_display() {
 			scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
@@ -166,7 +167,7 @@ public:
 				update_voxel_size();
 			}
 	}
-
+*/
 	void perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (voxel_generator_parameter_variable_struct_type &variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables) {
@@ -295,7 +296,7 @@ public:
 			default   : invocation = 7; break;
 		}
 	}
-
+/*
 	void update_voxel_size() {
 		scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
@@ -310,7 +311,7 @@ public:
 			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 		}
 	}
-
+*/
 	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
 	void test_voxel_cell_coord_from_cartesian(voxel_object_data_class voxel_object_data) {
 		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
@@ -386,8 +387,8 @@ public:
 private:
 	int invocation = 4;
 
-	float voxel_scale_value = 1.0f;
-	float min_vscale = 0.001f, max_vscale = 1.000f;
+	//float voxel_scale_value = 1.0f;
+	//float min_vscale = 0.001f, max_vscale = 1.000f;
 
 	struct Funcs { static bool ItemGetter(void* data, int n, const char** out_str) { *out_str = ((const char**)data)[n]; return true; } };
 

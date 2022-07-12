@@ -4,6 +4,7 @@
 
 #include <Source/Editor/Object/object_basis.h>
 #include <Source/Graphics_Engine/Geometry/point_cloud.h>
+#include <Source/Graphics_Engine/Scene/Scene_objects/bounding_volume_object.h>
 
 
 /*
@@ -18,6 +19,13 @@ class voxel_hcp_object_class : public object_basis_class {
 public:
 	point_cloud_data_class  point_cloud;
 	voxel_object_data_class voxel_object_data;
+
+	bounding_volume_class bounding_volume;
+
+	voxel_hcp_object_class(){}
+	~voxel_hcp_object_class(){
+		delete bounding_volume.geometry;
+	}
 
 	bool  active_object = false;
 	bool  display_voxel_object_as_points = false;
@@ -139,9 +147,22 @@ public:
 		//if (point_cloud.n_vertices() < 1)
 		//	return false; // need better handling here
 		//else
+
+		update_bounding_volume();
+
 		return true;
 	}
 
+	void update_bounding_volume() {
+		float min_x = voxel_object_data.voxel_generator_parameters.x_start;
+		float min_y = voxel_object_data.voxel_generator_parameters.y_start;
+		float min_z = voxel_object_data.voxel_generator_parameters.z_start;
 
+		float max_x = voxel_object_data.voxel_generator_parameters.x_end;
+		float max_y = voxel_object_data.voxel_generator_parameters.y_end;
+		float max_z = voxel_object_data.voxel_generator_parameters.z_end;
+
+		bounding_volume.update_limits(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
+	}
 
 };

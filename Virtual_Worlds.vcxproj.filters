@@ -446,6 +446,24 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Universal\Framework\FWid_key_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generation_selection_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\interactions_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_volume_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_area_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generation_selection_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Universal\ImGui\.editorconfig" />

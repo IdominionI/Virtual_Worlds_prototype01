@@ -63,6 +63,7 @@ public:
         scene_view          = new scene_viewer_class(scene_graph_manager);
 
         //scene_manager = std::make_unique<scene_manager_class>(); // Just too problematic to work with
+
 /*
         // ***
         // Test render object(s)
@@ -210,7 +211,7 @@ public:
         tron_style();
 
         // render scene to framebuffer and add it to scene view
-        scene_view->render();// to be replaced with scene manager render
+        scene_view->render();
 
         property_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// define user selected entity data type to the property panel
         property_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;       // define user selected entity to the property panel

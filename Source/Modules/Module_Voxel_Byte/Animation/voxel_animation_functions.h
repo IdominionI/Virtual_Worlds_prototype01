@@ -132,6 +132,8 @@ public:
 		}
 
 		voxel_hcp_objects_to_execute.push_back(voxel_hcp_object);
+
+		return true;
 	}
 
 	bool define_active_animation_voxel(voxel_hcp_scene_objects_class& voxel_hcp_entities_to_export) {

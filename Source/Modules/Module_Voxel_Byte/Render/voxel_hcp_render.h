@@ -318,6 +318,8 @@ private:
 		// copy shader data used to render voxel object to voxel shader parameter data
 		// Note : There are no existing user defined variables for default shader programs
 		voxel_hcp_object->voxel_object_data.shader_parameters = shader_parameters;
+
+		return true;
 	}
 
 	vw_vertex_shader_class         vw_vertex_shader;

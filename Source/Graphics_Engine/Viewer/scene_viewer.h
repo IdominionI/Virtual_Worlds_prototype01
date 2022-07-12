@@ -15,6 +15,8 @@
 #include <Universal/imGuIZMO_quat/imGuIZMOquat.h>
 #include <Universal/ImGuizmo/ImGuizmo.h>
 
+#include "../Scene/Scene_objects/bounding_volume_object.h"
+
 // !!!! THIS IS THE SAME CLASS AS THE vw_viewer class in Virtual Worlds QT !!!!
 // !!!! TO ACHEIVE THE SAME FUCNTIONALITY TO DRAW AND DISPLAY ALL OPENGL   !!!!
 // !!!! RENDERING FUNCTIONS AND CALLS.
@@ -55,15 +57,18 @@ public:
 
     glm::vec4 xhair_color = glm::vec4{ 1.0f,1.0f,1.0f,1.0f };
 
+    bounding_volume_class bounding_volume ;// = new bounding_volume_class;// Testing only
+   
     scene_viewer_class(scene_graph_manager_class *_scene_manager) : frame_buffer(nullptr){
        frame_buffer = std::make_unique<openGL_frame_buffer_class>();
        frame_buffer->create_buffers(1700, 1000);
        camera        = new camera_object_class;
-       default_light = new light_object_class;
+       //default_light = new light_object_class;
+       scene_lights = new scene_lights_objects_class;
 
        universal_shader_variables = new universal_shader_variables_struct_type;
        universal_shader_variables->camera = camera;
-       universal_shader_variables->default_light = default_light;
+       universal_shader_variables->scene_lights = scene_lights;
 
        scene_graph_manager = _scene_manager;
 
@@ -74,6 +79,33 @@ public:
        // Define a grid axis to be displayed
        viewer_grid.scene_graph_manager = scene_graph_manager;
        viewer_grid.initialise();
+
+       // Testing only **********
+  /*     if (!bounding_volume.initialise())
+           printf("!bounding_volume.initialise()");
+       else {
+           scene_graph_manager->add_scene_entity_render_object(1000);
+           scene_node_class <render_object_class> *box_object = scene_graph_manager->get_scene_entity_render_object(1000);
+
+           if (box_object == NULL) {
+               //if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find voxel in the scene to update geometry data.\n");
+               printf("box_object == NULL.\n");
+           }
+           else {
+               printf("box_object != NULL.\n");
+               line_class *bv = new line_class;// Testing only
+
+               bounding_volume.geometry = bv;
+               
+               box_object->scene_graph_object.scene_object_class.geometry = bounding_volume.geometry;
+               box_object->scene_graph_object.scene_object_class.geometry->init();
+               box_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = bounding_volume.program_id;
+
+               bounding_volume.update_limits(glm::vec3(-4.0, -2.5, -5.0), glm::vec3(1.0, 3, 2.0));
+           }
+       }
+       // end Testing only **********
+*/
     }
 
     ~scene_viewer_class()
@@ -107,9 +139,13 @@ public:
         // *********** THIS IS WHERE THE SCENE GRAPH IS CALLED TO RENDER ALL RENDABLE OBJECTS *************
 
         scene_graph_manager->render_scene(universal_shader_variables);
+       // if(bounding_volume.program_id > -1)    bounding_volume.draw_bbox();
+       // bounding_volume.draw_bbox();
         
 
         frame_buffer->unbind(); // tHIS MAY BE SET IN EACH RENDER OBJECT
+        //bounding_volume->draw_bbox();
+
         ImGui::Begin("Scene");
 
         if (ImGui::IsWindowHovered()) focused = true; else focused = false;
@@ -291,7 +327,8 @@ private:
 
     ImGuiWindowFlags overlay_window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 
-    light_object_class *default_light = NULL;
+    //light_object_class *default_light = NULL;
+    scene_lights_objects_class *scene_lights = NULL;
 
     user_binding_class  user_bindings;
 

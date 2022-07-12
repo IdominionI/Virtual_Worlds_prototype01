@@ -21,18 +21,64 @@ public:
 
 	bool init() {
 		geometry_type = geometry_type_enum::lines;
-		vertex_buffer = std::make_unique<openGL_vertex_Index_buffer_class>();
+		vertex_buffer = std::make_unique<openGL_vertex_Index_buffer_class>(); 
+		generate_test_data();
 		return true;
+	}
+
+	void generate_test_data() {
+		vertices.clear();
+		//point_data_class vertex;
+		// Bottom plane
+		add_vertex(glm::vec3(-1.0, -1.0, -1.0));
+		add_vertex(glm::vec3(1.0, -1.0, -1.0));
+
+		add_vertex(glm::vec3(1.0, -1.0, -1.0));//
+		add_vertex(glm::vec3(1.0, 1.0, -1.0));//
+
+		add_vertex(glm::vec3(1.0, 1.0, -1.0));
+		add_vertex(glm::vec3(-1.0, 1.0, -1.0));
+
+		add_vertex(glm::vec3(-1.0, 1.0, -1.0));//
+		add_vertex(glm::vec3(-1.0, -1.0, -1.0));//
+
+		//Top plane
+		add_vertex(glm::vec3(-1.0, -1.0, 1.0));
+		add_vertex(glm::vec3(1.0, -1.0, 1.0));
+
+		add_vertex(glm::vec3(1.0, -1.0, 1.0));//
+		add_vertex(glm::vec3(1.0, 1.0, 1.0));//
+
+		add_vertex(glm::vec3(1.0, 1.0, 1.0));
+		add_vertex(glm::vec3(-1.0, 1.0, 1.0));
+
+		add_vertex(glm::vec3(-1.0, 1.0,  1.0));//
+		add_vertex(glm::vec3(-1.0, -1.0,  1.0));//
+
+		// sides
+		add_vertex(glm::vec3(-1.0, -1.0, -1.0));
+		add_vertex(glm::vec3(-1.0, -1.0, 1.0));
+
+		add_vertex(glm::vec3(1.0, -1.0, -1.0));//
+		add_vertex(glm::vec3(1.0, -1.0, 1.0));//
+
+		add_vertex(glm::vec3(1.0, 1.0, -1.0));
+		add_vertex(glm::vec3(1.0, 1.0, 1.0));
+
+		add_vertex(glm::vec3(-1.0, 1.0, -1.0));//
+		add_vertex(glm::vec3(-1.0, 1.0, 1.0));//
+
+		update_geometry();
 	}
 
 	// Update geometry data in the buffers with the current 
     // vertex data content.
     bool update_geometry() {
-printf("scene_grid_class :: update_geometry : 0000 || %i\n", buffers_created);
+//printf("line_class :: update_geometry : 0000 || %i\n", buffers_created);
         if (buffers_created) delete_buffers();
- printf("scene_grid_class :: update_geometry : 1111 \n");
+ //printf("line_class :: update_geometry : 1111 \n");
         if (!create_buffers()) return false;
- printf("scene_grid_class :: update_geometry : 2222 \n");
+ //printf("line_class :: update_geometry : 2222 \n");
         return true;
     }
 
@@ -44,14 +90,14 @@ printf("scene_grid_class :: update_geometry : 0000 || %i\n", buffers_created);
 	// add_vertex function required but cannot be defined as a virtual function as the function paramter
     // needs to be spcified and thus cannot define this function with a different paramater data type
     // Using a template just unneccessarily complicates things as well and causes problems
-    void add_vertex(const point_data_class& vertex) {
+    void add_vertex(const point_data_class &vertex) {
         vertices.push_back(vertex);
         number_vertices++;
     }
 
 	bool create_buffers() {
 		if (vertices.size() < 2) return false;
-printf("scene_grid_class :: create_buffers : CCCC %i\n", vertices.size());
+//printf("scene_grid_class :: create_buffers : CCCC %i\n", vertices.size());
 		vertex_buffer->create_point_vertex_buffer(vertices);
 		number_vertices = vertices.size();
 		buffers_created = true;

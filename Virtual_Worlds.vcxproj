@@ -214,6 +214,8 @@
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_manager.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_node.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_area_object.h" />
+    <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_volume_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\camera_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\light_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\render_object.h" />
@@ -239,6 +241,7 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Scene\hex_surface_scene_objects.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_rules_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_widget.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generation_selection_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_variables_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.h" />
@@ -262,9 +265,11 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\cart_to_voxel_generator.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generation_selection_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_variables_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Scene\voxel_hcp_scene_objects.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\interactions_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\parameters_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shaders_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shader_variables_widget.h" />
@@ -282,6 +287,7 @@
     <ClInclude Include="Universal\Framework\Common\FWdefinitions.h" />
     <ClInclude Include="Universal\Framework\FWfile_tools.h" />
     <ClInclude Include="Universal\Framework\FWstring_tools.h" />
+    <ClInclude Include="Universal\Framework\FWid_key_manager.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\imGuIZMOquat.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\vgConfig.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\vGizmo.h" />

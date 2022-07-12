@@ -250,7 +250,7 @@ public:
 
     virtual void draw_lines(int index_count, int shader_program_id) {
         bind();
-
+//printf("draw_lines %i\n", index_count);
         glDrawArrays(GL_LINES, 0, index_count);
 
         unbind();

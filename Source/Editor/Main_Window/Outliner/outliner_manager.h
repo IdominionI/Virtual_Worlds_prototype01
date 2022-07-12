@@ -614,8 +614,16 @@ private:
 	void set_entity_visibility(outliner_node_class *entity) {
 		if (scene_manager != NULL) {
 			scene_node_class <render_object_class>* render_object = scene_manager->get_render_object(entity->entity_id);
-			if (render_object != NULL)
+			if (render_object != NULL) {
 				render_object->scene_graph_object.scene_object_class.visible = entity->visible;
+			
+				// Find if entity has a bounding box,area displayed and set its visibility to that of the entity
+				// Comented out since decided that bounding box display is defined seperately in the objects 
+				// shader paremeter widget. May change in future so code left here
+				//render_object = scene_manager->get_render_object(entity->entity_id + BOUNDING_GEOMETRY_OFFSET);
+				//if (render_object != NULL) 
+				//	render_object->scene_graph_object.scene_object_class.visible = entity->visible;
+			}
 		}
 	}
 

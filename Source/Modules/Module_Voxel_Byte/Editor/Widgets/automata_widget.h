@@ -37,8 +37,8 @@ public:
 	
 	hcp_automata_rules_widget_class  hcp_automata_rules_widget;
 
-	id_type                  current_selected_enity_id = -1;   // entity id of the selected entity to display/modify
-	voxel_hcp_object_class* voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+	id_type                 current_selected_entity_id = -1;   // entity id of the selected entity to display/modify
+	voxel_hcp_object_class *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
 	scene_manager_class* scene_manager = NULL;
 
@@ -261,7 +261,7 @@ public:
 	void next_step_voxel_automata_no_thread() {
 //printf("INFO", "next_step_voxel_automata 00");
 
-		if (current_selected_enity_id < 0) {
+		if (current_selected_entity_id < 0) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR", "next_step_voxel_automata_no_thread():: No voxel hcp object specified to execute");
 			return;
 		}
@@ -303,7 +303,7 @@ public:
 //printf("INFO","perform_automata_step 01 : %i",step);
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_enity_id);
+		scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 //printf("voxel_hcp_autmoata_widget_class :: execute_voxel_function 11111\n");
 
 		if (scene_voxel_object == NULL) {

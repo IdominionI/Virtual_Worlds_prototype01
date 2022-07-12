@@ -638,6 +638,8 @@ public:
 //printf("get_hcp_voxel_cell_coord_even_level 888 :col %i :row %i :level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
+
+		return voxel_coord; // Possible bug created by this ?????
 	}
 
 	index_vector get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
@@ -758,6 +760,8 @@ public:
 //printf("get_hcp_voxel_cell_coord_odd_level 888 :col %i :row %i:level %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 			return voxel_coord;
 		}
+
+		return voxel_coord; // Possible bug created by this ?????
 	}
 
 	float distance_to_plane(glm::vec3 normal_vector, glm::vec3 pq_vector) {

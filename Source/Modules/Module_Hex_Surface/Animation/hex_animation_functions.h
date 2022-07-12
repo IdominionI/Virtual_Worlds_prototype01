@@ -138,6 +138,8 @@ public:
 		}
 
 		hex_surface_objects_to_execute.push_back(hex_surface_object);
+
+		return true;
 	}
 
 	bool define_active_animation_hex_surface(hex_surface_scene_objects_class &hex_surface_entities) {

@@ -97,14 +97,14 @@ public:
 	bool define_function_block_code() {
 		if (FW::stringtools::contains(expression_string,START_COMPUTE_FUNCTION_BLOCK_FLAG)) {    // look for start of function section flag in imported file
 			if (!FW::stringtools::contains(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG)) { // look for end of function section flag in imported file
-				printf("ERROR : Import of the compute file \n %s \n has a function block with no end of function block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n has a function block with no end of function block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 
 			// Make sure end of function block does not preceed start of function block
 			//if (expression_string.indexOf(END_COMPUTE_FUNCTION_BLOCK_FLAG, 0) < expression_string.indexOf(START_COMPUTE_FUNCTION_BLOCK_FLAG, 0)) {
 			if (FW::stringtools::indexOf(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG, 0) < FW::stringtools::indexOf(expression_string,START_COMPUTE_FUNCTION_BLOCK_FLAG, 0)) {
-				printf("ERROR : Import of the compute file \n %s \n has a function block with end of function block flag occururing before the start function block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n has a function block with end of function block flag occururing before the start function block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 
@@ -114,7 +114,7 @@ public:
 		}
 		else {
 			if (FW::stringtools::contains(expression_string,END_COMPUTE_FUNCTION_BLOCK_FLAG)) { // Have no begin function section flag, but do have end of function section flag
-				printf("ERROR : Import of the compute file \n %s \n  has a function block with an end of function block flag, but no start of function block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n  has a function block with an end of function block flag, but no start of function block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 		}
@@ -139,13 +139,13 @@ public:
 	bool define_expression_code() {
 		if (FW::stringtools::contains(expression_string, START_COMPUTE_EXPRESSION_BLOCK_FLAG)) {    // look for start of main function section flag in imported file
 			if (!FW::stringtools::contains(expression_string,END_COMPUTE_EXPRESSION_BLOCK_FLAG)) { // look for end of main function section flag in imported file
-				printf("ERROR : Import of the compute file \n %s \n  has a expression block with no end of expression block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n  has a expression block with no end of expression block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 
 			// Make sure end of main function block does not preceed start of function block
 			if (FW::stringtools::indexOf(expression_string, END_COMPUTE_EXPRESSION_BLOCK_FLAG, 0) < FW::stringtools::indexOf(expression_string,START_COMPUTE_EXPRESSION_BLOCK_FLAG, 0)) {
-				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 
@@ -155,7 +155,7 @@ public:
 		}
 		else {
 			if (FW::stringtools::contains(expression_string,END_COMPUTE_EXPRESSION_BLOCK_FLAG)) {// Have no begin main function section flag, but do have end of function section flag
-				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read);
+				printf("ERROR : Import of the compute file \n %s \n  has a expression block with end of expression block flag occururing before the start expression block flag.\n", filename_to_read.c_str());
 				return false;
 			}
 		}

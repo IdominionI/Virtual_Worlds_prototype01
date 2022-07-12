@@ -73,7 +73,13 @@ public :
 			
 			case geometry_type_enum::triangles : if(vertex_buffer != NULL) vertex_buffer->draw_triangles_array(number_vertices, shader_program_id);  break;
 			
-			case geometry_type_enum::lines     : if(vertex_buffer != NULL) vertex_buffer->draw_lines((int)vertex_indices.size(), shader_program_id); break; // Not yet tested
+			case geometry_type_enum::lines: {
+				if (vertex_buffer != NULL) {
+					//printf("geometry_basis_class:: render:: lines vertex_buffer != NULL %i\n", number_vertices);
+					vertex_buffer->draw_lines((int)number_vertices, shader_program_id);
+				}
+			
+				}break;
 			// Other expansion types here
 			case geometry_type_enum::undefined : {
 				// error message

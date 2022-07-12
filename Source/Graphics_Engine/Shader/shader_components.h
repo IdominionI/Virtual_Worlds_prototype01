@@ -120,7 +120,8 @@ struct universal_shader_variables_struct_type {
 	camera_object_class               *camera;
 	//std::vector <light_object_class> scene_lights; Yet to be implemented
 
-	light_object_class *default_light;
+	//light_object_class *default_light;
+	scene_lights_objects_class *scene_lights;
 
 	float     ambience = 0.3;
 	float     specular_strength = 0.3;
@@ -136,7 +137,9 @@ struct universal_shader_variables_struct_type {
 
 	void update_default_shader_variables(idu_type shader_program_id) {
 		camera->update(shader_program_id);
-		default_light->update(shader_program_id);
+		//default_light->update(shader_program_id);
+		scene_lights->update(shader_program_id);
+		
 
 		shader_manager.shader.set_f1(shader_program_id,   ambience, "ambience");
 		shader_manager.shader.set_f1(shader_program_id,   specular_strength, "specular_strength");

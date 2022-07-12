@@ -27,7 +27,7 @@ public :
 	~scene_graph_manager_class() {}
 
 	//std::vector <camera_object_class>     scene_cameras; // I have more than one camera in the scene
-	std::vector <light_object_class>        scene_lights;
+	scene_lights_objects_class              scene_lights;
 	scene_node_class <render_object_class> *scene_root_render_object=NULL;
 
 	void render_scene(universal_shader_variables_struct_type *universal_shader_variables) {
@@ -71,6 +71,13 @@ public :
 
 	scene_node_class <render_object_class> *get_scene_entity_render_object(idu_type scene_node_entity_id) {
 		return scene_root_render_object->get_scene_entity_render_object(scene_node_entity_id);
+	}
+
+	bool entity_render_object_exists(idu_type scene_node_entity_id) {
+		if (scene_root_render_object->find_scene_node_index(scene_node_entity_id) > -1)
+			return true;
+		else
+			return false;
 	}
 
 private:

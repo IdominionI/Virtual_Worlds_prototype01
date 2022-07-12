@@ -16,7 +16,7 @@ uniform mat4 mvpMatrix; // ************model-view-projection matrix
 
 uniform vec3 camera_loc;   // Camera location
 
-uniform bool use_camera_lighting;
+uniform int use_camera_lighting;
 uniform vec3 lighting_camera_offset;
 uniform int  camera_lighting_type;
 uniform float lighting_intensity;
@@ -46,7 +46,7 @@ out VertexData
 } gs_out;
 
 // Lighting and light shading
-uniform bool  display_vertex_light_shading;
+uniform int  display_vertex_light_shading;
 uniform vec3  lighting_direction;
 uniform float ambience;
 uniform float specular_strength;
@@ -55,3 +55,66 @@ uniform vec4  light_color;
 uniform int   t_frame;
 
 uniform vec2  resolution;
+
+// *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+struct Material {
+    float diffuse;
+    float specular;
+    float shininess;
+};
+// Light Data_structures
+
+struct DirLight {
+    vec3 direction;
+	vec3 color;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight {
+    vec3 position;
+	vec3 color;
+    
+    float constant;
+    float linear;
+    float quadratic;
+	float attenuation_factor;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct SpotLight {
+    vec3 position;
+	vec3 color;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+	float attenuation_factor;
+  
+    float constant;
+    float linear;
+    float quadratic;
+  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;       
+};
+
+#define MAX_NUMBER_DIRECTIONAL_LIGHTS 10
+#define MAX_NUMBER_POINT_LIGHTS       10
+#define MAX_NUMBER_SPOT_LIGHTS        10
+
+uniform int number_directional_lights;
+uniform int number_point_lights;
+uniform int number_spot_lights;
+
+uniform DirLight dirLight[MAX_NUMBER_DIRECTIONAL_LIGHTS];
+uniform PointLight pointLights[MAX_NUMBER_POINT_LIGHTS];
+uniform SpotLight spotLight[MAX_NUMBER_SPOT_LIGHTS];
+uniform Material material;
+
+// *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

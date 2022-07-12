@@ -36,7 +36,7 @@ public:
 
 		const char* random_items[] = { "function","square", "Circle"};// This cannot be defined outside this function	
 
-		float x_pos = 10.0f, y_pos = 70.0f;
+		float x_pos = 10.0f, y_pos = 260.0f;
 
 		text("PLY File : ", x_pos, y_pos);
 		if (ex_button(ply_file_name + "###ctovb01", x_pos + 120, y_pos, 150, 20))
