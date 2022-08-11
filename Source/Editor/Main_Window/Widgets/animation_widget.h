@@ -639,7 +639,7 @@ private:
 		hex_surface_animation_functions.hex_surface_objects_to_execute.clear();
 		hex_surface_animation_functions.hex_surface_objects_to_execute.shrink_to_fit();
 
-		if (current_selected_object_type_id == ENTITY_CATEGORY_HCP_SURF && animation_selection == ANIMATION_SELECTED_INDEX || animation_selection != ANIMATION_SELECTED_INDEX) {
+		if (current_selected_object_type_id == ENTITY_CATEGORY_HEX_SURF && animation_selection == ANIMATION_SELECTED_INDEX || animation_selection != ANIMATION_SELECTED_INDEX) {
 			if (!hex_surface_animation_functions.define_hex_surface_objects_to_execute(animation_selection, scene_manager, current_selected_object_id)) {
 				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : editor_animation_widget_class :: could not define hex surface objects to animate\n");
 			}

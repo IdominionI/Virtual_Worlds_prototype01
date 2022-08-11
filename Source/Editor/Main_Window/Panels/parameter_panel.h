@@ -7,6 +7,8 @@
 
 #include "../Outliner/outliner_manager.h"
 
+#include "../../Node_editor/ImNodes/Kernal/node.h"
+
 // Include the entity data type main parameter widget class to be displayed in
 // the application here.
 #include <Source/Modules/Module_Voxel_Byte/Editor/Widgets/parameters_widget.h>
@@ -31,21 +33,29 @@ public:
 
 	scene_manager_class *scene_manager = NULL;
 
-	id_type          current_selected_object_id      = -1;
-	id_type          current_selected_object_type_id = -1;
+	//id_type          *current_selected_object_id      = NULL;
+	//id_type          *current_selected_object_type_id = NULL;
 
 	log_panel_class *log_panel  = NULL; // Define the application log panel to display application messages to
 	log_panel_class *code_panel = NULL; // Define the application log panel to display application shder or other code error messages to
 
-	void show() {
+	//void show() {
+	void show(node_basis_class *node = NULL) {
+
+		//if (current_selected_object_type_id == NULL || current_selected_object_id == NULL) {
+		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR: Parameter panel :No Entity variable defined \n");
+		//	return;
+		//}
 
 		ImGui::Begin("Object Parameters");
 
 		title("Object Parameters");
 
-		switch (current_selected_object_type_id) {
-			case ENTITY_CATEGORY_HCP_VOXEL : display_voxel_hcp_parameters_widget();   break;
-			case ENTITY_CATEGORY_HCP_SURF  : display_hex_surface_parameters_widget(); break;
+		//switch (*current_selected_object_type_id) {
+		switch (globalc::get_current_selected_entity_type_id()) {
+			case ENTITY_CATEGORY_HCP_VOXEL : display_voxel_hcp_parameters_widget(node);   break;
+			//case ENTITY_CATEGORY_HCP_VOXEL : display_voxel_hcp_parameters_widget();   break;
+			case ENTITY_CATEGORY_HEX_SURF  : display_hex_surface_parameters_widget(node); break;
 			
 				//other types to go here		
 		}
@@ -59,17 +69,25 @@ private:
 	voxel_hcp_parameters_widget_class   voxel_hcp_parameters_widget; 
 	hex_surface_parameters_widget_class hex_surface_parameters_widget;
 
-	void display_voxel_hcp_parameters_widget() {
+	void display_voxel_hcp_parameters_widget(node_basis_class *node = NULL) {
+	//void display_voxel_hcp_parameters_widget(node_basis_class) {
 		voxel_hcp_parameters_widget.scene_manager = scene_manager;
 		voxel_hcp_parameters_widget.log_panel     = log_panel;
-	
-		voxel_hcp_parameters_widget.display_voxel_hcp_generation_widget(current_selected_object_id);
+//printf("parameter_panel_class :: display_voxel_hcp_parameters_widget 0000 %i \n", *current_selected_object_id);
+		if (node != NULL)
+			node->display_ui(scene_manager, log_panel, globalc::get_current_selected_entity_id());
+		else
+			voxel_hcp_parameters_widget.display_voxel_hcp_generation_widget(globalc::get_current_selected_entity_id());
 	}
 
-	void display_hex_surface_parameters_widget() {
+	//void display_hex_surface_parameters_widget() {
+	void display_hex_surface_parameters_widget(node_basis_class *node = NULL) {
 		hex_surface_parameters_widget.scene_manager = scene_manager;
 		hex_surface_parameters_widget.log_panel     = log_panel;
 
-		hex_surface_parameters_widget.display_hex_surface_generation_widget(current_selected_object_id);
+		if (node != NULL)
+			node->display_ui(scene_manager, log_panel, globalc::get_current_selected_entity_id());
+		else
+			hex_surface_parameters_widget.display_hex_surface_generation_widget(globalc::get_current_selected_entity_id());
 	}
 };

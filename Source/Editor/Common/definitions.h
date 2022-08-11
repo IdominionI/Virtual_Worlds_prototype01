@@ -22,8 +22,11 @@ typedef string_type pathname_type;
 #define ENTITY_CATEGORY_GRID      190 // Mandetory
 
 //      Module entity data type ID here
+#define INVALID_ID                -1
+#define NON_ENTITY_ID             -1
+#define NON_ENTITY_CATEGORY_ID    -1
 #define ENTITY_CATEGORY_HCP_VOXEL 200
-#define ENTITY_CATEGORY_HCP_SURF  210
+#define ENTITY_CATEGORY_HEX_SURF  210
 //  add Module entity data type ID here
 
 //!!!!! THESE BELOW MAY NEED TO BE NOT USED !!!!!!!!

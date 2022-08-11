@@ -62,6 +62,7 @@ public:
 		}
 
 //printf("voxel_hcp_object_class : define_vbo_vertices 000 : %i\n", voxel_data.voxel_matrix_data.size());
+//printf("voxel_hcp_object_class : define_vbo_vertices 111 : %f %f %f\n", voxel_object_data.matrix_origin.x, voxel_object_data.matrix_origin.y, voxel_object_data.matrix_origin.z);
 
 //QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudA "+QString::number(voxel_data.voxel_matrix_data.size()), QMessageBox::Ok);
 //QMessageBox::information(NULL, "vertices","define_cubic_voxel_cloudB "+QString::number(voxel_data.voxel_object_data[0].size()), QMessageBox::Ok);
@@ -121,10 +122,7 @@ public:
 
 							vertex.mPos   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable
 
-							//vertex.mPos   = { x,y,z };
-							//vertex.mvalue = volume_data;
-
-//printf("define_vbo_vertices : %f : %f : % f :: %i\n", x,y,z, volume_data_value);
+//printf("define_vbo_vertices : define_vbo_vertices 2222 %f : %f : % f :: %i\n", x,y,z, volume_data_value);
 							point_cloud.add_vertex(vertex);
 							n++;
 						}
@@ -144,23 +142,27 @@ public:
 //printf("voxel_hcp_object_class : define_vbo_vertices 111 : %i\n", point_cloud.vertices.size());
 //QMessageBox::information(NULL, "define_vbo_vertices","define_vbo_vertices05 :"+QString::number(i)+" : "+QString::number(j)+" : "+QString::number(k)+" : "+QString::number(voxel_index)+" : "+QString::number(vertices.size()), QMessageBox::Ok);
 
-		//if (point_cloud.n_vertices() < 1)
-		//	return false; // need better handling here
-		//else
-
 		update_bounding_volume();
 
 		return true;
 	}
 
 	void update_bounding_volume() {
-		float min_x = voxel_object_data.voxel_generator_parameters.x_start;
-		float min_y = voxel_object_data.voxel_generator_parameters.y_start;
-		float min_z = voxel_object_data.voxel_generator_parameters.z_start;
+		//float min_x = voxel_object_data.voxel_generator_parameters.x_start;
+		//float min_y = voxel_object_data.voxel_generator_parameters.y_start;
+		//float min_z = voxel_object_data.voxel_generator_parameters.z_start;
 
-		float max_x = voxel_object_data.voxel_generator_parameters.x_end;
-		float max_y = voxel_object_data.voxel_generator_parameters.y_end;
-		float max_z = voxel_object_data.voxel_generator_parameters.z_end;
+		//float max_x = voxel_object_data.voxel_generator_parameters.x_end;
+		//float max_y = voxel_object_data.voxel_generator_parameters.y_end;
+		//float max_z = voxel_object_data.voxel_generator_parameters.z_end;
+
+		float min_x = voxel_object_data.matrix_origin.x;
+		float min_y = voxel_object_data.matrix_origin.y;
+		float min_z = voxel_object_data.matrix_origin.z;
+
+		float max_x = voxel_object_data.matrix_origin.x + (voxel_object_data.voxel_generator_parameters.x_end - voxel_object_data.voxel_generator_parameters.x_start);
+		float max_y = voxel_object_data.matrix_origin.y + (voxel_object_data.voxel_generator_parameters.y_end - voxel_object_data.voxel_generator_parameters.y_start);
+		float max_z = voxel_object_data.matrix_origin.z + (voxel_object_data.voxel_generator_parameters.z_end - voxel_object_data.voxel_generator_parameters.z_start);
 
 		bounding_volume.update_limits(glm::vec3(min_x, min_y, min_z), glm::vec3(max_x, max_y, max_z));
 	}

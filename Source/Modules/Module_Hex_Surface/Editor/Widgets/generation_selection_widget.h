@@ -91,7 +91,7 @@ public:
 			uniform_variable.type = application_default_shader_variable_type_enum::Int1; uniform_variable.name = "display_as_points"; uniform_variable.value0 = &displ_as_points;
 			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 
-			scene_manager->update_shader(scene_hex_surface_object, ENTITY_CATEGORY_HCP_SURF);
+			scene_manager->update_shader(scene_hex_surface_object, ENTITY_CATEGORY_HEX_SURF);
 
 			update_hex_size();// *****
 		}

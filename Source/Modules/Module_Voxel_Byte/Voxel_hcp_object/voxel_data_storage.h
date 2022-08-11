@@ -46,7 +46,7 @@ public:
 	float	     voxel_size           = 1.0f;
 	glm::vec3    matrix_origin        = { 0.0,0.0,0.0 };
 	glm::vec3    matrix_coordinate_scale_factors = { 1.0,1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	index_vector matrix_dimension     = { 0,0,0 };
+	index_vector matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
 	bool	     display_points       = true;
 	bool	     perfom_rounding_up   = true;
 	bool	     voxel_surface_volume = false;

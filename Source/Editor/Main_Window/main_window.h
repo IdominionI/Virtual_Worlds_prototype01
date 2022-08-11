@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Common/imgui_custom.h"
+#include "../Common/global.h" // ****
 
 #include <Graphics_Engine/OpenGL_window/ui_context.h>
 #include <Graphics_Engine/OpenGL_window/openGL_context.h>
@@ -13,6 +14,8 @@
 #include "Panels/outliner_panel.h"
 #include "Panels/parameter_panel.h"
 #include "Panels/log_panel.h"
+
+#include "Panels/node_editor_panel.h"// *****
 
 //#include <Source/Graphics_Engine/Geometry/mesh.h> // Testing only
 
@@ -30,8 +33,11 @@ public:
     }
 
     ~main_window_class() {
+        ImNodes::DestroyContext();//*************
         ui_context->end();
         render_context->end();
+        //delete current_selected_entity_type_id;
+        //delete current_selected_entity_id;
     }
 
     // Initialise application main window panels, variables, parameters etc.
@@ -45,6 +51,18 @@ public:
 
         ui_context->init(this);
 
+        //current_selected_entity_type_id = new id_type;
+        //current_selected_entity_id      = new id_type;
+        //*current_selected_entity_type_id = -1;
+        //*current_selected_entity_id      = -1;
+
+        selected_node = NULL;
+
+        globalc::set_current_selected_entity_id(-1);//****
+        globalc::set_current_selected_entity_type_id(-1);//****
+
+        ImNodes::CreateContext();//*************
+
         log_panel = new log_panel_class();
         if (log_panel == NULL) {
             printf("CRITCAL ERROR :: No Applicaton Logger Defined : Cannot perform application \n");
@@ -56,9 +74,13 @@ public:
         scene_graph_manager      = &scene_manager->scene_graph_manager;
 
         outliner_panel.outliner_manager.scene_manager = scene_manager;
+        //outliner_panel.outliner_manager.current_selected_entity_type_id = current_selected_entity_type_id;//*****
+        //outliner_panel.outliner_manager.current_selected_node_id        = current_selected_entity_id;     //*****
 
         parameter_panel.scene_manager = scene_manager;
         parameter_panel.log_panel     = log_panel;
+        //parameter_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the paramater panel*****
+        //parameter_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the paramater panel*****
 
         scene_view          = new scene_viewer_class(scene_graph_manager);
 
@@ -165,8 +187,16 @@ public:
         property_panel.openGL_context             = render_context;
         property_panel.scene_viewer               = scene_view;
         property_panel.scene_manager              = scene_manager;
-        property_panel.universal_shader_variables = scene_view->universal_shader_variables;// ****
-
+        property_panel.universal_shader_variables = scene_view->universal_shader_variables;
+        //property_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the property panel ******
+        //property_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the property panel******
+        
+        
+        node_editor_panel.log_panel     = log_panel;
+        node_editor_panel.scene_manager = scene_manager; //******
+        //node_editor_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the paramater panel*****
+        //node_editor_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the paramater panel*****
+        node_editor_panel.nodes_context                   = ImNodes::GetCurrentContext();
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         // Set up the fonts file to use to display text 
         // and the awesome icon font file to display icons since ImGui is not designed
@@ -213,8 +243,6 @@ public:
         // render scene to framebuffer and add it to scene view
         scene_view->render();
 
-        property_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// define user selected entity data type to the property panel
-        property_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;       // define user selected entity to the property panel
         property_panel.show(); // Display property panel with the selected entity property parameter values
 
         outliner_panel.show(log_panel); // Display outliner panel 
@@ -223,9 +251,12 @@ public:
         log_panel->display_application_log();
         log_panel->display_code_log();
 
-        parameter_panel.current_selected_object_type_id = outliner_panel.outliner_manager.current_selected_entity_type_id;// define user selected entity data type to the paramater panel
-        parameter_panel.current_selected_object_id      = outliner_panel.outliner_manager.current_selected_node_id;       // define user selected entity to the paramater panel
-        parameter_panel.show();
+        parameter_panel.show(selected_node);
+        //parameter_panel.show();
+
+        //global_sclass::set_current_selected_entity_id(*current_selected_entity_id); global_sclass::set_current_selected_entity_type_id(*current_selected_entity_type_id);
+        node_editor_panel.show();
+        selected_node = node_editor_panel.selected_node;
 
         // Create application main menu
         main_menu();
@@ -342,6 +373,13 @@ public:
     bool is_running() { return mIsRunning; }
 
 private:
+    // Global variables
+
+    //id_type *current_selected_entity_type_id = NULL;
+    //id_type *current_selected_entity_id      = NULL;
+
+    node_basis_class *selected_node = NULL;//*****
+
     GLFWwindow* GLFW_window_ptr; // glfw 
 
     // Render contexts
@@ -353,6 +391,8 @@ private:
     outliner_panel_class  outliner_panel;
     parameter_panel_class parameter_panel;
     log_panel_class       *log_panel;
+    node_editor_panel_class node_editor_panel;
+
 
     scene_viewer_class   *scene_view;
 
@@ -393,7 +433,8 @@ private:
         voxel_object_data_class    voxel_object_surface_data;
 
         switch (selection) {
-			case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, outliner_panel.outliner_manager.current_selected_node_id);break;
+			//case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, *outliner_panel.outliner_manager.current_selected_node_id);break;
+			case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, globalc::get_current_selected_entity_id());break;
 			case ACTIVE_EXPORT	 : voxel_center_points_active(voxel_hcp_objects);  break;
 			case ALL_EXPORT      : voxel_center_points_all(voxel_hcp_objects);	   break;
 
@@ -521,7 +562,8 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point dat to file:: Scene Manager is undefined\n");
         }
 
-        export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection,outliner_panel.outliner_manager.current_selected_node_id);
+        //export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection,*outliner_panel.outliner_manager.current_selected_node_id);
+        export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection, globalc::get_current_selected_entity_id());
     }
 
     void  export_voxels_point_surface_data(int export_selection) {
@@ -529,7 +571,8 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Scene Manager is undefined\n");
         }
 
-        export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, outliner_panel.outliner_manager.current_selected_node_id);
+        //export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
+        export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
     void  export_voxels_surface_face_data(int export_selection) {
@@ -537,7 +580,8 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Scene Manager is undefined\n");
         }
 
-        export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, outliner_panel.outliner_manager.current_selected_node_id);
+        //export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
+        export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
 
@@ -548,7 +592,8 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export hex surface point geometry :: Cannot export hex surface point dat to file:: Scene Manager is undefined\n");
         }
 
-        export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, outliner_panel.outliner_manager.current_selected_node_id);
+        //export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
+        export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
     void export_hex_surface_surface_face_data(int export_selection) {
@@ -556,7 +601,8 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export hex surface surface geometry :: Cannot export hex surface surface dat to file:: Scene Manager is undefined\n");
         }
 
-        export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, outliner_panel.outliner_manager.current_selected_node_id);
+        //export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
+        export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
 };

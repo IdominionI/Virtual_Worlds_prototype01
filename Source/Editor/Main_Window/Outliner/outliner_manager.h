@@ -91,9 +91,8 @@ public:
 
 	outliner_node_class *root_node = NULL;
 
-	id_type current_selected_node_id        = -1;
-	id_type current_selected_entity_type_id = -1;
-	id_type current_selected_entity_id      = -1;
+
+	id_type current_selected_entity_id      = INVALID_ID;
 
 	//	Display outliner nodes :
 	//	To display the outliner nodes, the list of outiner tree nodes is queried and
@@ -138,10 +137,10 @@ public:
 				bool group_node_open = ImGui::TreeNodeEx((void*)(intptr_t)group, node_flags, "");
 
 				if (ImGui::IsItemClicked() || ImGui::IsItemHovered()){
-					current_selected_node_id = group->entity_id;
+					globalc::set_current_selected_entity_id(group->entity_id);
 					if (ImGui::IsItemClicked()) {
-						current_selected_entity_id      = -1;
-						current_selected_entity_type_id = -1;
+						current_selected_entity_id  = INVALID_ID;
+						globalc::set_current_selected_entity_type_id(INVALID_ID);
 					}
 //printf("display_nodes :: group selected: %i  \n", current_selected_node_id); //this is the group
 				}
@@ -172,36 +171,44 @@ public:
 				}
 
 				// Create a menu to perform actions if a group node is selected and right mouse pressed
-				if (current_selected_node_id < -1) {
+				if (globalc::get_current_selected_entity_id() < INVALID_ID) {
 					if (ImGui::BeginPopupContextWindow("1", 1, true)) {
 						if (ImGui::BeginMenu("Add Object")) {
 							{
-								if(ImGui::MenuItem("HCP Voxel"))    add_object(current_selected_node_id,ENTITY_CATEGORY_HCP_VOXEL);
-								if(ImGui::MenuItem("Hex Surface"))  add_object(current_selected_node_id,ENTITY_CATEGORY_HCP_SURF);
+								//if(ImGui::MenuItem("HCP Voxel"))    add_object(*current_selected_node_id,ENTITY_CATEGORY_HCP_VOXEL);
+								//if(ImGui::MenuItem("Hex Surface"))  add_object(*current_selected_node_id,ENTITY_CATEGORY_HEX_SURF);
+								if (ImGui::MenuItem("HCP Voxel"))    add_object(globalc::get_current_selected_entity_id(), ENTITY_CATEGORY_HCP_VOXEL);
+								if (ImGui::MenuItem("Hex Surface"))  add_object(globalc::get_current_selected_entity_id(), ENTITY_CATEGORY_HEX_SURF);
 								ImGui::EndMenu();
 							} };
 
 						if (ImGui::BeginMenu("Import Object")) {
 							{
-								if (ImGui::MenuItem("HCP Voxel"))    import_object(current_selected_node_id,ENTITY_CATEGORY_HCP_VOXEL);
-								if (ImGui::MenuItem("Hex Surface"))  import_object(current_selected_node_id,ENTITY_CATEGORY_HCP_SURF);
+								if (ImGui::MenuItem("HCP Voxel"))    import_object(globalc::get_current_selected_entity_id(),ENTITY_CATEGORY_HCP_VOXEL);
+								if (ImGui::MenuItem("Hex Surface"))  import_object(globalc::get_current_selected_entity_id(),ENTITY_CATEGORY_HEX_SURF);		
+								//if (ImGui::MenuItem("HCP Voxel"))    import_object(*current_selected_node_id,ENTITY_CATEGORY_HCP_VOXEL);
+								//if (ImGui::MenuItem("Hex Surface"))  import_object(*current_selected_node_id,ENTITY_CATEGORY_HEX_SURF);
 								ImGui::EndMenu();
 							}
 						};
 
 						ImGui::Separator();
-						if (ImGui::MenuItem("Delete Group")) delete_group(current_selected_node_id);
+						//if (ImGui::MenuItem("Delete Group")) delete_group(*current_selected_node_id);
+						if (ImGui::MenuItem("Delete Group")) delete_group(globalc::get_current_selected_entity_id());
 						ImGui::Separator();
-						if (ImGui::MenuItem("Save Group"))   save_group(current_selected_node_id);
+						//if (ImGui::MenuItem("Save Group"))   save_group(*current_selected_node_id);
+						if (ImGui::MenuItem("Save Group"))   save_group(globalc::get_current_selected_entity_id());
 
 						ImGui::EndPopup();// Root
 					}
 				} else {// Create a menu to perform actions if an entity node is selected and right mouse pressed
-					if (current_selected_node_id > -1) {
+					if (globalc::get_current_selected_entity_id() > INVALID_ID) {
 						if (ImGui::BeginPopupContextWindow("2", 1, true)) {
-							if (ImGui::MenuItem("Delete Object")) delete_object(current_selected_node_id);
+							//if (ImGui::MenuItem("Delete Object")) delete_object(*current_selected_node_id);
+							if (ImGui::MenuItem("Delete Object")) delete_object(globalc::get_current_selected_entity_id());
 							ImGui::Separator();
-							if (ImGui::MenuItem("Save Object"))   save_object(current_selected_node_id);
+							//if (ImGui::MenuItem("Save Object"))   save_object(*current_selected_node_id);
+							if (ImGui::MenuItem("Save Object"))   save_object(globalc::get_current_selected_entity_id());
 
 							ImGui::EndPopup();// Root
 						}
@@ -217,10 +224,12 @@ public:
 						std::string id_prefix = "###e"; std::string w_id = "";
 
 						if (ImGui::IsItemClicked() || ImGui::IsItemHovered()){
-							current_selected_node_id = entity->entity_id;
+							//*current_selected_node_id = entity->entity_id;
+							globalc::set_current_selected_entity_id(entity->entity_id);
 							if (ImGui::IsItemClicked()) {
 								current_selected_entity_id      = entity->entity_id;
-								current_selected_entity_type_id = entity->category_id;
+								globalc::set_current_selected_entity_type_id(entity->category_id);
+								//*current_selected_entity_type_id = entity->category_id;
 							}
 //printf("display_nodes :: entity selected: %i  \n", current_selected_node_id); //this is the group
 						}
@@ -230,7 +239,7 @@ public:
 						switch (entity->category_id) {
 							//case  GROUP_CATEGORY			: ImGui::Text(ICON_FA_LAYER_GROUP); break; // No sub groups yet implemented
 							case  ENTITY_CATEGORY_HCP_VOXEL : ImGui::Text(ICON_FA_SNOWFLAKE_O); break;
-							case  ENTITY_CATEGORY_HCP_SURF  : ImGui::Text(ICON_FA_MOUNTAIN); break;
+							case  ENTITY_CATEGORY_HEX_SURF  : ImGui::Text(ICON_FA_MOUNTAIN); break;
 								// Other entity category types to be added here
 							default : ImGui::Text("!"); break;
 						}
@@ -266,9 +275,9 @@ public:
 		}
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
-			current_selected_node_id        = -1;
-			current_selected_entity_id      = -1;
-			current_selected_entity_type_id = -1;
+			globalc::set_current_selected_entity_id(INVALID_ID);
+			current_selected_entity_id      = INVALID_ID;
+			globalc::set_current_selected_entity_type_id(INVALID_ID);
 		}
 
 		// Right-click on blank space
@@ -311,28 +320,28 @@ public:
 
 	void delete_selected_nodes() {
 //printf("display_nodes :: Delete Selected Items MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 
 	void deactivate_selected_nodes() {
 //printf("display_nodes :: Deactivate Selected Items MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 
 	void toggle_selected_nodes_visibility() {
 //printf("display_nodes :: toggle Selected Items visibility MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 
 	void toggle_selected_nodes_activity() {
 //printf("display_nodes :: toggle Selected Itemsa activity MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 
 	// --------------- Scene functions ---------------------
 	void add_scene() {
 //printf("display_nodes :: Add Iported Scene MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
@@ -342,7 +351,7 @@ public:
 
 	void save_scene() {
 //printf("display_nodes :: Save Scene MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
@@ -359,10 +368,13 @@ public:
 			delete_group(root_node->children[i]);
 		}
 
-		entity_id_key.reinitialise();
+		//entity_id_key.reinitialise();
+		// An obvious bug exists here where need to clear the node editor as well
+		// or at least all entities that are defined in the node editor
+		globalc::reinitialise();
 		group_id_key.reinitialise();
 
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 	// --------------- Group functions ---------------------
 
@@ -370,7 +382,7 @@ public:
 //printf("display_nodes :: Add Group MenuItem selected  \n");
 		add_new_group(root_node);
 
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 	}
 
 	outliner_node_class *get_outliner_group_node(id_type group_id) {
@@ -389,7 +401,7 @@ public:
 
 	void import_group() {
 //printf("display_nodes :: Import group MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
@@ -399,7 +411,7 @@ public:
 
 	void delete_group(id_type group_id) {
 //printf("outliner_manager_class :: delete_group 00 \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		outliner_node_class *group_to_delete = root_node->find_child(group_id);
 //printf("outliner_manager_class :: delete_group 11 \n");
@@ -413,7 +425,7 @@ public:
 
 	void delete_group(outliner_node_class *group_to_delete) {
 //printf("outliner_manager_class :: delete_group 33 \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 		if (group_to_delete == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : No group defined to delete.\n");
 			return;
@@ -426,7 +438,8 @@ public:
 		for (int i = number_children - 1; i > -1; i--) {
 			scene_manager->delete_entity(group_to_delete->children[i]->entity_id, group_to_delete->children[i]->category_id);
 
-			entity_id_key.assign_free_id_key(group_to_delete->children[i]->entity_id);// Free entity ID number to be reused when a new entity is created
+			//entity_id_key.assign_free_id_key(group_to_delete->children[i]->entity_id);// Free entity ID number to be reused when a new entity is created
+			globalc::assign_free_entity_id(group_to_delete->children[i]->entity_id);// Free entity ID number to be reused when a new entity is created
 			delete group_to_delete->children[i]; // destructor should delete group childern entries
 //printf("outliner_manager_class 55 :: delete_group children !!!! %i\n", group_to_delete->children.size());
 		}
@@ -439,7 +452,7 @@ public:
 
 	void save_group(id_type group_id) {
 //printf("display_nodes :: Save Group MenuItem selected  \n");
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
@@ -458,7 +471,8 @@ public:
 
 	void add_object(id_type parent_group_id, category_id_type entity_category) {
 //printf("display_nodes :: Add Object MenuItem selected  \n");
-		current_selected_node_id = -1;
+
+		globalc::set_current_selected_entity_id(INVALID_ID);
 		outliner_node_class *outliner_group_node = get_outliner_group_node(parent_group_id);
 
 //printf("display_nodes :: Add Object MenuItem selected 11111 %i \n", outliner_group_node->entity_id);
@@ -493,7 +507,7 @@ public:
 //printf("display_nodes :: Import Object MenuItem selected  \n");
 		switch (entity_category) {
 			case ENTITY_CATEGORY_HCP_VOXEL : import_hcp_voxel_object(parent_group_id); break;
-			case ENTITY_CATEGORY_HCP_SURF  : import_hex_surface_object(parent_group_id); break;
+			case ENTITY_CATEGORY_HEX_SURF  : import_hex_surface_object(parent_group_id); break;
 			// Other category types below this line
 		}
 	}
@@ -514,9 +528,9 @@ public:
 				hcp_voxel_import_export.export_hcp_object(voxel_hcp_object_to_export, ENTITY_CATEGORY_HCP_VOXEL);}
 				break;
 
-			case ENTITY_CATEGORY_HCP_SURF: {
+			case ENTITY_CATEGORY_HEX_SURF: {
 				hex_surface_object_class* hex_surface_object_to_export = scene_manager->get_hex_surface_entity_object(entity_node->entity_id);
-				hex_surface_import_export.export_hex_surface_object(hex_surface_object_to_export, ENTITY_CATEGORY_HCP_SURF); }
+				hex_surface_import_export.export_hex_surface_object(hex_surface_object_to_export, ENTITY_CATEGORY_HEX_SURF); }
 				break;
 
 			// Other category types below this line
@@ -527,7 +541,7 @@ public:
 	bool delete_object(id_type object_id) {
 //printf("display_nodes :: delete Object MenuItem selected %i \n", object_id);
 		outliner_node_class *group_node = NULL;
-		current_selected_node_id = -1;
+		globalc::set_current_selected_entity_id(INVALID_ID);
 
 		for (int i = 0; i < root_node->children.size(); i++) {
 			group_node = root_node->children[i];
@@ -535,7 +549,8 @@ public:
 			outliner_node_class *object_to_delete = group_node->find_child(object_id);
 
 			if (object_to_delete != NULL) {
-				entity_id_key.assign_free_id_key(object_to_delete->entity_id);// Free entity ID number to be reused when a new entity is created
+				globalc::assign_free_entity_id(object_to_delete->entity_id);// Free entity ID number to be reused when a new entity is created
+				//entity_id_key.assign_free_id_key(object_to_delete->entity_id);// Free entity ID number to be reused when a new entity is created
 				
 				scene_manager->delete_entity(object_to_delete->entity_id, object_to_delete->category_id);
 				
@@ -573,7 +588,8 @@ public:
 	outliner_node_class *add_new_entity(outliner_node_class *parent_node, category_id_type category_id) {
 		outliner_node_class *new_outliner_node = new outliner_node_class(parent_node);
 		if (new_outliner_node != NULL) {
-			new_outliner_node->entity_id           = entity_id_key.get_available_id_key();
+			//new_outliner_node->entity_id          = entity_id_key.get_available_id_key();
+			new_outliner_node->entity_id          = globalc::get_available_entity_id();
 			new_outliner_node->name               = "object_" + std::to_string(new_outliner_node->entity_id);
 			new_outliner_node->outliner_node_type = outliner_node_type_enum::entity;
 			new_outliner_node->category_id		  = category_id;
@@ -588,7 +604,8 @@ public:
 				if (!scene_manager->add_entity(new_outliner_node->entity_id, category_id)) {
 //printf("display_nodes :: add_new_entity failed 2222 %i %i\n", new_outliner_node->entity_id, category_id);
 					
-					entity_id_key.assign_free_id_key(new_outliner_node->entity_id);
+					//entity_id_key.assign_free_id_key(new_outliner_node->entity_id);
+					globalc::assign_free_entity_id(new_outliner_node->entity_id);
 					delete new_outliner_node;
 					return NULL;
 				}
@@ -606,7 +623,7 @@ public:
 
 
 private:
-	id_key_manager_class<idu_type> entity_id_key;
+	//id_key_manager_class<idu_type> entity_id_key;
 	neg_id_key_manager_class	   group_id_key;
 
 	log_panel_class* log_panel;
@@ -636,11 +653,11 @@ private:
 					if(voxel_hcp_object != NULL) voxel_hcp_object->active_object = entity->selected;}
 					break;
 
-				case ENTITY_CATEGORY_HCP_SURF :{
-printf("OUTLINER : set_entity_activity 000:: %i\n", entity->selected);
+				case ENTITY_CATEGORY_HEX_SURF :{
+//printf("OUTLINER : set_entity_activity 000:: %i\n", entity->selected);
 					hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(entity->entity_id);
 					if(hex_surface_object != NULL) {hex_surface_object->active_object = entity->selected;
-printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_object);
+//printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_object);
 					}}
 					break;
 				// Other category types below this line
@@ -656,7 +673,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 				voxel_hcp_object->object_name = entity_name;}
 				break;
 
-			case ENTITY_CATEGORY_HCP_SURF :{
+			case ENTITY_CATEGORY_HEX_SURF :{
 				hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
 				hex_surface_object->object_name = entity_name;}
 				break;
@@ -671,7 +688,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 			voxel_hcp_object->object_description = entity_description; }
 			break;
 
-		case ENTITY_CATEGORY_HCP_SURF: {
+		case ENTITY_CATEGORY_HEX_SURF: {
 			hex_surface_object_class* hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
 			hex_surface_object->object_description = entity_description; }
 			break;
@@ -753,6 +770,11 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 		voxel_entity->name        = voxel_hcp_object->object_name;
 		voxel_entity->description = voxel_hcp_object->object_description;
 
+		// !!!!!!!!!! Keep eye on following if it causes program crash !!!!!!!!!!!
+		//voxel_hcp_object->voxel_object_data.matrix_origin = glm::vec3{voxel_hcp_object->voxel_object_data.voxel_generator_parameters.x_start,
+		//													          voxel_hcp_object->voxel_object_data.voxel_generator_parameters.y_start,
+		//													          voxel_hcp_object->voxel_object_data.voxel_generator_parameters.z_start };
+
 //printf( "outliner_manager_class::read_voxel_object_file BBBS : %i : %i\n", voxel_entity->category_id, voxel_hcp_object->object_category_id);
 		return true;
 	}
@@ -795,7 +817,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 
 	bool read_hex_surface_object_file(id_type object_group_id) {
 		outliner_node_class *group_to_add_to = get_outliner_group_node(object_group_id);
-		outliner_node_class *hex_entity    = add_new_entity(group_to_add_to, ENTITY_CATEGORY_HCP_SURF);
+		outliner_node_class *hex_entity    = add_new_entity(group_to_add_to, ENTITY_CATEGORY_HEX_SURF);
 
 //printf( "outliner_manager_class::read_voxel_object_file AAA : %i \n", voxel_entity->category_id);
 
@@ -1040,7 +1062,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 					}
 				}
 
-				if (entity->category_id == ENTITY_CATEGORY_HCP_SURF) {
+				if (entity->category_id == ENTITY_CATEGORY_HEX_SURF) {
 					// this has only one component type : need to modify if/when additional components added to hcp entity
 					hex_surface_object_class *hex_surface_object = vw_scene->get_hex_surface_entity_object(entity->entity_id);
 
@@ -1052,7 +1074,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 						stream << HEX_SURFACE_CATEGORY << endl;// ****
 						hex_surface_import_export.initialise_hex_surface_export(filename_to_write, log_panel);
 						hex_surface_import_export.stream.set_rdbuf(stream.rdbuf());// Not sure this will work !!!!!! It works
-						hex_surface_import_export.export_hex_surface_object_data_to_file(hex_surface_object, ENTITY_CATEGORY_HCP_SURF);
+						hex_surface_import_export.export_hex_surface_object_data_to_file(hex_surface_object, ENTITY_CATEGORY_HEX_SURF);
 					}
 				}
 
@@ -1170,7 +1192,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 					hex_surface_import_export.lines       = lines;
 
 //printf("Outliner Manager :: read_object_group_file 44 \n");
-					outliner_node_class      *entity             = outliner_manager->add_new_entity(new_group, ENTITY_CATEGORY_HCP_SURF);
+					outliner_node_class      *entity             = outliner_manager->add_new_entity(new_group, ENTITY_CATEGORY_HEX_SURF);
 					if (entity == NULL) {// Not tested
 						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import hex surface object data failed : Could not define entity node\n");
 						delete new_group;
@@ -1203,7 +1225,7 @@ printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_o
 					if (!hex_surface_import_export.read_hex_surface_object_file(hex_surface_object)) {
 						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import hex surface object data failed\n");
 						for (outliner_node_class *group_entity: new_group->children) {
-							outliner_manager->scene_manager->delete_entity(group_entity->entity_id, ENTITY_CATEGORY_HCP_SURF);
+							outliner_manager->scene_manager->delete_entity(group_entity->entity_id, ENTITY_CATEGORY_HEX_SURF);
 							delete group_entity;
 						}
 						delete new_group;

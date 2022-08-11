@@ -27,7 +27,7 @@ public:
 
 		switch (entity_category_id) {
 			case ENTITY_CATEGORY_HCP_VOXEL : return(voxel_hcp_scene_objects.add_new_object(entity_id));break;
-			case ENTITY_CATEGORY_HCP_SURF  : return(hex_surface_scene_objects.add_new_object(entity_id)); break;
+			case ENTITY_CATEGORY_HEX_SURF  : return(hex_surface_scene_objects.add_new_object(entity_id)); break;
 		}
 
 		return false;
@@ -48,7 +48,7 @@ public:
 												return true;
 											}*/
 											break;
-			case ENTITY_CATEGORY_HCP_SURF  : return(hex_surface_scene_objects.delete_object(entity_id)); break;
+			case ENTITY_CATEGORY_HEX_SURF  : return(hex_surface_scene_objects.delete_object(entity_id)); break;
 		}
 
 		return false;
@@ -77,7 +77,7 @@ printf("scene_entities_db_manager_class :: get_voxel_hcp_object %i : %i \n", ent
 											}
 			}
 				break;
-			//case ENTITY_CATEGORY_HCP_SURF  : not yet implemented break;
+			//case ENTITY_CATEGORY_HEX_SURF  : not yet implemented break;
 		}
 	}
 */

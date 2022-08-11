@@ -40,13 +40,19 @@
     openGL_context_class *openGL_context = NULL;
     scene_viewer_class   *scene_viewer   = NULL;
 
-    id_type          current_selected_object_id      = -1;
-	id_type          current_selected_object_type_id = -1;
+    //id_type          *current_selected_object_id      = NULL;
+    //id_type          *current_selected_object_type_id = NULL;
 
     scene_manager_class *scene_manager = NULL;
 
     void show() {
 //printf("property_panel_class :: display 000\n");
+
+        //if (current_selected_object_type_id == NULL || current_selected_object_id == NULL) {
+        //    if (log_panel != NULL) log_panel->application_log.AddLog("ERROR: Property panel :No Entity variable defined \n");
+        //    return;
+        //}
+
         if (scene_viewer == NULL) {
             if (log_panel) log_panel->application_log.AddLog("ERROR: Cannot display property panel of allplication. No scene viewer defined.\n");
             return;
@@ -109,8 +115,11 @@
 
       void display_animation_widget() {
           animation_widget.scene_manager                   = scene_manager;
-          animation_widget.current_selected_object_id      = current_selected_object_id;
-          animation_widget.current_selected_object_type_id = current_selected_object_type_id;
+          animation_widget.current_selected_object_id      = globalc::get_current_selected_entity_id();
+          animation_widget.current_selected_object_type_id = globalc::get_current_selected_entity_type_id();
+
+          //animation_widget.current_selected_object_id = *current_selected_object_id;
+          //animation_widget.current_selected_object_type_id = *current_selected_object_type_id;
 
           animation_widget.display();
       }

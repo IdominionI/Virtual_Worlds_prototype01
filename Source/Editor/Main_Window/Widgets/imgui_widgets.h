@@ -82,6 +82,17 @@ enum class imgui_text_location_enum {left,right, above, below, center};
 		}
 	}
 
+	static void float_input_step(std::string id_prefix, float &value, float &step, bool &active, float x_pos, float y_pos, float value_width,float step_width ) {
+		std::string w_id = "";
+
+		y_pos += 30;
+		w_id = id_prefix + "x";
+		text("X :     ", x_pos + 75, y_pos);
+		ImGui::SameLine(); w_id = id_prefix + "1"; ImGui::SetNextItemWidth(value_width); ImGui::InputFloat(w_id.c_str(), &value);
+		ImGui::SameLine(); w_id = id_prefix + "2"; ImGui::SetNextItemWidth(step_width); ImGui::InputFloat(w_id.c_str(), &step);
+		ImGui::SameLine(); w_id = id_prefix + "3"; ImGui::Checkbox(w_id.c_str(), &active);
+	}
+
 	static void integer_input(std::string id_string, int &value, float x_pos, float y_pos, float width) {
 		ImGui::SetCursorPosX(x_pos);
 		ImGui::SetCursorPosY(y_pos);

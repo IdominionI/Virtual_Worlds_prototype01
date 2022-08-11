@@ -96,6 +96,7 @@ public :
     }
 
 private:
+    // these need to change to more appropriate default names and location !!!!!!
     std::string v_shader_filename = "phong-shading.v.glsl";
     std::string f_shader_filename = "phong-shading.f.glsl";
 };

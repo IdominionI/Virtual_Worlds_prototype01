@@ -25,8 +25,8 @@ public:
 	log_panel_class				   *log_panel = NULL;
 
 	scene_manager_class() {
-		bounding_volume.initialise();//****
-			//printf("!bounding_volume.initialise()");//****
+		bounding_volume.initialise();
+			//printf("!bounding_volume.initialise()");
 	}
 
 	~scene_manager_class() {}
@@ -67,7 +67,7 @@ public:
 
 		switch (entity_category_id) {
 			case ENTITY_CATEGORY_HCP_VOXEL : return define_voxel_hcp_render_object(entity_id,entity_render_object); break;
-			case ENTITY_CATEGORY_HCP_SURF  : return define_hex_render_object(entity_id, entity_render_object); break;
+			case ENTITY_CATEGORY_HEX_SURF  : return define_hex_render_object(entity_id, entity_render_object); break;
 				
 			// Add other entity object types here
 		}
@@ -107,7 +107,7 @@ public:
 	void update_shader(scene_node_class <render_object_class> *entity_render_object, id_type category) {
 		switch (category) {
 			case ENTITY_CATEGORY_HCP_VOXEL : voxel_hcp_render.define_shader_program(entity_render_object, log_panel); break;
-			case ENTITY_CATEGORY_HCP_SURF  : hex_surface_render.define_shader_program(entity_render_object, log_panel); break;
+			case ENTITY_CATEGORY_HEX_SURF  : hex_surface_render.define_shader_program(entity_render_object, log_panel); break;
 
 			// Other render object category types to go here as needed;
 		}
@@ -131,36 +131,7 @@ public:
 		if (!voxel_hcp_render.define_voxel_hcp_render_object(entity_render_object, voxel_hcp_object)) return false;
 
 		define_voxel_hcp_bounding_volume_render_object(entity_id,voxel_hcp_object);
-/*
-		// Define hcp voxel bounding volume render object
-		if (bounding_volume.program_id > 0) {
-			if (!scene_graph_manager.add_scene_entity_render_object(entity_id + BOUNDING_GEOMETRY_OFFSET)) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not create entity bounding box for entity  %s :\n", voxel_hcp_object->object_name.c_str());
-			} else {
-				scene_node_class <render_object_class> *box_object = scene_graph_manager.get_scene_entity_render_object(entity_id + BOUNDING_GEOMETRY_OFFSET);
 
-				if (box_object == NULL) {
-					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find bounding box geometry data for voxel %s.\n", voxel_hcp_object->object_name.c_str());
-					printf("box_object == NULL.\n");
-				}
-				else {
-					printf("box_object != NULL.\n");
-					line_class *bv = new line_class;
-
-					voxel_hcp_object->bounding_volume.program_id = bounding_volume.program_id;
-					voxel_hcp_object->bounding_volume.geometry   = bv;
-
-					box_object->scene_graph_object.scene_object_class.geometry = voxel_hcp_object->bounding_volume.geometry;
-					box_object->scene_graph_object.scene_object_class.geometry->init();
-					box_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = bounding_volume.program_id;
-
-					//voxel_hcp_object->bounding_volume.update_limits(glm::vec3(-4.0, -2.5, -5.0), glm::vec3(1.0, 3, 2.0));// Testing only
-					voxel_hcp_object->update_bounding_volume();
-				}
-			}
-
-		}
-*/
 		return true;
 	}
 
@@ -256,7 +227,7 @@ private:
 	voxel_hcp_render_class   voxel_hcp_render;
 	hex_surface_render_class hex_surface_render;
 
-	bounding_volume_class bounding_volume;//*****
+	bounding_volume_class bounding_volume;
 
 	// Add MODULE render classes here
 };
