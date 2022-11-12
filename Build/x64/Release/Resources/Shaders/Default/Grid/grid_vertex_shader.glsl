@@ -1,6 +1,10 @@
 #version 410
 
-layout(location = 0) in vec3 vertex;
+layout(location = 0) in vec4 vertex; //******
+//layout(location = 1) in vec4 color; //******
+//layout(location = 2) in vec4 normal; //******
+//layout(location = 0) in vec3 vertex;
+
 //layout(location = 1) in int  voxel_value;
 
 uniform mat4 mvpMatrix; //model-view-projection matrix
@@ -31,7 +35,20 @@ uniform	float relative_yz_grid_dist;
 
 void main () {
 	
-	gl_Position = vec4(vertex, 1.0f); // required as a min
+	gl_Position = vec4(vertex.x,vertex.y,vertex.z, 1.0f); // required as a min
+
+/*	
+	if(color.x == 1.0 && color.y != 2.0){
+		//gl_Position = vec4(vertex.x,vertex.y,vertex.z, 1.0f);
+		gl_Position = vec4(0,0,10f, 1.0f); // required as a min
+	} else {
+		if(color.x == 0.0){
+			gl_Position = vec4(vertex.x,vertex.y,vertex.z, 1.0f);
+		} else{
+			gl_Position = vec4(vertex.x,vertex.y,vertex.z, 1.0f);
+		}
+	}
+*/
 
 }
 

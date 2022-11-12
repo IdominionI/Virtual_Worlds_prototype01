@@ -195,7 +195,7 @@ public:
 	}
 
 	void execute_voxel_function(bool notification = true) {
-//printf("Execute Function button clicked\n");
+printf("Execute Function button clicked\n");
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
 
@@ -246,31 +246,27 @@ public:
 //printf("scene_voxel_object not updated\n");
 				return;
 			}
+//printf("voxel_hcp_generation_widget_class :: execute_voxel_function 6666AAAAA\n");
+			shader_class shader;
 
 			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			application_default_shader_uniform_variables_struct_type uniform_variable;
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 
-			uniform_variable.type = application_default_shader_variable_type_enum::Intv3; uniform_variable.name = "voxel_matrix_dimension"; uniform_variable.value0 = &voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "voxSize");
 
-			uniform_variable.type = application_default_shader_variable_type_enum::Floatv3; uniform_variable.name = "voxel_origin"; uniform_variable.value0 = &voxel_hcp_object_to_execute->voxel_object_data.matrix_origin;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_ivec3(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension, "voxel_matrix_dimension");
+
+			shader.set_vec3(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_object_to_execute->voxel_object_data.matrix_origin, "voxel_origin");
 
 			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_hcp_z_increment"; uniform_variable.value0 = &voxel_hcp_z_increment;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-			//uniform float voxel_hcp_z_increment; !!!!!!!!!! Need to find this one
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_z_increment, "voxel_hcp_z_increment");
 
 			//voxel surface display data
 			float v_min = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_min_surface_display_value"; uniform_variable.value0 = &v_min;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_min, "voxel_min_surface_display_value");
+
 			float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_max_surface_display_value"; uniform_variable.value0 = &v_max;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_max, "voxel_max_surface_display_value");
 
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 6666\n");
 		}
@@ -377,7 +373,7 @@ public:
 		printf("grid dim : x %i : y %i : y %i \n", voxel_object_data.matrix_dimension.x, voxel_object_data.matrix_dimension.y, voxel_object_data.matrix_dimension.z);
 		printf("voxel size : %f\n", voxel_object_data.voxel_size);
 
-		index_vector iv;
+		glm::ivec3 iv;
 		for (int i = 0; i < 10; i++) {
 			iv= voxel_object_data.hcp_voxel_cell_coord_from_cartesian(points[i].x, points[i].y, points[i].z);
 			printf("point %i x : %f y : %f z : %f :: voxel_coord_from_cartesian  x : %i y : %i z %i\n",i, points[i].x, points[i].y, points[i].z, iv.x, iv.y,iv.z);

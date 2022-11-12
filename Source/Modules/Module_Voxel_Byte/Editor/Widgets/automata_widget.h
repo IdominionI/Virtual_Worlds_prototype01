@@ -367,7 +367,7 @@ printf("thread_next_step_voxel_automata 04 : ");
 	}
 
 	bool thread_perform_automata_step(int step) {
-printf("INFO", "thread_perform_automata_step 00 : %i\n" , step);
+printf("INFO thread_perform_automata_step 00 : %i\n" , step);
 /*
 		if (!voxel_automata_hcp_thread_functions.perform_voxel_automata_generation(step)) return false;
 //printf("INFO","perform_automata_step 01 : %i",step);

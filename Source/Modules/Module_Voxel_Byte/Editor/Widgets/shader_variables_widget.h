@@ -36,7 +36,8 @@ public:
 	int int_var_type_id  = 2;
 	int bool_var_type_id = 3;
 
-	bool variables_manager(shader_parameters_struct_type *voxel_shader_parameters) {
+	//bool variables_manager(shader_parameters_struct_type *voxel_shader_parameters) {
+	bool variables_manager(material_struct_type *voxel_shader_parameters) {
 		bool  value_changed = false;
 		static int selection_mask = (1 << 2);
 		static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick; //| ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -276,7 +277,8 @@ public:
 //printf("display_nodes :: entity selected: %i %i \n", current_selected_var_type_id, current_selected_var_id);
 	}
 
-	void add_variable(int var_type_id, shader_parameters_struct_type *voxel_shader_parameters) {
+	//void add_variable(int var_type_id, shader_parameters_struct_type *voxel_shader_parameters) {
+	void add_variable(int var_type_id, material_struct_type *voxel_shader_parameters) {
 //printf("in add variabel %i\n", var_type_id);
 
 		// Switch cannot use var_type_id so need to rvert to if statements !!!!!!
@@ -305,7 +307,8 @@ public:
 		}
 	}
 
-	void delete_variable(int var_type_id,int var_id,shader_parameters_struct_type *voxel_shader_parameters) {
+	//void delete_variable(int var_type_id,int var_id,shader_parameters_struct_type *voxel_shader_parameters) {
+	void delete_variable(int var_type_id,int var_id, material_struct_type *voxel_shader_parameters) {
 //printf("in delete variabel %i : %i\n", var_type_id, var_id);
 
 		if (var_type_id == real_var_type_id) {

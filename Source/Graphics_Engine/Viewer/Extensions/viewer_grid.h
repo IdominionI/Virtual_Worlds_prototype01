@@ -82,7 +82,7 @@ public:
 	std::string grid_fragment_file = "grid_fragment_shader.glsl";
 
 	scene_graph_manager_class *scene_graph_manager;
-	point_cloud_class         *grid_geometry_object;
+	point_cloud3DD_class      *grid_geometry_object;
 
 	size_t    number_grid_cells = 20;
 	
@@ -103,7 +103,7 @@ public:
 	glm::vec3 xy_grid_origin = { 0.0f,0.0f,0.0f }, xz_grid_origin = { 0.0f,0.0f,0.0f }, yz_grid_origin = { 0.0f,0.0f,0.0f };
 	
 	bool initialise() {
-
+printf("viewer_grid_class :: initialise\n");
 		if (!scene_graph_manager->add_scene_entity_render_object(GRID_ENTITY_ID)) {
 			printf("ERROR: could not add viewer grid render geometry object\n");
 			return false;
@@ -116,7 +116,7 @@ public:
 			return false;
 		}
 
-		grid_geometry_object = new point_cloud_class;
+		grid_geometry_object = new point_cloud3DD_class;
 		if (grid_geometry_object == NULL) {
 			printf("ERROR: could not create viewer grid render object geometry data\n");
 			return false;
@@ -125,10 +125,10 @@ public:
 		grid_geometry_object->init();
 		
 		grid_geometry_object->vertices.clear();
-		point_data_class vertex;
+		glm::vec4 vertex;
 
 		for (float i = -1.0f; i <1.1f; i += 2.0f/(float) number_grid_cells) {
-			vertex.mPos = { i,0.0,0.0 };
+			vertex = { i,0.0,0.0,0.0 };
 			grid_geometry_object->add_vertex(vertex);
 		}
 
@@ -143,8 +143,6 @@ public:
 			return false;
 		}
 
-		update_viewer_grid();
-
 		return true;
 	}
 
@@ -157,183 +155,134 @@ public:
 //printf("create_viewer_grid_shader_program 11:  %s \n", geometry_file.c_str());
 //printf("create_viewer_grid_shader_program 22:  %s \n", fragment_file.c_str());
 
-		//grid_shader_program_id = grid_shader_program.create_shader_program(vertex_file, "", fragment_file);
 		grid_shader_program_id = grid_shader_program.create_shader_program(vertex_file, geometry_file, fragment_file);
 
 		if (!grid_shader_program_id) {
 			printf("ERROR: Create grid shader program failed\n ");
 			return false;
 		}
+		material_basis_struct_type *grid_shader_material = new material_basis_struct_type;
 
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id  = grid_shader_program_id;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.entity_category_id = VIEWER_GRID_ID;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.shader_name        = VIEWER_GRID_CATEGORY;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.shader_description = VIEWER_GRID_CATEGORY;
+		if(!grid_shader_material) {
+			printf("ERROR: Create grid shader program failed : Could not allocate material to store grid material display parameter data\n ");
+			return false;
+		}
+
+		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material = grid_shader_material;
+
+		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material->shader_program_id  = grid_shader_program_id;
+		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material->entity_category_id = VIEWER_GRID_ID;
+		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material->shader_name        = VIEWER_GRID_CATEGORY;
+		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material->shader_description = VIEWER_GRID_CATEGORY;
 
 		return true;
 	}
 
 	void update_viewer_grid() {
 		// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-		application_default_shader_uniform_variables_struct_type uniform_variable;
-		int v;
-		float fv =0.0f;
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "display_xy_plane"; 
-		if (display_xy_plane == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+//if(display_xy_plane == true)
+//	printf("update_viewer_grid :: display_xy_plane == true  %i :: %i\n", grid_shader_program_id, display_xy_plane);
+//else
+//	printf("update_viewer_grid :: display_xy_plane != true  %i :: %i\n", grid_shader_program_id, display_xy_plane);
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "display_xz_plane";
-		if (display_xz_plane == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_b1(grid_shader_program_id, display_xy_plane, "display_xy_plane");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "display_yz_plane"; 
-		if (display_yz_plane == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_b1(grid_shader_program_id, display_xz_plane, "display_xz_plane");
 
+		grid_shader_program.set_b1(grid_shader_program_id, display_yz_plane, "display_yz_plane");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "relative_xy_grid"; 
-		if (relative_xy_grid == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_b1(grid_shader_program_id, relative_xy_grid, "relative_xy_grid");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "relative_yz_grid"; 
-		if (relative_yz_grid == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_b1(grid_shader_program_id, relative_yz_grid, "relative_yz_grid");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Bool; uniform_variable.name = "relative_xz_grid"; 
-		if (relative_xz_grid == 0) v = 0; else v = 1;
-		uniform_variable.value0 = &v;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_b1(grid_shader_program_id, relative_xz_grid, "relative_xz_grid");
 
+		grid_shader_program.set_f1(grid_shader_program_id, relative_xy_grid_dist, "relative_xy_grid_dist");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "relative_xy_grid_dist"; 
-		fv = relative_xy_grid_dist; uniform_variable.value0 = &fv;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_f1(grid_shader_program_id, relative_xz_grid_dist, "relative_xz_grid_dist");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "relative_xz_grid_dist"; 
-		fv = relative_xz_grid_dist; uniform_variable.value0 = &fv;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_f1(grid_shader_program_id, relative_yz_grid_dist, "relative_yz_grid_dist");
 
-		uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "relative_yz_grid_dist"; 
-		fv = relative_yz_grid_dist; uniform_variable.value0 = &fv;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_vec4(grid_shader_program_id, xy_grid_color, "xy_grid_color");
 
+		grid_shader_program.set_vec4(grid_shader_program_id, xz_grid_color, "xz_grid_color");
 
-		//uniform_variable.type = application_default_shader_variable_type_enum::Floatv4; uniform_variable.name = "grid_color"; 
-		//uniform_variable.value0 = &grid_color;
-		//viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-
-		uniform_variable.type = application_default_shader_variable_type_enum::Floatv4; uniform_variable.name = "xy_grid_color"; 
-		uniform_variable.value0 = &xy_grid_color;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-
-		uniform_variable.type = application_default_shader_variable_type_enum::Floatv4; uniform_variable.name = "xz_grid_color"; 
-		uniform_variable.value0 = &xz_grid_color;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-
-		uniform_variable.type = application_default_shader_variable_type_enum::Floatv4; uniform_variable.name = "yz_grid_color"; 
-		uniform_variable.value0 = &yz_grid_color;
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_vec4(grid_shader_program_id, yz_grid_color, "yz_grid_color");
 
 	}
 
 	void update_viewer_grid_colors(int uniform_to_update_id) {
-		application_default_shader_uniform_variables_struct_type uniform_variable;
+		std::string grid_axis_name;
+		glm::vec4   grid_color;
+
+		viewer_grid_render_object = scene_graph_manager->get_scene_entity_render_object(GRID_ENTITY_ID);
 
 		switch(uniform_to_update_id){
 
-			case XY_PLANE_GRID_COLOR :{ uniform_variable.type   = application_default_shader_variable_type_enum::Floatv4;
-										uniform_variable.name   = "xy_grid_color"; 
-										glm::vec4 v; v = xy_grid_color;
-										uniform_variable.value0 = &v;
+			case XY_PLANE_GRID_COLOR :{	grid_axis_name = "xy_grid_color";
+										grid_color     = xy_grid_color;
 										break;}
 
-			case XZ_PLANE_GRID_COLOR :{ uniform_variable.type   = application_default_shader_variable_type_enum::Floatv4;
-										uniform_variable.name   = "xz_grid_color"; 
-										glm::vec4 v; v = xz_grid_color;
-										uniform_variable.value0 = &v;
+			case XZ_PLANE_GRID_COLOR :{ grid_axis_name = "xz_grid_color";
+										grid_color     = xz_grid_color;
 										break;}
 
-			case YZ_PLANE_GRID_COLOR :{ uniform_variable.type   = application_default_shader_variable_type_enum::Floatv4;
-										uniform_variable.name   = "yz_grid_color"; 
-										glm::vec4 v; v = yz_grid_color;
-										uniform_variable.value0 = &v;
+			case YZ_PLANE_GRID_COLOR :{ grid_axis_name = "yz_grid_color";
+										grid_color     = yz_grid_color;
 										break;}
 
 		}
 
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		grid_shader_program.set_vec4(grid_shader_program_id, grid_color, grid_axis_name);
 	}
 
 	void update_viewer_grid_uniform(int uniform_to_update_id) {
-		application_default_shader_uniform_variables_struct_type uniform_variable;
-//if(display_xy_plane == true)
-//	printf("display_xy_plane == true\n");
-//else
-//	printf("display_xy_plane != true\n");
+		std::string grid_axis_name;
+		glm::vec4   grid_color;
+
+if(display_xy_plane == true)
+	printf("display_xy_plane == true\n");
+else
+	printf("display_xy_plane != true\n");
+
+		viewer_grid_render_object = scene_graph_manager->get_scene_entity_render_object(GRID_ENTITY_ID);
 
 		switch (uniform_to_update_id) {
-			case XY_PLANE_GRID          : {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "display_xy_plane"; 
-										  int v; if (display_xy_plane == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case XY_PLANE_GRID          : {grid_shader_program.set_b1(grid_shader_program_id, display_xy_plane, "display_xy_plane");
 										  break;}
 
-			case XY_PLANE_RELATIVE		: {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "relative_xy_grid"; 
-										  int v; if (relative_xy_grid == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case XY_PLANE_RELATIVE		: {grid_shader_program.set_b1(grid_shader_program_id, relative_xy_grid, "relative_xy_grid");
 										  break;}
 
-			case XY_PLANE_RELATIVE_DIST	:{uniform_variable.type   = application_default_shader_variable_type_enum::Float1;
-										  uniform_variable.name   = "relative_xy_grid_dist"; 
-										  float fv;  fv = relative_xy_grid_dist;
-										  uniform_variable.value0 = &fv;
+			case XY_PLANE_RELATIVE_DIST	:{grid_shader_program.set_f1(grid_shader_program_id, relative_xy_grid_dist, "relative_xy_grid_dist");
 										  break;}
 
 			//case XY_PLANE_GRID_COLOR	:
 
-			case XZ_PLANE_GRID          : {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "display_xz_plane"; 
-										  int v; if (display_xz_plane == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case XZ_PLANE_GRID          : {grid_shader_program.set_b1(grid_shader_program_id, display_xz_plane, "display_xz_plane");
 										  break;}
 							 
 							 
-			case XZ_PLANE_RELATIVE		: {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "relative_xz_grid"; 
-										  int v; if (relative_xz_grid == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case XZ_PLANE_RELATIVE		: {grid_shader_program.set_b1(grid_shader_program_id, relative_xz_grid, "relative_xz_grid");
 										  break;}
 			//case XZ_PLANE_RELATIVE_DIST	:
 			//case XZ_PLANE_GRID_COLOR	:
 
-			case YZ_PLANE_GRID          : {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "display_yz_plane"; 
-										  int v; if (display_yz_plane == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case YZ_PLANE_GRID          : {grid_shader_program.set_b1(grid_shader_program_id, display_yz_plane, "display_yz_plane");
 										  break;}
 							 
-			case YZ_PLANE_RELATIVE		: {uniform_variable.type   = application_default_shader_variable_type_enum::Bool;
-										  uniform_variable.name   = "relative_yz_grid"; 
-										  int v; if (relative_yz_grid == 0) v = 0; else v = 1;
-										  uniform_variable.value0 = &v;
+			case YZ_PLANE_RELATIVE		: {grid_shader_program.set_b1(grid_shader_program_id, relative_yz_grid, "relative_yz_grid");
 										  break;}
 			//case YZ_PLANE_RELATIVE_DIST	:
 			//case YZ_PLANE_GRID_COLOR	:
 			default: return; break;
 		}
 
-		viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+		//viewer_grid_render_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 	}
 
 private:
-	shader_component_struct_type            shader_components;
 	scene_node_class <render_object_class> *viewer_grid_render_object;
 
 	GLuint		 grid_shader_program_id = 0;

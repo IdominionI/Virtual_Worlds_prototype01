@@ -29,8 +29,8 @@
 
 class hex_surface_compute_generator_class : public compute_shader_class {
 public:
-	hex_surface_object_class *cloud     = NULL; // pointer to the hex suface class in the virtual worlds scene data model
-	log_panel_class          *log_panel = NULL;
+	hex_surface_object_class* cloud = NULL; // pointer to the hex suface class in the virtual worlds scene data model
+	log_panel_class* log_panel = NULL;
 
 	bool generate_hex_surface_function() {
 		if (cloud == NULL) return false;
@@ -38,14 +38,14 @@ public:
 		hex_surface_generator_parameters = cloud->hex_surface_object_data.hex_surface_generator_parameters;
 
 		import_compute_expression_class import_compute_expression;
-//QMessageBox::information(0, "Function Expression Success", "In generate_voxel_function() :"+ voxel_generator_parameters.expression_file_pathname, QMessageBox::Ok); // testing only
+		//QMessageBox::information(0, "Function Expression Success", "In generate_voxel_function() :"+ voxel_generator_parameters.expression_file_pathname, QMessageBox::Ok); // testing only
 		import_compute_expression.filename_to_read = hex_surface_generator_parameters.expression_file_pathname;
 
 		if (!import_compute_expression.import_compute_expression()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : import of file %s failed.\n", hex_surface_generator_parameters.expression_file_pathname);
 			return false;
 		}
-		
+
 		define_compute_version();
 		define_work_group_invocations(hex_surface_generator_parameters.invocation);
 		define_reserved_uniforms();
@@ -82,9 +82,9 @@ public:
 		}
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
-        // as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-        int                    size   = cloud->hex_surface_object_data.hex_surface_matrix_data.size();
-		hex_surface_data_type *buffer = cloud->hex_surface_object_data.hex_surface_matrix_data.data();
+		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
+		int                    size = cloud->hex_surface_object_data.hex_surface_matrix_data.size();
+		hex_surface_data_type* buffer = cloud->hex_surface_object_data.hex_surface_matrix_data.data();
 
 		hex_surface_generation_execute(buffer, size, hex_surface_generator_parameters.invocation);
 
@@ -129,9 +129,9 @@ public:
 		hex_surface_generator_parameters = cloud->hex_surface_object_data.hex_surface_generator_parameters; // ****
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
-        // as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-        int                    size   = cloud->hex_surface_object_data.hex_surface_matrix_data.size();
-		hex_surface_data_type *buffer = cloud->hex_surface_object_data.hex_surface_matrix_data.data();
+		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
+		int                    size = cloud->hex_surface_object_data.hex_surface_matrix_data.size();
+		hex_surface_data_type* buffer = cloud->hex_surface_object_data.hex_surface_matrix_data.data();
 
 		hex_surface_generation_execute(buffer, size, hex_surface_generator_parameters.invocation);
 
@@ -172,128 +172,128 @@ public:
 		source_code += "// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
 		source_code += output_s;
 
-//if (log_panel != NULL) {
-//	log_panel->log_message(log_display, log_message_type_enum_type::debug, " voxel_compute_generator_class :: create_compute_shader_source_code" + source_code);
-//}
+		//if (log_panel != NULL) {
+		//	log_panel->log_message(log_display, log_message_type_enum_type::debug, " voxel_compute_generator_class :: create_compute_shader_source_code" + source_code);
+		//}
 	}
 
-	bool hex_surface_generation_execute(hex_surface_data_type *buffer, int size, int local_x_group_work_size) {
-        GLuint ssbo;
+	bool hex_surface_generation_execute(hex_surface_data_type* buffer, int size, int local_x_group_work_size) {
+		GLuint ssbo;
 
-        int bytes = size * sizeof(GLfloat);
+		int bytes = size * sizeof(GLfloat);
 
-        if (local_x_group_work_size > GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
-            std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-            error_msg = error_msg + "The specifies number of local threads local_size_x to be used exceeds the maximum\n";
-            error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
-            error_msg = error_msg + "Choose a smaller number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+		if (local_x_group_work_size > GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
+			std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
+			error_msg = error_msg + "The specifies number of local threads local_size_x to be used exceeds the maximum\n";
+			error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
+			error_msg = error_msg + "Choose a smaller number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
-            log_panel->application_log.AddLog(error_msg.c_str());
-        }
+			log_panel->application_log.AddLog(error_msg.c_str());
+		}
 
-        int number_work_groups = int (ceil(float(size) / float(local_x_group_work_size)));
+		int number_work_groups = int(ceil(float(size) / float(local_x_group_work_size)));
 
-        if (number_work_groups > GL_MAX_COMPUTE_WORK_GROUP_COUNT) {
-            if (log_panel != NULL) {
-                std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-                error_msg = error_msg + "The specifies number of local threads local_size_x to be used in the compute shader is to low for\n";
-                error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
-                error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
-                error_msg = error_msg + "Choose a larger number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+		if (number_work_groups > GL_MAX_COMPUTE_WORK_GROUP_COUNT) {
+			if (log_panel != NULL) {
+				std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
+				error_msg = error_msg + "The specifies number of local threads local_size_x to be used in the compute shader is to low for\n";
+				error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
+				error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
+				error_msg = error_msg + "Choose a larger number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
 				log_panel->application_log.AddLog(error_msg.c_str());
-            }
-            return false;
-        }
-
-
-            glUseProgram(progHandle);
-
-            // reserve space on the GPU
-
-			glGenBuffers(1, &ssbo);
-			glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
-			glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
-
-			shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.resolution_step, "hex_size"); // this works unsigned int shader_program_id, float v, const std::string& name
-			shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, "min_surface_value"); // this works
-			shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, "max_surface_value"); // this works
-			shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.e_time, "e_time"); // this works
-			shader.set_i1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.frame, "frame"); // this works
-
-			shader.set_vec2(progHandle, cloud->hex_surface_object_data.grid_origin, "origin"); // this works
-			shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.x, "matrix_dimension_x"); // this works
-			shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.y, "matrix_dimension_y"); // this works
-			shader.set_i1(progHandle, MIN_VOXEL_VALUE, "min_hex_value"); // this works
-			shader.set_i1(progHandle, MAX_VOXEL_VALUE, "max_hex_value"); // this works
-			shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_hex_value"); // this works
-
-			// +++++++++++ User dynamicly defined uniforms ++++++++++++++
-			for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
-				shader.set_f1(progHandle, variable.value, variable.variable_name);
 			}
+			return false;
+		}
 
-			for (hex_surface_generator_parameter_int_variable_struct_type int_variable : hex_surface_generator_parameters.int_variables) {
-				shader.set_i1(progHandle, int_variable.value, int_variable.variable_name);
-			}
 
-			for (hex_surface_generator_parameter_bool_variable_struct_type bool_variable : hex_surface_generator_parameters.bool_variables) {
-				shader.set_b1(progHandle, bool_variable.value, bool_variable.variable_name);
-			}
-			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		glUseProgram(progHandle);
 
-            //Tweak the geometry to the size of the buffer and its layout
-			glDispatchCompute(number_work_groups, 1, 1);
-			glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		// reserve space on the GPU
 
-            // this gets the data from the GPU
-			glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
-			glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		glGenBuffers(1, &ssbo);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
+
+		shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.resolution_step, "hex_size"); // this works unsigned int shader_program_id, float v, const std::string& name
+		shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, "min_surface_value"); // this works
+		shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, "max_surface_value"); // this works
+		shader.set_f1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.e_time, "e_time"); // this works
+		shader.set_i1(progHandle, cloud->hex_surface_object_data.hex_surface_generator_parameters.frame, "frame"); // this works
+
+		shader.set_vec2(progHandle, cloud->hex_surface_object_data.grid_origin, "origin"); // this works
+		shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.x, "matrix_dimension_x"); // this works
+		shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.y, "matrix_dimension_y"); // this works
+		shader.set_i1(progHandle, MIN_VOXEL_VALUE, "min_hex_value"); // this works
+		shader.set_i1(progHandle, MAX_VOXEL_VALUE, "max_hex_value"); // this works
+		shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_hex_value"); // this works
+
+		// +++++++++++ User dynamicly defined uniforms ++++++++++++++
+		for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
+			shader.set_f1(progHandle, variable.value, variable.variable_name);
+		}
+
+		for (hex_surface_generator_parameter_int_variable_struct_type int_variable : hex_surface_generator_parameters.int_variables) {
+			shader.set_i1(progHandle, int_variable.value, int_variable.variable_name);
+		}
+
+		for (hex_surface_generator_parameter_bool_variable_struct_type bool_variable : hex_surface_generator_parameters.bool_variables) {
+			shader.set_b1(progHandle, bool_variable.value, bool_variable.variable_name);
+		}
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+		//Tweak the geometry to the size of the buffer and its layout
+		glDispatchCompute(number_work_groups, 1, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+		// this gets the data from the GPU
+		glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
 		return true;
-    }
+	}
 
 
-	bool create_hex_surface_matrix(hex_surface_object_class  *cloud, hex_surface_generator_parameters_struct_type  hex_surface_generator_parameters) {
-        cloud->hex_surface_object_data.hex_surface_matrix_data.clear();
-        cloud->hex_surface_object_data.hex_surface_matrix_data.shrink_to_fit();
+	bool create_hex_surface_matrix(hex_surface_object_class* cloud, hex_surface_generator_parameters_struct_type  hex_surface_generator_parameters) {
+		cloud->hex_surface_object_data.hex_surface_matrix_data.clear();
+		cloud->hex_surface_object_data.hex_surface_matrix_data.shrink_to_fit();
 
 
-        // ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
-        float x_size = hex_surface_generator_parameters.x_end - hex_surface_generator_parameters.x_start;
-        float y_size = hex_surface_generator_parameters.y_end - hex_surface_generator_parameters.y_start;
+		// ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
+		float x_size = hex_surface_generator_parameters.x_end - hex_surface_generator_parameters.x_start;
+		float y_size = hex_surface_generator_parameters.y_end - hex_surface_generator_parameters.y_start;
 
-        float x_res_step = hex_surface_generator_parameters.resolution_step * 2.0;
-        float y_res_step = hex_surface_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float x_res_step = hex_surface_generator_parameters.resolution_step * 2.0;
+		float y_res_step = hex_surface_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
 
 		int data_set_x_size, data_set_y_size;
 
-        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
-            data_set_x_size = (int)(x_size / x_res_step) + 1;
-        else
-            data_set_x_size = (int)(x_size / x_res_step);
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+			data_set_x_size = (int)(x_size / x_res_step) + 1;
+		else
+			data_set_x_size = (int)(x_size / x_res_step);
 
-        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
-            data_set_y_size = (int)(y_size / y_res_step) + 1;
-        else
-            data_set_y_size = (int)(y_size / y_res_step);
-//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+std::to_string(data_set_x_size)+":"+std::to_string(data_set_y_size)+":"+std::to_string(data_set_z_size)+":", QMessageBox::Ok);
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+			data_set_y_size = (int)(y_size / y_res_step) + 1;
+		else
+			data_set_y_size = (int)(y_size / y_res_step);
+		//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+std::to_string(data_set_x_size)+":"+std::to_string(data_set_y_size)+":"+std::to_string(data_set_z_size)+":", QMessageBox::Ok);
 
-        glm::vec2 origin = { hex_surface_generator_parameters.x_start,hex_surface_generator_parameters.y_start};
+		glm::vec2 origin = { hex_surface_generator_parameters.x_start,hex_surface_generator_parameters.y_start };
 
-        cloud->hex_surface_object_data.hex_size = hex_surface_generator_parameters.resolution_step;
+		cloud->hex_surface_object_data.hex_size = hex_surface_generator_parameters.resolution_step;
 
-        cloud->hex_surface_object_data.grid_dimension = { data_set_x_size,data_set_y_size};
-        cloud->hex_surface_object_data.grid_origin    = origin;
-        cloud->hex_surface_object_data.create_empty_surface_cubic(data_set_x_size, data_set_y_size);
-//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+std::to_string(cloud->hex_surface_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
+		cloud->hex_surface_object_data.grid_dimension = { data_set_x_size,data_set_y_size,0 };
+		cloud->hex_surface_object_data.grid_origin = origin;
+		cloud->hex_surface_object_data.create_empty_surface_cubic(data_set_x_size, data_set_y_size);
+		//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+std::to_string(cloud->hex_surface_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
 
-        if (cloud->hex_surface_object_data.hex_surface_matrix_data.size() > 0)
-            return true;
-        else
-            return false;
-    }
+		if (cloud->hex_surface_object_data.hex_surface_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
 
 private:
 	shader_class shader;
@@ -340,17 +340,17 @@ private:
 		user_uniforms_s = "";
 		int location = 14; // This must be one greater than the max layout location of the reserved uniforms in define_reserved_uniforms()
 
-		for (hex_surface_generator_parameter_variable_struct_type variable: hex_surface_generator_parameters.variables) {
-			user_uniforms_s += "layout(location = " + std::to_string(location)+") uniform float " + variable.variable_name + ";\n"; // Need to introduce capability to cater for int and and boolean types
+		for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
+			user_uniforms_s += "layout(location = " + std::to_string(location) + ") uniform float " + variable.variable_name + ";\n"; // Need to introduce capability to cater for int and and boolean types
 			location++;
 		}
 
-		for (hex_surface_generator_parameter_int_variable_struct_type int_variable: hex_surface_generator_parameters.int_variables) {
-			user_uniforms_s += "layout(location = " + std::to_string(location)+") uniform int " + int_variable.variable_name + ";\n"; // Need to introduce capability to cater for int and and boolean types
+		for (hex_surface_generator_parameter_int_variable_struct_type int_variable : hex_surface_generator_parameters.int_variables) {
+			user_uniforms_s += "layout(location = " + std::to_string(location) + ") uniform int " + int_variable.variable_name + ";\n"; // Need to introduce capability to cater for int and and boolean types
 			location++;
 		}
 
-		for(hex_surface_generator_parameter_bool_variable_struct_type bool_variable : hex_surface_generator_parameters.bool_variables) {
+		for (hex_surface_generator_parameter_bool_variable_struct_type bool_variable : hex_surface_generator_parameters.bool_variables) {
 			user_uniforms_s += "layout(location = " + std::to_string(location) + ") uniform int " + bool_variable.variable_name + ";\n"; // Need to introduce capability to cater for int and and boolean types
 			location++;
 		}

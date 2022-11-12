@@ -342,8 +342,9 @@ private:
 
 		index_data_type hex_index;
 
-		index_vector3 hex_coordinate;
-		glm::vec3     hex_cartesian_coordinate;
+		//index_vector3 hex_coordinate;
+		glm::ivec3 hex_coordinate;
+		glm::vec3  hex_cartesian_coordinate;
 
 		last_hex_export_index++;
 		//hex_surface_element_data_type red_value = 255, green_value = 255, blue_value = 255, hex_surface_value = 255;
@@ -490,8 +491,9 @@ private:
 	void write_hex_face_ply_vertex_data_to_file(hex_surface_object_data_class &hex_surface_object_data, size_t number_vertices_to_export) {
 		hex_surface_data_type  hex_surface_value = 0.0;
 
-		index_vector3 hex_coordinate;
-		glm::vec3     hex_cartesian_coordinate;
+		//index_vector3 hex_coordinate;
+		glm::ivec3 hex_coordinate;
+		glm::vec3  hex_cartesian_coordinate;
 
 		for (size_t hex_index = 0; hex_index < number_vertices_to_export; hex_index++) {
 			hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum::value, hex_index);

@@ -60,28 +60,13 @@
     <ClCompile Include="Universal\imGuIZMO_quat\imGuIZMOquat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Universal\imgui-node-editor\crude_json.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Universal\imgui-node-editor\imgui_canvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Universal\imgui-node-editor\imgui_node_editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Universal\imgui-node-editor\imgui_node_editor_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\Node_editor\utilities\builders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\Node_editor\utilities\drawing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor\Node_editor\utilities\widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Editor\Node_editor\ImNodes\imnodes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics_Engine\Shader\ShaderPreprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics_Engine\Shader\shader_format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,19 +278,7 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Kernal\voxel_function_import_export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics_Engine\Shader\fragment_shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics_Engine\Shader\geometry_shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics_Engine\Shader\import_shader_code.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics_Engine\Shader\point_geometry_shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics_Engine\Shader\vertex_shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics_Engine\Shader\vw_shader_basis.h">
@@ -491,33 +464,6 @@
     <ClInclude Include="Source\Editor\Main_Window\Widgets\scene_node_editor_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\crude_json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\imgui_bezier_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\imgui_canvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\imgui_extra_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\imgui_node_editor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Universal\imgui-node-editor\imgui_node_editor_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Editor\Node_editor\utilities\builders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Editor\Node_editor\utilities\drawing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Editor\Node_editor\utilities\widgets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\imnodes_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -566,6 +512,18 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Functions\hex_surface_interactions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Shader\ShaderPreprocessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader_format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Geometry\primitives\color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Kernal\chantrait.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Universal\ImGui\.editorconfig" />
@@ -576,15 +534,6 @@
     <None Include="Universal\ImGui\backends\vulkan\generate_spv.sh" />
     <None Include="Universal\ImGui\backends\vulkan\glsl_shader.frag" />
     <None Include="Universal\ImGui\backends\vulkan\glsl_shader.vert" />
-    <None Include="Universal\imgui-node-editor\imgui_bezier_math.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Universal\imgui-node-editor\imgui_extra_math.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Universal\imgui-node-editor\imgui_node_editor_internal.inl">
-      <Filter>Header Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Universal\ImGui\LICENSE.txt" />

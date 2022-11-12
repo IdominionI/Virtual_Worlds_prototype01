@@ -566,7 +566,7 @@ private:
 
 		index_data_type voxel_index;
 
-		index_vector voxel_coordinate;
+		glm::ivec3 voxel_coordinate;
 		glm::vec3    voxel_cartesian_coordinate;
 
 		last_voxel_export_index++;
@@ -697,7 +697,7 @@ private:
 
 	void write_voxel_surface2_vertex_data_to_obj_file(std::vector<surface_vertices_struct_type>& surface_vertices, size_t number_vertices_to_export, voxel_object_data_class& voxel_object_data) {
 		index_data_type index;
-		index_vector            voxel_coordinate;
+		glm::ivec3            voxel_coordinate;
 		glm::vec3               voxel_cartesian_coordinate;
 
 		for (index = 0; index < number_vertices_to_export; index++) {
@@ -807,7 +807,7 @@ private:
 	void write_voxel_point_surface_ply_vertex_data_to_file(std::vector<surface_vertices_struct_type>& surface_vertices, std::vector <surface_vertices_normal_struct_type> surface_vertices_normals, size_t number_vertices_to_export, voxel_object_data_class& voxel_object_data, bool export_colors) {
 		index_data_type index;
 
-		index_vector  voxel_coordinate;
+		glm::ivec3  voxel_coordinate;
 		glm::vec3     voxel_cartesian_coordinate;
 
 		voxel_element_data_type red_value = 255, green_value = 255, blue_value = 255, voxel_value = 255;
@@ -839,7 +839,7 @@ private:
 		index_data_type index;
 
 		bool                    surface_error = false;
-		index_vector            voxel_coordinate;
+		glm::ivec3            voxel_coordinate;
 		glm::vec3               voxel_cartesian_coordinate;
 
 		std::vector<surface_faces_struct_type> surface_faces = surface_data.surface_faces;

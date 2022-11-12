@@ -32,6 +32,19 @@ public:
 
     void end();
 
+    void define_current_render_context(GLFWwindow* glfw_window) {
+        glfwMakeContextCurrent(glfw_window);
+    }
+
+    void define_this_as_current_render_context() {
+        if (!window) {
+            // log message
+            printf("Could not define current window as a render contexxt !");
+        }
+
+        glfwMakeContextCurrent(window->GLFW_window_ptr);
+    }
+
 protected:
     openGl_window_basis_class*window;
 };

@@ -30,7 +30,7 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 
 
 	 camera_light_intensity = vec3(0.0,0.0,0.0);
-	 if(use_camera_lighting){
+	 if(use_camera_lighting!=0){
 		 if(camera_lighting_type == 0){
 			 vec3 light_camera_relative_x = camera_right_vector *lighting_camera_offset.x;
 			 vec3 light_camera_relative_y = camera_up_vector    *lighting_camera_offset.y;

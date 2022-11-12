@@ -8,7 +8,8 @@
 
 class bounding_area_class {
 public:
-    line_class* geometry;
+    line_class           *geometry = NULL;;
+    material_struct_type *material = NULL; // *****
 
     glm::vec3 min_corner = glm::vec3(-1.0, -1.0, 0.0);
     glm::vec3 max_corner = glm::vec3(1.0, 1.0, 0.0);

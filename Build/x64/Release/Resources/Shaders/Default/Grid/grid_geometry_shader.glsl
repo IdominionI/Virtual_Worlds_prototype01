@@ -65,6 +65,19 @@ void main (){
 	define_grid_intervals();
 	
 	// ****************** X-Y PLANE *******************
+/*	if(display_xy_plane == 0){
+		float xy_dist = 0.0f;
+		varyingColor = vec4(1.0,1.0,1.0,1.0);
+		gl_Position = mvpMatrix*(x_center+vec4(0.0, -10.0*z_grid_interval, 0.0+xy_dist, 0.0)); 
+		EmitVertex();
+
+		varyingColor = vec4(1.0,1.0,1.0,1.0);
+		gl_Position =  mvpMatrix*(x_center+vec4( 0.0, 10.0*z_grid_interval, 0.0+xy_dist, 0.0));
+		EmitVertex();
+		
+		EndPrimitive();
+	}
+*/	
 	if(display_xy_plane != 0){
 		float xy_dist = 0.0f;
 			

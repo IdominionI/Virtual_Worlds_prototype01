@@ -201,7 +201,8 @@ private:
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in export_hex_surface_texture_parameters()");
 //}
 
-		shader_parameters_struct_type	shader_parameters =   hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters;
+		//shader_parameters_struct_type	shader_parameters =   hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters;
+		material_struct_type	shader_parameters =   hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters;
 
 		stream << DATA_BLOCK_START << endl;
 		stream << FLOAT_VARIABLE_BLOCK_START << endl;
@@ -327,18 +328,21 @@ private:
 
 		stream << DATA_BLOCK_START << endl;
 
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_vertex_shader_file_pathname << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_point_shader_file_pathname << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_fragment_shader_file_pathname << endl;
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_vertex_shader_file_pathname.string() << endl;
+		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname.string() << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_point_shader_file_pathname.string() << endl;
+		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname.string() << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_fragment_shader_file_pathname.string() << endl;
+		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname.string() << endl;
 
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname.string() << endl;
 
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname.string() << endl;
 
-		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname << endl;
+		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname.string() << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_vertex_shader << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.use_default_point_shader << endl;
@@ -498,7 +502,8 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name = line;
+		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name = line;
+		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname = line;
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
@@ -506,7 +511,8 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name = line;
+		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name = line;
+		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname = line;
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
@@ -514,7 +520,8 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name = line;
+		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name = line;
+		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname = line;
 
 //printf( "hcp_voxel_import_export_class::define_voxel_render_paramters 2222 : %i \n", line_number);
 		// -------------------------------------------------------------------------------

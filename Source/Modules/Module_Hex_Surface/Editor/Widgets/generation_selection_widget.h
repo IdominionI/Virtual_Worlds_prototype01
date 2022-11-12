@@ -84,12 +84,10 @@ public:
 		scene_node_class <render_object_class>* scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		if (scene_hex_surface_object != NULL && scene_manager != NULL) {
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.use_default_point_shader = display_as_points;
+			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->use_point_shader = display_as_points;
 
-			application_default_shader_uniform_variables_struct_type uniform_variable;
-			int displ_as_points = display_as_points;
-			uniform_variable.type = application_default_shader_variable_type_enum::Int1; uniform_variable.name = "display_as_points"; uniform_variable.value0 = &displ_as_points;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader_class shader;
+			shader.set_b1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, display_as_points, "display_as_points");
 
 			scene_manager->update_shader(scene_hex_surface_object, ENTITY_CATEGORY_HEX_SURF);
 
@@ -121,10 +119,10 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 */
 
 		if (scene_hex_surface_object != NULL) {
-			application_default_shader_uniform_variables_struct_type uniform_variable;
 			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader_class shader;
+			shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "hexSize");
 		}
 	}
 

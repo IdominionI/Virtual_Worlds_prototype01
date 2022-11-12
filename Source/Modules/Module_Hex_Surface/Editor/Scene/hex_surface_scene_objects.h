@@ -30,7 +30,8 @@ public:
 		return NULL;
 	}
 
-	bool get_shader_parameters(object_id_type object_id, shader_parameters_struct_type& shader_parameters) {
+	//bool get_shader_parameters(object_id_type object_id, shader_parameters_struct_type& shader_parameters) {
+	bool get_shader_parameters(object_id_type object_id, material_struct_type &shader_parameters) {
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
 

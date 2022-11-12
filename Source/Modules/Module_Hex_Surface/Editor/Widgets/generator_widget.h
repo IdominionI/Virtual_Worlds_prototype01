@@ -254,23 +254,25 @@ public:
 				return;
 			}
 
-			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			application_default_shader_uniform_variables_struct_type uniform_variable;
-			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader_class shader;
 
-			uniform_variable.type = application_default_shader_variable_type_enum::Floatv3; uniform_variable.name = "grid_origin"; uniform_variable.value0 = &hex_surface_object_to_execute->hex_surface_object_data.grid_origin;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
+			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
+
+			shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "hexSize");
+
+			glm::vec3 grid_o = { hex_surface_object_to_execute->hex_surface_object_data.grid_origin.x,hex_surface_object_to_execute->hex_surface_object_data.grid_origin.y,0.0 };
+
+			shader.set_vec3(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, grid_o, "grid_origin");
 
 			//voxel surface display data
 			float v_min = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hex_min_surface_display_value"; uniform_variable.value0 = &v_min;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_min, "hex_min_surface_display_value");
 
 			float v_max = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hex_min_surface_display_value"; uniform_variable.value0 = &v_max;
-			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_max, "hex_max_surface_display_value");
 
 //printf("hex_surface_generation_widget_class :: execute_hex_surface_function 6666\n");
 		}
@@ -350,7 +352,8 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 		printf("grid dim : x %i : y %i \n", hex_surface_object_data.grid_dimension.x, hex_surface_object_data.grid_dimension.y);
 		printf("hex size : %f\n", hex_surface_object_data.hex_size);
 
-		index_vector3 iv;
+		//index_vector3 iv;
+		glm::ivec3 iv;
 		for (int i = 0; i < 10; i++) {
 			iv= hex_surface_object_data.hexagon_cell_coord_from_cartesian(points[i].x, points[i].y);
 			printf("point %i x : %f y : %f :: hexagon_cell_coord_from_cartesian  x : %i y : %i \n",i, points[i].x, points[i].y, iv.x, iv.y);

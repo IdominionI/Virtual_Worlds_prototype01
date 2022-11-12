@@ -258,14 +258,14 @@ printf("hcp_interaction_node_class:action 1111 %i\n",entity_id);
 //printf("hcp_interaction_node_class:interaction_and 4444 %\n");
                     // Get coresponding voxel data entry in voxel matrix A that is at interaction matrix index coord xi,yi,zi
                     voxel_data_type a_value = DEFAULT_INACTIVE_VALUE, b_value = DEFAULT_INACTIVE_VALUE;
-                    index_vector matrix_coord_A = { a_start.x + xi,a_start.y + yi ,a_start.z + zi };
+                    glm::ivec3 matrix_coord_A = { a_start.x + xi,a_start.y + yi ,a_start.z + zi };
                     index_data_type a_index = voxel_hcp_object_A->voxel_object_data.get_voxel_matrix_data_index(matrix_coord_A);
                     if (a_index >= 0 && a_index < voxel_hcp_object_A->voxel_object_data.voxel_matrix_data.size()) {
                         a_value = voxel_hcp_object_A->voxel_object_data.voxel_matrix_data[a_index];
                     }
 
                     // Get coresponding voxel data entry in voxel matrix A that is at interaction matrix index coord xi,yi,zi
-                    index_vector matrix_coord_B = { b_start.x + xi,b_start.y + yi ,b_start.z + zi };
+                    glm::ivec3 matrix_coord_B = { b_start.x + xi,b_start.y + yi ,b_start.z + zi };
                     index_data_type b_index = voxel_hcp_object_B->voxel_object_data.get_voxel_matrix_data_index(matrix_coord_B);
                     if (b_index >= 0 && b_index < voxel_hcp_object_B->voxel_object_data.voxel_matrix_data.size()) {
                         b_value = voxel_hcp_object_B->voxel_object_data.voxel_matrix_data[b_index];
@@ -295,7 +295,7 @@ printf("hcp_interaction_node_class:action 1111 %i\n",entity_id);
     }
 
     void assign_voxel(int xi, int yi, int zi,int value) {
-        index_vector matrix_coord_C = { xi,yi ,zi };
+        glm::ivec3 matrix_coord_C = { xi,yi ,zi };
         index_data_type c_index = interaction_object->voxel_object_data.get_voxel_matrix_data_index(matrix_coord_C);
         // Future consideration is that this value is assigned to some other value
         if (c_index >= 0 && c_index < interaction_object->voxel_object_data.voxel_matrix_data.size()) {

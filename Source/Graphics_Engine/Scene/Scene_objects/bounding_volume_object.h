@@ -6,7 +6,8 @@
 
 class bounding_volume_class  {
 public :
-    line_class *geometry;
+    line_class           *geometry = NULL;
+    material_struct_type *material = NULL; // *****
 
     glm::vec3 min_corner = glm::vec3(-1.0, -1.0, -1.0);
     glm::vec3 max_corner = glm::vec3(1.0, 1.0, 1.0);
@@ -17,12 +18,12 @@ public :
 
 
     bool initialise() {
-//printf("bounding_volume_class 000\n");
+printf("bounding_volume_class 000\n");
        
         if ((program_id = shader.create_shader_program(v_shader_filename,"", f_shader_filename)) == 0) 
             return false;
         else
-//printf("bounding_volume_class 111\n");
+printf("bounding_volume_class 111\n");
           return true;
     }
 
@@ -97,6 +98,9 @@ public :
 
 private:
     // these need to change to more appropriate default names and location !!!!!!
-    std::string v_shader_filename = "phong-shading.v.glsl";
-    std::string f_shader_filename = "phong-shading.f.glsl";
+    //std::string v_shader_filename = "phong-shading.v.glsl";
+    //std::string f_shader_filename = "phong-shading.f.glsl";
+
+    std::string v_shader_filename = "Assets/Shaders/Default/VW_application/bounding_box_VS.glsl";
+    std::string f_shader_filename = "Assets/Shaders/Default/VW_application/bounding_box_FS.glsl";
 };

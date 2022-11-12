@@ -98,7 +98,9 @@ public:
 			scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 			if (scene_voxel_object != NULL && scene_manager != NULL) {
-				scene_voxel_object->scene_graph_object.scene_object_class.shader_material.use_point_shader = display_as_points;
+				scene_voxel_object->scene_graph_object.scene_object_class.shader_material->use_point_shader = display_as_points;
+
+//printf("hcp_voxel_genertion_selection_widget_class :: change_voxels_display 000 : %i : %i\n", display_as_points, scene_voxel_object->scene_graph_object.scene_object_class.shader_material->use_point_shader);
 				scene_manager->update_shader(scene_voxel_object, ENTITY_CATEGORY_HCP_VOXEL);
 
 				update_voxel_size();
@@ -106,17 +108,20 @@ public:
 	}
 
 	void update_voxel_size() {
-		scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
+		scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		if (scene_voxel_object != NULL) {
-			application_default_shader_uniform_variables_struct_type uniform_variable;
+//printf("hcp_voxel_genertion_selection_widget_class :: update_voxel_size 000 : %i : %i\n", display_as_points, scene_voxel_object->scene_graph_object.scene_object_class.shader_material->use_point_shader);
+
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader_class shader;
+
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "voxSize");
 
 			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_hcp_z_increment"; uniform_variable.value0 = &voxel_hcp_z_increment;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_z_increment, "voxel_hcp_z_increment");
 		}
 	}
 

@@ -7,7 +7,8 @@
 #include <Universal/Framework/FWstring_tools.h>
 #include <Universal/Framework/FWfile_tools.h>
 
-#include <Source/Graphics_Engine/Shader/shader_parameters.h>
+//#include <Source/Graphics_Engine/Shader/shader_parameters.h>
+#include <Source/Graphics_Engine/Shader/shader_components.h>
 
 #define OVER_WRITE_SHADER_FILE    100
 #define READ_SHADER_FILE          101
@@ -46,7 +47,8 @@ public:
 
 	std::string input_line;
 
-	shader_parameters_struct_type shader_parameters;
+	//shader_parameters_struct_type shader_parameters;
+	material_struct_type shader_parameters;
 
 	int line_number = 0;
 
@@ -85,14 +87,14 @@ public:
 		// ****** Shader files *******
 		stream << SHADER_BLOCK_START << ENDL;
 
-		stream << shader_parameters.vertex_shader_file_pathname           << ENDL;
-		stream << shader_parameters.point_shader_file_pathname            << ENDL;
-		stream << shader_parameters.geometry_shader_file_pathname         << ENDL;
-		stream << shader_parameters.fragment_shader_file_pathname         << ENDL;
-		stream << shader_parameters.default_vertex_shader_file_pathname   << ENDL;
-		stream << shader_parameters.default_point_shader_file_pathname    << ENDL;
-		stream << shader_parameters.default_geometry_shader_file_pathname << ENDL;
-		stream << shader_parameters.default_fragment_shader_file_pathname << ENDL;
+		stream << shader_parameters.vertex_shader_file_pathname.string()           << ENDL;
+		stream << shader_parameters.point_shader_file_pathname.string()            << ENDL;
+		stream << shader_parameters.geometry_shader_file_pathname.string()         << ENDL;
+		stream << shader_parameters.fragment_shader_file_pathname.string()         << ENDL;
+		stream << shader_parameters.default_vertex_shader_file_pathname.string()   << ENDL;
+		stream << shader_parameters.default_point_shader_file_pathname.string()    << ENDL;
+		stream << shader_parameters.default_geometry_shader_file_pathname.string() << ENDL;
+		stream << shader_parameters.default_fragment_shader_file_pathname.string() << ENDL;
 
 		stream << SHADER_BLOCK_END << ENDL;
 		// ***************************
@@ -140,7 +142,8 @@ public:
 		return true;
 	}
 
-	bool import_voxel_genereated_function(shader_parameters_struct_type& texture_parameters, std::string file_pathname) {
+	//bool import_voxel_genereated_function(shader_parameters_struct_type& texture_parameters, std::string file_pathname) {
+	bool import_voxel_genereated_function(material_struct_type *texture_parameters, std::string file_pathname) {
 //QMessageBox::information(NULL, "", file_pathname, //QMessageBox::Ok);
 
 		if (file_pathname.size() == 0) {
@@ -162,7 +165,8 @@ public:
 		return read_expression_into_shader_parameters(working_model_string, texture_parameters);
 	}
 
-	bool read_expression_into_shader_parameters(std::string working_model_string, shader_parameters_struct_type& texture_parameters) {
+	//bool read_expression_into_shader_parameters(std::string working_model_string, shader_parameters_struct_type& texture_parameters) {
+	bool read_expression_into_shader_parameters(std::string working_model_string, material_struct_type *texture_parameters) {
 //QStringList lines = working_model_string.split('\n');// Create a list of strings for each line in the expression code
 		std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 		std::string line;
@@ -186,22 +190,22 @@ public:
 		line_number++;
 
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.vertex_shader_file_pathname = line; line_number++;
+		texture_parameters->vertex_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.point_shader_file_pathname = line; line_number++;
+		texture_parameters->point_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.geometry_shader_file_pathname = line; line_number++;
+		texture_parameters->geometry_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.fragment_shader_file_pathname = line; line_number++;
+		texture_parameters->fragment_shader_file_pathname = line; line_number++;
 
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.default_vertex_shader_file_pathname = line; line_number++;
+		texture_parameters->default_vertex_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.default_point_shader_file_pathname = line; line_number++;
+		texture_parameters->default_point_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.default_geometry_shader_file_pathname = line; line_number++;
+		texture_parameters->default_geometry_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters.default_fragment_shader_file_pathname = line; line_number++;
+		texture_parameters->default_fragment_shader_file_pathname = line; line_number++;
 
 		line_number++;
 
@@ -236,7 +240,7 @@ public:
 			variable.slider_max = stof(lines[line_number]);   line_number++;
 
 ////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
-			texture_parameters.variables.push_back(variable);
+			texture_parameters->variables.push_back(variable);
 ////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 		}
 
@@ -272,7 +276,7 @@ public:
 			variable.slider_max = stoi(lines[line_number]); line_number++;
 
 //QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
-			texture_parameters.int_variables.push_back(variable);
+			texture_parameters->int_variables.push_back(variable);
 //QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 		}
 
@@ -305,7 +309,7 @@ public:
 			variable.value = stoi(lines[line_number]); line_number++;
 
 //QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
-			texture_parameters.bool_variables.push_back(variable);
+			texture_parameters->bool_variables.push_back(variable);
 //QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 		}
 

@@ -53,7 +53,7 @@ public:
     bool display_grid        = true;
 
     camera_object_class *camera = NULL;
-    viewer_grid_class     viewer_grid;
+    viewer_grid_class    viewer_grid;
 
     glm::vec4 xhair_color = glm::vec4{ 1.0f,1.0f,1.0f,1.0f };
 
@@ -79,6 +79,7 @@ public:
        // Define a grid axis to be displayed
        viewer_grid.scene_graph_manager = scene_graph_manager;
        viewer_grid.initialise();
+       viewer_grid.update_viewer_grid();
 
        // Testing only **********
   /*     if (!bounding_volume.initialise())
@@ -245,6 +246,14 @@ public:
             case GLFW_REPEAT  : keyPressEvent  (key, scancode,mods);break;
             case GLFW_RELEASE : keyReleaseEvent(key, scancode,mods);break;
 
+        }
+    }
+
+    void on_mouse_button_event(int button, int state, int mods) {
+        switch (button) {
+            case GLFW_MOUSE_BUTTON_1: camera->move_forward(); break;
+            case GLFW_MOUSE_BUTTON_2: camera->move_backward(); break;
+            case GLFW_MOUSE_BUTTON_3: glClearColor(.9, .5, .5, .5); break;
         }
     }
 

@@ -23,12 +23,13 @@
 #define DEFAULT_INACTIVE_VALUE 0 
 
 typedef int index_data_type;
-
+/*
 struct index_struct_type {
 	index_data_type x = 0, y = 0, z = 0;
 };
 
 typedef index_struct_type index_vector;
+*/
 
 //#define MAX_VOXEL_VERTICES   178956904 //INT_MAX/(3 *sizeof(GLfloat)); number of x,y,z vertices of data type float which is assumed to use four bytes
 //#define MAX_VOXEL_VERTICES    64000000 // On a 16 gig rig have this value as a safe number as testin reveals this uses about 10 gig memory.
@@ -46,16 +47,17 @@ public:
 	float	     voxel_size           = 1.0f;
 	glm::vec3    matrix_origin        = { 0.0,0.0,0.0 };
 	glm::vec3    matrix_coordinate_scale_factors = { 1.0,1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	index_vector matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
+	//glm::ivec3 matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
+	glm::ivec3 matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
 	bool	     display_points       = true;
 	bool	     perfom_rounding_up   = true;
 	bool	     voxel_surface_volume = false;
 
 	voxel_generator_parameters_struct_type			      voxel_generator_parameters;
-	shader_parameters_struct_type					      shader_parameters;
+	material_struct_type				                  shader_parameters;
 	std::vector<voxel_hcp_automata_byte_rule_struct_type> voxel_hcp_automata_byte_rules;
 
-	index_vector			   voxel_matrix_coord_index_vector;
+	glm::ivec3			           voxel_matrix_coord_index_vector;
 	std::vector <voxel_data_type>  voxel_matrix_data;
 
 	~voxel_object_data_class() {
@@ -171,8 +173,8 @@ public:
 */
 // ********************************************************************************************
 
-	index_vector digitise_point_coordinate(glm::vec3 point_location) {
-		index_vector digitised_point_coordinate = { 0,0,0 };
+	glm::ivec3 digitise_point_coordinate(glm::vec3 point_location) {
+		glm::ivec3 digitised_point_coordinate = { 0,0,0 };
 		glm::vec3  rounding_up_value = { 0.0, 0.0, 0.0 };
 
 		if (matrix_coordinate_scale_factors.x <= 0.0 || matrix_coordinate_scale_factors.y <= 0.0 || matrix_coordinate_scale_factors.z <= 0.0)
@@ -219,8 +221,8 @@ public:
 	}
 
 	// Retreive the 3 dim x,y,z coordinate that the matrix index corresponds to
-	index_vector get_matrix_coordinate(index_data_type matrix_index) {
-		index_vector matrix_coord;
+	glm::ivec3 get_matrix_coordinate(index_data_type matrix_index) {
+		glm::ivec3 matrix_coord;
 
 		index_data_type t0 = get_z_layer_total(0);// total number for even z level
 		index_data_type t1 = get_z_layer_total(1);// total number for odd  z level
@@ -293,7 +295,7 @@ public:
 		return matrix_coord;
 	}
 
-	glm::vec3 get_voxel_cartesian_coordinate(index_vector voxel_coord, float voxel_size) {
+	glm::vec3 get_voxel_cartesian_coordinate(glm::ivec3 voxel_coord, float voxel_size) {
 		index_data_type i = voxel_coord.x, j = voxel_coord.y, k = voxel_coord.z;
 
 		float sqrt3 = sqrt(3.0), third = 1.0 / 3.0, z_mult = 2.0 * sqrt(6.0) / 3.0, sqrt3_2 = sqrt(1.5);
@@ -316,17 +318,17 @@ public:
 		return voxel_cartesian_coordinate;
 	}
 
-	glm::vec3 get_voxel_cartesian_coordinate(index_vector voxel_coord) {
+	glm::vec3 get_voxel_cartesian_coordinate(glm::ivec3 voxel_coord) {
 		return get_voxel_cartesian_coordinate(voxel_coord, voxel_size);
 	}
 
 
 
-	index_data_type get_voxel_matrix_data_index(index_vector matrix_coord) {// y in matrix_coord must be the corrected_y as defined in get_voxel_matrix_bit_location
+	index_data_type get_voxel_matrix_data_index(glm::ivec3 matrix_coord) {// y in matrix_coord must be the corrected_y as defined in get_voxel_matrix_bit_location
 		return get_index_value(matrix_coord.x, matrix_coord.y, matrix_coord.z);
 	}
 
-	voxel_element_data_type activate_voxel_matrix_coordinate(index_vector matrix_coord, voxel_element_data_type voxel_status_value = DEFAULT_ACTIVE_VALUE) {// testing only comment out or delete when not in use
+	voxel_element_data_type activate_voxel_matrix_coordinate(glm::ivec3 matrix_coord, voxel_element_data_type voxel_status_value = DEFAULT_ACTIVE_VALUE) {// testing only comment out or delete when not in use
 
 //QMessageBox::information(NULL, "", "avmc00 :"+ QString::number(matrix_coord.matrix_index.x) + " x :"+ QString::number(matrix_coord.matrix_index.y)+"y :"+ QString::number(matrix_coord.matrix_index.z)+"z :"+ QString::number(matrix_coord.j_bit_index), QMessageBox::Ok);
 //QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc00AAAA :"+ QString::number(matrix_dimension.x) + " :" + QString::number(matrix_dimension.y)+" :" + QString::number(matrix_dimension.z), QMessageBox::Ok);
@@ -348,7 +350,7 @@ public:
 //QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc03 :"+ QString::number(voxel_matrix_data[voxel_matrix_data_index] ), QMessageBox::Ok);
 	}
 
-	void deactivate_voxel_matrix_coordinate(index_vector matrix_coord) {
+	void deactivate_voxel_matrix_coordinate(glm::ivec3 matrix_coord) {
 		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
 
 		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
@@ -370,7 +372,7 @@ public:
 		return voxel_value;
 	}
 
-	voxel_element_data_type voxel_matrix_coordinate_activation_status(index_vector matrix_coord) {
+	voxel_element_data_type voxel_matrix_coordinate_activation_status(glm::ivec3 matrix_coord) {
 		index_data_type voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
 
 		if (voxel_matrix_data_index >= voxel_matrix_data.size()) return INVALID_VOXEL_VALUE;
@@ -450,7 +452,7 @@ public:
 	// (x,y,z) will be within the bounds of a 3D voxel cell.
 	index_data_type index_of_voxel_cell_with_cartesian_coord(float x, float y,float z) {
 //printf("index_of_voxel_cell_with_cartesian_coord 000 :x %f :y %f :z %f \n", x, y, z);
-		index_vector voxel_coord = hcp_voxel_cell_coord_from_cartesian(x,y,z);
+		glm::ivec3 voxel_coord = hcp_voxel_cell_coord_from_cartesian(x,y,z);
 //printf("index_of_voxel_cell_with_cartesian_coord 111 :x %i :y %i :z %i \n", voxel_coord.x, voxel_coord.y, voxel_coord.z);
 		if (cartesian_coord_within_matrix_bounds(voxel_coord))
 			return get_voxel_matrix_data_index(voxel_coord);
@@ -462,12 +464,12 @@ public:
 	// the dimensions of the voxel matrix that is stored in the computer memory
 	bool cartesian_coord_within_matrix_bounds(float x, float y,float z) {
 
-		index_vector voxel_coord = hcp_voxel_cell_coord_from_cartesian(x, y, z);
+		glm::ivec3 voxel_coord = hcp_voxel_cell_coord_from_cartesian(x, y, z);
 
 		return cartesian_coord_within_matrix_bounds(voxel_coord);
 	}
 
-	bool cartesian_coord_within_matrix_bounds(index_vector voxel_coord) {
+	bool cartesian_coord_within_matrix_bounds(glm::ivec3 voxel_coord) {
 		if (voxel_coord.x < 0 || voxel_coord.y < 0 || voxel_coord.z < 0) return false;
 
 		if (voxel_coord.z % 2 == 0) {// even level
@@ -492,7 +494,7 @@ public:
 
 	// Obtain the voxel matrix index coordinates of the voxel matrix that a point P of cartesian coordinte
 	// (x,y,z) will be found to be within the bounds of a 3D voxel cell.
-	index_vector hcp_voxel_cell_coord_from_cartesian(float x, float y, float z) {
+	glm::ivec3 hcp_voxel_cell_coord_from_cartesian(float x, float y, float z) {
 		float voxel_radius = voxel_size;
 		float voxel_height = voxel_radius * (sqrt(1.5f) + sqrt(6) / 3);
 		float grid_x, grid_y;
@@ -519,7 +521,7 @@ public:
 		}
 	}
 
-	index_vector get_hcp_voxel_cell_coord_even_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
+	glm::ivec3 get_hcp_voxel_cell_coord_even_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
 		float grid_radius = voxel_size;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));
@@ -584,7 +586,7 @@ public:
 			}
 		}
 
-		index_vector voxel_coord;
+		glm::ivec3 voxel_coord;
 		voxel_coord.x = column;
 		voxel_coord.y = row;
 
@@ -642,7 +644,7 @@ public:
 		return voxel_coord; // Possible bug created by this ?????
 	}
 
-	index_vector get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
+	glm::ivec3 get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
 		float grid_radius = voxel_size;
 		//float grid_radius = voxel_size / 2.0;
 		float grid_height = grid_radius * (sqrt(3.0f));
@@ -705,7 +707,7 @@ public:
 			}
 		}
 
-		index_vector voxel_coord;
+		glm::ivec3 voxel_coord;
 		voxel_coord.x = column;
 		voxel_coord.y = row;
 

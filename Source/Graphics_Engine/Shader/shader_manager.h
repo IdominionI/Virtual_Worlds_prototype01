@@ -74,6 +74,36 @@ public:
 		return shader_id;
 	}
 
+	int create_glsl_shader_program(const std::string& vertex_shader_file,
+							       const std::string& geometry_shader_file,
+							       const std::string& fragment_shader_file) {
+
+		int shader_id = shader.create_glsl_shader_program(vertex_shader_file, geometry_shader_file, fragment_shader_file);
+
+		if (shader_id < 1) {
+			// error message + shader.compile_log
+			return 0;
+		}
+
+		shaders.push_back(shader_id);
+
+		return shader_id;
+	}
+
+	int create_glsl_shader_program(shader_format_class shader_format) {
+
+		int shader_id = shader.create_glsl_shader_program(shader_format);
+
+		if (shader_id < 1) {
+			// error message + shader.compile_log
+			return 0;
+		}
+
+		shaders.push_back(shader_id);
+
+		return shader_id;
+	}
+
 	void remove_shader_program(idu_type shader_id) {
 		shader.unload(shader_id);
 		delete_shader_id(shader_id);

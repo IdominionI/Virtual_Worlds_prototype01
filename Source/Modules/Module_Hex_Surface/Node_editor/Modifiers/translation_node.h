@@ -251,10 +251,16 @@ public:
                 return;
             }
 
-            application_default_shader_uniform_variables_struct_type uniform_variable;
+            shader_class shader;
+
+            //application_default_shader_uniform_variables_struct_type uniform_variable;
 //printf("translation action 77777 %s \n");
-            uniform_variable.type = application_default_shader_variable_type_enum::Floatv2; uniform_variable.name = "grid_origin"; uniform_variable.value0 = &hex_surface_object->hex_surface_object_data.grid_origin;
-            scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+            //uniform_variable.type = application_default_shader_variable_type_enum::Floatv2; uniform_variable.name = "grid_origin"; uniform_variable.value0 = &hex_surface_object->hex_surface_object_data.grid_origin;
+            //scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+            glm::vec3 grid_origin = { hex_surface_object->hex_surface_object_data.grid_origin.x,hex_surface_object->hex_surface_object_data.grid_origin.y,0.0f };
+
+            shader.set_vec3(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, grid_origin, "voxel_origin");
         }
     }
 

@@ -186,7 +186,7 @@ public:
         else
             data_set_y_size = (int)(y_size / y_res_step);
 
-        interaction_object->hex_surface_object_data.grid_dimension = { data_set_x_size,data_set_y_size};
+        interaction_object->hex_surface_object_data.grid_dimension = { data_set_x_size,data_set_y_size,0};
 //printf("hcp_interaction_node_class:create_interaction_object 4444 dim :  %i : %i : %i \n", interaction_object->hex_surface_object_data.grid_dimension.x, interaction_object->hex_surface_object_data.grid_dimension.y);
         interaction_object->hex_surface_object_data.create_empty_surface_cubic(interaction_object->hex_surface_object_data.grid_dimension.x,
                                                                                interaction_object->hex_surface_object_data.grid_dimension.y);

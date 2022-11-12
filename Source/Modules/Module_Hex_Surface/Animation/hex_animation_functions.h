@@ -35,7 +35,8 @@ public:
 
 	// List of initial hex surface data object parameter data that are to be rendered in the scene
 	std::vector<hex_surface_generator_parameters_struct_type> vw_initial_hex_surface_generator_variables_array;
-	std::vector<shader_parameters_struct_type>                vw_initial_hex_surface_shader_generator_variables_array;
+	std::vector<material_struct_type>                         vw_initial_hex_surface_shader_generator_variables_array;
+	//std::vector<shader_parameters_struct_type>                vw_initial_hex_surface_shader_generator_variables_array;
 
 	// List of hex surfacel data object compute generator classes that generate the hex suface point cloud data the are to be rendered in the scene
 	std::vector<hex_surface_compute_generator_class *>    hex_surface_generators;
@@ -335,7 +336,8 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.int_variables = hex_surface_generator_parameters.int_variables;
 	}
 
-	void update_hex_surface_texture_parameter_step_values(shader_parameters_struct_type &hex_surface_texture_parameters, int step_action, scene_manager_class* scene_manager, id_type entity_id) {
+	//void update_hex_surface_texture_parameter_step_values(shader_parameters_struct_type &hex_surface_texture_parameters, int step_action, scene_manager_class* scene_manager, id_type entity_id) {
+	void update_hex_surface_texture_parameter_step_values(material_struct_type &hex_surface_texture_parameters, int step_action, scene_manager_class* scene_manager, id_type entity_id) {
 		int i = 0;
 
 		// Floating number varaibles
@@ -374,7 +376,8 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 		update_shader_variables(scene_manager, hex_surface_texture_parameters, entity_id);
 	}
 
-	void update_shader_variables(scene_manager_class *scene_manager, shader_parameters_struct_type hex_surface_texture_parameters, id_type entity_id) { // not sure this is needed as render node does this task
+	//void update_shader_variables(scene_manager_class *scene_manager, shader_parameters_struct_type hex_surface_texture_parameters, id_type entity_id) { // not sure this is needed as render node does this task
+	void update_shader_variables(scene_manager_class *scene_manager, material_struct_type hex_surface_texture_parameters, id_type entity_id) { // not sure this is needed as render node does this task
 //printf("voxel_shaders_widget_class::update voxel shaders clicked\n");// replace with update variables
 		// Get the scene render object that stores the object render properties
 		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(entity_id);                  
@@ -384,7 +387,7 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 			return;
 		}
 //printf("voxel_shaders_widget_class::update_shader_variables 111\n");
-		shader_component_struct_type  *shader_material   = &entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
+		material_basis_struct_type *shader_material   = entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
 		shader_parameters_struct_type *shader_parameters = &*dynamic_cast<shader_parameters_struct_type*>(shader_material);   
 //printf("voxel_shaders_widget_class::update_shader_variables 222\n");
 		shader_parameters->variables      = hex_surface_texture_parameters.variables;

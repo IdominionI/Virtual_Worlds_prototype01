@@ -204,7 +204,7 @@ public:
 	// and if all rules are met assign a defined value for this case, otherwise set a rules not met value
 	bool perform_voxel_automata_rules(u_long_int step, index_data_type x_index, index_data_type y_index, index_data_type z_index) {
 		if (cloud == NULL) return false;
-		index_vector voxel_data_index_coord = { x_index, y_index, z_index };
+		glm::ivec3 voxel_data_index_coord = { x_index, y_index, z_index };
 
 		voxel_data_type rule_met_status = INVALID_VOXEL_VALUE;
 		bool automata_rule_met = false;
@@ -310,7 +310,7 @@ public:
 
 	// Get the neighbor cell status value of a hcp voxel that is at voxel matrix location x_index, y_index, z_index
 	voxel_data_type get_voxel_neighbour_state(size_t neighbour, index_data_type x_index, index_data_type y_index, index_data_type z_index) {
-		index_vector voxel_neighbour_index_coord = get_voxel_neighbour_index_coordinates(neighbour, x_index, y_index, z_index);
+		glm::ivec3 voxel_neighbour_index_coord = get_voxel_neighbour_index_coordinates(neighbour, x_index, y_index, z_index);
 
 //if( z_index == INVETSIGATE_Z)// testing only
 //stream << "| neighbour : " << neighbour << " inex x: " << voxel_neighbour_index_coord.x <<" y: " << voxel_neighbour_index_coord.y << " z: " << voxel_neighbour_index_coord.z ;// testing only
@@ -339,8 +339,8 @@ public:
 		return cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_neighbour_index_coord);
 	}
 
-	index_vector get_voxel_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index) {
-		index_vector neighbor_index_coordinate;
+	glm::ivec3 get_voxel_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index) {
+		glm::ivec3 neighbor_index_coordinate;
 //QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05 "+QString::number( neighbour)+":"+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
 		if (z_index % 2 == 0) {  // Even Z 
 //QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05A", QMessageBox::Ok);
@@ -426,7 +426,7 @@ public:
 
 	// Determine if hcp voxel cell index coordinate voxel_index_coordinate is valid or not
 	// Ie if it is outside the volume and limits of the hcp voxel matrix 
-	bool valid_index_coordinate(index_vector voxel_index_coordinate) {
+	bool valid_index_coordinate(glm::ivec3 voxel_index_coordinate) {
 //QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06", QMessageBox::Ok);
 
 		if (voxel_index_coordinate.z < 0 || voxel_index_coordinate.z > cloud->voxel_object_data.matrix_dimension.z - 1) return false;
@@ -457,7 +457,7 @@ public:
 		return true;
 	}
 
-	void assign_no_voxel_state_change(index_vector voxel_data_index_coord) {
+	void assign_no_voxel_state_change(glm::ivec3 voxel_data_index_coord) {
 		voxel_data_type voxel_activation_status = cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_data_index_coord);
 		//voxel_data_type default_inactive_value = DEFAULT_INACTIVE_VALUE;
 		//if(voxel_activation_status > DEFAULT_INACTIVE_VALUE) // *** Need to change this for a valid activation value
@@ -681,7 +681,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		HANDLE  barrier;
 		voxel_hcp_object_class* cloud;
 		voxel_hcp_object_class* voxel_automata_next_step_matrix;
-		index_vector  resolution;
+		glm::ivec3  resolution;
 		int         step;
 
 		std::vector <voxel_hcp_automata_byte_rule_struct_type>   voxel_hcp_automata_rules;
@@ -705,7 +705,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		voxel_automata_generator_parameters.z_end = cloud->voxel_object_data.voxel_generator_parameters.z_end;
 		voxel_automata_generator_parameters.resolution_step = cloud->voxel_object_data.voxel_generator_parameters.resolution_step;
 
-		index_vector resolution;
+		glm::ivec3 resolution;
 
 		index_data_type iX = 0, iY, iZ;
 		float fX = 0.0f, fY = 0.0f, fZ = 0.0f, fT = 0.0f;
@@ -797,7 +797,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	static unsigned long __stdcall doRender(void* vdata) {
 		// prep data
 		TData* data = (TData*)vdata;
-		const index_vector resolution = data->resolution;
+		const glm::ivec3 resolution = data->resolution;
 		const int   numxtiles = resolution.x / TILESIZE + 1;
 		const int   numytiles = resolution.y / TILESIZE + 1;
 		const int   numztiles = resolution.z / TILESIZE + 1;
@@ -860,7 +860,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		voxel_hcp_object_class* cloud, voxel_hcp_object_class* voxel_automata_next_step_matrix,
 		int x_index, int y_index, int z_index) {
 		if (cloud == NULL) return false;
-		index_vector voxel_data_index_coord = { x_index, y_index, z_index };// *****
+		glm::ivec3 voxel_data_index_coord = { x_index, y_index, z_index };// *****
 
 
 		voxel_data_type rule_met_status = 0;
@@ -965,7 +965,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 
 	// Get the neighbor cell status value of a hcp voxel that is at voxel matrix location x_index, y_index, z_index
 	static voxel_data_type get_voxel_neighbour_state(size_t neighbour, index_data_type x_index, index_data_type y_index, index_data_type z_index, voxel_hcp_object_class* cloud) {
-		index_vector voxel_neighbour_index_coord = get_voxel_neighbour_index_coordinates(neighbour, x_index, y_index, z_index);
+		glm::ivec3 voxel_neighbour_index_coord = get_voxel_neighbour_index_coordinates(neighbour, x_index, y_index, z_index);
 
 		//if( z_index == INVETSIGATE_Z)// testing only
 		//stream << "| neighbour : " << neighbour << " inex x: " << voxel_neighbour_index_coord.x <<" y: " << voxel_neighbour_index_coord.y << " z: " << voxel_neighbour_index_coord.z ;// testing only
@@ -995,8 +995,8 @@ printf("in perform_voxel_automata_generation 05 : \n");
 	}
 
 
-	static 	index_vector get_voxel_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index) {
-		index_vector neighbor_index_coordinate;
+	static 	glm::ivec3 get_voxel_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index) {
+		glm::ivec3 neighbor_index_coordinate;
 		//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05 "+QString::number( neighbour)+":"+QString::number(x_index)+":"+QString::number(y_index)+":"+QString::number(z_index), QMessageBox::Ok);
 		if (z_index % 2 == 0) {  // Even Z 
 //QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here05A", QMessageBox::Ok);
@@ -1082,7 +1082,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 
 	// Determine if hcp voxel cell index coordinate voxel_index_coordinate is valid or not
 	// Ie if it is outside the volume and limits of the hcp voxel matrix 
-	static bool valid_index_coordinate(index_vector voxel_index_coordinate, voxel_hcp_object_class* cloud) {
+	static bool valid_index_coordinate(glm::ivec3 voxel_index_coordinate, voxel_hcp_object_class* cloud) {
 		//QMessageBox::information(0, "get_voxel_neighbour_index_coordinates", "here06", QMessageBox::Ok);
 
 		if (voxel_index_coordinate.z < 0 || voxel_index_coordinate.z > cloud->voxel_object_data.matrix_dimension.z - 1) return false;
@@ -1113,7 +1113,7 @@ printf("in perform_voxel_automata_generation 05 : \n");
 		return true;
 	}
 
-	static void assign_no_voxel_state_change(index_vector voxel_data_index_coord, voxel_hcp_object_class* cloud, voxel_hcp_object_class* voxel_automata_next_step_matrix) {
+	static void assign_no_voxel_state_change(glm::ivec3 voxel_data_index_coord, voxel_hcp_object_class* cloud, voxel_hcp_object_class* voxel_automata_next_step_matrix) {
 		voxel_data_type voxel_activation_status = cloud->voxel_object_data.voxel_matrix_coordinate_activation_status(voxel_data_index_coord);
 
 		voxel_automata_next_step_matrix->voxel_object_data.activate_voxel_matrix_coordinate(voxel_data_index_coord, voxel_activation_status);

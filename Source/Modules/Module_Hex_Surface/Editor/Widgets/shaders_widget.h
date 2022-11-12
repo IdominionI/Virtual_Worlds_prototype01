@@ -31,7 +31,8 @@
 
 class hex_surface_shaders_widget_class {
 public:
-	shader_parameters_struct_type       *hex_surface_shader_parameters = NULL;
+	//shader_parameters_struct_type       *hex_surface_shader_parameters = NULL;
+	material_struct_type                *hex_surface_shader_parameters = NULL;
 	shader_variables_widget_class        shader_variables_widget;
 	//hex_surface_generation_widget_class *hex_surface_generation_widget;
 	hex_surface_genertion_selection_widget_class *hex_surface_generation_widget;// ****
@@ -85,7 +86,7 @@ public:
 		text("Vertex  :", x_pos, y_pos);
 
 //printf("voxel_shaders_widget_class 0000 %s.\n", hex_surface_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
-		if (ex_button(hex_surface_shader_parameters->vertex_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20)) 
+		if (ex_button(hex_surface_shader_parameters->vertex_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_vertex_shader_file();
 
 		ImGui::SetCursorPosX(x_pos + 120+ 150+3);
@@ -95,7 +96,7 @@ public:
 		y_pos += 23;
 		text("Point   :", x_pos, y_pos);
 
-		if (ex_button(hex_surface_shader_parameters->point_geometry_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20))
+		if (ex_button(hex_surface_shader_parameters->point_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_point_geometry_shader_file();
 
 		ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
@@ -115,7 +116,7 @@ public:
 		y_pos += 23;
 		text("Fragment:", x_pos, y_pos);
 
-		if (ex_button(hex_surface_shader_parameters->fragment_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20))
+		if (ex_button(hex_surface_shader_parameters->fragment_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_fragment_shader_file();
 
 		ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
@@ -233,12 +234,12 @@ public:
 			return;
 		}
 //printf("voxel_shaders_widget_class::update_shader_variables 111\n");
-		shader_component_struct_type  *shader_material   = &entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
-		shader_parameters_struct_type *shader_parameters = &*dynamic_cast<shader_parameters_struct_type*>(shader_material);   
+		material_struct_type  *shader_material = dynamic_cast<material_struct_type*>(entity_render_object->scene_graph_object.scene_object_class.shader_material); // Get the pointer to the shader properties fpr the render process
+		
 //printf("voxel_shaders_widget_class::update_shader_variables 222\n");
-		shader_parameters->variables      = hex_surface_shader_parameters->variables;
-		shader_parameters->int_variables  = hex_surface_shader_parameters->int_variables;
-		shader_parameters->bool_variables = hex_surface_shader_parameters->bool_variables;
+		shader_material->variables      = hex_surface_shader_parameters->variables;
+		shader_material->int_variables  = hex_surface_shader_parameters->int_variables;
+		shader_material->bool_variables = hex_surface_shader_parameters->bool_variables;
 //printf("voxel_shaders_widget_class::update_shader_variables 333\n");
 	}
 
@@ -271,13 +272,29 @@ public:
 			return;
 		}
 
-		shader_component_struct_type  *shader_material   = &entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
-		shader_parameters_struct_type *shader_parameters = &*dynamic_cast<shader_parameters_struct_type*>(shader_material);              // Get a pointer to the shader and variable properties parameter data that
-																																				     // stores the shader code files and shader variables used
-		
-		*shader_parameters = *hex_surface_shader_parameters; // copy the current shader code file data mnd variable data to the object render node storage that is used to render the object to screen
+		material_struct_type* shader_material = dynamic_cast<material_struct_type*>(entity_render_object->scene_graph_object.scene_object_class.shader_material); // Get the pointer to the shader properties fpr the render process
+															 
 //printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", hex_surface_shader_parameters->default_point_shader_file_pathname.c_str());
 //printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %s:\n", hex_surface_shader_parameters->point_shader_file_pathname.c_str());
+
+		shader_material->vertex_shader_file_pathname = hex_surface_shader_parameters->vertex_shader_file_pathname;
+
+		shader_material->point_shader_file_pathname    = hex_surface_shader_parameters->point_shader_file_pathname;
+		shader_material->geometry_shader_file_pathname = hex_surface_shader_parameters->geometry_shader_file_pathname;
+		shader_material->fragment_shader_file_pathname = hex_surface_shader_parameters->fragment_shader_file_pathname;
+
+		shader_material->animate_shaders  = hex_surface_shader_parameters->animate_shaders;
+
+		shader_material->use_default_vertex_shader   = hex_surface_shader_parameters->use_default_vertex_shader;
+		shader_material->use_default_point_shader    = hex_surface_shader_parameters->use_default_point_shader;
+		shader_material->use_default_geometry_shader = hex_surface_shader_parameters->use_default_geometry_shader;
+		shader_material->use_default_fragment_shader = hex_surface_shader_parameters->use_default_fragment_shader;
+
+		shader_material->variables      = hex_surface_shader_parameters->variables;
+		shader_material->int_variables  = hex_surface_shader_parameters->int_variables;
+		shader_material->bool_variables = hex_surface_shader_parameters->bool_variables;
+
+		shader_material->define_shader_uniforms();
 
 		hex_surface_render.define_shader_program(entity_render_object,log_panel);
 
@@ -298,24 +315,24 @@ public:
 //printf("voxel_shaders_widget_class :: initialise_parameters : AAAAA !!! %s :\n", hex_surface_shader_parameters->vertex_shader_file_name.c_str());
 
 		if((hex_surface_shader_parameters->vertex_shader_file_pathname == "")) 
-			hex_surface_shader_parameters->vertex_shader_file_name = "...###hsf";
-		else
-			hex_surface_shader_parameters->vertex_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->vertex_shader_file_pathname, "/");
+			hex_surface_shader_parameters->vertex_shader_file_pathname = "...###hsf";
+		//else
+		//	hex_surface_shader_parameters->vertex_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->vertex_shader_file_pathname, "/");
 
-		if ((hex_surface_shader_parameters->point_geometry_shader_file_name == ""))
-			hex_surface_shader_parameters->point_geometry_shader_file_name = "...###hsf1";
-		else
-			hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->point_shader_file_pathname, "/");
+		if ((hex_surface_shader_parameters->point_shader_file_pathname == ""))
+			hex_surface_shader_parameters->point_shader_file_pathname = "...###hsf1";
+		//else
+		//	hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->point_shader_file_pathname, "/");
 
-		if ((hex_surface_shader_parameters->geometry_shader_file_name == ""))
-			hex_surface_shader_parameters->geometry_shader_file_name = "...###hsf2";
-		else
-			hex_surface_shader_parameters->geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->geometry_shader_file_pathname, "/");
+		if ((hex_surface_shader_parameters->geometry_shader_file_pathname == ""))
+			hex_surface_shader_parameters->geometry_shader_file_pathname = "...###hsf2";
+		//else
+		//	hex_surface_shader_parameters->geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->geometry_shader_file_pathname, "/");
 
-		if ((hex_surface_shader_parameters->fragment_shader_file_name == ""))
-			hex_surface_shader_parameters->fragment_shader_file_name = "...###hsf3";
-		else
-			hex_surface_shader_parameters->fragment_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->fragment_shader_file_pathname, "/");
+		if ((hex_surface_shader_parameters->fragment_shader_file_pathname == ""))
+			hex_surface_shader_parameters->fragment_shader_file_pathname = "...###hsf3";
+		//else
+		//	hex_surface_shader_parameters->fragment_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->fragment_shader_file_pathname, "/");
 		
 		return true;
 	}
@@ -328,7 +345,7 @@ private:
 
 	void save_shader_parameters() {
 //printf("save button clicked\n");// replace with clear variables
-		char const* patterns[] = { "*.twm" };
+		char const* patterns[] = {"*.twm"};
 		char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
 
 		if (file_pathname == nullptr) {
@@ -356,16 +373,14 @@ private:
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file defined to import voxel generation parameter data from.\n");
 			return;
 		}
-		else
-			//printf("save_generation_parameters != NULL %s \n", file_pathname);
-			printf("load_generation_parameters != NULL  \n");
+//else
+//printf("save_generation_parameters != NULL %s \n", file_pathname);
+//printf("load_generation_parameters != NULL  \n");
 
-		hex_surface_texture_import_export_data.import_voxel_genereated_function(*hex_surface_shader_parameters, file_pathname);
+		hex_surface_texture_import_export_data.import_voxel_genereated_function(hex_surface_shader_parameters, file_pathname);
 
-		hex_surface_shader_parameters->vertex_shader_file_name         = vwDialogs::get_filename(hex_surface_shader_parameters->vertex_shader_file_pathname, "/");
-		hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->point_shader_file_pathname, "/");
-		//hex_surface_shader_parameters->geometry_shader_file_name       = vwDialogs::get_filename(hex_surface_shader_parameters->geometry_shader_file_pathname, "/");
-		hex_surface_shader_parameters->fragment_shader_file_name       = vwDialogs::get_filename(hex_surface_shader_parameters->fragment_shader_file_pathname, "/");
+//printf("hex_surface_shaders_widget_class : load_shader_parameters 000 %s \n",hex_surface_shader_parameters->vertex_shader_file_pathname.filename().string().c_str());
+//printf("hex_surface_shaders_widget_class : load_shader_parameters 111 %s \n",hex_surface_shader_parameters->vertex_shader_file_pathname.string().c_str());
 
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data imported from file\n %s\n", file_pathname);
 	}
@@ -387,8 +402,7 @@ private:
 		std::string s                                        = FW::stringtools::replace(file_pathname, "\\", "/");
 		hex_surface_shader_parameters->vertex_shader_file_pathname = s;
 //printf("select_vertex_shader_file 111111111 : %s:\n",s.c_str());
-		hex_surface_shader_parameters->vertex_shader_file_name     = vwDialogs::get_filename(s, "/");
-
+		//hex_surface_shader_parameters->vertex_shader_file_name     = vwDialogs::get_filename(s, "/");
 	}
 
 	void select_point_geometry_shader_file() {
@@ -408,7 +422,7 @@ private:
 		//hex_surface_shader_parameters->point_shader_file_pathname = file_pathname;
 		std::string s                                            = FW::stringtools::replace(file_pathname, "\\", "/");
 		hex_surface_shader_parameters->point_shader_file_pathname      = s;
-		hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
+		//hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
 
 	}
 /*
@@ -448,7 +462,7 @@ private:
 
 		std::string s                                          = FW::stringtools::replace(file_pathname, "\\", "/");
 		hex_surface_shader_parameters->fragment_shader_file_pathname = s;
-		hex_surface_shader_parameters->fragment_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
+		//hex_surface_shader_parameters->fragment_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
 
 	}
 

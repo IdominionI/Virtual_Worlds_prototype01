@@ -20,9 +20,9 @@ enum application_default_shader_variable_type_enum {
 	Float2,Floatv2,Int2,Intv2,UInt2,UIntv2,
 	Float3,Floatv3,Int3,Intv3,UInt3,UIntv3,
 	Float4,Floatv4,Int4,Intv4,UInt4,UIntv4,
-	Mat2fv,Mat2x3fv,Mat2x4dv,Mat2x4fv,
+	Mat2fv,Mat2x3fv,Mat2x4fv,
 	Mat3fv,Mat3x2fv,Mat3x4fv,
-	Mat4dv,Mat4fv,Mat4x2fv,Mat4x3dv,Mat4x3fv,
+	Mat4fv,Mat4x2fv,Mat4x3fv,
 	
 	//Floatv1, Intv1, UIntv1 // These may need to be deleted
 };
@@ -160,67 +160,6 @@ struct shader_parameters_struct_type {
 		return -1;
 	}
 
-/*
-	bool change_variable_value(string_type variable_name, float value) {
-		// Do not use a foreach loop to change variable values as the changes are only local and will not 
-		// carry over outside the loop unless changes are made to pointers or pointer content
-		for (int i = 0; i < variables.size(); i++) {
-			if (variables[i].variable_name == variable_name) {
-				variables[i].value = value;
-				//QMessageBox::information(0, "Function Expression Success", variables[i].variable_name + "  changed : "+string_type::number(value)+":"+string_type::number(variables[i].variable), QMessageBox::Ok); // testing only;
-				return true;
-			}
-		}
 
-		return false;
-	}
-
-	float get_variable_value(string_type variable_name) {
-		//foreach(shader_parameter_variable_struct_type variable, variables) {
-		for (shader_parameter_variable_struct_type variable : variables) {
-			//QMessageBox::information(NULL, "", "in restore_generator_step_action_value 05 : "+variable_name +"::" + variable.variable_name+"::", QMessageBox::Ok);
-			if (variable.variable_name == variable_name) {
-				return variable.value;
-			}
-		}
-		return NAN;
-	}
-
-	int get_int_variable_value(string_type variable_name) {
-		for (shader_parameter_int_variable_struct_type int_variable : int_variables) {
-			//QMessageBox::information(NULL, "", "in restore_generator_step_action_value 05 : "+variable_name +"::" + variable.variable_name+"::", QMessageBox::Ok);
-			if (int_variable.variable_name == variable_name) {
-				return int_variable.value;
-			}
-		}
-		return NAN;
-	}
-
-	bool change_bool_variable_value(string_type variable_name, bool value) {
-		// Do not use a foreach loop to change variable values as the changes are only local and will not 
-		// carry over outside the loop unless changes are made to pointers or pointer content
-		for (int i = 0; i < bool_variables.size(); i++) {
-			if (bool_variables[i].variable_name == variable_name) {
-				bool_variables[i].value = value;
-				//QMessageBox::information(0, "Function Expression Success", variables[i].variable_name + "  changed : "+string_type::number(value)+":"+string_type::number(variables[i].variable), QMessageBox::Ok); // testing only;
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	bool get_bool_variable_value(string_type variable_name, bool& got_bool_variable) {
-		for (shader_parameter_bool_variable_struct_type bool_variable : bool_variables) {
-			//QMessageBox::information(NULL, "", "in restore_generator_step_action_value 05 : "+variable_name +"::" + variable.variable_name+"::", QMessageBox::Ok);
-			if (bool_variable.variable_name == variable_name) {
-				got_bool_variable = true;
-				return bool_variable.value;
-			}
-		}
-		got_bool_variable = false;
-		return false;
-	}
-	*/
 };
 

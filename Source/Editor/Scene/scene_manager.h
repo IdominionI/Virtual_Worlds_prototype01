@@ -25,8 +25,12 @@ public:
 	log_panel_class				   *log_panel = NULL;
 
 	scene_manager_class() {
+		// At this time all baounding volumes use the same glsl program 
 		bounding_volume.initialise();
-			//printf("!bounding_volume.initialise()");
+if(bounding_volume.program_id < 1) 
+	printf("!bounding_volume.initialise()\n");
+else
+	printf("bounding_volume.initialiseed!!!!\n");
 	}
 
 	~scene_manager_class() {}
@@ -128,9 +132,9 @@ public:
 			return false;
 		}
 
-		if (!voxel_hcp_render.define_voxel_hcp_render_object(entity_render_object, voxel_hcp_object)) return false;
+		if (!voxel_hcp_render.define_voxel_hcp_render_object(entity_render_object, voxel_hcp_object,log_panel)) return false;
 
-		define_voxel_hcp_bounding_volume_render_object(entity_id,voxel_hcp_object);
+		define_voxel_hcp_bounding_volume_render_object(entity_id,voxel_hcp_object);// ******
 
 		return true;
 	}
@@ -150,14 +154,27 @@ public:
 				}
 				else {
 					printf("box_object != NULL.\n");
-					line_class* bv = new line_class;
+					line_class           *bv = new line_class;
+					material_struct_type *bm = new material_struct_type;// ****
+
+					bm->shader_program_id = bounding_volume.program_id;// ****
 
 					voxel_hcp_object->bounding_volume.program_id = bounding_volume.program_id;
 					voxel_hcp_object->bounding_volume.geometry = bv;
+					voxel_hcp_object->bounding_volume.material = bm;// ****		
 
-					box_object->scene_graph_object.scene_object_class.geometry = voxel_hcp_object->bounding_volume.geometry;
+					box_object->scene_graph_object.scene_object_class.geometry        = voxel_hcp_object->bounding_volume.geometry;
 					box_object->scene_graph_object.scene_object_class.geometry->init();
-					box_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = bounding_volume.program_id;
+
+					box_object->scene_graph_object.scene_object_class.shader_material = voxel_hcp_object->bounding_volume.material;// ****
+					//box_object->scene_graph_object.scene_object_class.shader_material = box_material;
+
+//if(box_object->scene_graph_object.scene_object_class.shader_material == NULL)
+//printf("box_object->scene_graph_object.scene_object_class.shader_material == NULL\n");
+//else
+//printf("box_object->scene_graph_object.scene_object_class.shader_material != NULL\n");
+
+					//box_object->scene_graph_object.scene_object_class.shader_material->shader_program_id = bounding_volume.program_id;
 
 					//voxel_hcp_object->bounding_volume.update_limits(glm::vec3(-4.0, -2.5, -5.0), glm::vec3(1.0, 3, 2.0));// Testing only
 					voxel_hcp_object->update_bounding_volume();
@@ -181,7 +198,7 @@ public:
 			return false;
 		}
 
-		if (!hex_surface_render.define_hex_surface_render_object(entity_render_object, hex_surface_object)) return false;
+		if (!hex_surface_render.define_hex_surface_render_object(entity_render_object, hex_surface_object,log_panel)) return false;
 
 		define_hex_bounding_area_render_object(entity_id, hex_surface_object);
 
@@ -204,13 +221,20 @@ public:
 				else {
 					printf("box_object != NULL.\n");
 					line_class* bv = new line_class;
+					material_struct_type* bm = new material_struct_type;// ****
+
+					bm->shader_program_id = bounding_volume.program_id;// ****
 
 					hex_surface_object->bounding_area.program_id = bounding_volume.program_id;
 					hex_surface_object->bounding_area.geometry = bv;
+					hex_surface_object->bounding_area.material = bm;// ****	
 
 					box_object->scene_graph_object.scene_object_class.geometry = hex_surface_object->bounding_area.geometry;
 					box_object->scene_graph_object.scene_object_class.geometry->init();
-					box_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = bounding_volume.program_id;
+					box_object->scene_graph_object.scene_object_class.shader_material = hex_surface_object->bounding_area.material;// ****
+					
+					//box_object->scene_graph_object.scene_object_class.shader_material->shader_program_id = bounding_volume.program_id;
+					
 
 					//hex_surface_object->bounding_volume.update_limits(glm::vec3(-4.0, -2.5, 0.0), glm::vec3(1.0, 3, 0.0));// Testing only
 					hex_surface_object->update_bounding_area();

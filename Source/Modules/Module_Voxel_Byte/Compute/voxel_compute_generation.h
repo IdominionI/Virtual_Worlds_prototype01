@@ -26,9 +26,9 @@
 	compilation
 */
 
-class voxel_compute_generator_class : public compute_shader_class{
+class voxel_compute_generator_class : public compute_shader_class {
 public:
-	voxel_hcp_object_class *cloud = NULL;// pointer to the hcp voxel class in the virtual worlds scene data model
+	voxel_hcp_object_class* cloud = NULL;// pointer to the hcp voxel class in the virtual worlds scene data model
 
 	voxel_generator_parameters_struct_type voxel_generator_parameters; //****
 
@@ -38,7 +38,7 @@ public:
 		voxel_generator_parameters = cloud->voxel_object_data.voxel_generator_parameters;
 
 		import_compute_expression_class import_compute_expression;
-//QMessageBox::information(0, "Function Expression Success", "In generate_voxel_function() :"+ voxel_generator_parameters.expression_file_pathname, QMessageBox::Ok); // testing only
+		//QMessageBox::information(0, "Function Expression Success", "In generate_voxel_function() :"+ voxel_generator_parameters.expression_file_pathname, QMessageBox::Ok); // testing only
 		import_compute_expression.filename_to_read = voxel_generator_parameters.expression_file_pathname;
 
 		if (!import_compute_expression.import_compute_expression()) {
@@ -46,7 +46,7 @@ public:
 			printf(message.c_str());
 			return false;
 		}
-		
+
 		define_compute_version();
 		define_work_group_invocations(voxel_generator_parameters.invocation);
 		define_reserved_uniforms();
@@ -73,49 +73,49 @@ public:
 		}
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
-        // as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-        int              size   = cloud->voxel_object_data.voxel_matrix_data.size();
-//for(int i = 0; i< size;i++){
-//	printf("generate_voxel_function 0000 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
-//}
-		voxel_data_type *buffer = cloud->voxel_object_data.voxel_matrix_data.data();
+		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
+		int              size = cloud->voxel_object_data.voxel_matrix_data.size();
+		//for(int i = 0; i< size;i++){
+		//	printf("generate_voxel_function 0000 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
+		//}
+		voxel_data_type* buffer = cloud->voxel_object_data.voxel_matrix_data.data();
 		voxel_generation_execute(buffer, size, voxel_generator_parameters.invocation);
 
 
-//for(int i = 0; i< size;i++){
-//	printf("generate_voxel_function 1111 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
-//}
+		//for(int i = 0; i< size;i++){
+		//	printf("generate_voxel_function 1111 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
+		//}
 
-		// Following code block is for testing only
-		/*int i = 110;
-		if (log_widget != NULL) {
-			log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute00 :: " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()));
-			//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01 :: " + QString::number(voxel_hcp_object->voxel_object_data.matrix_dimension.x));
-			log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute02 :: " + QString::number(i) + " : " + QString::number(cloud->voxel_object_data.voxel_matrix_data[size - 1]));
-
-			QFile data("output.txt");
-			QTextStream out(&data);
-			if (!data.open(QFile::WriteOnly | QFile::Truncate)) {
+				// Following code block is for testing only
+				/*int i = 110;
 				if (log_widget != NULL) {
-					log_widget->log_message(log_display, log_message_type_enum_type::error, "voxel_generation :: Could not open file to ouput results to ");
+					log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute00 :: " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()));
+					//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01 :: " + QString::number(voxel_hcp_object->voxel_object_data.matrix_dimension.x));
+					log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute02 :: " + QString::number(i) + " : " + QString::number(cloud->voxel_object_data.voxel_matrix_data[size - 1]));
 
-				}
-				//delete voxel_hcp_object;
-				return false;
-			}
+					QFile data("output.txt");
+					QTextStream out(&data);
+					if (!data.open(QFile::WriteOnly | QFile::Truncate)) {
+						if (log_widget != NULL) {
+							log_widget->log_message(log_display, log_message_type_enum_type::error, "voxel_generation :: Could not open file to ouput results to ");
 
-			index_vector voxel_coord;
-			QVector3D    cart_coord;
-			for (i = 0; i < size; i++) {
-				voxel_coord = cloud->voxel_object_data.get_matrix_coordinate(i);
-				cart_coord = cloud->voxel_object_data.get_voxel_cartesian_coordinate(voxel_coord, cloud->voxel_object_data.voxel_size);
+						}
+						//delete voxel_hcp_object;
+						return false;
+					}
 
-				cart_coord = cart_coord + cloud->voxel_object_data.matrix_origin;
+					index_vector voxel_coord;
+					QVector3D    cart_coord;
+					for (i = 0; i < size; i++) {
+						voxel_coord = cloud->voxel_object_data.get_matrix_coordinate(i);
+						cart_coord = cloud->voxel_object_data.get_voxel_cartesian_coordinate(voxel_coord, cloud->voxel_object_data.voxel_size);
 
-				//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(voxel_coord.x) + "  y: " + QString::number(voxel_coord.y) + "  z: " + QString::number(voxel_coord.z) + " val: " + QString::number(voxel_hcp_object->voxel_object_data.voxel_matrix_data[i]));
-				out << "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(cart_coord.x()) + "  y: " + QString::number(cart_coord.y()) + "  z: " + QString::number(cart_coord.z()) + " val: " + QString::number(cloud->voxel_object_data.voxel_matrix_data[i]) + '\n';
-			}
-		}*/
+						cart_coord = cart_coord + cloud->voxel_object_data.matrix_origin;
+
+						//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(voxel_coord.x) + "  y: " + QString::number(voxel_coord.y) + "  z: " + QString::number(voxel_coord.z) + " val: " + QString::number(voxel_hcp_object->voxel_object_data.voxel_matrix_data[i]));
+						out << "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(cart_coord.x()) + "  y: " + QString::number(cart_coord.y()) + "  z: " + QString::number(cart_coord.z()) + " val: " + QString::number(cloud->voxel_object_data.voxel_matrix_data[i]) + '\n';
+					}
+				}*/
 
 		return true;// testing
 	}
@@ -127,43 +127,43 @@ public:
 		voxel_generator_parameters = cloud->voxel_object_data.voxel_generator_parameters; // ****
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
-        // as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-        int              size   = cloud->voxel_object_data.voxel_matrix_data.size();
-		voxel_data_type *buffer = cloud->voxel_object_data.voxel_matrix_data.data();
+		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
+		int              size = cloud->voxel_object_data.voxel_matrix_data.size();
+		voxel_data_type* buffer = cloud->voxel_object_data.voxel_matrix_data.data();
 
 		voxel_generation_execute(buffer, size, voxel_generator_parameters.invocation);
 
 		return true;
 	}
 
-	bool voxel_generation_execute(voxel_data_type *buffer, int size, int local_x_group_work_size) {
-        GLuint ssbo;
+	bool voxel_generation_execute(voxel_data_type* buffer, int size, int local_x_group_work_size) {
+		GLuint ssbo;
 
-        int bytes = size * sizeof(GLuint);
+		int bytes = size * sizeof(GLuint);
 
-        if (local_x_group_work_size > GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
-            std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-            error_msg = error_msg + "The specifies number of local threads local_size_x to be used exceeds the maximum\n";
-            error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
-            error_msg = error_msg + "Choose a smaller number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+		if (local_x_group_work_size > GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
+			std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
+			error_msg = error_msg + "The specifies number of local threads local_size_x to be used exceeds the maximum\n";
+			error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
+			error_msg = error_msg + "Choose a smaller number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
-            //log_widget->log_message(log_display, log_message_type_enum_type::critical, error_msg);
+			//log_widget->log_message(log_display, log_message_type_enum_type::critical, error_msg);
 			printf("Critical : %s\n", error_msg.c_str());
-        }
+		}
 
-        int number_work_groups = int (ceil(float(size) / float(local_x_group_work_size)));
+		int number_work_groups = int(ceil(float(size) / float(local_x_group_work_size)));
 
-        if (number_work_groups > GL_MAX_COMPUTE_WORK_GROUP_COUNT) {
-				std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-                error_msg = error_msg + "The specifies number of local threads local_size_x to be used in the compute shader is to low for\n";
-                error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
-                error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
-                error_msg = error_msg + "Choose a larger number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+		if (number_work_groups > GL_MAX_COMPUTE_WORK_GROUP_COUNT) {
+			std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
+			error_msg = error_msg + "The specifies number of local threads local_size_x to be used in the compute shader is to low for\n";
+			error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
+			error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
+			error_msg = error_msg + "Choose a larger number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
-               //log_widget->log_message(log_display, log_message_type_enum_type::critical, error_msg);
-				printf("Critical : %s\n", error_msg.c_str());
-            return false;
-        }
+			//log_widget->log_message(log_display, log_message_type_enum_type::critical, error_msg);
+			printf("Critical : %s\n", error_msg.c_str());
+			return false;
+		}
 
 		glUseProgram(progHandle);
 
@@ -171,8 +171,8 @@ public:
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, buffer, GL_DYNAMIC_READ); // buffer data to be input into copute shader
 
-        //f->glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, voxel_matrix_data.data(), GL_DYNAMIC_READ); // this method does not work
-        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
+		//f->glBufferData(GL_SHADER_STORAGE_BUFFER, bytes, voxel_matrix_data.data(), GL_DYNAMIC_READ); // this method does not work
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo);                    // 0 corresponds to binding = 0 in the compute shader as a data reference
 
 		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_size, "voxel_size"); // this works unsigned int shader_program_id, float v, const std::string& name
 		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.generation_threshold, "threshold"); // this works
@@ -190,7 +190,7 @@ public:
 		shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_voxel_value"); // this works
 
 		// +++++++++++ User dynamicly defined uniforms ++++++++++++++
-		for(voxel_generator_parameter_variable_struct_type variable : voxel_generator_parameters.variables) {
+		for (voxel_generator_parameter_variable_struct_type variable : voxel_generator_parameters.variables) {
 			shader.set_f1(progHandle, variable.value, variable.variable_name);
 		}
 
@@ -198,69 +198,69 @@ public:
 			shader.set_i1(progHandle, int_variable.value, int_variable.variable_name);
 		}
 
-		for(voxel_generator_parameter_bool_variable_struct_type bool_variable : voxel_generator_parameters.bool_variables) {
+		for (voxel_generator_parameter_bool_variable_struct_type bool_variable : voxel_generator_parameters.bool_variables) {
 			shader.set_b1(progHandle, bool_variable.value, bool_variable.variable_name);
 		}
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        //Tweak the geometry to the size of the buffer and its layout
+		//Tweak the geometry to the size of the buffer and its layout
 		glDispatchCompute(number_work_groups, 1, 1);
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
-        // this gets the data from the GPU
+		// this gets the data from the GPU
 		glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, bytes, buffer);          // 0 corresponds to binding = 0 in the compute shader as a data reference
 		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
 		return true;
-    }
+	}
 
-	bool create_voxel_matrix(voxel_hcp_object_class  *cloud, voxel_generator_parameters_struct_type  voxel_generator_parameters) {
-        cloud->voxel_object_data.voxel_matrix_data.clear();   // ******
-        cloud->voxel_object_data.voxel_matrix_data.shrink_to_fit(); // ******
+	bool create_voxel_matrix(voxel_hcp_object_class* cloud, voxel_generator_parameters_struct_type  voxel_generator_parameters) {
+		cloud->voxel_object_data.voxel_matrix_data.clear();   // ******
+		cloud->voxel_object_data.voxel_matrix_data.shrink_to_fit(); // ******
 
 
-        // ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
-        float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
-        float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
-        float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
-        float z_mult = 2.0 * sqrt(6.0) / 3.0;
+		// ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
+		float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
+		float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
+		float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
+		float z_mult = 2.0 * sqrt(6.0) / 3.0;
 
-        float x_res_step = voxel_generator_parameters.resolution_step * 2.0;
-        float y_res_step = voxel_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
-        float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
+		float x_res_step = voxel_generator_parameters.resolution_step * 2.0;
+		float y_res_step = voxel_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
 
-        int data_set_x_size, data_set_y_size, data_set_z_size;
+		int data_set_x_size, data_set_y_size, data_set_z_size;
 
-        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
-            data_set_x_size = (int)(x_size / x_res_step) + 1;
-        else
-            data_set_x_size = (int)(x_size / x_res_step);
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+			data_set_x_size = (int)(x_size / x_res_step) + 1;
+		else
+			data_set_x_size = (int)(x_size / x_res_step);
 
-        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
-            data_set_y_size = (int)(y_size / y_res_step) + 1;
-        else
-            data_set_y_size = (int)(y_size / y_res_step);
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+			data_set_y_size = (int)(y_size / y_res_step) + 1;
+		else
+			data_set_y_size = (int)(y_size / y_res_step);
 
-        if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0)
-            data_set_z_size = (int)(z_size / z_res_step) + 1;
-        else
-            data_set_z_size = (int)(z_size / z_res_step);
-//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
+		if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0)
+			data_set_z_size = (int)(z_size / z_res_step) + 1;
+		else
+			data_set_z_size = (int)(z_size / z_res_step);
+		//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
 
 		glm::vec3 origin = { voxel_generator_parameters.x_start,voxel_generator_parameters.y_start,voxel_generator_parameters.z_start };
 
-        cloud->voxel_object_data.voxel_size = voxel_generator_parameters.resolution_step;
+		cloud->voxel_object_data.voxel_size = voxel_generator_parameters.resolution_step;
 
-        cloud->voxel_object_data.matrix_dimension = { data_set_x_size,data_set_y_size,data_set_z_size };
-        cloud->voxel_object_data.matrix_origin    = origin;
-        cloud->voxel_object_data.create_empty_volume_cubic(data_set_x_size, data_set_y_size, data_set_z_size);
-//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
+		cloud->voxel_object_data.matrix_dimension = { data_set_x_size,data_set_y_size,data_set_z_size };
+		cloud->voxel_object_data.matrix_origin = origin;
+		cloud->voxel_object_data.create_empty_volume_cubic(data_set_x_size, data_set_y_size, data_set_z_size);
+		//QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
 
-        if (cloud->voxel_object_data.voxel_matrix_data.size() > 0)
-            return true;
-        else
-            return false;
-    }
+		if (cloud->voxel_object_data.voxel_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
 
 	void create_compute_shader_source_code() {
 		source_code = "";
@@ -296,9 +296,9 @@ public:
 		source_code += "// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
 		source_code += output_s;
 
-//if (log_widget != NULL) {
-//	log_widget->log_message(log_display, log_message_type_enum_type::debug, " voxel_compute_generator_class :: create_compute_shader_source_code" + source_code);
-//}
+		//if (log_widget != NULL) {
+		//	log_widget->log_message(log_display, log_message_type_enum_type::debug, " voxel_compute_generator_class :: create_compute_shader_source_code" + source_code);
+		//}
 	}
 
 private:
@@ -345,12 +345,12 @@ private:
 		int location = 14; // This must be one greater than the max layout location of the reserved uniforms in define_reserved_uniforms()
 
 		for (voxel_generator_parameter_variable_struct_type variable : voxel_generator_parameters.variables) {
-			user_uniforms_s += "layout(location = " + std::to_string(location)+") uniform float " + variable.variable_name.c_str() + ";\n"; // Need to introduce capability to cater for int and and boolean types
+			user_uniforms_s += "layout(location = " + std::to_string(location) + ") uniform float " + variable.variable_name.c_str() + ";\n"; // Need to introduce capability to cater for int and and boolean types
 			location++;
 		}
 
 		for (voxel_generator_parameter_int_variable_struct_type int_variable : voxel_generator_parameters.int_variables) {
-			user_uniforms_s += "layout(location = " + std::to_string(location)+") uniform int " + int_variable.variable_name.c_str() + ";\n"; // Need to introduce capability to cater for int and and boolean types
+			user_uniforms_s += "layout(location = " + std::to_string(location) + ") uniform int " + int_variable.variable_name.c_str() + ";\n"; // Need to introduce capability to cater for int and and boolean types
 			location++;
 		}
 
@@ -529,14 +529,14 @@ private:
 
 	void define_ouput() {
 		output_s = "\n";
-	//	output_s =  "red   = validate_color_element_value(red);\n";
-	//	output_s += "green = validate_color_element_value(green);\n";
-	//	output_s += "blue  = validate_color_element_value(blue);\n";
-	//	output_s += "value = validate_result_value(value);\n";
-	//	output_s += "\n";
-	//	output_s += "output_result = red << 24 | green << 16 | blue << 8 | value;\n";
-	//	output_s += "\n";
-	//	output_s += "    buffer_out[matrix_index] = output_result; // output the voxel volume result\n";
+		//	output_s =  "red   = validate_color_element_value(red);\n";
+		//	output_s += "green = validate_color_element_value(green);\n";
+		//	output_s += "blue  = validate_color_element_value(blue);\n";
+		//	output_s += "value = validate_result_value(value);\n";
+		//	output_s += "\n";
+		//	output_s += "output_result = red << 24 | green << 16 | blue << 8 | value;\n";
+		//	output_s += "\n";
+		//	output_s += "    buffer_out[matrix_index] = output_result; // output the voxel volume result\n";
 		output_s += "    buffer_out[matrix_index] = value; // output the voxel volume result\n";
 		output_s += "}\n";
 	}

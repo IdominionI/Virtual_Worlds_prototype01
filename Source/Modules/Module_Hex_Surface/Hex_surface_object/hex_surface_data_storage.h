@@ -28,13 +28,14 @@
 typedef int index_data_type;
 
 // ???????????????????????????????????????????????????????????????????????????????????????
-
+/*
 struct index_struct_type3 {
 	index_data_type x = 0, y = 0, z = 0;
 };
 
-typedef index_struct_type3 index_vector3;
 
+typedef index_struct_type3 index_vector3;
+*/
 
 class hex_surface_object_data_class {
 public:
@@ -42,7 +43,8 @@ public:
 	float	      hex_size                      = 1.0f;
 	glm::vec2     grid_origin                   = { 0.0,0.0 };
 	glm::vec2     grid_coordinate_scale_factors = { 1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	index_vector3 grid_dimension                = { 0,0,0 };  // NEED TO CHANGE THIS
+	//index_vector3 grid_dimension                = { 0,0,0 };  // NEED TO CHANGE THIS
+	glm::ivec3    grid_dimension                = { 0,0,0 };  // NEED TO CHANGE THIS
 	bool	      perfom_rounding_up            = true;
 	bool	      hex_surface_surface_volume    = false;
 
@@ -54,10 +56,10 @@ public:
 	// defined in editor_hex_surface_automata_editor.h thinking this will cause no problems but it did.
 
 	hex_surface_generator_parameters_struct_type       hex_surface_generator_parameters;
-	shader_parameters_struct_type	                   hex_surface_shader_parameters;
+	material_struct_type				               hex_surface_shader_parameters; // *****
 	std::vector<hex_surface_automata_rule_struct_type> hex_surface_automata_rules;
 
-	index_vector3			         hex_surface_matrix_coord_index_vector;
+	glm::ivec3			                 hex_surface_matrix_coord_index_vector;
 	std::vector <hex_surface_data_type>  hex_surface_matrix_data;
 
 	~hex_surface_object_data_class() {
@@ -133,8 +135,8 @@ public:
 	}
 
 	// Retreive the 3 dim x,y,z coordinate that the matrix index corresponds to
-	index_vector3 get_matrix_coordinate(hex_surface_index_data_type matrix_index) {
-		index_vector3 matrix_coord;
+	glm::ivec3 get_matrix_coordinate(hex_surface_index_data_type matrix_index) {
+		glm::ivec3 matrix_coord;
 
 		hex_surface_index_data_type t0 = get_z_layer_total(0);// total number for even z level
 		hex_surface_index_data_type t1 = get_z_layer_total(1);// total number for odd  z level
@@ -218,7 +220,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		return matrix_coord;
 	}
 
-	glm::vec3 get_hex_surface_cartesian_coordinate(index_vector3 hex_surface_coord, float hex_size) {
+	glm::vec3 get_hex_surface_cartesian_coordinate(glm::ivec3 hex_surface_coord, float hex_size) {
 		hex_surface_index_data_type i = hex_surface_coord.x, j = hex_surface_coord.y, k = 0;
 
 		float sqrt3 = sqrt(3.0), third = 1.0 / 3.0, z_mult = 2.0 * sqrt(6.0) / 3.0, sqrt3_2 = sqrt(1.5);
@@ -249,7 +251,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		return hex_cartesian_coordinate;
 	}
 
-	glm::vec3 get_hex_surface_cartesian_coordinate(index_vector3 hex_surface_coord) {
+	glm::vec3 get_hex_surface_cartesian_coordinate(glm::ivec3 hex_surface_coord) {
 		return get_hex_surface_cartesian_coordinate(hex_surface_coord, hex_size);
 	}
 
@@ -340,7 +342,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 
 		hex_size = hex_surface_generator_parameters.resolution_step;
 
-		grid_dimension = { data_set_x_size,data_set_y_size};
+		grid_dimension = { data_set_x_size,data_set_y_size,0};
 		grid_origin = origin;
 		create_empty_surface_cubic(data_set_x_size, data_set_y_size);
 //QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
@@ -374,7 +376,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	// Find the index of the one dimensional vertex vector array that a point P of cartesian coordinte
 	// (x,y) will be within the bounds of a 2D hegagon voxel cell.
 	hex_surface_index_data_type index_of_hex_cell_with_cartesian_coord(float x, float y) {
-		index_vector3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
+		glm::ivec3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
 
 		if (cartesian_coord_within_grid_bounds(hex_coord))
 			return get_index_value(hex_coord.x, hex_coord.y, hex_coord.z);
@@ -385,12 +387,12 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	// Determine if a point P of cartesian coordinte (x,y) is within the limits of
 	// the dimensions of the hexagonal grid that is stored in the computer memory
 	bool cartesian_coord_within_grid_bounds(float x, float y) {
-		index_vector3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
+		glm::ivec3 hex_coord = hexagon_cell_coord_from_cartesian(x,y);
 
 		return cartesian_coord_within_grid_bounds(hex_coord);
 	}
 
-	bool cartesian_coord_within_grid_bounds(index_vector3 hex_coord) {
+	bool cartesian_coord_within_grid_bounds(glm::ivec3 hex_coord) {
 		if (hex_coord.x < 0 || hex_coord.y < 0) return false;
 
 		if (hex_coord.y % 2 == 0){// even row
@@ -407,7 +409,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 
 	// Obtain the hex grid index coordinates of the hex grid that a point P of cartesian coordinte
 	// (x,y) will be found to be within the bounds of a 2D hexgagon voxel cell.
-	index_vector3 hexagon_cell_coord_from_cartesian(float x, float y) {
+	glm::ivec3 hexagon_cell_coord_from_cartesian(float x, float y) {
 		//float grid_radius = hex_size / 2.0;
 		float grid_radius = hex_size ;
 		float grid_height = grid_radius * (sqrt(3.0f));
@@ -463,7 +465,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 			}
 		}
 
-		index_vector3 hex_coord;
+		glm::ivec3 hex_coord;
 		hex_coord.x = column;
 		hex_coord.y = row;
 		hex_coord.z = 0;

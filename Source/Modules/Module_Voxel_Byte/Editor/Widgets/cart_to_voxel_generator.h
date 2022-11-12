@@ -232,7 +232,7 @@ printf("cart_to_voxel_widget_class :: in cartesian_to_voxel\n");
 		voxel_hcp_object_to_execute->voxel_object_data.create_voxel_matrix();
 		int matrix_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_matrix_data.size();
 
-index_vector matrix_dimension = voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension; // tresting only
+glm::ivec3 matrix_dimension = voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension; // tresting only
 printf("cart_to_voxel_widget_class :: cartesian_to_voxel x_dim %i : y_dim  %i : z_dim %i\n", matrix_dimension.x, matrix_dimension.y, matrix_dimension.z);
 		for (glm::vec3 coordinate : cartesian_point_data.coordinates) {
 			int index = voxel_hcp_object_to_execute->voxel_object_data.index_of_voxel_cell_with_cartesian_coord(coordinate.x, coordinate.y, coordinate.z);
@@ -264,30 +264,29 @@ printf("cart_to_voxel_widget_class :: cartesian_to_voxel x_dim %i : y_dim  %i : 
 				return;
 			}
 
+			shader_class shader;
+
 			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			application_default_shader_uniform_variables_struct_type uniform_variable;
 			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
 
-			uniform_variable.type = application_default_shader_variable_type_enum::Intv3; uniform_variable.name = "voxel_matrix_dimension"; uniform_variable.value0 = &voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "voxSize");
 
-			uniform_variable.type = application_default_shader_variable_type_enum::Floatv3; uniform_variable.name = "voxel_origin"; uniform_variable.value0 = &voxel_hcp_object_to_execute->voxel_object_data.matrix_origin;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+			shader.set_ivec3(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension, "voxel_matrix_dimension");
+
+			shader.set_vec3(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_object_to_execute->voxel_object_data.matrix_origin, "voxel_origin");
 
 			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_hcp_z_increment"; uniform_variable.value0 = &voxel_hcp_z_increment;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-			//uniform float voxel_hcp_z_increment; !!!!!!!!!! Need to find this one
+
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_z_increment, "voxel_hcp_z_increment");
 
 			//voxel surface display data
 			float v_min = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_min_surface_display_value"; uniform_variable.value0 = &v_min;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_min, "voxel_min_surface_display_value");
+
 			float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxel_max_surface_display_value"; uniform_variable.value0 = &v_max;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
+
+			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_max, "voxel_max_surface_display_value");
 
 //printf("cart_to_voxel_widget_class :: execute_voxel_function 6666\n");
 		}

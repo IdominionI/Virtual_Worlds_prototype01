@@ -158,16 +158,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Editor\Node_editor\ImNodes\imnodes.cpp" />
-    <ClCompile Include="Source\Editor\Node_editor\utilities\builders.cpp" />
-    <ClCompile Include="Source\Editor\Node_editor\utilities\drawing.cpp" />
-    <ClCompile Include="Source\Editor\Node_editor\utilities\widgets.cpp" />
     <ClCompile Include="Source\Editor\Shader\shader_import_export.h" />
     <ClCompile Include="Source\Graphics_Engine\OpenGL_window\opengl_context.cpp" />
+    <ClCompile Include="Source\Graphics_Engine\Shader\ShaderPreprocessor.cpp" />
+    <ClCompile Include="Source\Graphics_Engine\Shader\shader_format.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Render\voxel_hcp_render.h" />
-    <ClCompile Include="Universal\imgui-node-editor\crude_json.cpp" />
-    <ClCompile Include="Universal\imgui-node-editor\imgui_canvas.cpp" />
-    <ClCompile Include="Universal\imgui-node-editor\imgui_node_editor.cpp" />
-    <ClCompile Include="Universal\imgui-node-editor\imgui_node_editor_api.cpp" />
     <ClCompile Include="Universal\imGuIZMO_quat\imGuIZMOquat.cpp" />
     <ClCompile Include="Universal\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Universal\ImGui\backends\imgui_impl_opengl2.cpp" />
@@ -208,9 +203,6 @@
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\graph.h" />
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node.h" />
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node_editor.h" />
-    <ClInclude Include="Source\Editor\Node_editor\utilities\builders.h" />
-    <ClInclude Include="Source\Editor\Node_editor\utilities\drawing.h" />
-    <ClInclude Include="Source\Editor\Node_editor\utilities\widgets.h" />
     <ClInclude Include="Source\Editor\Object\object_basis.h" />
     <ClInclude Include="Source\Editor\Scene\scene_manager.h" />
     <ClInclude Include="Source\Editor\Scene\scene_entities_db_manager.h" />
@@ -224,7 +216,9 @@
     <ClInclude Include="Source\Graphics_Engine\Geometry\mesh.h" />
     <ClInclude Include="Source\Graphics_Engine\Geometry\point_cloud.h" />
     <ClInclude Include="Source\Graphics_Engine\Geometry\lines.h" />
+    <ClInclude Include="Source\Graphics_Engine\Geometry\primitives\color.h" />
     <ClInclude Include="Source\Graphics_Engine\Geometry\vertex_data.h" />
+    <ClInclude Include="Source\Graphics_Engine\Kernal\chantrait.h" />
     <ClInclude Include="Source\Graphics_Engine\OpenGL_window\openGL_context.h" />
     <ClInclude Include="Source\Graphics_Engine\OpenGL_window\opengl_window_basis.h" />
     <ClInclude Include="Source\Graphics_Engine\OpenGL_window\ui_context.h" />
@@ -238,15 +232,13 @@
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\camera_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\light_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\render_object.h" />
-    <ClInclude Include="Source\Graphics_Engine\Shader\fragment_shader.h" />
-    <ClInclude Include="Source\Graphics_Engine\Shader\geometry_shader.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\import_shader_code.h" />
-    <ClInclude Include="Source\Graphics_Engine\Shader\point_geometry_shader.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\shader.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\ShaderPreprocessor.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\shader_components.h" />
+    <ClInclude Include="Source\Graphics_Engine\Shader\shader_format.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\shader_manager.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\shader_parameters.h" />
-    <ClInclude Include="Source\Graphics_Engine\Shader\vertex_shader.h" />
     <ClInclude Include="Source\Graphics_Engine\Shader\vw_shader_basis.h" />
     <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_bindings.h" />
     <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_default_bindings.h" />
@@ -316,12 +308,6 @@
     <ClInclude Include="Universal\Framework\FWfile_tools.h" />
     <ClInclude Include="Universal\Framework\FWstring_tools.h" />
     <ClInclude Include="Universal\Framework\FWid_key_manager.h" />
-    <ClInclude Include="Universal\imgui-node-editor\crude_json.h" />
-    <ClInclude Include="Universal\imgui-node-editor\imgui_bezier_math.h" />
-    <ClInclude Include="Universal\imgui-node-editor\imgui_canvas.h" />
-    <ClInclude Include="Universal\imgui-node-editor\imgui_extra_math.h" />
-    <ClInclude Include="Universal\imgui-node-editor\imgui_node_editor.h" />
-    <ClInclude Include="Universal\imgui-node-editor\imgui_node_editor_internal.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\imGuIZMOquat.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\vgConfig.h" />
     <ClInclude Include="Universal\imGuIZMO_quat\vGizmo.h" />
@@ -343,9 +329,6 @@
     <ClInclude Include="Universal\tinyFileDialog\tinyfiledialogs.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Universal\imgui-node-editor\imgui_bezier_math.inl" />
-    <None Include="Universal\imgui-node-editor\imgui_extra_math.inl" />
-    <None Include="Universal\imgui-node-editor\imgui_node_editor_internal.inl" />
     <None Include="Universal\ImGui\.editorconfig" />
     <None Include="Universal\ImGui\.gitattributes" />
     <None Include="Universal\ImGui\.gitignore" />

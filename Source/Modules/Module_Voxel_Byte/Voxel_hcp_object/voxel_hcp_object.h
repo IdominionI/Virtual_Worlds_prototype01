@@ -17,7 +17,7 @@
 
 class voxel_hcp_object_class : public object_basis_class {
 public:
-	point_cloud_data_class  point_cloud;
+	point_cloud3DD_class    point_cloud;
 	voxel_object_data_class voxel_object_data;
 
 	bounding_volume_class bounding_volume;
@@ -54,12 +54,9 @@ public:
 		voxel_data_type         volume_data;
 		voxel_element_data_type volume_data_value;
 
-		point_data_value_class  vertex;
+		glm::vec4  vertex;
 
-		if (point_cloud.vertices.size() > 0) {
-			point_cloud.vertices.clear();
-			point_cloud.vertices.shrink_to_fit();
-		}
+		point_cloud.vertices.clear();
 
 //printf("voxel_hcp_object_class : define_vbo_vertices 000 : %i\n", voxel_data.voxel_matrix_data.size());
 //printf("voxel_hcp_object_class : define_vbo_vertices 111 : %f %f %f\n", voxel_object_data.matrix_origin.x, voxel_object_data.matrix_origin.y, voxel_object_data.matrix_origin.z);
@@ -120,7 +117,8 @@ public:
 						if (lower_range == INVALID_VOXEL_VALUE) lower_range = INVALID_VOXEL_VALUE + 1;
 						if (n < MAX_VOXEL_VERTICES && volume_data_value >= lower_range && volume_data_value <= upper_range) {
 
-							vertex.mPos   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable
+							//vertex.mPos   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable
+							vertex   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable // ******
 
 //printf("define_vbo_vertices : define_vbo_vertices 2222 %f : %f : % f :: %i\n", x,y,z, volume_data_value);
 							point_cloud.add_vertex(vertex);

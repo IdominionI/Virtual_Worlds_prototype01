@@ -21,7 +21,16 @@
 
 #include <Source/Modules/Module_Voxel_Byte/Functions/vw_voxel_exports.h>
 #include <Source/Modules/Module_hex_surface/Functions/hex_surface_exports.h>
-
+// Testing only
+//#include <Graphics_Engine/Shader/shader_format.h> 
+//#include <Graphics_Engine/Shader/ShaderPreprocessor.h> 
+#include <Graphics_Engine/Shader/shader.h>
+#include <iostream>
+#include <filesystem>
+#include <cstring>
+#include <algorithm>
+#include <sstream>
+// END Testing only
 
 class main_window_class : public openGl_window_basis_class
 {
@@ -50,6 +59,100 @@ public:
         render_context->init(this);
 
         ui_context->init(this);
+
+        //  ***** Testing Only *******
+    // ^^^^^^^^^^^ Shader Format testing ^^^^^^^^^^^^^^
+    //shader_format sf;
+    //sf.define_shader_source_pathname(shader_type_enum::vertex, "test_vertex");
+    //sf.define_shader_source_pathname(shader_type_enum::geometry, "test_geometry");
+    //sf.define_shader_source_pathname(shader_type_enum::fragment, "test_fragment");
+    //sf.attrib(Attrib::POSITION, "location");
+    //sf.attrib(Attrib::COLOR, "test_color");
+
+
+    //printf("test format vertex  shader pathname: %s \n", sf.vertex_shader_pathname.string().c_str());
+    //printf("test format geometry  shader pathname: %s \n", sf.geometry_shader_pathname.string().c_str());
+    //printf("test format fragment shader pathname : %s \n", sf.fragment_shader_pathname.string().c_str());
+    //
+    //for (int i = 0; i < sf.mAttributes.size(); i++) {
+    //    printf("attribute : %i : %s \n", i, sf.mAttributes[i].mName.c_str());
+    //}
+
+    // -------------- preprocessor testing --------------------
+    /*
+    ShaderPreprocessor preprocessor;
+
+
+    std::set<std::filesystem::path> includedFiles;
+    std::string pp = "";
+
+    std::filesystem::path path = "F:/Projects/Git_repository/Virtual_Worlds/Virtual_Worlds/Build/x64/Release/test_preprosessor_root.glsl";
+    std::string source = FW::filetools::read_all(path.string());
+
+    std::string preprocessedSource = preprocessor.parse(source, path, &includedFiles);
+    if (!preprocessor.mparse_successfull_m) {
+        int mShader_compile_successful_m = 0;    // ****** mod flag set failed to compile value
+
+        pp = preprocessedSource + "ERROR";
+    }
+
+    pp = preprocessedSource;
+
+
+    printf("pre-process result + \n %s \n", preprocessedSource.c_str());
+    */
+
+    // !!!!!!!!!!!!!!!!!!!!!! glsl program testing !!!!!!!!!!!!!!!!!!!!!!!
+/*
+        std::string vert_shader = "vs.glsl";
+        std::string frag_shader = "fs.glsl";
+
+        shader_format_class sf;
+
+        if (!sf.define_shader_to_compile(shader_type_enum::vertex, "vs.glsl")) {
+            printf("vertex shader fail\n");
+            //exit(0);
+        }
+
+        if (!sf.define_shader_to_compile(shader_type_enum::fragment, "fs.glsl")) {
+            printf("fragment shader fail\n");
+            //exit(0);
+        }
+
+        sf.float_uniforms.add_uniform("test_uv_float", application_default_shader_variable_type_enum::Float1);
+
+        sf.add_uniform("test_uv_float_t2", application_default_shader_variable_type_enum::Float1);
+        glm::vec2 glm_vec2; glm_vec2 = { 3.67,1.3346 };
+        sf.add_uniform("test_uv_vec2", application_default_shader_variable_type_enum::Floatv2);
+
+        printf("float varaibles size : %i\n", sf.float_uniforms.uniforms.size());
+
+        for (int i = 0; i < sf.float_uniforms.uniforms.size(); i++) {
+            printf("user uniform : %i : %s  : %f \n", i, sf.float_uniforms.uniforms[i].name.c_str(),sf.float_uniforms.uniforms[i].value);
+        }
+
+        for (int i = 0; i < sf.vec2_uniforms.uniforms.size(); i++) {
+            glm::vec2 gv2 = sf.vec2_uniforms.get_value(i);
+            printf("user uniform : %i : %s  : %f  : %f\n", i, sf.vec2_uniforms.uniforms[i].name.c_str(), gv2.x, gv2.y);
+        }
+
+        shader_class shader2;
+
+        //GLuint shader_id = shader2.create_shader_program(vert_shader, "", frag_shader);
+        GLuint shader_id = shader2.create_glsl_shader_program(sf);
+
+        if (shader_id > 0) {
+            printf("Compile Shader successful\n");
+        }else{
+            printf("Compile Shader not successful\n");
+            printf("compile log \n %s \n", shader2.compile_log.c_str());
+        }
+
+        //printf("vs :: %s \n", sf.vertex_shader_source_code.c_str());
+        //printf("fs :: %s \n", sf.fragment_shader_source_code.c_str());
+   */
+//***** END Testing Only *******
+
 
         //current_selected_entity_type_id = new id_type;
         //current_selected_entity_id      = new id_type;
@@ -349,15 +452,20 @@ public:
     }
 
 
-    void on_scroll(float delta) override{
+    void on_scroll_event(float delta) override{
         if(scene_view->focused)  scene_view->on_mouse_wheel(delta);
     }
 
-    void on_key(int key, int scancode, int action, int mods) override {
+    void on_key_event(int key, int scancode, int action, int mods) override {
         if (scene_view->focused) scene_view->on_key_event(key,scancode,action,mods);
     }
 
-    void on_resize(int width, int height) override
+    void on_mouse_button_event(int button, int state, int mods) {
+        //printf("in on_mouse\n");
+        if (scene_view->focused) scene_view->on_mouse_button_event(button, state, mods);
+    }
+
+    void on_resize_event(int width, int height) override
     {
         Width = width;
         Height = height;
@@ -366,7 +474,7 @@ public:
         render();
     }
 
-    void on_close() {
+    void on_close_event() {
         mIsRunning = false;
     }
 
