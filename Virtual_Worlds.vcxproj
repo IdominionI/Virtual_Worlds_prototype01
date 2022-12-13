@@ -183,6 +183,7 @@
     <ClInclude Include="Source\Editor\Common\imgui_custom_definitions.h" />
     <ClInclude Include="Source\Editor\Import_Export\vw_import_export_parameters.h" />
     <ClInclude Include="Source\Editor\Kernal\id_key_manager.h" />
+    <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_import_export_manager.h" />
     <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_manager.h" />
     <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_node.h" />
     <ClInclude Include="Source\Editor\Main_Window\main_window.h" />
@@ -204,8 +205,11 @@
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node.h" />
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node_editor.h" />
     <ClInclude Include="Source\Editor\Object\object_basis.h" />
+    <ClInclude Include="Source\Editor\Scene\objects_category_basis.h" />
+    <ClInclude Include="Source\Editor\Scene\object_render_basis.h" />
     <ClInclude Include="Source\Editor\Scene\scene_manager.h" />
     <ClInclude Include="Source\Editor\Scene\scene_entities_db_manager.h" />
+    <ClInclude Include="Source\Editor\Scene\scene_render_object_manager.h" />
     <ClInclude Include="Source\Editor\Tools\dialogs.h" />
     <ClInclude Include="Source\Graphics_Engine\Common\definitions.h" />
     <ClInclude Include="Source\Graphics_Engine\Common\pch.h" />
@@ -224,6 +228,7 @@
     <ClInclude Include="Source\Graphics_Engine\OpenGL_window\ui_context.h" />
     <ClInclude Include="Source\Graphics_Engine\Render\Buffers\frame_buffer.h" />
     <ClInclude Include="Source\Graphics_Engine\Render\Buffers\vertex_buffer.h" />
+    <ClInclude Include="Source\Graphics_Engine\Render\object_render_basis.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_manager.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_graph_object.h" />
     <ClInclude Include="Source\Graphics_Engine\Scene\scene_node.h" />

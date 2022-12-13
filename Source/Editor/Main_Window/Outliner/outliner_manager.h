@@ -12,6 +12,7 @@
 #include <Source/Modules/Module_Voxel_Byte/Voxel_hcp_object/voxel_hcp_import_export.h>
 #include <Source/Modules/Module_Hex_Surface/Hex_surface_object/hex_surface_import_export.h>
 
+#include "outliner_import_export_manager.h"
 
 /*
 							OUTLINER MANAGER
@@ -42,7 +43,7 @@
 	entity data. Most is performed by each of the entity import/export classes, 
 	however an embedded import/export class object had to be included with the
 	outliner class to avoid problems with circular referencing that no other 
-	solution could befound.
+	solution could be found.
 
 	Without this embedded import/export class, the outliner nodes could not be
 	generated upon importing data
@@ -50,6 +51,8 @@
 
 class outliner_manager_class {
 public:
+
+	outliner_import_export_manager_class outliner_import_export_manager;
 
 	outliner_manager_class() {
 		root_node = new outliner_node_class;
@@ -345,6 +348,7 @@ public:
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
+		vw_import_export.outliner_import_export_manager = outliner_import_export_manager;// *****
 
 		vw_import_export.import_virtual_world_scene(this);
 	}
@@ -355,6 +359,7 @@ public:
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
+		vw_import_export.outliner_import_export_manager = outliner_import_export_manager;// *****
 
 		vw_import_export.export_scene(root_node, scene_manager);
 	}
@@ -405,6 +410,7 @@ public:
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
+		vw_import_export.outliner_import_export_manager = outliner_import_export_manager;// *****
 
 		vw_import_export.import_object_group(root_node,this);
 	}
@@ -456,6 +462,7 @@ public:
 
 		vw_import_export_class vw_import_export;
 		vw_import_export.log_panel = log_panel;
+		vw_import_export.outliner_import_export_manager = outliner_import_export_manager;// *****
 
 		outliner_node_class *group_node = get_outliner_group_node(group_id);
 
@@ -505,11 +512,7 @@ public:
 
 	void import_object(id_type parent_group_id, id_type entity_category) {
 //printf("display_nodes :: Import Object MenuItem selected  \n");
-		switch (entity_category) {
-			case ENTITY_CATEGORY_HCP_VOXEL : import_hcp_voxel_object(parent_group_id); break;
-			case ENTITY_CATEGORY_HEX_SURF  : import_hex_surface_object(parent_group_id); break;
-			// Other category types below this line
-		}
+		import_object_data_file(parent_group_id, entity_category);
 	}
 
 	void save_object(id_type object_id) {
@@ -520,21 +523,19 @@ public:
 			return;
 		}
 
-		switch (entity_node->category_id) {
-			case ENTITY_CATEGORY_HCP_VOXEL :{
-				// export voxel hcp entity data 
-				// Get pointer to hcp voxel object in the scene to export from the scene manager
-				voxel_hcp_object_class *voxel_hcp_object_to_export = scene_manager->get_voxel_hcp_entity_object(entity_node->entity_id);
-				hcp_voxel_import_export.export_hcp_object(voxel_hcp_object_to_export, ENTITY_CATEGORY_HCP_VOXEL);}
-				break;
-
-			case ENTITY_CATEGORY_HEX_SURF: {
-				hex_surface_object_class* hex_surface_object_to_export = scene_manager->get_hex_surface_entity_object(entity_node->entity_id);
-				hex_surface_import_export.export_hex_surface_object(hex_surface_object_to_export, ENTITY_CATEGORY_HEX_SURF); }
-				break;
-
-			// Other category types below this line
+		object_basis_class *object_to_export = scene_manager->get_entity_object(entity_node->entity_id, entity_node->category_id);
+		if(object_to_export == NULL) {
+			vwDialogs::message_box("Save entity", "Could not save selected entity object. No entity data to export coud be found !!!", "ok", "error");
+			return;
 		}
+
+		object_import_export_basis_class* object_import_export = outliner_import_export_manager.get_import_export_of_category(entity_node->category_id);
+		if (object_import_export == NULL) {
+			vwDialogs::message_box("Save entity", "Could not save selected entity object. No entity export functions defined to export object data !!!", "ok", "error");
+			return;
+		}
+			
+		object_import_export->export_object(object_to_export,entity_node->category_id);
 
 	}
 
@@ -594,8 +595,6 @@ public:
 			new_outliner_node->outliner_node_type = outliner_node_type_enum::entity;
 			new_outliner_node->category_id		  = category_id;
 			new_outliner_node->description        = "object_" + std::to_string(new_outliner_node->entity_id);
-			
-
 
 //printf("display_nodes :: add_new_entity 0000 %i %i\n", parent_node->entity_id, new_outliner_node->entity_id);
 
@@ -646,129 +645,67 @@ private:
 
 	void set_entity_activity(outliner_node_class *entity) {
 		if (scene_manager != NULL) {
-
-			switch (entity->category_id) {
-				case ENTITY_CATEGORY_HCP_VOXEL :{
-					voxel_hcp_object_class *voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(entity->entity_id);
-					if(voxel_hcp_object != NULL) voxel_hcp_object->active_object = entity->selected;}
-					break;
-
-				case ENTITY_CATEGORY_HEX_SURF :{
-//printf("OUTLINER : set_entity_activity 000:: %i\n", entity->selected);
-					hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(entity->entity_id);
-					if(hex_surface_object != NULL) {hex_surface_object->active_object = entity->selected;
-//printf("OUTLINER : set_entity_activity 111:: %i\n", hex_surface_object->active_object);
-					}}
-					break;
-				// Other category types below this line
-			}
-
+			object_basis_class *entity_object = scene_manager->get_entity_object(entity->entity_id, entity->category_id);
+			if (entity_object != NULL) entity_object->active_object = entity->selected;
 		}
 	}
 
 	void change_entity_name(id_type entity_id, id_type category_id, name_type entity_name) {
-		switch (category_id) {
-			case ENTITY_CATEGORY_HCP_VOXEL :{
-				voxel_hcp_object_class *voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(entity_id);
-				voxel_hcp_object->object_name = entity_name;}
-				break;
-
-			case ENTITY_CATEGORY_HEX_SURF :{
-				hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
-				hex_surface_object->object_name = entity_name;}
-				break;
-			// Other category types below this line
-		}
+		object_basis_class *entity_object = scene_manager->get_entity_object(entity_id, category_id);
+		if (entity_object != NULL) entity_object->object_name = entity_name;
 	}
 
 	void change_entity_description(id_type entity_id, id_type category_id, name_type entity_description) {
-		switch (category_id) {
-		case ENTITY_CATEGORY_HCP_VOXEL: {
-			voxel_hcp_object_class* voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(entity_id);
-			voxel_hcp_object->object_description = entity_description; }
-			break;
-
-		case ENTITY_CATEGORY_HEX_SURF: {
-			hex_surface_object_class* hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
-			hex_surface_object->object_description = entity_description; }
-			break;
-			// Other category types below this line
-		}
+		object_basis_class* entity_object = scene_manager->get_entity_object(entity_id, category_id);
+		if (entity_object != NULL) entity_object->object_description = entity_description;
 	}
 
+	// !!!!!!!!!!!!!!!!!!!!!! export/import functions !!!!!!!!!!!!!!!!!!!!!!!!!!!
+	object_import_export_basis_class object_import_export;
 
-	void initialise_entity(id_type entity_id, category_id_type category_id) {
-		switch (category_id) {
-			case ENTITY_CATEGORY_HCP_VOXEL : break;
-		}
-	}
-
-	// ###################### Voxel export/import functions ############################
-
-	hcp_voxel_import_export_class hcp_voxel_import_export;
-
-	bool import_hcp_voxel_object(id_type object_group_id) {
-		char const* patterns[] = { "*.vobj" };
-		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
-
-		if (file_pathname == nullptr) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No file name defined to save data to \n Save voxel object aborted\n");
+	bool import_object_data_file(id_type object_group_id, id_type object_category) {
+		
+		object_import_export_basis_class *object_import_export = outliner_import_export_manager.get_import_export_of_category(object_category);
+		if (object_import_export == NULL) {
+			vwDialogs::message_box("Save entity", "Could not import entity object. No entity export functions defined to export object data !!!", "ok", "error");
 			return false;
 		}
-//else
-//	printf("export_hcp_object 00 %s \n", file_pathname);
+			
+		object_import_export->import_object_data_file();
 
-		std::fstream import_file(file_pathname, std::ios::in);
-
-		if (!import_file) {
-			std::string str = " Could not read file \n" + (std::string)file_pathname;
-			vwDialogs::message_box("Import voxel object :", str.c_str());
-			return false;
-		}
-
-		std::string voxel_object_string = FW::filetools::read_all(import_file);
-
-		hcp_voxel_import_export.log_panel = log_panel;
-		hcp_voxel_import_export.lines.clear(); hcp_voxel_import_export.lines.shrink_to_fit();
-		hcp_voxel_import_export.lines = FW::stringtools::split(voxel_object_string, '\n');// Create a list of strings for each line in the expression code
-
-		hcp_voxel_import_export.line_number = 0;
-
-		return read_voxel_object_file(object_group_id);
-
-		//return false;
+		return read_object_data_file(object_group_id, object_category, object_import_export);
 	}
 
-	bool read_voxel_object_file(id_type object_group_id) {
+	bool read_object_data_file(id_type object_group_id, id_type object_category, object_import_export_basis_class *object_import_export) {
 		outliner_node_class *group_to_add_to = get_outliner_group_node(object_group_id);
-		outliner_node_class *voxel_entity    = add_new_entity(group_to_add_to, ENTITY_CATEGORY_HCP_VOXEL);
+		outliner_node_class *entity          = add_new_entity(group_to_add_to, object_category);
 
 //printf( "outliner_manager_class::read_voxel_object_file AAA : %i \n", voxel_entity->category_id);
 
-		if (voxel_entity == NULL) {
+		if (entity == NULL) {
 //printf( "hcp_voxel_import_export_class::read_voxel_object_file  AAA : new_entity == NULL\n");
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : outliner_manager_class::read_voxel_object_file \n Could not add new entity to object group.\n");
 			return false;
 		}
 
-		voxel_hcp_object_class *voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(voxel_entity->entity_id);
+		object_basis_class *object = scene_manager->get_entity_object(entity->entity_id, entity->category_id);
 
-		if (voxel_hcp_object == NULL) {
+		if (object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : outliner_manager_class::read_voxel_object_file \n Could not add new entity to object group. Could not create/find voxel object in scene database\n");
-			delete_object(voxel_entity->entity_id);
+			delete_object(entity->entity_id);
 			return false;
 		}
 
-		hcp_voxel_import_export.log_panel = log_panel;
+		object_import_export->log_panel = log_panel;
 
-		if (!hcp_voxel_import_export.read_voxel_object_file(voxel_hcp_object)) {
+		if (!object_import_export->read_file(object)) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Failed to import voxel object data. Error in reading voxel data\n");
 			vwDialogs::message_box("Import voxel Data", "Failed to import voxel object data. Error in reading voxel data","ok","error");
 			return false;
 		}
 
-		voxel_entity->name        = voxel_hcp_object->object_name;
-		voxel_entity->description = voxel_hcp_object->object_description;
+		entity->name        = object->object_name;
+		entity->description = object->object_description;
 
 		// !!!!!!!!!! Keep eye on following if it causes program crash !!!!!!!!!!!
 		//voxel_hcp_object->voxel_object_data.matrix_origin = glm::vec3{voxel_hcp_object->voxel_object_data.voxel_generator_parameters.x_start,
@@ -779,81 +716,13 @@ private:
 		return true;
 	}
 
-	// ###################### Hex Surface export/import functions ############################
-
-	hex_surface_import_export_class hex_surface_import_export;
-
-	bool import_hex_surface_object(id_type object_group_id) {
-		char const* patterns[] = { "*.hobj" };
-		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
-
-		if (file_pathname == nullptr) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No file name defined to save data to \n Save hex surface object aborted\n");
-			return false;
-		}
-		//else
-		//	printf("export_hcp_object 00 %s \n", file_pathname);
-
-		std::fstream import_file(file_pathname, std::ios::in);
-
-		if (!import_file) {
-			std::string str = " Could not read file \n" + (std::string)file_pathname;
-			vwDialogs::message_box("Import hex surface object :", str.c_str());
-			return false;
-		}
-
-		std::string voxel_object_string = FW::filetools::read_all(import_file);
-
-		hex_surface_import_export.log_panel = log_panel;
-		hex_surface_import_export.lines.clear(); hcp_voxel_import_export.lines.shrink_to_fit();
-		hex_surface_import_export.lines = FW::stringtools::split(voxel_object_string, '\n');// Create a list of strings for each line in the expression code
-
-		hex_surface_import_export.line_number = 0;
-
-		return read_hex_surface_object_file(object_group_id);
-
-		//return false;
-	}
-
-	bool read_hex_surface_object_file(id_type object_group_id) {
-		outliner_node_class *group_to_add_to = get_outliner_group_node(object_group_id);
-		outliner_node_class *hex_entity    = add_new_entity(group_to_add_to, ENTITY_CATEGORY_HEX_SURF);
-
-//printf( "outliner_manager_class::read_voxel_object_file AAA : %i \n", voxel_entity->category_id);
-
-		if (hex_entity == NULL) {
-//printf( "hcp_voxel_import_export_class::read_voxel_object_file  AAA : new_entity == NULL\n");
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : outliner_manager_class::read_hex_surface_object_file \n Could not add new entity to object group.\n");
-			return false;
-		}
-
-		hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(hex_entity->entity_id);
-
-		if (hex_surface_object == NULL) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : outliner_manager_class::read_hex_surface_object_file \n Could not add new entity to object group. Could not create/find voxel object in scene database\n");
-			delete_object(hex_entity->entity_id);
-			return false;
-		}
-
-		hex_surface_import_export.log_panel = log_panel;
-
-		if (!hex_surface_import_export.read_hex_surface_object_file(hex_surface_object)) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Failed to import hex surface object data. Error in reading hex surface data\n");
-			vwDialogs::message_box("Import voxel Data", "Failed to import hex surface object data. Error in reading voxel data", "ok", "error");
-			return false;
-		}
-
-		hex_entity->name        = hex_surface_object->object_name;
-		hex_entity->description = hex_surface_object->object_description;
-
-//printf( "outliner_manager_class::read_voxel_object_file BBBS : %i : %i\n", voxel_entity->category_id, voxel_hcp_object->object_category_id);
-		return true;
-	}
 
 
 	// ****
 	class vw_import_export_class {
 	public:
+		outliner_import_export_manager_class outliner_import_export_manager;
+
 		std::string     filename_to_write;
 
 		log_panel_class* log_panel = NULL;
@@ -1044,41 +913,27 @@ private:
 			for (index_type i = 0; i < object_group->children.size(); i++) {
 				outliner_node_class *entity = object_group->children[i];
 
-//printf("Outliner Manager :: export_object_group_data_to_file 333 : %i : \n", entity->category_id);
-				// seems swicth does not like using  entity_categories->categories_map[HCP_VOXEL_CATEGORY].category_id or any other map variable as a case value
-				if (entity->category_id == ENTITY_CATEGORY_HCP_VOXEL) {
-					// this has only one component type : need to modify if/when additional components added to hcp entity
-					voxel_hcp_object_class *voxel_hcp_object = vw_scene->get_voxel_hcp_entity_object(entity->entity_id);
-
-					if (voxel_hcp_object == NULL) {
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not export entity %s to group save file :: Unable to locate component \n", entity->name);
-					}
-					else {
+				// *****
+				object_basis_class *object = vw_scene->get_entity_object(entity->entity_id, entity->category_id);
+				if (object == NULL) {
+					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not export entity %s to group save file :: Unable to locate component \n", entity->name);
+				}
+				else {
 //printf("Outliner Manager :: export_object_group_data_to_file 444 : %i : \n", entity->category_id);
-						stream << HCP_VOXEL_CATEGORY << endl;// ****
-						hcp_voxel_import_export.initialise_hcp_voxel_export(filename_to_write, log_panel);
-						hcp_voxel_import_export.stream.set_rdbuf(stream.rdbuf());// Not sure this will work !!!!!! It works
-						hcp_voxel_import_export.export_voxel_object_data_to_file(voxel_hcp_object, ENTITY_CATEGORY_HCP_VOXEL);
+					stream << entity->category_id << endl;// ****
+
+					object_import_export_basis_class *object_import_export = outliner_import_export_manager.get_import_export_of_category(entity->category_id);
+					if (object_import_export == NULL) {
+						vwDialogs::message_box("export_object_group_data_to_file", "Could not export entity object. No entity export functions defined to export object data !!!", "ok", "error");
+						return false;
 					}
+
+					object_import_export->initialise(filename_to_write, log_panel);
+					object_import_export->stream.set_rdbuf(stream.rdbuf());// Not sure this will work !!!!!! It works
+					object_import_export->export_object_data_to_file(object, entity->category_id);
 				}
 
-				if (entity->category_id == ENTITY_CATEGORY_HEX_SURF) {
-					// this has only one component type : need to modify if/when additional components added to hcp entity
-					hex_surface_object_class *hex_surface_object = vw_scene->get_hex_surface_entity_object(entity->entity_id);
-
-					if (hex_surface_object == NULL) {
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not export entity %s to group save file :: Unable to locate component \n", entity->name);
-					}
-					else {
-//printf("Outliner Manager :: export_object_group_data_to_file 444 : %i : \n", entity->category_id);
-						stream << HEX_SURFACE_CATEGORY << endl;// ****
-						hex_surface_import_export.initialise_hex_surface_export(filename_to_write, log_panel);
-						hex_surface_import_export.stream.set_rdbuf(stream.rdbuf());// Not sure this will work !!!!!! It works
-						hex_surface_import_export.export_hex_surface_object_data_to_file(hex_surface_object, ENTITY_CATEGORY_HEX_SURF);
-					}
-				}
-
-				// Other data types to be added below
+				// *****
 			}
 
 			stream << OBJECT_GROUP_BLOCK_END << endl;
@@ -1130,116 +985,64 @@ private:
 //printf("Outliner Manager :: read_object_group_file 22BBBS : %i : %s \n", line_number,line.c_str());
 				//id_type category = stoi(line); line_number++;
 //printf("Outliner Manager :: read_object_group_file 33 : %i : %s : %s : \n",line_number, category.c_str(), line.c_str());
-				//if (category == ENTITY_CATEGORY_HCP_VOXEL) {
-				if (category == HCP_VOXEL_CATEGORY) {
-					hcp_voxel_import_export.log_panel   = log_panel;
-					hcp_voxel_import_export.line_number = line_number;
-					hcp_voxel_import_export.lines       = lines;
+
+				id_type object_category_id = std::stoi(category);
+				
+				object_import_export_basis_class *object_import_export = outliner_import_export_manager.get_import_export_of_category(object_category_id);
+				if (object_import_export == NULL) {
+					vwDialogs::message_box("read_object_group_file", "Could not import entity object. No entity import functions defined to import object data !!!", "ok", "error");
+					return false;
+				}
+
+				object_import_export->log_panel = log_panel;
+				object_import_export->line_number = line_number;
+				object_import_export->lines = lines;
 
 //printf("Outliner Manager :: read_object_group_file 44 \n");
-					outliner_node_class    *entity           = outliner_manager->add_new_entity(new_group, ENTITY_CATEGORY_HCP_VOXEL);
-					if (entity == NULL) {// Not tested
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import voxel object data failed : Could not define entity node\n");
-						delete new_group;
-						return false;
-					}
-					
-					voxel_hcp_object_class *voxel_hcp_object = outliner_manager->scene_manager->get_voxel_hcp_entity_object(entity->entity_id);
+				outliner_node_class *entity  = outliner_manager->add_new_entity(new_group, object_category_id);
+				if (entity == NULL) {// Not tested
+					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import voxel object data failed : Could not define entity node\n");
+					delete new_group;
+					return false;
+				}
 
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					// For some god foresaken reason, after carefull checking and finding that somehow by generating the shader program, and then deleting the voxel_hcp_object 
-					// and then importing it, the hex shader parameters for variables can still be retained and added to the imported data. 
-					// Can only conclude this is some how a VS2022 compilation error or that memory
-					// was not deallocated corectly by the CPU. It seems on recreating a voxel_hcp_object in the scene manager, it can reference the memory deallocated that still
-					// retains the shader parameter data. So need to clear it out before proceeding to import voxel_hcp_object data. Utterly wierd as am finding
-					// some other code functioning with wierd unexplained behavior.
+				object_basis_class *object = outliner_manager->scene_manager->get_entity_object(entity->entity_id, object_category_id);
+				if (object == NULL) {
+					vwDialogs::message_box("Save entity", "Could not import entity object. Entity not defined to import entity data into !!!", "ok", "error");
+					delete new_group;
+					return false;
+				}
+
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// For some god foresaken reason, after carefull checking and finding that somehow by generating the shader program, and then deleting the voxel_hcp_object 
+				// and then importing it, the hex shader parameters for variables can still be retained and added to the imported data. 
+				// Can only conclude this is some how a VS2022 compilation error or that memory
+				// was not deallocated corectly by the CPU. It seems on recreating a voxel_hcp_object in the scene manager, it can reference the memory deallocated that still
+				// retains the shader parameter data. So need to clear it out before proceeding to import voxel_hcp_object data. Utterly wierd as am finding
+				// some other code functioning with wierd unexplained behavior.
 
 //printf("Outliner Manager :: read_object_group_file 55 %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
-					if (voxel_hcp_object != NULL && voxel_hcp_object->voxel_object_data.shader_parameters.variables.size() > 0) {
-						voxel_hcp_object->voxel_object_data.shader_parameters.variables.clear(); voxel_hcp_object->voxel_object_data.shader_parameters.variables.shrink_to_fit();
-					}
-
-					if (voxel_hcp_object != NULL && voxel_hcp_object->voxel_object_data.shader_parameters.int_variables.size() > 0) {
-						voxel_hcp_object->voxel_object_data.shader_parameters.int_variables.clear(); voxel_hcp_object->voxel_object_data.shader_parameters.int_variables.shrink_to_fit();
-					}
-
-					if (voxel_hcp_object != NULL && voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.size() > 0) {
-						voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.clear(); voxel_hcp_object->voxel_object_data.shader_parameters.bool_variables.shrink_to_fit();
-					}
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+				object->clear_shader_variables();
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //printf("Outliner Manager :: read_object_group_file 55AA %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
-					if (!hcp_voxel_import_export.read_voxel_object_file(voxel_hcp_object)) {
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import voxel object data failed\n");
-						for (outliner_node_class *group_entity: new_group->children) {
-							outliner_manager->scene_manager->delete_entity(group_entity->entity_id, ENTITY_CATEGORY_HCP_VOXEL);
-							delete group_entity;
-						}
-						delete new_group;
-						return false;
+				if (!object_import_export->read_file(object)) {
+					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import voxel object data failed\n");
+					for (outliner_node_class* group_entity : new_group->children) {
+						outliner_manager->scene_manager->delete_entity(group_entity->entity_id, object_category_id);
+						delete group_entity;
 					}
-//printf("Outliner Manager :: read_object_group_file 66 \n");
-					entity->name        = voxel_hcp_object->object_name;
-					entity->description = voxel_hcp_object->object_description;
-
-					line_number = hcp_voxel_import_export.line_number;
-					have_category = true;
+					delete new_group;
+					return false;
 				}
-
-				if (category == HEX_SURFACE_CATEGORY) {
-					hex_surface_import_export.log_panel   = log_panel;
-					hex_surface_import_export.line_number = line_number;
-					hex_surface_import_export.lines       = lines;
-
-//printf("Outliner Manager :: read_object_group_file 44 \n");
-					outliner_node_class      *entity             = outliner_manager->add_new_entity(new_group, ENTITY_CATEGORY_HEX_SURF);
-					if (entity == NULL) {// Not tested
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import hex surface object data failed : Could not define entity node\n");
-						delete new_group;
-						return false;
-					}
-					hex_surface_object_class *hex_surface_object = outliner_manager->scene_manager->get_hex_surface_entity_object(entity->entity_id);
-					
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					// For some god foresaken reason, after carefull checking and finding that somehow by generating the shader program, and then deleting the hex_surface_object 
-					// and then importing it, the hex shader parameters for variables can still be retained and added to the imported data. 
-					// Can only conclude this is some how a VS2022 compilation error or that memory
-					// was not deallocated corectly by the CPU. It seems on recreating a hex_surface_object in the scene manager, it can reference the memory deallocated that still
-					// retains the shader parameter data. So need to clear it out before proceeding to import voxel_hcp_object data. Utterly wierd as am finding
-					// some other code functioning with wierd unexplained behavior. 
-//printf("Outliner Manager :: read_object_group_file 55 %i : %i\n", entity->entity_id, voxel_hcp_object->voxel_object_data.shader_parameters.variables.size());
-					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.size() > 0) {
-						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.variables.shrink_to_fit();
-					}
-
-					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.size() > 0) {
-						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.int_variables.shrink_to_fit();
-					}
-
-					if (hex_surface_object != NULL && hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.size() > 0) {
-						hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.clear(); hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.bool_variables.shrink_to_fit();
-					}
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//printf("Outliner Manager :: read_object_group_file 55 \n");
-//if(hex_surface_object == NULL )printf("hex_surface_object == NULL\n");
-					if (!hex_surface_import_export.read_hex_surface_object_file(hex_surface_object)) {
-						if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Import hex surface object data failed\n");
-						for (outliner_node_class *group_entity: new_group->children) {
-							outliner_manager->scene_manager->delete_entity(group_entity->entity_id, ENTITY_CATEGORY_HEX_SURF);
-							delete group_entity;
-						}
-						delete new_group;
-						return false;
-					}
 //printf("Outliner Manager :: read_object_group_file 66 \n");
-					entity->name        = hex_surface_object->object_name;
-					entity->description = hex_surface_object->object_description;
+				entity->name        = object->object_name;
+				entity->description = object->object_description;
 
-					line_number = hex_surface_import_export.line_number;
-					have_category = true;
-				}
-
-				// Other data types to be added below
+				line_number = object_import_export->line_number;
+				have_category = true;
+				
+				// ******
 
 				// ********************************************************
 				if (!have_category) {

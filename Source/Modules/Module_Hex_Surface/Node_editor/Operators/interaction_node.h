@@ -184,8 +184,11 @@ class hex_surface_interaction_node_class : public node_basis_class {
         if (node_A == NULL || node_B == NULL) return;
         if (node_A->node_id == NON_ENTITY_ID || node_A->node_id == NON_ENTITY_ID) return;
 
-        hex_surface_object_class *hex_surface_object_A = scene_manager->entities_manager.get_hex_surface_entity_object(node_A->entity_id);
-        hex_surface_object_class *hex_surface_object_B = scene_manager->entities_manager.get_hex_surface_entity_object(node_B->entity_id);
+        //hex_surface_object_class *hex_surface_object_A = scene_manager->entities_manager.get_hex_surface_entity_object(node_A->entity_id);
+        //hex_surface_object_class *hex_surface_object_B = scene_manager->entities_manager.get_hex_surface_entity_object(node_B->entity_id);
+
+        hex_surface_object_class *hex_surface_object_A = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(node_A->entity_id, ENTITY_CATEGORY_HEX_SURF);
+        hex_surface_object_class *hex_surface_object_B = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(node_B->entity_id, ENTITY_CATEGORY_HEX_SURF);
 
         if(hex_surface_object_A == NULL || hex_surface_object_B == NULL) return;
 

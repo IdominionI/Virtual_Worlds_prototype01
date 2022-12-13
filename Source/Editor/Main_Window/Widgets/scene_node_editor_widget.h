@@ -247,7 +247,8 @@ private:
             return;
         }
 
-        voxel_hcp_object_class* voxel_hcp_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(globalc::get_current_selected_entity_id());
+        //voxel_hcp_object_class* voxel_hcp_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(globalc::get_current_selected_entity_id());
+        voxel_hcp_object_class* voxel_hcp_object = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(globalc::get_current_selected_entity_id(), ENTITY_CATEGORY_HCP_VOXEL);
 
         if (voxel_hcp_object != NULL) {
 //printf("scene_node_editor_class::add_hcp_voxel: 1111 %i \n", voxel_hcp_object->object_id);
@@ -326,7 +327,8 @@ private:
             return;
         }
 
-        hex_surface_object_class* hex_surface_object = scene_manager->entities_manager.get_hex_surface_entity_object(globalc::get_current_selected_entity_id());
+        //hex_surface_object_class* hex_surface_object = scene_manager->entities_manager.get_hex_surface_entity_object(globalc::get_current_selected_entity_id());
+        hex_surface_object_class* hex_surface_object = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(globalc::get_current_selected_entity_id(), ENTITY_CATEGORY_HEX_SURF);
 
         if (hex_surface_object != NULL) {
 //printf("scene_node_editor_class::add_hex_surface_node: 1111 %i \n", hex_surface_object->object_id);

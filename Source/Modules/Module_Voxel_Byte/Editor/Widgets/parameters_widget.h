@@ -44,7 +44,8 @@ public:
 			return;
 		}
 
-		voxel_hcp_object_class *voxel_hcp_object_to_execute = scene_manager->entities_manager.get_voxel_hcp_entity_object(current_selected_object_id);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+		//voxel_hcp_object_class *voxel_hcp_object_to_execute = scene_manager->entities_manager.get_voxel_hcp_entity_object(current_selected_object_id);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+		voxel_hcp_object_class *voxel_hcp_object_to_execute = (voxel_hcp_object_class *) scene_manager->entities_manager.get_entity_of_category(current_selected_object_id, ENTITY_CATEGORY_HCP_VOXEL);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 		
 		if (voxel_hcp_object_to_execute == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hcp voxel object defined to perform tasks on.\n");

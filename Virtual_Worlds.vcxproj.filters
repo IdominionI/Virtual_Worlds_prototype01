@@ -524,6 +524,21 @@
     <ClInclude Include="Source\Graphics_Engine\Kernal\chantrait.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Editor\Scene\objects_category_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\Render\object_render_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Scene\object_render_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Scene\scene_render_object_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_import_export_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Universal\ImGui\.editorconfig" />

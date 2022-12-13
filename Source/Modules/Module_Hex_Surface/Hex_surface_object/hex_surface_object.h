@@ -38,7 +38,7 @@ public:
 
 	bounding_area_class bounding_area;
 
-	bool active_object                  = false;
+	//bool active_object                        = false;
 	bool display_hex_surface_object_as_points = false;
 
 	bool  animate_automata = false;
@@ -46,6 +46,16 @@ public:
 	glm::uvec4 color                          = {1.0,1.0,1.0,1.0};
 
 	float min_surface_display_value, max_surface_display_value;
+
+	void clear_shader_variables() {
+		hex_surface_object_data.hex_surface_shader_parameters.variables.clear();
+		hex_surface_object_data.hex_surface_shader_parameters.variables.shrink_to_fit();
+		hex_surface_object_data.hex_surface_shader_parameters.int_variables.clear();
+		hex_surface_object_data.hex_surface_shader_parameters.int_variables.shrink_to_fit();
+		hex_surface_object_data.hex_surface_shader_parameters.bool_variables.clear();
+		hex_surface_object_data.hex_surface_shader_parameters.bool_variables.shrink_to_fit();
+		// other variables added below
+	}
 
 	bool automata_rule_within_frame(int frame) {
 		bool is_within_animation_frame = false;

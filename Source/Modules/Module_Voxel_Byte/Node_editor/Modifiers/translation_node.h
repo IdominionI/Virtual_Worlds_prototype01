@@ -278,7 +278,9 @@ public:
         
         if(scene_manager == NULL) return;
 //printf("translation action 33333 %i \n",modify_node->entity_id);
-        voxel_hcp_object_class *voxel_hcp_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(modify_node->entity_id);
+        //voxel_hcp_object_class *voxel_hcp_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(modify_node->entity_id);
+        voxel_hcp_object_class *voxel_hcp_object = (voxel_hcp_object_class *) scene_manager->entities_manager.get_entity_of_category(modify_node->entity_id, ENTITY_CATEGORY_HCP_VOXEL);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+
 //printf("translation action 4444  \n");
         if (voxel_hcp_object == NULL) return;
 //printf("translation action 55555  \n");

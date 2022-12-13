@@ -161,7 +161,8 @@ public:
             }
         }
 
-        hex_surface_object_class *interaction_object = scene_manager->entities_manager.get_hex_surface_entity_object(entity_id);
+        //hex_surface_object_class *interaction_object = scene_manager->entities_manager.get_hex_surface_entity_object(entity_id);
+        hex_surface_object_class *interaction_object = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(entity_id, ENTITY_CATEGORY_HEX_SURF);
         if (interaction_object == NULL) return NULL;
 
         interaction_object->hex_surface_object_data.grid_origin = boundary_min;

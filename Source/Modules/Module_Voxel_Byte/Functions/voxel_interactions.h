@@ -192,7 +192,9 @@ public:
             }
         }
 
-        voxel_hcp_object_class* interaction_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(entity_id);
+        //voxel_hcp_object_class* interaction_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(entity_id);
+        voxel_hcp_object_class* interaction_object = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(entity_id, ENTITY_CATEGORY_HCP_VOXEL);
+
         if (interaction_object == NULL) return NULL;
 
         interaction_object->voxel_object_data.matrix_origin = boundary_min;

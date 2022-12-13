@@ -4,6 +4,8 @@
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 #include <Source/Editor/Import_Export/vw_import_export_parameters.h>
 
+#include <Source/Editor/Object/object_basis.h> // *****
+
 #include "voxel_hcp_object.h"
 
 //#include "../Kernal/voxel_function_import_export.h"
@@ -27,22 +29,73 @@
 
 class outliner_manager_class; // Forward reference to avoid circular dependancy issue
 
-class hcp_voxel_import_export_class {
+//class hcp_voxel_import_export_class {
+class hcp_voxel_import_export_class : public object_import_export_basis_class {
 public:
-	int line_number = 0;
-	std::vector<std::string> lines;
+	//int line_number = 0;
+	//std::vector<std::string> lines;
 
-	log_panel_class	*log_panel = NULL;
+	//log_panel_class	*log_panel = NULL;
 
 	//#define endl "\n"
 
-	std::fstream stream;
+	//std::fstream stream;
 
-	std::string     filename_to_write;
+	std::string filename_to_write;
 
 	std::string input_line;
 
 	#define endl "\n"
+
+	//******
+	void initialise(std::string _filename_to_write, log_panel_class *_log_widget){
+		filename_to_write = _filename_to_write;
+		log_panel         = _log_widget;
+
+		line_number = 0;
+	}
+
+	bool import_object_data_file() {
+		char const* patterns[] = { "*.vobj" };
+		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
+
+		if (file_pathname == nullptr) {
+			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No file name defined to save data to \n Save voxel object aborted\n");
+			return false;
+		}
+		//else
+		//	printf("export_hcp_object 00 %s \n", file_pathname);
+
+		std::fstream import_file(file_pathname, std::ios::in);
+
+		if (!import_file) {
+			std::string str = " Could not read file \n" + (std::string)file_pathname;
+			vwDialogs::message_box("Import voxel object :", str.c_str());
+			return false;
+		}
+
+		std::string object_string = FW::filetools::read_all(import_file);
+
+		log_panel = log_panel;
+		lines.clear(); lines.shrink_to_fit();
+		lines = FW::stringtools::split(object_string, '\n');// Create a list of strings for each line in the expression code
+
+		line_number = 0;
+	}
+
+	bool export_object(object_basis_class *object, id_type category) { 
+		return export_hcp_object(dynamic_cast<voxel_hcp_object_class*>(object), category);
+	}
+
+	bool read_file(object_basis_class* object) { 
+		return read_voxel_object_file(dynamic_cast<voxel_hcp_object_class*>(object));
+	}
+
+	virtual bool export_object_data_to_file(object_basis_class* object, id_type category) {
+		return export_voxel_object_data_to_file(dynamic_cast<voxel_hcp_object_class*>(object), category);
+	}
+
+	//******
 
 	void initialise_hcp_voxel_export(std::string _filename_to_write, log_panel_class *_log_widget = NULL) {
 		filename_to_write = _filename_to_write;

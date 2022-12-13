@@ -99,10 +99,18 @@ public:
 		voxel_hcp_objects_to_execute.clear();
 		voxel_hcp_objects_to_execute.shrink_to_fit();
 
+		int index = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL); // ****
+		if (index < 0) return false; // ****
+
+		voxel_hcp_scene_objects_class *voxel_hcp_entities_to_export = dynamic_cast <voxel_hcp_scene_objects_class *>(scene_manager->entities_manager.scene_objects[index]); // ****
+
 		switch (object_selection_cb) {
-			case 0: if (!define_selected_animation_voxel(current_selected_object_id, scene_manager->entities_manager.voxel_hcp_scene_objects)) return false;  break;
-			case 1: if (!define_active_animation_voxel(scene_manager->entities_manager.voxel_hcp_scene_objects)) return false; break;
-			case 2: if (!define_all_animation_voxel(scene_manager->entities_manager.voxel_hcp_scene_objects)) return false;    break;
+			//case 0: if (!define_selected_animation_voxel(current_selected_object_id, scene_manager->entities_manager.voxel_hcp_scene_objects)) return false;  break;
+			//case 1: if (!define_active_animation_voxel(scene_manager->entities_manager.voxel_hcp_scene_objects)) return false; break;
+			//case 2: if (!define_all_animation_voxel(scene_manager->entities_manager.voxel_hcp_scene_objects)) return false;    break;
+			case 0: if (!define_selected_animation_voxel(current_selected_object_id, *voxel_hcp_entities_to_export)) return false;  break;
+			case 1: if (!define_active_animation_voxel(*voxel_hcp_entities_to_export)) return false; break;
+			case 2: if (!define_all_animation_voxel(*voxel_hcp_entities_to_export)) return false;    break;
 			default: return false;               break;
 		}
 		
@@ -317,7 +325,9 @@ public:
 //printf("update_voxel_generator_parameter_step_values::00L %i\n", voxel_generator_parameters.variables.size());
 
 		// Get the scene render object that stores the object render properties
-		voxel_hcp_object_class *voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(entity_id);
+		//voxel_hcp_object_class *voxel_hcp_object = scene_manager->get_voxel_hcp_entity_object(entity_id);
+		voxel_hcp_object_class *voxel_hcp_object = (voxel_hcp_object_class*)scene_manager->get_entity_object(entity_id, ENTITY_CATEGORY_HCP_VOXEL);
+
 		if (voxel_hcp_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update voxel shaders for voxel object of id %i\n", entity_id);
 //printf("update_voxel_generator_parameter_step_values::update_voxel_generator_parameter_step_values :entity_render_object == NULL\n");

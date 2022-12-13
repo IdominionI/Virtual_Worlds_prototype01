@@ -43,7 +43,8 @@ public:
 			return;
 		}
 
-		hex_surface_object_class *hex_surface_object_to_execute = scene_manager->entities_manager.get_hex_surface_entity_object(current_selected_object_id);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+		//hex_surface_object_class *hex_surface_object_to_execute = scene_manager->entities_manager.get_hex_surface_entity_object(current_selected_object_id);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
+		hex_surface_object_class *hex_surface_object_to_execute = (hex_surface_object_class *)scene_manager->entities_manager.get_entity_of_category(current_selected_object_id, ENTITY_CATEGORY_HEX_SURF);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 		
 		if (hex_surface_object_to_execute == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hex surface object defined to perform tasks on.\n");

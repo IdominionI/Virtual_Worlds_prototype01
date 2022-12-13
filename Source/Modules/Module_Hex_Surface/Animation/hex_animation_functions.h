@@ -104,10 +104,19 @@ public:
 
 		int selection;
 
+		int index = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF); // ****
+		if (index < 0) return false; // ****
+
+		hex_surface_scene_objects_class *hex_surface_entities_to_export = dynamic_cast <hex_surface_scene_objects_class*>(scene_manager->entities_manager.scene_objects[index]); // ****
+
 		switch (object_selection_cb) {
-			case 0: if (!define_selected_animation_hex_surface(current_selected_object_id, scene_manager->entities_manager.hex_surface_scene_objects)) return false;  break;
-			case 1: if (!define_active_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false; break;
-			case 2: if (!define_all_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false;    break;
+			//case 0: if (!define_selected_animation_hex_surface(current_selected_object_id, scene_manager->entities_manager.hex_surface_scene_objects)) return false;  break;
+			//case 1: if (!define_active_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false; break;
+			//case 2: if (!define_all_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false;    break;
+			case 0: if (!define_selected_animation_hex_surface(current_selected_object_id, *hex_surface_entities_to_export)) return false;  break;
+			case 1: if (!define_active_animation_hex_surface(*hex_surface_entities_to_export)) return false; break;
+			case 2: if (!define_all_animation_hex_surface(*hex_surface_entities_to_export)) return false;    break;
+
 			default: return false;               break;
 		}
 
@@ -288,7 +297,9 @@ printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n"
 
 	void update_hex_surface_generator_parameter_step_values(hex_surface_generator_parameters_struct_type &hex_surface_generator_parameters, int step_action, scene_manager_class* scene_manager, id_type entity_id) {
 		// Get the scene render object that stores the object render properties
-		hex_surface_object_class * hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
+		//hex_surface_object_class *hex_surface_object = scene_manager->get_hex_surface_entity_object(entity_id);
+		hex_surface_object_class *hex_surface_object = (hex_surface_object_class*)scene_manager->get_entity_object(entity_id, ENTITY_CATEGORY_HEX_SURF);
+		
 		if (hex_surface_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update hex surface shaders for voxel object of id %i\n", entity_id);
 //printf("update_hex_surface_generator_parameter_step_values::update_voxel_generator_parameter_step_values :entity_render_object == NULL\n");

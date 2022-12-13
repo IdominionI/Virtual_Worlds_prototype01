@@ -185,8 +185,11 @@ class hcp_interaction_node_class : public node_basis_class {
         if (node_A == NULL || node_B == NULL) return;
         if (node_A->node_id == NON_ENTITY_ID || node_A->node_id == NON_ENTITY_ID) return;
 
-        voxel_hcp_object_class *voxel_hcp_object_A = scene_manager->entities_manager.get_voxel_hcp_entity_object(node_A->entity_id);
-        voxel_hcp_object_class *voxel_hcp_object_B = scene_manager->entities_manager.get_voxel_hcp_entity_object(node_B->entity_id);
+        //voxel_hcp_object_class *voxel_hcp_object_A = scene_manager->entities_manager.get_voxel_hcp_entity_object(node_A->entity_id);
+        //voxel_hcp_object_class *voxel_hcp_object_B = scene_manager->entities_manager.get_voxel_hcp_entity_object(node_B->entity_id);
+
+        voxel_hcp_object_class* voxel_hcp_object_A = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(node_A->entity_id, ENTITY_CATEGORY_HCP_VOXEL);
+        voxel_hcp_object_class* voxel_hcp_object_B = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(node_B->entity_id, ENTITY_CATEGORY_HCP_VOXEL);
 
         if(voxel_hcp_object_A == NULL || voxel_hcp_object_B == NULL) return;
 

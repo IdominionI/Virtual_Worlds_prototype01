@@ -6,6 +6,8 @@
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 #include <Source/Editor/Import_Export/vw_import_export_parameters.h>
 
+#include <Source/Editor/Object/object_basis.h> // *****
+
 /*
 	hex_surface_import_export_class
 
@@ -24,20 +26,72 @@
 	values bounded by <>_BLOCK_START and <>_BLOCK_END flags.
 */
 
-class hex_surface_import_export_class {
+//class hex_surface_import_export_class {
+class hex_surface_import_export_class : public object_import_export_basis_class {
 public:
-	int line_number = 0;
-	std::vector<std::string> lines;
+	//int line_number = 0;
+	//std::vector<std::string> lines;
 
-	log_panel_class* log_panel = NULL;
+	//log_panel_class* log_panel = NULL;
 
-	std::fstream stream;
+	//std::fstream stream;
 
-	std::string     filename_to_write;
+	std::string filename_to_write;
 
 	std::string input_line;
 
 	#define endl "\n"
+
+
+	//******
+	void initialise(std::string _filename_to_write, log_panel_class* _log_widget) {
+		filename_to_write = _filename_to_write;
+		log_panel = _log_widget;
+
+		line_number = 0;
+	}
+
+	bool import_object_data_file() {
+		char const* patterns[] = { "*.hobj" };
+		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
+
+		if (file_pathname == nullptr) {
+			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No file name defined to save data to \n Save hex surface object aborted\n");
+			return false;
+		}
+		//else
+		//	printf("export_hcp_object 00 %s \n", file_pathname);
+
+		std::fstream import_file(file_pathname, std::ios::in);
+
+		if (!import_file) {
+			std::string str = " Could not read file \n" + (std::string)file_pathname;
+			vwDialogs::message_box("Import hex surface object :", str.c_str());
+			return false;
+		}
+
+		std::string object_string = FW::filetools::read_all(import_file);
+
+		log_panel = log_panel;
+		lines.clear(); lines.shrink_to_fit();
+		lines = FW::stringtools::split(object_string, '\n');// Create a list of strings for each line in the expression code
+
+		line_number = 0;
+	}
+
+	bool export_object(object_basis_class* object, id_type category) {
+		return export_hex_surface_object(dynamic_cast<hex_surface_object_class*>(object), category);
+	}
+
+	bool read_file(object_basis_class* object) {
+		return read_hex_surface_object_file(dynamic_cast<hex_surface_object_class*>(object));
+	}
+
+	virtual bool export_object_data_to_file(object_basis_class* object, id_type category) {
+		return export_hex_surface_object_data_to_file(dynamic_cast<hex_surface_object_class*>(object), category);
+	}
+
+	//******
 
 	void initialise_hex_surface_export(std::string _filename_to_write, log_panel_class *_log_widget = NULL) {
 		filename_to_write = _filename_to_write;

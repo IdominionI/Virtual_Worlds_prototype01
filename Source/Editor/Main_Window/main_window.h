@@ -60,104 +60,6 @@ public:
 
         ui_context->init(this);
 
-        //  ***** Testing Only *******
-    // ^^^^^^^^^^^ Shader Format testing ^^^^^^^^^^^^^^
-    //shader_format sf;
-    //sf.define_shader_source_pathname(shader_type_enum::vertex, "test_vertex");
-    //sf.define_shader_source_pathname(shader_type_enum::geometry, "test_geometry");
-    //sf.define_shader_source_pathname(shader_type_enum::fragment, "test_fragment");
-    //sf.attrib(Attrib::POSITION, "location");
-    //sf.attrib(Attrib::COLOR, "test_color");
-
-
-    //printf("test format vertex  shader pathname: %s \n", sf.vertex_shader_pathname.string().c_str());
-    //printf("test format geometry  shader pathname: %s \n", sf.geometry_shader_pathname.string().c_str());
-    //printf("test format fragment shader pathname : %s \n", sf.fragment_shader_pathname.string().c_str());
-    //
-    //for (int i = 0; i < sf.mAttributes.size(); i++) {
-    //    printf("attribute : %i : %s \n", i, sf.mAttributes[i].mName.c_str());
-    //}
-
-    // -------------- preprocessor testing --------------------
-    /*
-    ShaderPreprocessor preprocessor;
-
-
-    std::set<std::filesystem::path> includedFiles;
-    std::string pp = "";
-
-    std::filesystem::path path = "F:/Projects/Git_repository/Virtual_Worlds/Virtual_Worlds/Build/x64/Release/test_preprosessor_root.glsl";
-    std::string source = FW::filetools::read_all(path.string());
-
-    std::string preprocessedSource = preprocessor.parse(source, path, &includedFiles);
-    if (!preprocessor.mparse_successfull_m) {
-        int mShader_compile_successful_m = 0;    // ****** mod flag set failed to compile value
-
-        pp = preprocessedSource + "ERROR";
-    }
-
-    pp = preprocessedSource;
-
-
-    printf("pre-process result + \n %s \n", preprocessedSource.c_str());
-    */
-
-    // !!!!!!!!!!!!!!!!!!!!!! glsl program testing !!!!!!!!!!!!!!!!!!!!!!!
-/*
-        std::string vert_shader = "vs.glsl";
-        std::string frag_shader = "fs.glsl";
-
-        shader_format_class sf;
-
-        if (!sf.define_shader_to_compile(shader_type_enum::vertex, "vs.glsl")) {
-            printf("vertex shader fail\n");
-            //exit(0);
-        }
-
-        if (!sf.define_shader_to_compile(shader_type_enum::fragment, "fs.glsl")) {
-            printf("fragment shader fail\n");
-            //exit(0);
-        }
-
-        sf.float_uniforms.add_uniform("test_uv_float", application_default_shader_variable_type_enum::Float1);
-
-        sf.add_uniform("test_uv_float_t2", application_default_shader_variable_type_enum::Float1);
-        glm::vec2 glm_vec2; glm_vec2 = { 3.67,1.3346 };
-        sf.add_uniform("test_uv_vec2", application_default_shader_variable_type_enum::Floatv2);
-
-        printf("float varaibles size : %i\n", sf.float_uniforms.uniforms.size());
-
-        for (int i = 0; i < sf.float_uniforms.uniforms.size(); i++) {
-            printf("user uniform : %i : %s  : %f \n", i, sf.float_uniforms.uniforms[i].name.c_str(),sf.float_uniforms.uniforms[i].value);
-        }
-
-        for (int i = 0; i < sf.vec2_uniforms.uniforms.size(); i++) {
-            glm::vec2 gv2 = sf.vec2_uniforms.get_value(i);
-            printf("user uniform : %i : %s  : %f  : %f\n", i, sf.vec2_uniforms.uniforms[i].name.c_str(), gv2.x, gv2.y);
-        }
-
-        shader_class shader2;
-
-        //GLuint shader_id = shader2.create_shader_program(vert_shader, "", frag_shader);
-        GLuint shader_id = shader2.create_glsl_shader_program(sf);
-
-        if (shader_id > 0) {
-            printf("Compile Shader successful\n");
-        }else{
-            printf("Compile Shader not successful\n");
-            printf("compile log \n %s \n", shader2.compile_log.c_str());
-        }
-
-        //printf("vs :: %s \n", sf.vertex_shader_source_code.c_str());
-        //printf("fs :: %s \n", sf.fragment_shader_source_code.c_str());
-   */
-//***** END Testing Only *******
-
-
-        //current_selected_entity_type_id = new id_type;
-        //current_selected_entity_id      = new id_type;
-        //*current_selected_entity_type_id = -1;
-        //*current_selected_entity_id      = -1;
 
         selected_node = NULL;
 
@@ -176,136 +78,43 @@ public:
         scene_manager->log_panel = log_panel;
         scene_graph_manager      = &scene_manager->scene_graph_manager;
 
+        // Define scene entity objects category data base
+        scene_entities_db_manager = &scene_manager->entities_manager;
+        define_entity_db_categories(scene_entities_db_manager);
+
+        // Define scene entity render objects category data base
+        render_objects_manager = &scene_manager->render_objects_manager;
+        define_render_object_categories(render_objects_manager);
+
         outliner_panel.outliner_manager.scene_manager = scene_manager;
-        //outliner_panel.outliner_manager.current_selected_entity_type_id = current_selected_entity_type_id;//*****
-        //outliner_panel.outliner_manager.current_selected_node_id        = current_selected_entity_id;     //*****
+
+        // Define outliner import/export functions for each object category data base
+        outliner_import_export_manager = &outliner_panel.outliner_manager.outliner_import_export_manager;
+        define_outliner_import_export_managers(outliner_import_export_manager);
 
         parameter_panel.scene_manager = scene_manager;
         parameter_panel.log_panel     = log_panel;
-        //parameter_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the paramater panel*****
-        //parameter_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the paramater panel*****
 
         scene_view          = new scene_viewer_class(scene_graph_manager);
 
         //scene_manager = std::make_unique<scene_manager_class>(); // Just too problematic to work with
 
-/*
-        // ***
-        // Test render object(s)
-            if (!scene_graph_manager->add_scene_entity_render_object(0)) {
-                printf("main window : not created\n");
-               
-            }else {
-                printf("main window : created\n");
 
-                scene_node_class <render_object_class> *test_mesh = scene_graph_manager->get_scene_entity_render_object(0);
-                if (test_mesh == NULL) {
-                    printf("main window : test_mesh == NULL\n");
-                }
-                else {
-                    printf("main window : test_mesh != NULL\n");
-                    mesh = new mesh_class;
-                    test_mesh->scene_graph_object.scene_object_class.geometry = mesh;
-                   // test_mesh->scene_graph_object.scene_object_class.universal_shader_variables = scene_view->universal_shader_variables;
-                    // define shaders and dynamic shader variables here
-                    shader_parameter_variable_struct_type v1, v2, v3;
-                    v1.variable_name = "roughness"; v1.value = 0.2f;
-                    v2.variable_name = "metallic"; v2.value = 0.1f;
-                    v3.variable_name = "ao"; v3.value = 1.0f;
-                    test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v1);
-                    test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v2);
-                    test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v3);
-
-                    if (!test_mesh->scene_graph_object.scene_object_class.geometry->load("cube.fbx",0.0))
-                        printf("main window : mesh not loaded\n");
-                    else {
-
-                        printf("main window : mesh loaded %i\n", test_mesh->scene_graph_object.scene_object_class.geometry->number_vertices);
-                        printf("main window : mesh loadedAAA %i\n", test_mesh->scene_graph_object.scene_object_class.geometry->vertex_indices.size());
-
-                        test_mesh->scene_graph_object.scene_object_class.geometry->geometry_type = geometry_type_enum::triangles;
-
-                        int shader_id = shader_db_manager.shader.create_shader_program("shaders/vs.shader", "", "shaders/fs_pbr.shader");
-                        if (shader_id < 0)
-                            printf("main window : shader program not created\n");
-                        else {
-                            printf("main window : shader program created : %i\n", shader_id);
-
-                            test_mesh->scene_graph_object.scene_object_class.shader_material.shader_program_id = shader_id;
-                        }//shader program created
-                    }//mesh loaded
-                }//test_mesh != NULL
-            }
-*/
-        // ***
-/*
-            if (!scene_graph_manager->add_scene_entity_render_object(1)) {
-                printf("main window2 : not created\n");
-
-            }
-            else {
-                printf("main window2 : created\n");
-
-                scene_node_class <render_object_class> *test_mesh2 = scene_graph_manager->get_scene_entity_render_object(1);
-                if (test_mesh2 == NULL) {
-                    printf("main window2 : test_mesh == NULL\n");
-                }
-                else {
-                    printf("main window 2: test_mesh != NULL\n");
-                    mesh = new mesh_class;
-                    test_mesh2->scene_graph_object.scene_object_class.geometry = mesh;
-                   // test_mesh2->scene_graph_object.scene_object_class.universal_shader_variables = scene_view->universal_shader_variables;
-                    // define shaders and dynamic shader variables here
-                    shader_parameter_variable_struct_type v1, v2, v3;
-                    v1.variable_name = "roughness"; v1.value = 0.2f;
-                    v2.variable_name = "metallic"; v2.value = 1.0f;
-                    v3.variable_name = "ao"; v3.value = 1.0f;
-                    test_mesh2->scene_graph_object.scene_object_class.shader_material.variables.push_back(v1);
-                    test_mesh2->scene_graph_object.scene_object_class.shader_material.variables.push_back(v2);
-                    test_mesh2->scene_graph_object.scene_object_class.shader_material.variables.push_back(v3);
-
-                    if (!test_mesh2->scene_graph_object.scene_object_class.geometry->load("cube.fbx",2.0f))
-                        printf("main window2 : mesh not loaded\n");
-                    else {
-
-                        printf("main window2 : mesh loaded %i\n", test_mesh2->scene_graph_object.scene_object_class.geometry->number_vertices);
-                        printf("main window2 : mesh loadedAAA %i\n", test_mesh2->scene_graph_object.scene_object_class.geometry->vertex_indices.size());
-
-                        test_mesh2->scene_graph_object.scene_object_class.geometry->geometry_type = geometry_type_enum::triangles;
-
-                        int shader_id = shader_db_manager.shader.create_shader_program("shaders/vs.shader", "", "shaders/fs_pbr.shader");
-                        if (shader_id < 0)
-                            printf("main window2 : shader program not created\n");
-                        else {
-                            printf("main window2 : shader program created : %i\n", shader_id);
-
-                            test_mesh2->scene_graph_object.scene_object_class.shader_material.shader_program_id = shader_id;
-                        }//shader program created
-                    }//mesh loaded
-                }//test_mesh != NULL
-            }
-*/
 
         property_panel.log_panel                  = log_panel;
         property_panel.openGL_context             = render_context;
         property_panel.scene_viewer               = scene_view;
         property_panel.scene_manager              = scene_manager;
         property_panel.universal_shader_variables = scene_view->universal_shader_variables;
-        //property_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the property panel ******
-        //property_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the property panel******
-        
         
         node_editor_panel.log_panel     = log_panel;
         node_editor_panel.scene_manager = scene_manager; //******
-        //node_editor_panel.current_selected_object_type_id = current_selected_entity_type_id;// define user selected entity data type to the paramater panel*****
-        //node_editor_panel.current_selected_object_id      = current_selected_entity_id;       // define user selected entity to the paramater panel*****
-        node_editor_panel.nodes_context                   = ImNodes::GetCurrentContext();
+        node_editor_panel.nodes_context = ImNodes::GetCurrentContext();
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         // Set up the fonts file to use to display text 
         // and the awesome icon font file to display icons since ImGui is not designed
         // to have icon images imported and displayed as part of the GUI !!!!!!!
         ImFontConfig cfg;
-        //memset(&cfg, 0, sizeof(ImFontConfig));
         cfg.OversampleH = 3.;
         cfg.OversampleV = 1.;
         cfg.PixelSnapH = true;
@@ -510,6 +319,11 @@ private:
     scene_graph_manager_class *scene_graph_manager = NULL;
     scene_manager_class       *scene_manager       = NULL;
 
+    scene_entities_db_manager_class    *scene_entities_db_manager; // *****
+    scene_render_objects_manager_class *render_objects_manager; // *****
+
+    outliner_import_export_manager_class *outliner_import_export_manager; // *****
+
     universal_shader_variables_struct_type *universal_shader_variables = NULL;
 
     export_voxel_geometry_class       export_voxel_geometry;
@@ -519,6 +333,213 @@ private:
     //mesh_class *mesh;
 
     shader_db_manager_class shader_db_manager;
+
+
+    void define_entity_db_categories(scene_entities_db_manager_class *scene_entities_db_manager) {
+        // Define scene entity objects data base
+
+        if (scene_entities_db_manager == NULL) return ;
+
+        // Define voxel entity db
+        scene_entities_db_manager->define_new_entity_category(ENTITY_CATEGORY_HCP_VOXEL);
+
+        int index = scene_entities_db_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+        if (index < 0) {
+            printf("hcp_voxel_objects index <0 NULL\n");
+        }
+        else {
+            printf("hcp_voxel_objects >= 0\n");
+
+            voxel_hcp_scene_objects_class* voxel_hcp_scene_objects = new voxel_hcp_scene_objects_class;
+            if (voxel_hcp_scene_objects == NULL)
+                printf("voxel_hcp_scene_objects == NULL\n");
+            else {
+                printf("voxel_hcp_scene_objects != NULL\n");
+
+                voxel_hcp_scene_objects->objects_category_id = scene_entities_db_manager->scene_objects[index]->objects_category_id;
+
+                scene_entities_db_manager->scene_objects[index] = voxel_hcp_scene_objects;
+            }
+
+            // Following for testing only :: Delete or comment out when not needed
+/*
+            scene_entities_db_manager.add_new_entity(0, ENTITY_CATEGORY_HCP_VOXEL);
+            voxel_hcp_object_class* voxel_hcp_object = (voxel_hcp_object_class*)(scene_entities_db_manager.get_entity_of_category(0, ENTITY_CATEGORY_HCP_VOXEL));
+            if (voxel_hcp_object == NULL)
+                printf("voxel_hcp_object == NULL\n");
+            else
+                printf("voxel_hcp_object != NULL ::  voxel hcp object of id : %i\n", voxel_hcp_object->object_id);
+*/
+        }
+
+        // Define hex surface entity db
+        scene_entities_db_manager->define_new_entity_category(ENTITY_CATEGORY_HEX_SURF);
+        index = scene_entities_db_manager->get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
+
+        if (index < 0) {
+            printf("hex_surface_scene_objects index <0 NULL\n");
+        }
+        else {
+            printf("hex_surface_scene_objects >= 0 : %i\n", index);
+
+            hex_surface_scene_objects_class* hex_surface_scene_objects = new hex_surface_scene_objects_class;
+            if (hex_surface_scene_objects == NULL)
+                printf("hex_surface_scene_objects == NULL\n");
+            else {
+                printf("hex_surface_scene_objects != NULL\n");
+
+                hex_surface_scene_objects->objects_category_id = scene_entities_db_manager->scene_objects[index]->objects_category_id;
+
+                scene_entities_db_manager->scene_objects[index] = hex_surface_scene_objects;
+            }
+
+            // Following for testing only :: Delete or comment out when not needed
+
+        }
+
+        // ADD OTHER DATA CATEGORY TYPES BELOW
+
+    }
+
+    void define_render_object_categories(scene_render_objects_manager_class *render_objects_manager) {
+
+        if (render_objects_manager == NULL) return;
+
+        // Define voxel entity db
+        render_objects_manager->define_new_entity_render_category(ENTITY_CATEGORY_HCP_VOXEL);
+
+        int index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+        if (index < 0) {
+            printf("hcp voxel render objects index <0 NULL\n");
+        }
+        else {
+            printf("hcp voxel render objects index >= 0\n");
+
+            voxel_hcp_render_object_class* voxel_hcp_scene_render_object = new voxel_hcp_render_object_class;
+            if (voxel_hcp_scene_render_object == NULL)
+                printf("voxel_hcp_scene_render_object == NULL\n");
+            else {
+                printf("voxel_hcp_scene_render_object != NULL\n");
+
+                voxel_hcp_scene_render_object->objects_category_id = render_objects_manager->scene_render_objects[index]->objects_category_id;
+                voxel_hcp_scene_render_object->log_panel = log_panel;
+
+                render_objects_manager->scene_render_objects[index] = voxel_hcp_scene_render_object;
+            }
+
+            // Following for testing only :: Delete or comment out when not needed
+
+            //scene_entities_db_manager.add_new_entity(0, ENTITY_CATEGORY_HCP_VOXEL);
+/*            index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+            if (index < 0) {
+                printf("render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL) < 0");
+            } else {
+                voxel_hcp_render_object_class* voxel_hcp_scene_render_object2 = (voxel_hcp_render_object_class*)(render_objects_manager->scene_render_objects[index]);
+                if (voxel_hcp_scene_render_object2 == NULL)
+                    printf("voxel_hcp_scene_render_object2 == NULL\n");
+                else
+                    printf("voxel_hcp_scene_render_object2 != NULL :: category  of id %i \n", ENTITY_CATEGORY_HCP_VOXEL);
+            }
+*/
+        }
+
+        // Define voxel entity db
+        render_objects_manager->define_new_entity_render_category(ENTITY_CATEGORY_HEX_SURF);
+
+        index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
+
+        if (index < 0) {
+            printf("hex_surface render objects index <0 NULL\n");
+        }
+        else {
+            printf("hex_surface render objects index >= 0\n");
+
+            hex_surface_render_object_class* hex_surface_scene_render_object = new hex_surface_render_object_class;
+            if (hex_surface_scene_render_object == NULL)
+                printf("voxel_hcp_scene_render_object == NULL\n");
+            else {
+                printf("voxel_hcp_scene_render_object != NULL\n");
+
+                hex_surface_scene_render_object->objects_category_id = render_objects_manager->scene_render_objects[index]->objects_category_id;
+                hex_surface_scene_render_object->log_panel = log_panel;
+
+                render_objects_manager->scene_render_objects[index] = hex_surface_scene_render_object;
+            }
+
+            // Following for testing only :: Delete or comment out when not needed
+
+            //scene_entities_db_manager.add_new_entity(0, ENTITY_CATEGORY_HCP_VOXEL);
+/*            index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+            if (index < 0) {
+                printf("render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL) < 0");
+            } else {
+                voxel_hcp_render_object_class* voxel_hcp_scene_render_object2 = (voxel_hcp_render_object_class*)(render_objects_manager->scene_render_objects[index]);
+                if (voxel_hcp_scene_render_object2 == NULL)
+                    printf("voxel_hcp_scene_render_object2 == NULL\n");
+                else
+                    printf("voxel_hcp_scene_render_object2 != NULL :: category  of id %i \n", ENTITY_CATEGORY_HCP_VOXEL);
+            }
+*/
+        }
+
+    }
+
+    void define_outliner_import_export_managers(outliner_import_export_manager_class *outliner_import_export_manager) {
+
+        if (outliner_import_export_manager == NULL) return;
+
+        // Define voxel import/export functions
+        outliner_import_export_manager->define_new_import_export_category(ENTITY_CATEGORY_HCP_VOXEL);
+
+        int index = outliner_import_export_manager->get_import_export_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+        if (index < 0) {
+            printf("import_export_category voxel index <0 NULL\n");
+        }
+        else {
+            printf("import_export_category voxel >= 0\n");
+
+            hcp_voxel_import_export_class* hcp_voxel_import_export = new hcp_voxel_import_export_class;
+            if (hcp_voxel_import_export == NULL)
+                printf("hcp_voxel_import_export == NULL\n");
+            else {
+                printf("hcp_voxel_import_export != NULL\n");
+
+                hcp_voxel_import_export->import_export_object_category_id = outliner_import_export_manager->import_export_objects[index]->import_export_object_category_id;
+
+                outliner_import_export_manager->import_export_objects[index] = hcp_voxel_import_export;
+            }
+        }
+
+        // Define hex surface import/export functions
+        outliner_import_export_manager->define_new_import_export_category(ENTITY_CATEGORY_HEX_SURF);
+
+        index = outliner_import_export_manager->get_import_export_category_index(ENTITY_CATEGORY_HEX_SURF);
+
+        if (index < 0) {
+            printf("import_export_category hex surface index <0 NULL\n");
+        }
+        else {
+            printf("import_export_category hex surface >= 0\n");
+
+            hex_surface_import_export_class* hex_surface_import_export = new hex_surface_import_export_class;
+            if (hex_surface_import_export == NULL)
+                printf("hex surface_import_export == NULL\n");
+            else {
+                printf("hex surface_import_export != NULL\n");
+
+                hex_surface_import_export->import_export_object_category_id = outliner_import_export_manager->import_export_objects[index]->import_export_object_category_id;
+
+                outliner_import_export_manager->import_export_objects[index] = hex_surface_import_export;
+            }
+        }
+
+    }
+
 
     // ################### Voxel specifics ####################
 
@@ -530,9 +551,10 @@ private:
             return;
         }
 
-        voxel_hcp_scene_objects_class & voxel_hcp_objects = scene_manager->entities_manager.voxel_hcp_scene_objects;
+        //voxel_hcp_scene_objects_class &voxel_hcp_objects = scene_manager->entities_manager.voxel_hcp_scene_objects;
+        voxel_hcp_scene_objects_class *voxel_hcp_objects = get_voxel_hcp_scene_objects();
 
-        if (voxel_hcp_objects.size() < 1) {
+        if (voxel_hcp_objects->size() < 1) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel surface geometry :: Cannot perform voxel volume to surface function:: No entity data in scene to export\n");
             vwDialogs::message_box("ERROR : Export voxel surface geometry", "Cannot export voxel point surface to file::No entity data in scene to export");
             return ;
@@ -542,9 +564,9 @@ private:
 
         switch (selection) {
 			//case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, *outliner_panel.outliner_manager.current_selected_node_id);break;
-			case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, globalc::get_current_selected_entity_id());break;
-			case ACTIVE_EXPORT	 : voxel_center_points_active(voxel_hcp_objects);  break;
-			case ALL_EXPORT      : voxel_center_points_all(voxel_hcp_objects);	   break;
+			case SELECTED_EXPORT : voxel_center_points_selected(*voxel_hcp_objects, globalc::get_current_selected_entity_id());break;
+			case ACTIVE_EXPORT	 : voxel_center_points_active(*voxel_hcp_objects);  break;
+			case ALL_EXPORT      : voxel_center_points_all(*voxel_hcp_objects);	   break;
 
 		}
     }
@@ -670,8 +692,12 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point dat to file:: Scene Manager is undefined\n");
         }
 
-        //export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection,*outliner_panel.outliner_manager.current_selected_node_id);
-        export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection, globalc::get_current_selected_entity_id());
+        //int i = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+        //voxel_hcp_scene_objects_class *voxel_hcp_entities_to_export = dynamic_cast<voxel_hcp_scene_objects_class *>(scene_manager->entities_manager.scene_objects[i]);
+        voxel_hcp_scene_objects_class *voxel_hcp_entities_to_export = get_voxel_hcp_scene_objects();
+        if (voxel_hcp_entities_to_export == NULL) return;
+        export_voxel_geometry.export_voxel_center_points_ply(*voxel_hcp_entities_to_export,export_selection, globalc::get_current_selected_entity_id());
+        //export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection, globalc::get_current_selected_entity_id());
     }
 
     void  export_voxels_point_surface_data(int export_selection) {
@@ -679,8 +705,10 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Scene Manager is undefined\n");
         }
 
-        //export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
-        export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        voxel_hcp_scene_objects_class* voxel_hcp_entities_to_export = get_voxel_hcp_scene_objects();
+        if (voxel_hcp_entities_to_export == NULL) return;
+        export_voxel_geometry.export_voxel_point_surface_data_ply(*voxel_hcp_entities_to_export, export_selection, globalc::get_current_selected_entity_id());
+        //export_voxel_geometry.export_voxel_point_surface_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
     void  export_voxels_surface_face_data(int export_selection) {
@@ -688,10 +716,19 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Scene Manager is undefined\n");
         }
 
-        //export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
-        export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        voxel_hcp_scene_objects_class* voxel_hcp_entities_to_export = get_voxel_hcp_scene_objects();
+        if (voxel_hcp_entities_to_export == NULL) return;
+        export_voxel_geometry.export_voxel_surface_faces_data_ply(*voxel_hcp_entities_to_export, export_selection, globalc::get_current_selected_entity_id());
+        //export_voxel_geometry.export_voxel_surface_faces_data_ply(scene_manager->entities_manager.voxel_hcp_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
+    voxel_hcp_scene_objects_class* get_voxel_hcp_scene_objects() {
+        int i = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+        if (i < 0) return NULL;
+
+        voxel_hcp_scene_objects_class* voxel_hcp_entities = dynamic_cast<voxel_hcp_scene_objects_class*>(scene_manager->entities_manager.scene_objects[i]);
+        return voxel_hcp_entities;
+    }
 
     // ################### Hex Surface specifics ####################
 
@@ -700,8 +737,10 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export hex surface point geometry :: Cannot export hex surface point dat to file:: Scene Manager is undefined\n");
         }
 
-        //export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
-        export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        hex_surface_scene_objects_class *hex_surface_scene_objects = get_hex_surface_scene_objects();
+        if (hex_surface_scene_objects == NULL) return;
+        export_hex_surface_geometry.export_hex_surface_center_points_ply(*hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        //export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
     void export_hex_surface_surface_face_data(int export_selection) {
@@ -709,8 +748,18 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export hex surface surface geometry :: Cannot export hex surface surface dat to file:: Scene Manager is undefined\n");
         }
 
-        //export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, *outliner_panel.outliner_manager.current_selected_node_id);
-        export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        hex_surface_scene_objects_class* hex_surface_scene_objects = get_hex_surface_scene_objects();
+        if (hex_surface_scene_objects == NULL) return;
+        export_hex_surface_geometry.export_hex_surface_faces_ply(*hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+        //export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
+    }
+
+    hex_surface_scene_objects_class *get_hex_surface_scene_objects() {
+        int i = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
+        if (i < 0) return NULL;
+
+        hex_surface_scene_objects_class *hex_surface_scene_objects = dynamic_cast<hex_surface_scene_objects_class*>(scene_manager->entities_manager.scene_objects[i]);
+        return hex_surface_scene_objects;
     }
 
 };

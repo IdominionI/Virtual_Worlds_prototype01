@@ -226,7 +226,8 @@ public:
         
         if(scene_manager == NULL) return;
 //printf("translation action 33333 %i \n",modify_node->entity_id);
-        hex_surface_object_class * hex_surface_object = scene_manager->entities_manager.get_hex_surface_entity_object(modify_node->entity_id);
+       // hex_surface_object_class * hex_surface_object = scene_manager->entities_manager.get_hex_surface_entity_object(modify_node->entity_id);
+        hex_surface_object_class *hex_surface_object = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(modify_node->entity_id, ENTITY_CATEGORY_HEX_SURF);
 //printf("translation action 4444  \n");
         if (hex_surface_object == NULL) return;
 //printf("translation action 55555  \n");

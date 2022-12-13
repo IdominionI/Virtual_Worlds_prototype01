@@ -27,7 +27,7 @@ public:
 		delete bounding_volume.geometry;
 	}
 
-	bool  active_object = false;
+	//bool  active_object = false;
 	bool  display_voxel_object_as_points = false;
 
 	bool  animate_automata = false;
@@ -35,6 +35,16 @@ public:
 	bool update_buffer = false;
 
 	float min_surface_display_value, max_surface_display_value;
+
+	void clear_shader_variables() {
+		voxel_object_data.shader_parameters.variables.clear();
+		voxel_object_data.shader_parameters.variables.shrink_to_fit();
+		voxel_object_data.shader_parameters.int_variables.clear();
+		voxel_object_data.shader_parameters.int_variables.shrink_to_fit();
+		voxel_object_data.shader_parameters.bool_variables.clear();
+		voxel_object_data.shader_parameters.bool_variables.shrink_to_fit();
+		// other variables added below
+	}
 
 	bool automata_rule_within_frame(int frame) {
 		bool is_within_animation_frame = false;
