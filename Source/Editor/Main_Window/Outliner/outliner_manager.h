@@ -729,11 +729,6 @@ private:
 
 		std::fstream stream;
 
-		// ******* Place here the object import/export classes that import/export the object data **************
-
-		hcp_voxel_import_export_class   hcp_voxel_import_export;
-		hex_surface_import_export_class hex_surface_import_export;
-
 		// *****************************************************************************************************
 
 		int open_file_stream(std::string filename) {
@@ -994,9 +989,9 @@ private:
 					return false;
 				}
 
-				object_import_export->log_panel = log_panel;
+				object_import_export->log_panel   = log_panel;
 				object_import_export->line_number = line_number;
-				object_import_export->lines = lines;
+				object_import_export->lines       = lines;
 
 //printf("Outliner Manager :: read_object_group_file 44 \n");
 				outliner_node_class *entity  = outliner_manager->add_new_entity(new_group, object_category_id);

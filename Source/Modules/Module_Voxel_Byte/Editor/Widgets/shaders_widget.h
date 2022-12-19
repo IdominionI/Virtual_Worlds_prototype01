@@ -7,6 +7,8 @@
 #include <Source/Editor/Tools/dialogs.h>
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
+#include <Source/Editor/Shader/shader_import_export.h> // ******
+
 #include <Source/Graphics_Engine/Shader/shader_parameters.h>
 
 #include "shader_variables_widget.h"

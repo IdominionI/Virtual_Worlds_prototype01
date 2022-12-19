@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "../Object/object_basis.h" // *****
 
 class scene_objects_category_class {
 public:

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Common/imgui_custom.h"
-#include "../Common/global.h" // ****
+#include "../Common/global.h"
 
 #include <Graphics_Engine/OpenGL_window/ui_context.h>
 #include <Graphics_Engine/OpenGL_window/openGL_context.h>
@@ -15,12 +15,16 @@
 #include "Panels/parameter_panel.h"
 #include "Panels/log_panel.h"
 
-#include "Panels/node_editor_panel.h"// *****
+#include "Panels/node_editor_panel.h"
 
 //#include <Source/Graphics_Engine/Geometry/mesh.h> // Testing only
 
 #include <Source/Modules/Module_Voxel_Byte/Functions/vw_voxel_exports.h>
-#include <Source/Modules/Module_hex_surface/Functions/hex_surface_exports.h>
+//#include <Source/Modules/Module_hex_surface/Functions/hex_surface_exports.h>
+
+//#include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
+//#include <Source/Modules/Module_Hex_Surface/Editor/Scene/hex_surface_scene_objects.h>
+
 // Testing only
 //#include <Graphics_Engine/Shader/shader_format.h> 
 //#include <Graphics_Engine/Shader/ShaderPreprocessor.h> 

@@ -54,17 +54,16 @@ public:
 
     // Amazing that this function works without having to specify data types from calling function !!! 
     // Seems defining data types in the derived class requires no definitions in calling this function
+
+    // Dynamic creation of vertex buffer data for vertex geometry of 2D, 3D or 4D with additional vertex data
+    // of color or normals that may or may not be included.
+    // VT1 datatype is the datatype of the vertex geometry data point
+    // VT2 datatype is the datatype of the vertex normal   data point
     template <typename VT1, typename VT2>
-    //bool create_vertex3DD_buffer(vertex3DD_class &vertices ) {// need to change this data class
     bool create_vertex3DD_buffer(vertex_basis_class<VT1, VT2> &vertices ) {// need to change this data class
         const size_t verticesSizeBytes   = vertices.mVertices.size()   * sizeof(VT1);
-        //const size_t verticesSizeBytes   = vertices.mVertices.size()   * sizeof(glm::vec4);
         const size_t colorsSizeBytes     = vertices.mColors.size()     * sizeof(glm::vec4);
 		const size_t normalsSizeBytes    = vertices.mNormals.size()    * sizeof(VT2);
-		//const size_t normalsSizeBytes    = vertices.mNormals.size()    * sizeof(glm::vec4);
-
-		//const size_t texCoords0SizeBytes = mTexCoords0.size() * sizeof(glm::vec4);
-		//const size_t texCoords1SizeBytes = mTexCoords1.size() * sizeof(glm::vec4);
 
         if (verticesSizeBytes < 1) return false;// Must have vertex location data
 
@@ -108,13 +107,13 @@ public:
         bool     valid_VT1_data_type   = false;
         bool     valid_VT2_data_type   = false;
 
-        if (typeid(VT1) == typeid(glm::vec2)) { number_of_VT1_components = 2; valid_VT1_data_type = true; }
-        if (typeid(VT1) == typeid(glm::vec3)) { number_of_VT1_components = 3; valid_VT1_data_type = true; }
-        if (typeid(VT1) == typeid(glm::vec4)) { number_of_VT1_components = 4; valid_VT1_data_type = true; }
+        if (typeid(VT1) == typeid(glm::vec2)) { number_of_VT1_components = 2; valid_VT1_data_type = true; } // Have a vertex of 2D
+        if (typeid(VT1) == typeid(glm::vec3)) { number_of_VT1_components = 3; valid_VT1_data_type = true; } // Have a vertex of 3D
+        if (typeid(VT1) == typeid(glm::vec4)) { number_of_VT1_components = 4; valid_VT1_data_type = true; } // Have a vertex of 4D
 
-        if (typeid(VT2) == typeid(glm::vec2)) { number_of_VT2_components = 2; valid_VT2_data_type = true; }
-        if (typeid(VT2) == typeid(glm::vec3)) { number_of_VT2_components = 3; valid_VT2_data_type = true; }
-        if (typeid(VT2) == typeid(glm::vec4)) { number_of_VT2_components = 4; valid_VT2_data_type = true; }
+        if (typeid(VT2) == typeid(glm::vec2)) { number_of_VT2_components = 2; valid_VT2_data_type = true; } // Have normal data of 2D
+        if (typeid(VT2) == typeid(glm::vec3)) { number_of_VT2_components = 3; valid_VT2_data_type = true; } // Have normal data of 2D
+        if (typeid(VT2) == typeid(glm::vec4)) { number_of_VT2_components = 4; valid_VT2_data_type = true; } // Have normal data of 2D
 
         if (!valid_VT1_data_type || !valid_VT2_data_type) {
             // Error message here !!!

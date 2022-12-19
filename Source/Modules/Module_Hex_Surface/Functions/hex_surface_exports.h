@@ -10,6 +10,8 @@
 
 #include <Source/Graphics_Engine/Viewer/scene_viewer.h>
 
+#include "../Editor/Scene/hex_surface_scene_objects.h" // *****
+
 /*
 	export_hex_surface_geometry_class
 
