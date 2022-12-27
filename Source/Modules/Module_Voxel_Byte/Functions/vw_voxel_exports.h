@@ -513,7 +513,7 @@ public:
 		return true;
 	}
 private:
-	std::string endl = "\n";
+	//std::string endl = "\n";
 
 	// --------------- Export voxel point cloud ------------------------
 

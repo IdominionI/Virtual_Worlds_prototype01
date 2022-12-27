@@ -80,7 +80,6 @@ printf("scene_entities_db_manager2_class : add_new_entity :: %i : %i  \n", scene
 		return false;
 	}
 
-	//void *get_entity_of_category(id_type entity_id, id_type entity_category_id){
 	object_basis_class *get_entity_of_category(id_type entity_id, id_type entity_category_id){
 		if (entity_category_id > -1 && entity_id > -1) {
 			int index = get_objects_of_category_index(entity_category_id);

@@ -395,17 +395,13 @@ private:
 		stream << DATA_BLOCK_START << endl;
 
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.default_vertex_shader_file_pathname.string() << endl;
-		//stream << voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_name << endl;
-		stream << voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_pathname.string() << endl; // **** not sure is needed
+		stream << voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_pathname.string() << endl;
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.default_geometry_shader_file_pathname.string() << endl;
-		//stream << voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_name << endl;
-		stream << voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_pathname.string() << endl;// **** not sure is needed
+		stream << voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_pathname.string() << endl;
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.default_point_shader_file_pathname.string() << endl;
-		//stream << voxel_hcp_object->voxel_object_data.shader_parameters.point_geometry_shader_file_name << endl;
-		stream << voxel_hcp_object->voxel_object_data.shader_parameters.point_shader_file_pathname.string() << endl;// **** not sure is needed
+		stream << voxel_hcp_object->voxel_object_data.shader_parameters.point_shader_file_pathname.string() << endl;
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.default_fragment_shader_file_pathname.string() << endl;
-		//stream << voxel_hcp_object->voxel_object_data.shader_parameters.fragment_shader_file_name << endl;
-		stream << voxel_hcp_object->voxel_object_data.shader_parameters.fragment_shader_file_pathname.string() << endl;// **** not sure is needed
+		stream << voxel_hcp_object->voxel_object_data.shader_parameters.fragment_shader_file_pathname.string() << endl;
 
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_pathname.string() << endl;
 		stream << voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_pathname.string() << endl;
@@ -456,9 +452,6 @@ public :
 			return false;}
 
 //printf("hcp_voxel_import_export_class::read_voxel_object_file 22 \n", line_number);
-		// !!!!!!!!!!!!!!!!!!!!! FOR FUTURE MODIFICATION AND UPGRADE !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// if(category == HCP_VOXEL_CATEGORY) read_hcp_voxel_component_data();
-		// other entity categories 
 
 //printf("hcp_voxel_import_export_class::read_voxel_object_file 33 : %i \n", line_number);
 
@@ -559,8 +552,7 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_name = line;
-		voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_pathname = line; // **** not sure is needed
+		voxel_hcp_object->voxel_object_data.shader_parameters.vertex_shader_file_pathname = line;
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
@@ -568,8 +560,7 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_name = line;
-		voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_pathname = line; // **** not sure is needed
+		voxel_hcp_object->voxel_object_data.shader_parameters.geometry_shader_file_pathname = line;
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
@@ -577,8 +568,7 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//voxel_hcp_object->voxel_object_data.shader_parameters.point_geometry_shader_file_name = line;
-		voxel_hcp_object->voxel_object_data.shader_parameters.point_shader_file_pathname = line; // **** not sure is needed
+		voxel_hcp_object->voxel_object_data.shader_parameters.point_shader_file_pathname = line;
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
@@ -586,7 +576,6 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//voxel_hcp_object->voxel_object_data.shader_parameters.fragment_shader_file_name = line;
 		voxel_hcp_object->voxel_object_data.shader_parameters.fragment_shader_file_pathname = line; // **** not sure is needed
 
 //printf( "hcp_voxel_import_export_class::define_voxel_render_paramters 2222 : %i \n", line_number);

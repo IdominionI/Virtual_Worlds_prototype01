@@ -26,24 +26,14 @@
 	values bounded by <>_BLOCK_START and <>_BLOCK_END flags.
 */
 
-//class hex_surface_import_export_class {
 class hex_surface_import_export_class : public object_import_export_basis_class {
 public:
-	//int line_number = 0;
-	//std::vector<std::string> lines;
-
-	//log_panel_class* log_panel = NULL;
-
-	//std::fstream stream;
-
 	std::string filename_to_write;
 
 	std::string input_line;
 
 	#define endl "\n"
 
-
-	//******
 	void initialise(std::string _filename_to_write, log_panel_class* _log_widget) {
 		filename_to_write = _filename_to_write;
 		log_panel = _log_widget;
@@ -90,8 +80,6 @@ public:
 	virtual bool export_object_data_to_file(object_basis_class* object, id_type category) {
 		return export_hex_surface_object_data_to_file(dynamic_cast<hex_surface_object_class*>(object), category);
 	}
-
-	//******
 
 	void initialise_hex_surface_export(std::string _filename_to_write, log_panel_class *_log_widget = NULL) {
 		filename_to_write = _filename_to_write;
@@ -255,7 +243,6 @@ private:
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "in export_hex_surface_texture_parameters()");
 //}
 
-		//shader_parameters_struct_type	shader_parameters =   hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters;
 		material_struct_type	shader_parameters =   hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters;
 
 		stream << DATA_BLOCK_START << endl;
@@ -383,13 +370,10 @@ private:
 		stream << DATA_BLOCK_START << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_vertex_shader_file_pathname.string() << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname.string() << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_point_shader_file_pathname.string() << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname.string() << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.default_fragment_shader_file_pathname.string() << endl;
-		//stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name << endl;
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname.string() << endl;
 
 		stream << hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname.string() << endl;
@@ -504,7 +488,6 @@ private:
 	bool define_hex_surface_general_data(hex_surface_object_class *hex_surface_object, id_type &category) {
 		line_number++;
 		if (lines.size() < line_number + 3) {
-			//vwDialogs::message_box("Import voxel generation model", "Import voxel generation model ERROR : \n missing parameter data for filename and matrix definitions.");
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Object data file is incorrectly defined. Cannot load file  hex seruface general data\n");
 			return false;
 		}
@@ -556,7 +539,6 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_name = line;
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.vertex_shader_file_pathname = line;
 
 		line_number++;
@@ -565,7 +547,6 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_geometry_shader_file_name = line;
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.point_shader_file_pathname = line;
 
 		line_number++;
@@ -574,7 +555,6 @@ private:
 
 		line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_name = line;
 		hex_surface_object->hex_surface_object_data.hex_surface_shader_parameters.fragment_shader_file_pathname = line;
 
 //printf( "hcp_voxel_import_export_class::define_voxel_render_paramters 2222 : %i \n", line_number);
@@ -647,7 +627,6 @@ private:
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.invocation = std::stoi(lines[line_number]); line_number++;
 
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.resolution_step      = std::stof(lines[line_number]); line_number++;
-		//hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.generation_threshold = std::stof(lines[line_number]); line_number++;
 
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value = std::stof(lines[line_number]); line_number++;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value = std::stof(lines[line_number]); line_number++;

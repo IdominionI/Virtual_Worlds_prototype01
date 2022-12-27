@@ -56,7 +56,6 @@ public:
 		float x_pos = 10.0f, y_pos = 260.0f;
 
 		text("Expression : ", x_pos, y_pos);
-		//if (ex_button(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
 		if (ex_button(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
 			get_expression_file();
 
@@ -100,26 +99,6 @@ public:
 		text("Resolution Step", x_pos + 30, y_pos);
 		float_input("###hgresstep", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.resolution_step, x_pos + 160, y_pos, 75.0f);
 
-		//y_pos += 25;
-		//text("Treshold", x_pos + 30, y_pos);
-		//float_input("###gthres", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.generation_threshold, x_pos + 160, y_pos, 75.0f);
-/*
-		y_pos += 30;
-		ImGui::SetCursorPosX(x_pos + 120);
-		ImGui::SetCursorPosY(y_pos);
-		if(ImGui::Checkbox("Display as points###hgdisplpts", &display_as_points)) {
-			change_hex_display();
-		}
-
-		y_pos += 30;
-		text("Hex Scale", x_pos+130, y_pos);
-
-		y_pos += 20;
-
-		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, hex_scale_value, 50.0f)) {
-			update_hex_size();// needs testing 
-		}
-*/
 		y_pos += 20;
 		text("Hex Generattion Variables", x_pos + 50, y_pos);
 
@@ -154,24 +133,7 @@ public:
 			load_generation_parameters();
 
 	}
-/*
-	void change_hex_display() {
-			scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
-			if (scene_hex_surface_object != NULL && scene_manager != NULL) {
-				scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.use_default_point_shader = display_as_points;
-
-				application_default_shader_uniform_variables_struct_type uniform_variable;
-				int displ_as_points = display_as_points;
-				uniform_variable.type = application_default_shader_variable_type_enum::Int1; uniform_variable.name = "display_as_points"; uniform_variable.value0 = &displ_as_points;
-				scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-
-				scene_manager->update_shader(scene_hex_surface_object, ENTITY_CATEGORY_HEX_SURF);
-
-				update_hex_size();// *****
-			}
-	}
-*/
 	void perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (hex_surface_generator_parameter_variable_struct_type &variable : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables) {
@@ -300,37 +262,6 @@ public:
 		}
 	}
 
-//	void update_hex_size() {
-//		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
-
-		// This method of using a unversal array of unform variables that can be used between classes or modules or funtions etc has been found to be no
-		// better than just a direct use of updating uniforms through manual manipulation of widgets that change uniform variable values !!!!
-/*		if (scene_hex_surface_object != NULL) {
-			int hex_size_index = scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.get_default_shader_uniform_variable("hexSize");
-			if (hex_size_index < 0) {
-				application_default_shader_uniform_variables_struct_type uniform_variable;
-				float *vox_size = new float;
-				*vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size* hex_scale_value;
-				uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = vox_size;
-				scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.default_shader_uniform_variables.push_back(uniform_variable);
-printf("update_hex_size : created hexSize\n");
-			} else {
-				float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-				*(float*)scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.default_shader_uniform_variables[hex_size_index].value0 = vox_size;
-printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_size, *(float*)scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.default_shader_uniform_variables[hex_size_index].value0);
-				
-			}
-		}
-*/
-
-//		if (scene_hex_surface_object != NULL) {
-//			application_default_shader_uniform_variables_struct_type uniform_variable;
-//			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-//			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "hexSize"; uniform_variable.value0 = &vox_size;
-//			scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-//		}
-//	}
-
 	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
 	void test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_data_class hex_surface_object_data) {
 		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
@@ -363,7 +294,6 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 private:
 	int invocation = 4;
 
-	//float hex_scale_value = 1.0f;
 	float min_vscale = 0.001f, max_vscale = 1.000f;
 
 	struct Funcs { static bool ItemGetter(void* data, int n, const char** out_str) { *out_str = ((const char**)data)[n]; return true; } };
@@ -461,7 +391,7 @@ printf("hex surface : Expression file button clicked");// replace with get file 
 	}
 
 	void clear_variables() {
-		//printf("Clear Variables clicked");// replace with clear variables
+//printf("Clear Variables clicked");// replace with clear variables
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.int_variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.bool_variables.clear();

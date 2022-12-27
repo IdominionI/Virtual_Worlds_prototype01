@@ -209,9 +209,6 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_interaction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Editor\Common\definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -537,6 +534,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Main_Window\Outliner\outliner_import_export_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Animation\animation_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Animation\scene_animation_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Animation\scene_animation_functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

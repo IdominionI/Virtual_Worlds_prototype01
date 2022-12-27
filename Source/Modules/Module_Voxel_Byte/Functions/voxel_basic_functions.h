@@ -129,12 +129,12 @@ struct surface_vertices_struct_type {
 	index_data_type voxel_index;
 	index_data_type vertex_id;
 };
-// ***** /*
+
 struct surface_faces_struct_type {
 	index_data_type face_id;
 	glm::ivec3    voxel_index;
 };
-// **** */
+
 struct surface_vertices_normal_struct_type {
 	index_data_type voxel_index;
 	glm::vec3       voxel_normal;
@@ -584,7 +584,6 @@ public:
 		int number_vertices = normals.size();
 		for (int i = 0; i < number_vertices; i++)
 			glm::normalize(normals[i]);
-			//normals[i].normalize();
 	}
 
 	bool neighbour_is_voxel_surface(glm::ivec3 voxel_coordinate, int neighbour) {

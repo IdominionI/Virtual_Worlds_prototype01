@@ -16,13 +16,9 @@
 #include "../../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
-//#include "generator_variables_widget.h"
-//#include "../../Compute/voxel_compute_generation.h"
-
 
 class cart_to_voxel_widget_class {
 public:
-	//generator_variables_widget_class  generator_variables_widget_class;
 	log_panel_class* log_panel = NULL;
 
 	id_type                 current_selected_entity_id = -1;  // entity id of the selected entity to display/modify
@@ -314,8 +310,6 @@ private:
 
 	string_type   ply_file_pathname  = "";
 	string_type   ply_file_name      = "...";
-	//string_type   expr_file_pathname = "";
-	//string_type   expr_file_name     = "...";
 
 	float min_x = -10.0f, max_x = 10.0f;
 	float min_y = -10.0f, max_y = 10.0f;

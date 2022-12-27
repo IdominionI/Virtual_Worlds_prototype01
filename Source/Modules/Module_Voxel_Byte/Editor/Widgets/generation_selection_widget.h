@@ -10,6 +10,8 @@
 #include "../../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
+#include "generator_widget.h" // *****
+
 #include "generator_variables_widget.h"
 #include "../../Compute/voxel_compute_generation.h"
 
@@ -17,10 +19,10 @@
 
 class hcp_voxel_genertion_selection_widget_class {
 public:
-	hcp_voxel_genertion_selection_widget_class() {
-	}
+	//hcp_voxel_genertion_selection_widget_class() {
+	//}
 
-	~hcp_voxel_genertion_selection_widget_class() {}
+	//~hcp_voxel_genertion_selection_widget_class() {}
 
 	log_panel_class* log_panel = NULL;
 
@@ -76,22 +78,7 @@ public:
 			display_voxel_generation_widget(voxel_hcp_object_to_execute, current_selected_entity_id);
 		else
 			display_cart_to_voxel_widget(voxel_hcp_object_to_execute, current_selected_entity_id);
-/*
-		if (ImGui::BeginTabBar("##hcp_gen_tabs", ImGuiTabBarFlags_None))
-		{
-			if (hcp_generation_type == 1 && ImGui::BeginTabItem("Cartesian##cart_to_voxel_tab")) {
-				display_cart_to_voxel_widget(voxel_hcp_object_to_execute, current_selected_entity_id);
-				ImGui::EndTabItem();
-			}
 
-			if (hcp_generation_type== 0 && ImGui::BeginTabItem("HCP Matrix##hcp_voxel_tab")) {
-				display_voxel_generation_widget(voxel_hcp_object_to_execute, current_selected_entity_id);
-				ImGui::EndTabItem();
-			}
-
-			ImGui::EndTabBar();
-		}
-*/
 	}
 
 	void change_voxels_display() {

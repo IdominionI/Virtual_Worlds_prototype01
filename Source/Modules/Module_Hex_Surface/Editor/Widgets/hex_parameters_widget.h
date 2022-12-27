@@ -2,9 +2,6 @@
 
 #include <Source/Editor/Scene/scene_manager.h>
 
-//#include "cart_to_hex_generator.h"
-//#include "generator_widget.h"
-
 #include "generation_selection_widget.h"
 #include "shaders_widget.h"
 #include "automata_widget.h"

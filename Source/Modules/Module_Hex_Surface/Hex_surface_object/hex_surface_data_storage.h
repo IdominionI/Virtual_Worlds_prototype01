@@ -20,22 +20,13 @@
 */
 
 // ???????????????????????????????????????????????????????????????????????????????????????
-// Need to check if this will be dined twice or not as also defined in voxel hcp data storage
+// Need to check if this will be defined twice or not as also defined in voxel hcp data storage
 
 #define DEFAULT_ACTIVE_VALUE   255
 #define DEFAULT_INACTIVE_VALUE 0 
 
 typedef int index_data_type;
 
-// ???????????????????????????????????????????????????????????????????????????????????????
-/*
-struct index_struct_type3 {
-	index_data_type x = 0, y = 0, z = 0;
-};
-
-
-typedef index_struct_type3 index_vector3;
-*/
 
 class hex_surface_object_data_class {
 public:
@@ -228,24 +219,17 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 
 		if (j % 2 == 0) {
 //QMessageBox::information(NULL, "hexBS03", "here00 :"+QString::number(j * HEX_SURFACE_BIT_NUMBER + j_bit), QMessageBox::Ok);
-			//hex_cartesian_coordinate.setX((float(i) * 2 + float(k % 2)) * hex_size);
-			//hex_cartesian_coordinate.setY((sqrt3 * float(j) + sqrt3 * third * float(k % 2)) * hex_size);
 
 			hex_cartesian_coordinate.x = (float(i) * 2 + float(k % 2)) * hex_size;
 			hex_cartesian_coordinate.y = (sqrt3 * float(j) + sqrt3 * third * float(k % 2)) * hex_size;
 		}
 		else {
 //QMessageBox::information(NULL, "hexBS03", "here01 :"+QString::number(j * HEX_SURFACE_BIT_NUMBER + j_bit), QMessageBox::Ok);
-		    //hex_surface_cartesian_coordinate.setX((1.0 + float(i) * 2 + float(k % 2)) * hex_surface_size - 2.0 * (k % 2)); the old wrong one
-			
-			//hex_cartesian_coordinate.setX((-1.0 + float(i) * 2 + float(k % 2) + 2 * float((k + 1) % 2)) * hex_size);
-			//hex_cartesian_coordinate.setY((sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * hex_size);
 
 			hex_cartesian_coordinate.x = (-1.0 + float(i) * 2 + float(k % 2) + 2 * float((k + 1) % 2)) * hex_size;
 			hex_cartesian_coordinate.y = (sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * hex_size;
 		}
 
-		//hex_cartesian_coordinate.setZ(0.0);
 		hex_cartesian_coordinate.z = 0.0;
 
 		return hex_cartesian_coordinate;
@@ -271,7 +255,6 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		if (hex_surface_matrix_data_index >= hex_surface_matrix_data.size()) {
 //QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
 //QMessageBox::information(NULL, "activate_hex_surface_matrix_coordinate", "avmc01 :"+ QString::number(hex_surface_matrix_data_index), QMessageBox::Ok);
-			//return -127;
 			return DEFAULT_INACTIVE_VALUE;
 		}
 
@@ -410,7 +393,6 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	// Obtain the hex grid index coordinates of the hex grid that a point P of cartesian coordinte
 	// (x,y) will be found to be within the bounds of a 2D hexgagon voxel cell.
 	glm::ivec3 hexagon_cell_coord_from_cartesian(float x, float y) {
-		//float grid_radius = hex_size / 2.0;
 		float grid_radius = hex_size ;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));

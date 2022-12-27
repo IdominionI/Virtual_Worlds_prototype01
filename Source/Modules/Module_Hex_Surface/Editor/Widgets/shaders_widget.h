@@ -31,11 +31,9 @@
 
 class hex_surface_shaders_widget_class {
 public:
-	//shader_parameters_struct_type       *hex_surface_shader_parameters = NULL;
 	material_struct_type                *hex_surface_shader_parameters = NULL;
 	shader_variables_widget_class        shader_variables_widget;
-	//hex_surface_generation_widget_class *hex_surface_generation_widget;
-	hex_surface_genertion_selection_widget_class *hex_surface_generation_widget;// ****
+	hex_surface_genertion_selection_widget_class *hex_surface_generation_widget;
 
 	log_panel_class                     *log_panel = NULL;
 
@@ -71,11 +69,8 @@ public:
 				//scene_node_class <render_object_class> *hcp_voxel_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id);
 				scene_node_class <render_object_class>* bv_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id + BOUNDING_GEOMETRY_OFFSET);
 
-				//if (hcp_voxel_render_object != NULL && hcp_voxel_render_object->scene_graph_object.scene_object_class.visible) {
-
 				if (bv_render_object != NULL)
 					bv_render_object->scene_graph_object.scene_object_class.visible = display_bounding_area;
-				//}
 			}
 		}
 
@@ -102,16 +97,6 @@ public:
 		ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
 		ImGui::SetCursorPosY(y_pos);
 		ImGui::Checkbox("###sddpsf", &hex_surface_shader_parameters->use_default_point_shader);
-
-		//y_pos += 23;
-		//text("Geometry:", x_pos, y_pos);
-
-		//if (ex_button(hex_surface_shader_parameters->geometry_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20))
-		//	select_geometry_shader_file();
-
-		//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-		//ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("###sddgsf", &hex_surface_shader_parameters->use_default_geometry_shader);
 
 		y_pos += 23;
 		text("Fragment:", x_pos, y_pos);
@@ -425,27 +410,7 @@ private:
 		//hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
 
 	}
-/*
-	void select_geometry_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 
-//printf("select_geometry_shader_file button pressed.\n");// replace with get file pathname tool
-		char const* patterns[] = { "*_GS.glsl" };
-		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
-
-		if (file_pathname == nullptr) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No geometry shader file selected.\n");
-			return;
-		}
-		//		else
-//printf("geometry_shader_file_pathname != NULL %s:\n", file_pathname);
-
-		std::string s                                          = FW::stringtools::replace(file_pathname, "\\", "/");
-		hex_surface_shader_parameters->geometry_shader_file_pathname = s;
-		hex_surface_shader_parameters->geometry_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
-
-	}
-*/
 	void select_fragment_shader_file() {
 		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 
@@ -462,8 +427,6 @@ private:
 
 		std::string s                                          = FW::stringtools::replace(file_pathname, "\\", "/");
 		hex_surface_shader_parameters->fragment_shader_file_pathname = s;
-		//hex_surface_shader_parameters->fragment_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
-
 	}
 
 	void clear_variables() {

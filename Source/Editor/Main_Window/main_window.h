@@ -22,6 +22,9 @@
 #include <Source/Modules/Module_Voxel_Byte/Functions/vw_voxel_exports.h>
 //#include <Source/Modules/Module_hex_surface/Functions/hex_surface_exports.h>
 
+#include <Source/Modules/Module_Voxel_Byte/Animation/scene_animation_functions.h> 
+#include <Source/Modules/Module_Hex_surface/Animation/scene_animation_functions.h>
+
 //#include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
 //#include <Source/Modules/Module_Hex_Surface/Editor/Scene/hex_surface_scene_objects.h>
 
@@ -110,6 +113,7 @@ public:
         property_panel.scene_viewer               = scene_view;
         property_panel.scene_manager              = scene_manager;
         property_panel.universal_shader_variables = scene_view->universal_shader_variables;
+        define_animation_manager_categories(); //*****
         
         node_editor_panel.log_panel     = log_panel;
         node_editor_panel.scene_manager = scene_manager; //******
@@ -490,6 +494,7 @@ private:
 */
         }
 
+        // ADD OTHER DATA CATEGORY TYPES BELOW
     }
 
     void define_outliner_import_export_managers(outliner_import_export_manager_class *outliner_import_export_manager) {
@@ -542,9 +547,57 @@ private:
             }
         }
 
+        // ADD OTHER DATA CATEGORY TYPES BELOW
     }
 
+    void define_animation_manager_categories() {
+        // ############# HCP Voxel  object ############
+        property_panel.animation_widget.define_new_animation_entity_category(ENTITY_CATEGORY_HCP_VOXEL);
 
+        int index = property_panel.animation_widget.get_animation_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
+
+        if (index < 0) {
+            printf("animation_category voxel index <0 NULL\n");
+        }
+        else {
+            printf("animation_category voxel >= 0\n");
+
+            scene_hsp_voxel_animation_class *scene_hsp_voxel_animation = new scene_hsp_voxel_animation_class;
+            if (scene_hsp_voxel_animation == NULL)
+                printf("scene_hsp_voxel_animation == NULL\n");
+            else {
+                printf("scene_hsp_voxel_animation != NULL\n");
+
+                scene_hsp_voxel_animation->objects_category_id = property_panel.animation_widget.animation_objects[index]->objects_category_id;
+
+                property_panel.animation_widget.animation_objects[index] = scene_hsp_voxel_animation;
+            }
+        }
+
+        // ############# Hex surface Object ############
+        property_panel.animation_widget.define_new_animation_entity_category(ENTITY_CATEGORY_HEX_SURF);
+
+        index = property_panel.animation_widget.get_animation_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
+
+        if (index < 0) {
+            printf("animation_category hex index <0 NULL\n");
+        } else {
+            printf("animation_category hex >= 0\n");
+
+            scene_hex_surface_animation_class *scene_hex_surface_animation = new scene_hex_surface_animation_class;
+            if (scene_hex_surface_animation == NULL)
+                printf("scene_hex_surface_animation == NULL\n");
+            else {
+                printf("scene_hex_surface_animation != NULL\n");
+
+                scene_hex_surface_animation->objects_category_id = property_panel.animation_widget.animation_objects[index]->objects_category_id;
+
+                property_panel.animation_widget.animation_objects[index] = scene_hex_surface_animation;
+            }
+        }
+
+        // ADD OTHER DATA CATEGORY TYPES BELOW
+    }
     // ################### Voxel specifics ####################
 
     voxel_hcp_render_class  voxel_hcp_render;

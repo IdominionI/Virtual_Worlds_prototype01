@@ -29,7 +29,6 @@
 #define BOOL_BLOCK_START "("
 #define BOOL_BLOCK_END   ")"
 
-//#define ENDL Qt::endl // endl depreciated in QT6
 #define ENDL '\n' // endl depreciated in QT6
 
 /*

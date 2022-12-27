@@ -93,9 +93,10 @@
         ImGui::End();
     }
 
+    animation_widget_class           animation_widget;
+
 
   private:
-      animation_widget_class           animation_widget;
       camera_poperties_widget_class    camera_poperties_widget;
       lighting_properties_widget_class lighting_properties_widget;
       viewport_properties_widget_class viewport_properties_widget;

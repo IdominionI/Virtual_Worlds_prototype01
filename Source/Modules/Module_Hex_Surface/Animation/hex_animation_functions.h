@@ -110,9 +110,6 @@ public:
 		hex_surface_scene_objects_class *hex_surface_entities_to_export = dynamic_cast <hex_surface_scene_objects_class*>(scene_manager->entities_manager.scene_objects[index]); // ****
 
 		switch (object_selection_cb) {
-			//case 0: if (!define_selected_animation_hex_surface(current_selected_object_id, scene_manager->entities_manager.hex_surface_scene_objects)) return false;  break;
-			//case 1: if (!define_active_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false; break;
-			//case 2: if (!define_all_animation_hex_surface(scene_manager->entities_manager.hex_surface_scene_objects)) return false;    break;
 			case 0: if (!define_selected_animation_hex_surface(current_selected_object_id, *hex_surface_entities_to_export)) return false;  break;
 			case 1: if (!define_active_animation_hex_surface(*hex_surface_entities_to_export)) return false; break;
 			case 2: if (!define_all_animation_hex_surface(*hex_surface_entities_to_export)) return false;    break;
@@ -157,7 +154,7 @@ public:
 			hex_surface_object_class *hex_surface_object = hex_surface_entities[i];
 
 			if (hex_surface_object->active_object) {
-printf("hex_animation_functions : define_active_animation_hex_surface 000\n");
+//printf("hex_animation_functions : define_active_animation_hex_surface 000\n");
 				hex_surface_objects_to_execute.push_back(hex_surface_object);
 			}
 		}
@@ -211,7 +208,7 @@ printf("hex_animation_functions : define_active_animation_hex_surface 000\n");
 				}
 			}
 
-printf("hex_surface_animation_functions_class :: perform_animation_frame:: 011 : %i\n",frame);
+//printf("hex_surface_animation_functions_class :: perform_animation_frame:: 011 : %i\n",frame);
 			// Perform hex_surface automata rules on current frame step if that frame is less than the maximum permited frame of the automata rules
 			if (use_hex_automata_cb) {
 				for (int i = 0; i < hex_surface_objects_to_execute.size();i++) {
@@ -224,7 +221,7 @@ printf("hex_surface_animation_functions_class :: perform_animation_frame:: 011 :
 				}
 			}
 
-printf("hex_surface_animation_functions_class :: perform_animation_frame:: 012 : %i\n",frame);
+//printf("hex_surface_animation_functions_class :: perform_animation_frame:: 012 : %i\n",frame);
 			// perform hex_surface texture generation frame value for current animation frame
 			if (use_hex_texture_cb) {
 				for (int i = 0; i < hex_surface_objects_to_execute.size(); i++) {
@@ -233,7 +230,7 @@ printf("hex_surface_animation_functions_class :: perform_animation_frame:: 012 :
 					}
 				}
 			}
-printf("hex_surface_animation_functions_class :: perform_animation_frame:: 013 : %i\n",frame);
+//printf("hex_surface_animation_functions_class :: perform_animation_frame:: 013 : %i\n",frame);
 
 	}
 
@@ -243,19 +240,19 @@ printf("hex_surface_animation_functions_class :: perform_animation_frame:: 013 :
 //QMessageBox::information(NULL, "","in play animation10A " + std::string::number(hex_surface_objects_to_execute[i]->hex_surface_object_data.hex_surface_generator_parameters.variables[0].value), QMessageBox::Ok);
 		update_hex_surface_generator_parameter_step_values(hex_surface_objects_to_execute[index]->hex_surface_object_data.hex_surface_generator_parameters, ANIMATION_STEP, scene_manager, entity_id);
 //QMessageBox::information(NULL, "","in play animation10C " + std::string::number(frame), QMessageBox::Ok);
-printf("hex_surface_animation_functions_class :: generate_animation_frame::11\n");
+//printf("hex_surface_animation_functions_class :: generate_animation_frame::11\n");
 		if (frame == vw_animation_parameters.frame_step_start) {
-printf("hex_surface_animation_functions_class :: generate_animation_frame::22\n");
+//printf("hex_surface_animation_functions_class :: generate_animation_frame::22\n");
 			hex_surface_generators[index]->generate_hex_surface_function();
 			//hex_surface_objects_to_execute[index]->update_renderer_shader_variables();
 		} else {
-printf("hex_surface_animation_functions_class :: generate_animation_frame::33\n");
+//printf("hex_surface_animation_functions_class :: generate_animation_frame::33\n");
 			hex_surface_generators[index]->update_hex_surface_generation();
 		}
 
-printf("hex_surface_animation_functions_class :: generate_animation_frame::44\n");
+//printf("hex_surface_animation_functions_class :: generate_animation_frame::44\n");
 		hex_surface_objects_to_execute[index]->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
-printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n");
+//printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n");
 	}
 	// #######################################################
 
@@ -305,7 +302,7 @@ printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n"
 //printf("update_hex_surface_generator_parameter_step_values::update_voxel_generator_parameter_step_values :entity_render_object == NULL\n");
 			return;
 		}
-printf("update_hex_surface_generator_parameter_step_values::11\n");
+//printf("update_hex_surface_generator_parameter_step_values::11\n");
 
 		int i = 0;
 		for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
@@ -340,7 +337,7 @@ printf("update_hex_surface_generator_parameter_step_values::11\n");
 			i++;
 		}
 
-printf("update_voxel_generator_parameter_step_values::22\n");
+//printf("update_voxel_generator_parameter_step_values::22\n");
 
 //printf("update_voxel_generator_parameter_step_values::22 \n");
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.variables     = hex_surface_generator_parameters.variables;
@@ -389,22 +386,30 @@ printf("update_voxel_generator_parameter_step_values::22\n");
 
 	//void update_shader_variables(scene_manager_class *scene_manager, shader_parameters_struct_type hex_surface_texture_parameters, id_type entity_id) { // not sure this is needed as render node does this task
 	void update_shader_variables(scene_manager_class *scene_manager, material_struct_type hex_surface_texture_parameters, id_type entity_id) { // not sure this is needed as render node does this task
-//printf("voxel_shaders_widget_class::update voxel shaders clicked\n");// replace with update variables
+//printf("hex_surface_animation_functions_class::update_shader_variables\n");// replace with update variables
 		// Get the scene render object that stores the object render properties
 		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(entity_id);                  
 		if (entity_render_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find object render object node. Cannot update voxel shaders\n");
-//printf("voxel_shaders_widget_class::update_shader_variables :entity_render_object == NULL\n");
+//printf("hex_surface_animation_functions_class::update_shader_variables :entity_render_object == NULL\n");
 			return;
 		}
-//printf("voxel_shaders_widget_class::update_shader_variables 111\n");
-		material_basis_struct_type *shader_material   = entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
-		shader_parameters_struct_type *shader_parameters = &*dynamic_cast<shader_parameters_struct_type*>(shader_material);   
-//printf("voxel_shaders_widget_class::update_shader_variables 222\n");
-		shader_parameters->variables      = hex_surface_texture_parameters.variables;
-		shader_parameters->int_variables  = hex_surface_texture_parameters.int_variables;
-		shader_parameters->bool_variables = hex_surface_texture_parameters.bool_variables;
-//printf("voxel_shaders_widget_class::update_shader_variables 333\n");
+
+		material_struct_type* shader_material = dynamic_cast<material_struct_type*>(entity_render_object->scene_graph_object.scene_object_class.shader_material); // Get the pointer to the shader properties for the render process
+
+		if (shader_material == NULL) {
+			//printf("hex_surface_animation_functions_class::update_shader_variables 222A shader_material == NULL\n");
+			return;
+		}
+		//else
+//printf("hex_surface_animation_functions_class::update_shader_variables 222A shader_material != NULL\n");
+
+//printf("hex_surface_animation_functions_class::update_shader_variables 222\n");
+
+		shader_material->variables      = hex_surface_texture_parameters.variables;
+		shader_material->int_variables  = hex_surface_texture_parameters.int_variables;
+		shader_material->bool_variables = hex_surface_texture_parameters.bool_variables;
+//printf("hex_surface_animation_functions_class::update_shader_variables 333\n");
 	}
 
 	bool perform_hex_surface_automata_step(u_long_int step, hex_surface_object_class *hex_surface_object) {

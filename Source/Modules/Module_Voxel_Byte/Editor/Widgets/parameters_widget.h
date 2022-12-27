@@ -2,13 +2,9 @@
 
 #include <Source/Editor/Scene/scene_manager.h>
 
-//#include "cart_to_voxel_generator.h"
-//#include "generator_widget.h"
-
 #include "generation_selection_widget.h"
 #include "shaders_widget.h"
 #include "automata_widget.h"
-//#include "interactions_widget.h"
 
 /*
 				HCP voxel volume paramters widget
@@ -44,7 +40,6 @@ public:
 			return;
 		}
 
-		//voxel_hcp_object_class *voxel_hcp_object_to_execute = scene_manager->entities_manager.get_voxel_hcp_entity_object(current_selected_object_id);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 		voxel_hcp_object_class *voxel_hcp_object_to_execute = (voxel_hcp_object_class *) scene_manager->entities_manager.get_entity_of_category(current_selected_object_id, ENTITY_CATEGORY_HCP_VOXEL);	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 		
 		if (voxel_hcp_object_to_execute == NULL) {
@@ -68,12 +63,7 @@ public:
 				display_voxel_automata_widget(voxel_hcp_object_to_execute, current_selected_object_id);
 				ImGui::EndTabItem();
 			}
-/*
-			if (ImGui::BeginTabItem("Interactions##voxel_inter_tab")) {
-				display_voxel_interactions_widget(voxel_hcp_object_to_execute, current_selected_object_id);
-				ImGui::EndTabItem();
-			}
-*/
+
 			ImGui::EndTabBar();
 		}
 	}
@@ -81,10 +71,8 @@ public:
 
 
 private:
-	//voxel_hcp_generation_widget_class  voxel_hcp_generation_widget;
 	voxel_shaders_widget_class		   voxel_shaders_widget;
 	voxel_hcp_autmoata_widget_class	   voxel_hcp_autmoata_widget;
-//	voxel_hcp_interaction_widget_class voxel_hcp_interaction_widget;
 
 	hcp_voxel_genertion_selection_widget_class hcp_voxel_genertion_selection_widget;
 
@@ -114,7 +102,6 @@ private:
 			return;
 		}
 
-		//if (voxel_shaders_widget.voxel_hcp_generation_widget == NULL) {
 		if (voxel_shaders_widget.hcp_voxel_genertion_selection_widget == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : The voxel generation widget has not been defined for the voxel shader widget to use\n");
 			return;
@@ -143,20 +130,4 @@ private:
 
 		voxel_hcp_autmoata_widget.display();
 	}
-/*
-	void display_voxel_interactions_widget(voxel_hcp_object_class* voxel_hcp_object_to_execute, id_type current_selected_object_id) {
-		voxel_hcp_interaction_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
-
-		if (voxel_hcp_interaction_widget.voxel_hcp_object_to_execute == NULL) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No hcp voxel object defined to perform voxel interaction on.\n");
-			return;
-		}
-
-		voxel_hcp_interaction_widget.log_panel = log_panel;
-		voxel_hcp_interaction_widget.scene_manager = scene_manager;
-		voxel_hcp_interaction_widget.current_selected_entity_id = current_selected_object_id;
-
-		voxel_hcp_interaction_widget.display();
-	}
-*/
 };

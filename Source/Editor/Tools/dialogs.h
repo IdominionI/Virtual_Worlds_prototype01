@@ -29,7 +29,11 @@ namespace vwDialogs {
     }
 
     char const* select_directory(const char* startDir){
-        return tinyfd_selectFolderDialog("Select directory ... ", startDir);
+        char const *dirpath = tinyfd_selectFolderDialog("Select directory ... ", startDir);
+
+        if (!dirpath) return "";// Did not select a directory
+
+        return dirpath;
     }
 
     /* Structure of the tinyfd_messageBox parameters that are needed to be defined

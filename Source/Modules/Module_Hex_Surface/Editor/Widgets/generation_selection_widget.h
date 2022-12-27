@@ -10,6 +10,8 @@
 #include "../../hex_surface_object/DataTypes/dt_hex_surface_generator.h"
 #include "../../Kernal/hex_surface_function_import_export.h"
 
+#include "generator_widget.h" // *****
+
 #include "generator_variables_widget.h"
 #include "../../Compute/hex_surface_compute_generation.h"
 

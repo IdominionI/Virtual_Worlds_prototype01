@@ -211,6 +211,7 @@
     <ClInclude Include="Source\Editor\Scene\scene_entities_db_manager.h" />
     <ClInclude Include="Source\Editor\Scene\scene_render_object_manager.h" />
     <ClInclude Include="Source\Editor\Tools\dialogs.h" />
+    <ClInclude Include="Source\Editor\Animation\animation_basis.h" />
     <ClInclude Include="Source\Graphics_Engine\Common\definitions.h" />
     <ClInclude Include="Source\Graphics_Engine\Common\pch.h" />
     <ClInclude Include="Source\Graphics_Engine\Common\user_interaction.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="Source\Graphics_Engine\Viewer\Extensions\viewer_grid.h" />
     <ClInclude Include="Source\Graphics_Engine\Viewer\scene_viewer.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Animation\hex_animation_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Animation\scene_animation_functions.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
@@ -278,6 +280,7 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation_node.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Render\hex_surface_render.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Animation\scene_animation_functions.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Animation\voxel_animation_functions.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\automata_byte_import_export.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\voxel_automata_functions.h" />
@@ -304,7 +307,6 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\Modifiers\translation_node.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_automata.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_generator.h" />
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\DataTypes\dt_voxel_interaction.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\parameters.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_data_storage.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_hcp_import_export.h" />

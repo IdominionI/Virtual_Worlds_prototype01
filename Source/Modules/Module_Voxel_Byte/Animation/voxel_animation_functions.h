@@ -35,7 +35,7 @@ public:
 
 	// List of initial hcp voxel data object parameter data that are to be rendered in the scene
 	std::vector<voxel_generator_parameters_struct_type>    vw_initial_voxel_generator_variables_array;
-	std::vector<material_struct_type>             vw_initial_voxel_shader_generator_variables_array;
+	std::vector<material_struct_type>					   vw_initial_voxel_shader_generator_variables_array;
 	//std::vector<shader_parameters_struct_type>             vw_initial_voxel_shader_generator_variables_array;
 
 	// List of hcp voxel data object compute generator classes that generate the hcp point cloud data the are to be rendered in the scene
@@ -426,12 +426,21 @@ public:
 			return;
 		}
 //printf("voxel_shaders_widget_class::update_shader_variables 111\n");
-		material_basis_struct_type    *shader_material   = entity_render_object->scene_graph_object.scene_object_class.shader_material; // Get the pointer to the shader properties fpr the render process
-		shader_parameters_struct_type *shader_parameters = &*dynamic_cast<shader_parameters_struct_type*>(shader_material);   
+
+		material_struct_type* shader_material = dynamic_cast<material_struct_type*>(entity_render_object->scene_graph_object.scene_object_class.shader_material); // Get the pointer to the shader properties for the render process
+
+		if (shader_material == NULL) {
+//printf("voxel_shaders_widget_class::update_shader_variables 222A shader_material == NULL\n");
+			return;
+		}
+		//else
+//printf("voxel_shaders_widget_class::update_shader_variables 222A shader_material != NULL\n");
+
 //printf("voxel_shaders_widget_class::update_shader_variables 222\n");
-		shader_parameters->variables      = voxel_shader_parameters.variables;
-		shader_parameters->int_variables  = voxel_shader_parameters.int_variables;
-		shader_parameters->bool_variables = voxel_shader_parameters.bool_variables;
+
+		shader_material->variables      = voxel_shader_parameters.variables;
+		shader_material->int_variables  = voxel_shader_parameters.int_variables;
+		shader_material->bool_variables = voxel_shader_parameters.bool_variables;
 //printf("voxel_shaders_widget_class::update_shader_variables 333\n");
 	}
 
@@ -536,11 +545,11 @@ public:
 	// class for greater meintenance ability. 
 
 	bool export_voxels_center_point_data(std::string saved_mesh_pathname, int frame, std::string file_format) {
-printf("export_voxels_center_point_data 000 export_mesh\n");
+//printf("export_voxels_center_point_data 000 export_mesh\n");
 		export_voxel_geometry_class        export_voxel_geometry;
 		export_voxel_geometry.log_panel = log_panel;
 
-printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execute.size());
+//printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execute.size());
 		if (voxel_hcp_objects_to_execute.size() < 1) {
 			//if (log_widget != NULL) {
 			//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "editor_animation_widget_class : export_voxels_center_point_data :\n Failed to export center point voxels data. Could not define the HCP data to execute");
@@ -550,7 +559,7 @@ printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execut
 			return false;
 		}
 
-printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execute.size());
+//printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execute.size());
 
 		for (index_type i = 0; i < voxel_hcp_objects_to_execute.size(); i++) {
 			//entity_class* entity = voxel_hcp_entities_to_execute[i];
@@ -559,7 +568,7 @@ printf("export_voxels_center_point_data AAA : %i\n", voxel_hcp_objects_to_execut
 
 			voxel_hcp_object_class *voxel_hcp_object = voxel_hcp_objects_to_execute[i];
 
-printf("export_voxels_center_point_data BBB : %s\n ", saved_mesh_pathname.c_str());
+//printf("export_voxels_center_point_data BBB : %s\n ", saved_mesh_pathname.c_str());
 
 			if (voxel_hcp_object == NULL) {
 				if (log_panel != NULL) log_panel->application_log.AddLog("DEBUG : editor_animation_widget_class : export_voxels_center_point_data :\n Failed to export center point voxels data. Could not find voxel HCP component data\n");
@@ -569,7 +578,7 @@ printf("export_voxels_center_point_data BBB : %s\n ", saved_mesh_pathname.c_str(
 			saved_mesh_pathname = saved_mesh_pathname + "_cp_" + voxel_hcp_object->object_name + "_" + std::to_string(frame) + file_format;
 
 			//export_voxel_geometry.export_voxel_center_points_to_file_ply(voxel_hcp_object_to_execute->voxel_object_data, saved_mesh_pathname);
-printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str());
+//printf("export_voxels_center_point_data CCC : %s\n ", saved_mesh_pathname.c_str());
 			export_voxel_geometry.export_voxel_center_points_to_file_ply(voxel_hcp_object->voxel_object_data, saved_mesh_pathname);
 		}
 

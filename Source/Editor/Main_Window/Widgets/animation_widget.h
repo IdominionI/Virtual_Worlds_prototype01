@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "imgui_widgets.h"
 
 #include "../../Scene/scene_manager.h"
@@ -7,8 +9,8 @@
 #include "../../Tools/dialogs.h"
 
 // Module entity data type animation functions to be animated goes here
-#include <Source/Modules/Module_Voxel_Byte/Animation/voxel_animation_functions.h>
-#include <Source/Modules/Module_Hex_Surface/Animation/hex_animation_functions.h>
+//#include <Source/Modules/Module_Voxel_Byte/Animation/voxel_animation_functions.h>
+//#include <Source/Modules/Module_Hex_Surface/Animation/hex_animation_functions.h>
 
 /*
 					SCENE ANIMATION WIDGET
@@ -38,16 +40,12 @@
 	cellula automata procedure to its initial animation status.
 */
 
-class animation_widget_class {
+#include "../../Animation/animation_basis.h"
+
+class animation_widget_class : public animation_manager_class {
 public:
 	animation_widget_class() {}
 	~animation_widget_class() {}
-
-	scene_manager_class *scene_manager = NULL;
-	log_panel_class		*log_panel     = NULL;
-
-	id_type          current_selected_object_id      = -1;
-	id_type          current_selected_object_type_id = -1;
 
 	void display() {
 		float x_pos = 10.0f, y_pos = 40.0f;
@@ -171,8 +169,9 @@ public:
 		ImGui::ProgressBar(animation_progress, ImVec2(210.f, 0.f), buf);
 
 		y_pos += 35;
-		if (ex_button("Restore Initial Frame###arif", x_pos + 80, y_pos, 190, 20))
-			restore_initial_frame();
+		if (ex_button("Restore Initial Frame###arif", x_pos + 80, y_pos, 190, 20)) {
+			restore_initial_frame_conditions();
+		}
 
 		y_pos += 25;
 		ImGui::SetCursorPosX(x_pos + 80);
@@ -199,12 +198,12 @@ public:
 //printf("animation_play 000 :: current_animation_frame >= end_frame\n");
 					//if (restore_animation_on_completion && current_animation_frame >= end_frame) { // Restore initial conditions of animation
 					if (restore_animation_on_completion && !animation_repeat) { // Restore initial conditions of animation
-						restore_initial_frame();
+						restore_initial_frame_conditions();
 					} else {
 //printf("animation_play 111 \n");
 						if (animation_repeat) {
 //printf("animation_play 222 :: animation_repeat\n");
-							restore_initial_frame();
+							restore_initial_frame_conditions();
 							animation_repeat = true;// because restore_initial_frame(); sets animation_repeat to false
 							play_animation();
 						}
@@ -237,15 +236,15 @@ public:
 			}
 			else {
 				if (animation_record) {
-printf("animation_record 000 :: \n");
+//printf("animation_record 000 :: \n");
 					if (current_animation_frame <= end_frame) {
 						if (!animation_paused) {
-printf("animation_record 111 :: %i \n", current_animation_frame);
+//printf("animation_record 111 :: %i \n", current_animation_frame);
 							if (!perform_animation_frame(current_animation_frame, INCREMENT_STEP)) {
 								if (log_panel != NULL) log_panel->application_log.AddLog("Unable to continue automata generation");
 								stop_animation();
 							} else {
-printf("animation_record 222 :: %i \n", current_animation_frame);
+//printf("animation_record 222 :: %i \n", current_animation_frame);
 								save_animation_frame_mesh(saved_filename_prefix, current_animation_frame, saved_filename_format); // Save the Current frame mesh
 								vw_animation_parameters.current_frame += vw_animation_parameters.frame_step_interval;
 								current_animation_frame = vw_animation_parameters.current_frame;
@@ -254,9 +253,9 @@ printf("animation_record 222 :: %i \n", current_animation_frame);
 						}
 
 						if (current_animation_frame >= end_frame) {
-printf("animation_record 000 :: current_animation_frame >= end_frame\n");
+//printf("animation_record 000 :: current_animation_frame >= end_frame\n");
 							if (restore_animation_on_completion) { // Restore initial conditions of animation
-								restore_initial_frame();
+								restore_initial_frame_conditions();
 							}
 						}
 					} else {
@@ -269,9 +268,14 @@ printf("animation_record 000 :: current_animation_frame >= end_frame\n");
 
 
 	void select_animation_frames_directory() {
-		animation_frames_directory_pathname = vwDialogs::select_directory("./");
+		std::string directory_pathname = vwDialogs::select_directory("./");
+				
+		//animation_frames_directory_pathname = vwDialogs::select_directory("./"); // Crashes app if no directory selected
 
-		animation_frames_directory = vwDialogs::get_filename(animation_frames_directory_pathname,"\\");
+		if (!directory_pathname.empty()) {
+			animation_frames_directory_pathname = directory_pathname;
+			animation_frames_directory = vwDialogs::get_filename(animation_frames_directory_pathname, "\\");
+		}
 	}
 
 	bool reverse_animation() {
@@ -330,25 +334,16 @@ printf("animation_record 000 :: current_animation_frame >= end_frame\n");
 
 		number_animation_frames = end_frame - start_frame;
 
-		if (!define_objets_to_execute()) return;
-
-		int number_voxel_objects_to_animate = voxel_animation_functions.voxel_hcp_objects_to_execute.size();
-		int number_hex_objects_to_animate   = hex_surface_animation_functions.hex_surface_objects_to_execute.size();
-		// Other Entity data object type  added here
-
-		int total_number_objects_to_animate = number_voxel_objects_to_animate + number_hex_objects_to_animate;// Other Entity data object type object number added at end of this statement
-
-		if (total_number_objects_to_animate < 1) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR :: editor_animation_widget_class :: No object selection to record animation");
-			return;
-		}
+		if (!define_objects_to_execute()) return;
 
 		if (!FW::filetools::directory_exists(animation_frames_directory_pathname) || animation_frames_directory_pathname == "") {
 			vwDialogs::message_box("","Have no valid directory to save voxel animation frame meshes defined.\nPlease define the directory to save voxel animation frame meshes to.");
 			return;
 		}
 
-printf("record_animation0 1: %s \n", animation_frames_directory_pathname.c_str());
+		std::replace(animation_frames_directory_pathname.begin(), animation_frames_directory_pathname.end(), '\\', '/'); // replace all '\' to '/'
+
+//printf("record_animation0 1: %s \n", animation_frames_directory_pathname.c_str());
 
 		if (filename_template.size() == 0) {
 			vwDialogs::message_box("", "Have no voxel mesh frame file name template defined.\nPlease enter animation mesh frame file name template");
@@ -424,78 +419,13 @@ printf("record_animation0 1: %s \n", animation_frames_directory_pathname.c_str()
 	//void next_step_animation() {
 	//}
 
-	void restore_initial_frame() {
-//printf("in display_initial_frame\n");
-		vw_animation_parameters.current_frame = 0;
-
+	void restore_initial_frame_conditions() {
 		stop_animation();
-
-		// !!!!!!!!!!!!!!!!! VOXEL OBJECT TYPE !!!!!!!!!!!!!!!!!!!!!!!!!!
-
-		voxel_animation_functions.restore_initial_frame(use_textures, scene_manager);
-
-		// ############# UPDATE VOXEL GEOMETRY DATA ##################
-		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		for (int i = 0; i < voxel_animation_functions.voxel_hcp_objects_to_execute.size(); i++) {
-			voxel_hcp_object_class *voxel_hcp_object = voxel_animation_functions.voxel_hcp_objects_to_execute[i];
-
-			scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(voxel_hcp_object->object_id);
-//printf("restore_initial_frame 11\n");
-
-			if (scene_voxel_object == NULL) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find voxel in the scene to update geometry data for voxel object. %s\n", voxel_hcp_object->object_name.c_str());
-//printf("restore_initial_frame 22 scene_voxel_object == NULL.\n");
-			}
-			else {
-//printf("restore_initial_frame 33 scene_voxel_object != NULL.\n");
-				if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
-					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated for voxel object %s %i\n", voxel_hcp_object->object_name.c_str());
-//printf("restore_initial_frame 44 \n");
-				}
-
-			}
-		}
-		//########################################################################
-
-		// !!!!!!!!!!!!!!!!! HEX SURFACE OBJECT TYPE !!!!!!!!!!!!!!!!!!!!!!!!!!
-		hex_surface_animation_functions.restore_initial_frame(use_textures, scene_manager);
-		// ############# UPDATE HEX SURFACE GEOMETRY DATA ##################
-		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		for (int i = 0; i < hex_surface_animation_functions.hex_surface_objects_to_execute.size(); i++) {
-			hex_surface_object_class *hex_surface_object = hex_surface_animation_functions.hex_surface_objects_to_execute[i];
-
-			scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(hex_surface_object->object_id);
-//printf("animation :: restore_initial_frame 66\n");
-
-			if (scene_voxel_object == NULL) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find hex surface in the scene to update geometry data for voxel object. %s\n", hex_surface_object->object_name.c_str());
-//printf("animation :: restore_initial_frame 77:: scene_hex_surface_object == NULL.\n");
-			}
-			else {
-//printf("animation :: restore_initial_frame 88::scene_hex_surface_object != NULL.\n");
-				if (!hex_surface_render.update_geometry_vertex_cloud_data(&hex_surface_object->point_cloud, scene_voxel_object, log_panel)) {
-					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene hex surface object geometry could not be updated for voxel object %s %i\n", hex_surface_object->object_name.c_str());
-//printf("animation :: restore_initial_frame 99:: scene_hex_surface_object not updated\n");
-				}
-
-			}
-		}
-		// !!!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED BELOW !!!!!!!!!!!!!!!!!!!!!!!!!!
-
+		vw_animation_parameters.current_frame = 0;
+		restore_initial_frame();
 	}
 
-
-
 private:
-	int animation_selection = 0;
-	int animation_surface = 1;
-	int start_frame = 0, end_frame = 10, frame_delta = 1;
-	int animation_frame=0, number_animation_frames =0, current_animation_frame =0;
-	int reverse_end_frame = 0;
-
-	bool use_textures                    = true;
-	bool use_automata                    = false;
-	bool use_multi_thread_automata       = false;
 	bool restore_animation_on_completion = false;
 
 	bool animation_play                  = false;
@@ -507,27 +437,12 @@ private:
 
 	float animation_progress = 0.0f;
 
-	std::string animation_frames_directory_pathname = "";
-	std::string animation_frames_directory          = "...";
-	std::string filename_template                   = "a_animate";
-
-	std::string saved_filename_prefix = "";
-	std::string saved_filename_format = ".ply";
 
 	// ################### VOXEL ANIMATION ###################
-	animation_texture_model_parameters_struct_type vw_animation_parameters;
+	//animation_texture_model_parameters_struct_type vw_animation_parameters;
 	// vp Generator
 	int max_automata_step_value = 0; // Not sure this is needed
 
-	//#########################################################
-	voxel_animation_functions_class			voxel_animation_functions;
-	voxel_hcp_render_class					voxel_hcp_render;
-
-	hex_surface_animation_functions_class	hex_surface_animation_functions;
-	hex_surface_render_class				hex_surface_render;
-	// OTHER CLASS OBJECTS FOR ANIMATION PLACED HERE	
-	
-	//#########################################################
 	// Perform the animation one step in reverse
 	void step_back_animation() {
 //QMessageBox::information(NULL, "","Not yet implemented " , QMessageBox::Ok);
@@ -599,11 +514,12 @@ private:
 		current_animation_frame = vw_animation_parameters.current_frame;
 		animation_progress = ((float)vw_animation_parameters.current_frame / (float)vw_animation_parameters.frame_step_end);
 	}
+
 	// Initialise the entity data objects to be animated
 	// NOTE : This function will need to be modified for each entity data object type that is used
 	//        by the application.
 	bool initialise_animation() {
-		if (!define_objets_to_execute()) return false;
+		if (!define_objects_to_execute()) return false;
 
 		animation_stopped = false;
 
@@ -615,170 +531,13 @@ private:
 		return true;
 	}
 
-	bool define_objets_to_execute() {
-		if (scene_manager == NULL) {
-			vwDialogs::message_box("Voxel Animation", "Cannot perform  Animation :: Scene manager not defined.");
-			return false;
-		}
-
-//printf("initialise_animation 11 :: %i : %i : %i\n", current_selected_object_type_id, current_selected_object_id, animation_selection);
-
-		// !!!!!!!!!!!!!!!! VOXEL OBJECT TYPE !!!!!!!!!!!!!!!!!!
-		voxel_animation_functions.log_panel = log_panel;
-		voxel_animation_functions.voxel_hcp_objects_to_execute.clear();
-		voxel_animation_functions.voxel_hcp_objects_to_execute.shrink_to_fit();
-
-		if (current_selected_object_type_id == ENTITY_CATEGORY_HCP_VOXEL && animation_selection == ANIMATION_SELECTED_INDEX || animation_selection != ANIMATION_SELECTED_INDEX) {
-			if (!voxel_animation_functions.define_voxel_hcp_objects_to_execute(animation_selection, scene_manager, current_selected_object_id)) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : editor_animation_widget_class :: Could not define hcp objects to animate\n");
-			}
-		}
-
-		// !!!!!!!!!!!!!!!! HEX SURFACE OBJECT TYPE !!!!!!!!!!!!!!!!!!
-		hex_surface_animation_functions.log_panel = log_panel;
-		hex_surface_animation_functions.hex_surface_objects_to_execute.clear();
-		hex_surface_animation_functions.hex_surface_objects_to_execute.shrink_to_fit();
-
-		if (current_selected_object_type_id == ENTITY_CATEGORY_HEX_SURF && animation_selection == ANIMATION_SELECTED_INDEX || animation_selection != ANIMATION_SELECTED_INDEX) {
-			if (!hex_surface_animation_functions.define_hex_surface_objects_to_execute(animation_selection, scene_manager, current_selected_object_id)) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : editor_animation_widget_class :: could not define hex surface objects to animate\n");
-			}
-		}
-
-		// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-
-		if (voxel_animation_functions.voxel_hcp_objects_to_execute.size() < 1 &&
-			hex_surface_animation_functions.hex_surface_objects_to_execute.size() < 1)
-			// !!!!! add test of number of other objects to be selected here !!!!!
-		{
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : editor_animation_widget_class :: No objects selected to animate\n");
-			vwDialogs::message_box("Voxel Animation :: ", "Cannot perform Voxel Animation\n No objects selected data to aninate.");
-			return false;
-		}
-
-		return true;
-	}
-
-	void define_initial_frame_paramters() {
-		// ------------- VOXEL HCP OBJECTS ----------------
-		voxel_animation_functions.define_initial_frame_paramters(use_textures, use_automata, max_automata_step_value, vw_animation_parameters.frame_step_end);
-
-		// -------------- HEX SURFACE OBJECTS ---------------
-		hex_surface_animation_functions.define_initial_frame_paramters(use_textures, use_automata, max_automata_step_value, vw_animation_parameters.frame_step_end);
-
-		// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-	}
 
 	void define_animation_parameters() {
 		vw_animation_parameters.frame_step_start    = start_frame;
 		vw_animation_parameters.frame_step_end      = end_frame;
 		vw_animation_parameters.frame_step_interval = frame_delta;
-		vw_animation_parameters.current_frame       = current_animation_frame; // ****
+		vw_animation_parameters.current_frame       = current_animation_frame;
 	}
-
-	bool perform_animation_frame(int frame, int animation_step) {
-//printf("animation :: perform_animation_frame 00 : %i : %i  : %i : %i\n",frame, animation_step, vw_animation_parameters.current_frame, max_automata_step_value);
-
-		// Perform the objects animation frame to execute for each entity data type
-		// !!!!!!!!!!!!!!!! VOXEL OBJECT TYPE !!!!!!!!!!!!!!!!!!
-		voxel_animation_functions.perform_animation_frame(vw_animation_parameters, use_textures, use_automata, use_multi_thread_automata, frame, max_automata_step_value, animation_step, scene_manager);
-//printf("animation :: perform_animation_frame 11 :\n");		
-		// ############# UPDATE VOXEL GEOMETRY DATA ##################
-		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		for (int i = 0; i < voxel_animation_functions.voxel_hcp_objects_to_execute.size(); i++) {
-			voxel_hcp_object_class *voxel_hcp_object = voxel_animation_functions.voxel_hcp_objects_to_execute[i];
-
-			scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(voxel_hcp_object->object_id);
-//printf("animation :: perform_animation_frame 22\n");
-
-			if (scene_voxel_object == NULL) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find voxel in the scene to update geometry data for voxel object. %s\n", voxel_hcp_object->object_name.c_str());
-//printf("animation :: perform_animation_frame 33:: scene_voxel_object == NULL.\n");
-			}
-			else {
-//printf("animation :: perform_animation_frame 44::scene_voxel_object != NULL.\n");
-				if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
-					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated for voxel object %s %i\n", voxel_hcp_object->object_name.c_str());
-//printf("animation :: perform_animation_frame 55:: scene_voxel_object not updated\n");
-				}
-
-			}
-		}
-		//########################################################################
-
-//printf("animation :: perform_animation_frame 66\n");
-		// !!!!!!!!!!!!!!!! HEX SURFACE OBJECT TYPE !!!!!!!!!!!!!!!!!!
-		hex_surface_animation_functions.perform_animation_frame(vw_animation_parameters, use_textures, use_automata, use_multi_thread_automata, frame, max_automata_step_value, animation_step, scene_manager);
-//printf("animation :: perform_animation_frame 66AA\n");
-		// ############# UPDATE HEX SURFACE GEOMETRY DATA ##################
-		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		for (int i = 0; i < hex_surface_animation_functions.hex_surface_objects_to_execute.size(); i++) {
-			hex_surface_object_class *hex_surface_object = hex_surface_animation_functions.hex_surface_objects_to_execute[i];
-
-			scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(hex_surface_object->object_id);
-//printf("animation :: perform_animation_frame 77\n");
-
-			if (scene_voxel_object == NULL) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find hex surface in the scene to update geometry data for voxel object. %s\n", hex_surface_object->object_name.c_str());
-//printf("animation :: perform_animation_frame 88:: scene_hex_surface_object == NULL.\n");
-			}
-			else {
-//printf("animation :: perform_animation_frame 99::scene_hex_surface_object != NULL.\n");
-				if (!hex_surface_render.update_geometry_vertex_cloud_data(&hex_surface_object->point_cloud, scene_voxel_object, log_panel)) {
-					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene hex surface object geometry could not be updated for voxel object %s %i\n", hex_surface_object->object_name.c_str());
-//printf("animation :: perform_animation_frame 100:: scene_hex_surface_object not updated\n");
-				}
-
-			}
-		}
-		// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-
-		// ############# UPDATE GEOMETRY DATA ##################
-
-//QMessageBox::information(NULL, "", "perform_animation_frame 66 : ", QMessageBox::Ok);
-
-		return true;
-	}
-
-	// Save the animation entity objects defined to be animated point cloud data to disk
-	// NOTE : This function will need to be modified for each entity data object type that is used
-	//        by the application.
-	bool save_animation_frame_mesh(std::string saved_mesh_pathname, int frame, std::string file_format) {
-printf("save_animation_frame_mesh 000 :: %s : %i : %s \n", saved_mesh_pathname.c_str(), frame, file_format.c_str());
-if (log_panel != NULL) log_panel->application_log.AddLog("DEBUG :: editor_animation_widget_class :: in save_animation_frame_mesh : %s \n", saved_mesh_pathname);
-
-		bool export_voxel_mesh = false;
-		bool export_hex_mesh   = false;
-		// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-
-		if (animation_surface == 0) {
-			export_voxel_mesh = voxel_animation_functions.export_voxels_center_point_data(saved_mesh_pathname, frame, file_format);
-			export_hex_mesh   = hex_surface_animation_functions.export_hex_surface_center_point_data(saved_mesh_pathname, frame, file_format);
-			// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-		}
-		else
-			if (animation_surface == 1) {
-				export_voxel_mesh = voxel_animation_functions.export_voxels_point_surface_data(saved_mesh_pathname, frame, file_format);
-				export_hex_mesh   = hex_surface_animation_functions.export_hex_surface_center_point_data(saved_mesh_pathname, frame, file_format);
-				// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-			}
-			else {
-				if (animation_surface == 2) {
-//QMessageBox::information(NULL, "","editor_animation_widget_class::save_animation_frame_mesh : face_surface_rb->isChecked() " + voxel_hcp_entities_to_execute.size(), QMessageBox::Ok);
-					export_voxel_mesh = voxel_animation_functions.export_voxels_face_surface_data(saved_mesh_pathname, frame, file_format);
-					export_hex_mesh   = hex_surface_animation_functions.export_hex_surface_face_surface_data(saved_mesh_pathname, frame, file_format);
-					// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED HERE !!!!!!!!!!!!!!!!!!
-				}
-			}
-
-		if (!export_voxel_mesh && 
-			!export_hex_mesh) 
-	// !!!!!!!!!!!!!!!! OTHER OBJECT TYPES ADDED TO INDICATE IF ANY EXPORTS OCCURED  !!!!!!!!!!!!!!!!!!
-			return false;
-		else
-			return true;
-	}
-
-
 
 };
+

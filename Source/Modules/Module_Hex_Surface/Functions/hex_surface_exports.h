@@ -50,42 +50,7 @@ public:
 		stream.close();
 	}
 
-	// ##########################################################################
-	// # By default colors, of the generated hex surface vertices are exported but an 
-	// # option is left open to only export vertices by assigning the export_colors
-	// # value to false in the calling of these functions
-
-	// ###################### Request file name to export to #####################
-/*
-	bool export_hex_surface_center_points_ply(QVector<entity_class *> hex_surface_entities_to_export, vw_editor_viewer_class *vw_viewer, bool export_colors = true) {
-		mesh_file_dialog_class export_file_dialog;
-
-		std::string directory_pathname = export_file_dialog.get_export_file_directory_pathname();
-
-
-		for (index_type i = 0; i < hex_surface_entities_to_export.size(); i++) {
-			entity_class *hex_surface_entity_to_export = hex_surface_entities_to_export[i];
-
-			hex_surface_object_class *hex_surface_object_to_export = vw_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<hex_surface_object_class>(hex_surface_entity_to_export->entity_id);
-			//if (hex_surface_object_to_export->hex_surface_object_data.hex_surface_matrix_data.size() > 0) {
-			if (hex_surface_object_to_export->hex_surface_object_data.hex_surface_matrix_data.size() > 0) {
-
-				filename_to_write = directory_pathname + "/cp_" + std::string::number(i) + "_" + hex_surface_entity_to_export->entity_name + ".ply";
-
-				//if (log_widget != NULL) {
-				//	log_widget->log_message(log_display, log_message_type_enum_type::debug, "hex_surface_function_animation_widget_class :: export_hex_surface_center_points_ply "+ filename_to_write);
-				//}
-
-				export_point_cloud(filename_to_write, hex_surface_object_to_export->hex_surface_object_data, export_colors);
-
-			}
-
-		}
-		return true;
-	}
-*/
-
-		bool export_hex_surface_center_points_ply(hex_surface_scene_objects_class &hex_surface_entities_to_export,int export_selection, id_type entity_id, bool export_colors = false) {
+	bool export_hex_surface_center_points_ply(hex_surface_scene_objects_class &hex_surface_entities_to_export,int export_selection, id_type entity_id, bool export_colors = false) {
 
 		if (hex_surface_entities_to_export.size() < 1) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: No entity data in scene to export\n");
@@ -247,31 +212,7 @@ public:
 		}
 		return true;
 	}
-/*
-	bool export_hex_surface_faces_ply(QVector<entity_class *> hex_surface_entities_to_export, vw_editor_viewer_class *vw_viewer) {
-		mesh_file_dialog_class export_file_dialog;
 
-		std::string directory_pathname = export_file_dialog.get_export_file_directory_pathname();
-		bool exported_all = true;
-
-		for (index_type i = 0; i < hex_surface_entities_to_export.size(); i++) {
-			entity_class *hex_surface_entity_to_export = hex_surface_entities_to_export[i];
-
-			hex_surface_object_class *hex_surface_object_to_export = vw_viewer->viewer_render.vw_scene->ecs_scene_manager.get_entity_component<hex_surface_object_class>(hex_surface_entity_to_export->entity_id);
-
-			if (hex_surface_object_to_export->hex_surface_object_data.hex_surface_matrix_data.size() > 0) {
-
-				filename_to_write = directory_pathname + "/sf_" + std::string::number(i) + "_" + hex_surface_entity_to_export->entity_name + ".ply";
-
-				export_hex_surface(filename_to_write, hex_surface_object_to_export->hex_surface_object_data);
-
-			}
-		}
-
-		//return exported_all;
-		return true;
-	}
-*/
 	// ###################### file name given to export to #####################
 	bool export_hex_surface_center_points_to_file_ply(hex_surface_object_data_class &hex_surface_object_data, std::string file_pathname) {
 
@@ -291,11 +232,9 @@ public:
 	}
 
 private:
-	//std::string endl = "\n";
 	// --------------- Export hex surface point cloud ------------------------
 
 	bool export_point_cloud(std::string file_pathname, hex_surface_object_data_class &hex_surface_object_data, bool export_colors, bool notification = true) {
-		//int i = file_pathname.lastIndexOf(".ply");
 		int i = FW::stringtools::lastIndexOf(file_pathname, ".ply");
 		std::string file_name;
 
@@ -344,35 +283,20 @@ private:
 
 		index_data_type hex_index;
 
-		//index_vector3 hex_coordinate;
 		glm::ivec3 hex_coordinate;
 		glm::vec3  hex_cartesian_coordinate;
 
 		last_hex_export_index++;
-		//hex_surface_element_data_type red_value = 255, green_value = 255, blue_value = 255, hex_surface_value = 255;
 		hex_surface_data_type  hex_surface_value = 0.0;
 
 		for (hex_index = 0; hex_index < number_hexes_to_export; hex_index++) {
-			//if (export_colors){
-			//	red_value   = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::red,   hex_surface_index);
-			//	green_value = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::green, hex_surface_index);
-			//	blue_value  = hex_surface_object_data.extract_hex_surface_data_element_value(data_storage_type_enum::blue,  hex_surface_index);
-			//}
-
 			hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum::value, hex_index);
-			//if (hex_surface_value != DEFAULT_INACTIVE_VALUE) {
 
 			hex_coordinate = hex_surface_object_data.get_matrix_coordinate(hex_index);
 			hex_cartesian_coordinate = hex_surface_object_data.get_hex_surface_cartesian_coordinate(hex_coordinate);
 
-			//if (export_colors) {
-			//	stream << hex_surface_cartesian_coordinate.x() << " " << hex_surface_cartesian_coordinate.y() << " " << hex_surface_cartesian_coordinate.z() << " ";
-			//	stream << red_value << " " << green_value << " " << blue_value << " " << hex_surface_value << endl;
-			//} else {
-				//stream << hex_cartesian_coordinate.x() << " " << hex_cartesian_coordinate.y() << " " << hex_cartesian_coordinate.z() << endl;
 			stream << hex_surface_object_data.grid_origin.x + hex_cartesian_coordinate.x << " " << hex_surface_object_data.grid_origin.y + hex_cartesian_coordinate.y << " " << hex_surface_value << endl;
-			//}
-		//}
+
 		}
 
 		return true;
@@ -388,13 +312,6 @@ private:
 		stream << "property float y" << endl;
 		stream << "property float z" << endl;
 
-		//if (export_colors) {
-		//	stream << "property uchar red"   << endl;
-		//	stream << "property uchar green" << endl;
-		//	stream << "property uchar blue"  << endl;
-		//	stream << "property uchar alpha" << endl;
-		//}
-
 		stream << "end_header" << endl;
 	}
 
@@ -407,7 +324,6 @@ private:
 	//  --------------- EXPORT HEX SURFACE FACES PLY ------------------------
 
 	bool export_hex_surface(std::string file_pathname, hex_surface_object_data_class &hex_surface_object_data) {
-		//int i = file_pathname.lastIndexOf(".ply");
 		int i = FW::stringtools::lastIndexOf(file_pathname, ".ply");
 		std::string file_name;
 
@@ -493,7 +409,6 @@ private:
 	void write_hex_face_ply_vertex_data_to_file(hex_surface_object_data_class &hex_surface_object_data, size_t number_vertices_to_export) {
 		hex_surface_data_type  hex_surface_value = 0.0;
 
-		//index_vector3 hex_coordinate;
 		glm::ivec3 hex_coordinate;
 		glm::vec3  hex_cartesian_coordinate;
 

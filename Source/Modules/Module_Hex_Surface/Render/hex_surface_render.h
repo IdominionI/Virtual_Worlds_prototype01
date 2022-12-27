@@ -102,9 +102,6 @@ public:
 //printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
 
 		// Copile the OpenGL shader and store the id reference to it to be used
-		//shader_db_manager.remove_shader_program(entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);
-		//entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = -1;
-
 		// Define which shaders to use and the pathname to the shader snippit  code to define the shader
 		if (shader_material->use_default_vertex_shader)
 			shader_material->glsl_vertex_shader_file_pathname = shader_material->default_vertex_shader_file_pathname;
@@ -129,14 +126,9 @@ public:
 			shader_material->glsl_fragment_shader_file_pathname = shader_material->fragment_shader_file_pathname;
 
 		GLuint shader_id = 0;
-		//if (shader_material->use_point_shader) {
 //printf("define_shader_program 0000\n");
-			//shader_id = shader_db_manager.shader.compile_shader_program(vw_vertex_shader.shader_code, vw_point_geometry_shader.shader_code, vw_fragment_shader.shader_code);
-			shader_id = shader_db_manager.create_glsl_shader_program(*shader_material);
-		//} else {
-//printf("define_shader_program 1111\n");
-		//	shader_id = shader_db_manager.shader.compile_shader_program(vw_vertex_shader.shader_code, vw_geometry_shader.shader_code, vw_fragment_shader.shader_code);
-		//}
+
+		shader_id = shader_db_manager.create_glsl_shader_program(*shader_material);
 
 		if (!shader_id) {// Shader compilation did not succeed
 //printf("define_shader_program 22222\n");
@@ -288,20 +280,17 @@ public:
 				else {
 					printf("box_object != NULL.\n");
 					line_class* bv = new line_class;
-					material_struct_type* bm = new material_struct_type;// ****
+					material_struct_type* bm = new material_struct_type;
 
-					bm->shader_program_id = bounding_volume.program_id;// ****
+					bm->shader_program_id = bounding_volume.program_id;
 
 					hex_surface_object->bounding_area.program_id = bounding_volume.program_id;
 					hex_surface_object->bounding_area.geometry = bv;
-					hex_surface_object->bounding_area.material = bm;// ****	
+					hex_surface_object->bounding_area.material = bm;
 
 					box_object->scene_graph_object.scene_object_class.geometry = hex_surface_object->bounding_area.geometry;
 					box_object->scene_graph_object.scene_object_class.geometry->init();
-					box_object->scene_graph_object.scene_object_class.shader_material = hex_surface_object->bounding_area.material;// ****
-
-					//box_object->scene_graph_object.scene_object_class.shader_material->shader_program_id = bounding_volume.program_id;
-
+					box_object->scene_graph_object.scene_object_class.shader_material = hex_surface_object->bounding_area.material;
 
 					//hex_surface_object->bounding_volume.update_limits(glm::vec3(-4.0, -2.5, 0.0), glm::vec3(1.0, 3, 0.0));// Testing only
 					hex_surface_object->update_bounding_area();

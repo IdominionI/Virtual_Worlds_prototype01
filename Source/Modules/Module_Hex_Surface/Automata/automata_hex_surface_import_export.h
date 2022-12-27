@@ -335,8 +335,6 @@ public:
 
 
 private:
-	//std::string endl = '\n';
-
 	bool read_file_line_data() {
 		if (stream.eof()) return false;
 

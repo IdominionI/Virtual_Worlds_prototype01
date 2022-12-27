@@ -75,11 +75,6 @@ public:
 			return false;
 		}
 
-		//if (voxel_hcp_object == NULL) {
-		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Entity object of id  %i  not found\n", entity_id);
-		//	return false;
-		//}
-
 		return define_render_object(entity_id, entity_render_object, entity_category_id);
 
 		return true;

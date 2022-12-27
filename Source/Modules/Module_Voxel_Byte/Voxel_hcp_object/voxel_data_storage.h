@@ -47,8 +47,7 @@ public:
 	float	     voxel_size           = 1.0f;
 	glm::vec3    matrix_origin        = { 0.0,0.0,0.0 };
 	glm::vec3    matrix_coordinate_scale_factors = { 1.0,1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	//glm::ivec3 matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
-	glm::ivec3 matrix_dimension     = { 0,0,0 };// Future enhancement change this to a glm::ivec3 datatype
+	glm::ivec3 matrix_dimension     = { 0,0,0 };
 	bool	     display_points       = true;
 	bool	     perfom_rounding_up   = true;
 	bool	     voxel_surface_volume = false;
@@ -646,7 +645,6 @@ public:
 
 	glm::ivec3 get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
 		float grid_radius = voxel_size;
-		//float grid_radius = voxel_size / 2.0;
 		float grid_height = grid_radius * (sqrt(3.0f));
 		float c           = grid_radius / (sqrt(3.0f));
 

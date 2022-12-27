@@ -36,10 +36,8 @@ public:
 	~voxel_shaders_widget_class() {}
 
 	material_struct_type              *voxel_shader_parameters = NULL;
-	//shader_parameters_struct_type     *voxel_shader_parameters = NULL;
 	shader_variables_widget_class      shader_variables_widget;
-	//voxel_hcp_generation_widget_class *voxel_hcp_generation_widget;
-	hcp_voxel_genertion_selection_widget_class *hcp_voxel_genertion_selection_widget;// ******
+	hcp_voxel_genertion_selection_widget_class *hcp_voxel_genertion_selection_widget;
 	log_panel_class               *log_panel = NULL;
 
 	//bool animate_shaders             = false;
@@ -317,8 +315,6 @@ public:
 //printf("voxel_shaders_widget_class::initialise_parameters : XXXXX %s:\n", voxel_shader_parameters->default_point_shader_file_pathname.c_str());
 //printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %i:\n", voxel_shader_parameters->variables.size());
 
-		//voxel_hcp_render.define_shader_program(entity_render_object,log_panel);// ++++++++++++++++++++
-
 		// Following required as generating a new shader program also needs to up date default shader variables
 		// that are defined in the Hex Generation widget
 		//voxel_hcp_generation_widget->change_voxels_display();
@@ -414,11 +410,6 @@ private:
 
 		voxel_texture_import_export_data.import_voxel_genereated_function(voxel_shader_parameters, file_pathname);
 
-		//voxel_shader_parameters->vertex_shader_file_name         = vwDialogs::get_filename(voxel_shader_parameters->vertex_shader_file_pathname, "/");
-		//voxel_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(voxel_shader_parameters->point_shader_file_pathname, "/");
-		//voxel_shader_parameters->geometry_shader_file_name       = vwDialogs::get_filename(voxel_shader_parameters->geometry_shader_file_pathname, "/");
-		//voxel_shader_parameters->fragment_shader_file_name       = vwDialogs::get_filename(voxel_shader_parameters->fragment_shader_file_pathname, "/");
-
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data imported from file\n %s\n", file_pathname);
 
 	}
@@ -440,8 +431,6 @@ private:
 		std::string s                                        = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->vertex_shader_file_pathname = s;
 //printf("select_vertex_shader_file 111111111 : %s:\n",s.c_str());
-		//voxel_shader_parameters->vertex_shader_file_name     = vwDialogs::get_filename(s, "/");
-
 	}
 
 	void select_point_geometry_shader_file() {
@@ -459,8 +448,6 @@ private:
 
 		std::string s                                       = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->point_shader_file_pathname = s;
-		//voxel_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
-
 	}
 
 	void select_geometry_shader_file() {
@@ -478,8 +465,6 @@ private:
 
 		std::string s                                          = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->geometry_shader_file_pathname = s;
-		//voxel_shader_parameters->geometry_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
-
 	}
 
 	void select_fragment_shader_file() {
@@ -498,8 +483,6 @@ private:
 
 		std::string s                                          = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->fragment_shader_file_pathname = s;
-		//voxel_shader_parameters->fragment_shader_file_name     = vwDialogs::get_filename(file_pathname, "/");
-
 	}
 
 	void clear_variables() {

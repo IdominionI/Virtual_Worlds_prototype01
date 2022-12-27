@@ -44,10 +44,6 @@ public:
 
 		y_pos += 25;
 
-		//text("Expression : ", x_pos, y_pos);
-		//if (ex_button(expr_file_name+"###ctovb02", x_pos + 120, y_pos, 150, 20))
-		//	get_expression_file();
-
 		text("Random Generaton :", x_pos, y_pos);
 
 		ImGui::SetCursorPosX(x_pos + 170);
@@ -110,15 +106,7 @@ public:
 		y_pos += 30;
 		if (ex_button("Generate Grid", x_pos + 70, y_pos, 150, 20))
 			cartesian_to_voxel();
-/*
-		y_pos += 30;
-		text("Hex Scale", x_pos + 130, y_pos);
 
-		y_pos += 20;
-		if (float_min_max_slider("hs", x_pos, y_pos, 200.0f, min_vscale, max_vscale, hex_scale_value, 50.0f)) {
-			update_voxel_size();
-		}
-*/
 		y_pos += 30;
 		text("Data Range", x_pos, y_pos);
 		integer_input("###cthmindr", min_data_value, x_pos + 100, y_pos, 45.0f);
@@ -352,8 +340,6 @@ private:
 
 	string_type   ply_file_pathname = "";
 	string_type   ply_file_name = "...";
-	//string_type   expr_file_pathname = "";
-	//string_type   expr_file_name     = "...";
 
 	float min_x = -10.0f, max_x = 10.0f;
 	float min_y = -10.0f, max_y = 10.0f;
@@ -365,18 +351,7 @@ private:
 	int min_data_value = 1, max_data_value = 100;
 
 	hex_surface_render_class   hex_surface_render;
-/*
-	void update_voxel_size() {
-		scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
-		if (scene_voxel_object != NULL) {
-			application_default_shader_uniform_variables_struct_type uniform_variable;
-			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
-			uniform_variable.type = application_default_shader_variable_type_enum::Float1; uniform_variable.name = "voxSize"; uniform_variable.value0 = &vox_size;
-			scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-		}
-	}
-*/
 	void get_ply_file() {
 		char const* patterns[] = { "*.ply","*.obj","*.stl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -391,22 +366,7 @@ private:
 		ply_file_pathname = file_pathname;
 		ply_file_name = vwDialogs::get_filename(file_pathname, "\\");
 	}
-	/*
-		void get_expression_file() {
-	printf("Expression file button clicked");// replace with get file pathname tool
-			char const* patterns[] = { "*_C3D_EXPR.txt" };
-			char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
 
-			if (file_pathname == nullptr) {
-				if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file selected to perform voxel generation\n");
-				return;
-			}else
-				printf("expression_file_pathname != NULL %s \n", file_pathname);
-
-			//hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname = file_pathname;
-			//hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name     = vwDialogs::get_filename(file_pathname,"\\");
-		}
-	*/
 	// #########################################################
 
 	struct hex_cartesian_point_data_struct_type {
@@ -437,11 +397,6 @@ private:
 	};
 
 	hex_cartesian_point_data_struct_type cartesian_point_data;
-
-
-	// #########################################################
-
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	bool import_file(const std::string& filepath) {
 		const uint32_t cMeshImportFlags =
@@ -479,8 +434,4 @@ private:
 
 		return false;
 	}
-
-
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 };

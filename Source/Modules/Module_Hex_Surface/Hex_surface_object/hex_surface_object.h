@@ -121,7 +121,6 @@ public:
 		return true;
 	}
 
-	//bool add_hex_surface_vbo_face_vertex(size_t index, int i, int j) {
 	bool add_hex_surface_vbo_vertex(size_t index) {
 		float x, y, z;
 
@@ -143,11 +142,6 @@ public:
 		vertex   = { x,y,z }; 
 
 		point_cloud.add_vertex(vertex);
-
-		//if (vertex == NULL)
-		//	return false;
-		//else
-		//	vertex->value = surface_data;
 
 		return true;
 	}
@@ -340,7 +334,6 @@ public:
 		return true;
 	}
 
-	//******
 	void update_bounding_area() {
 		float min_x = hex_surface_object_data.hex_surface_generator_parameters.x_start;
 		float min_y = hex_surface_object_data.hex_surface_generator_parameters.y_start;
@@ -350,6 +343,4 @@ public:
 
 		bounding_area.update_limits(glm::vec3(min_x, min_y,0.0), glm::vec3(max_x, max_y,0.0));
 	}
-	//******
-
 };
