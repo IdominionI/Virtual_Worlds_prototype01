@@ -74,48 +74,48 @@ public:
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
 		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-		int              size = cloud->voxel_object_data.voxel_matrix_data.size();
-		//for(int i = 0; i< size;i++){
-		//	printf("generate_voxel_function 0000 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
-		//}
+		int size = cloud->voxel_object_data.voxel_matrix_data.size();
+//for(int i = 0; i< size;i++){
+//	printf("generate_voxel_function 0000 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
+//}
 		voxel_data_type* buffer = cloud->voxel_object_data.voxel_matrix_data.data();
 		voxel_generation_execute(buffer, size, voxel_generator_parameters.invocation);
 
 
-		//for(int i = 0; i< size;i++){
-		//	printf("generate_voxel_function 1111 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
-		//}
+//for(int i = 0; i< size;i++){
+//	printf("generate_voxel_function 1111 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
+//}
 
-				// Following code block is for testing only
-				/*int i = 110;
-				if (log_widget != NULL) {
-					log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute00 :: " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()));
-					//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01 :: " + QString::number(voxel_hcp_object->voxel_object_data.matrix_dimension.x));
-					log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute02 :: " + QString::number(i) + " : " + QString::number(cloud->voxel_object_data.voxel_matrix_data[size - 1]));
+// Following code block is for testing only
+/*int i = 110;
+if (log_widget != NULL) {
+	log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute00 :: " + QString::number(cloud->voxel_object_data.voxel_matrix_data.size()));
+	//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01 :: " + QString::number(voxel_hcp_object->voxel_object_data.matrix_dimension.x));
+	log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute02 :: " + QString::number(i) + " : " + QString::number(cloud->voxel_object_data.voxel_matrix_data[size - 1]));
 
-					QFile data("output.txt");
-					QTextStream out(&data);
-					if (!data.open(QFile::WriteOnly | QFile::Truncate)) {
-						if (log_widget != NULL) {
-							log_widget->log_message(log_display, log_message_type_enum_type::error, "voxel_generation :: Could not open file to ouput results to ");
+	QFile data("output.txt");
+	QTextStream out(&data);
+	if (!data.open(QFile::WriteOnly | QFile::Truncate)) {
+		if (log_widget != NULL) {
+			log_widget->log_message(log_display, log_message_type_enum_type::error, "voxel_generation :: Could not open file to ouput results to ");
 
-						}
-						//delete voxel_hcp_object;
-						return false;
-					}
+		}
+		//delete voxel_hcp_object;
+		return false;
+	}
 
-					index_vector voxel_coord;
-					QVector3D    cart_coord;
-					for (i = 0; i < size; i++) {
-						voxel_coord = cloud->voxel_object_data.get_matrix_coordinate(i);
-						cart_coord = cloud->voxel_object_data.get_voxel_cartesian_coordinate(voxel_coord, cloud->voxel_object_data.voxel_size);
+	index_vector voxel_coord;
+	QVector3D    cart_coord;
+	for (i = 0; i < size; i++) {
+		voxel_coord = cloud->voxel_object_data.get_matrix_coordinate(i);
+		cart_coord = cloud->voxel_object_data.get_voxel_cartesian_coordinate(voxel_coord, cloud->voxel_object_data.voxel_size);
 
-						cart_coord = cart_coord + cloud->voxel_object_data.matrix_origin;
+		cart_coord = cart_coord + cloud->voxel_object_data.matrix_origin;
 
-						//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(voxel_coord.x) + "  y: " + QString::number(voxel_coord.y) + "  z: " + QString::number(voxel_coord.z) + " val: " + QString::number(voxel_hcp_object->voxel_object_data.voxel_matrix_data[i]));
-						out << "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(cart_coord.x()) + "  y: " + QString::number(cart_coord.y()) + "  z: " + QString::number(cart_coord.z()) + " val: " + QString::number(cloud->voxel_object_data.voxel_matrix_data[i]) + '\n';
-					}
-				}*/
+		//post_log_widget->log_message(log_display, log_message_type_enum_type::info, "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(voxel_coord.x) + "  y: " + QString::number(voxel_coord.y) + "  z: " + QString::number(voxel_coord.z) + " val: " + QString::number(voxel_hcp_object->voxel_object_data.voxel_matrix_data[i]));
+		out << "test_compute01  :: i " + QString::number(i) + "  x: " + QString::number(cart_coord.x()) + "  y: " + QString::number(cart_coord.y()) + "  z: " + QString::number(cart_coord.z()) + " val: " + QString::number(cloud->voxel_object_data.voxel_matrix_data[i]) + '\n';
+	}
+}*/
 
 		return true;// testing
 	}
