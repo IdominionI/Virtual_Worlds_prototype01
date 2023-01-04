@@ -1,0 +1,27 @@
+begin_function
+
+end_function
+
+begin_expression
+
+	// Banchoff-Chmutov implicit surface example E
+	
+	float x1 = x/10.0;
+	float y1 = y/10.0;
+	float z1 = z/10.0;
+
+	//cos(x)sin(y) + cos(y)sin(z) + cos(z)sin(x) = 0
+	
+	vec3 p = vec3(x1,y1,z1);
+
+	float r0 = cos(x)*sin(y) + cos(y)*sin(z) + cos(z)*sin(x);
+	
+	if(length(p) > 0.9) r0 = limit + 1.0; 
+
+	if( r0 >= -limit && r0 <= limit){
+		value = 1;
+	}else{
+		value = invalid_voxel_value;
+	}
+	
+end_expression

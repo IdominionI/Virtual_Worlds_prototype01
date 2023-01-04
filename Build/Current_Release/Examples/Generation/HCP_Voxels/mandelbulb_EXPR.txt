@@ -1,0 +1,92 @@
+begin_function
+
+	//#define BOUNDING_RADIUS_2 3.0 // radius of a bounding sphere for the set used to accelerate intersection
+	//#define ESCAPE_THRESHOLD 1e1 // any series whose points’ magnitude exceed this threshold are considered
+								// divergent
+	//#define DEL 1e-4 			// delta is used in the finite difference approximation of the gradient
+								// (to determine normals)
+
+	// -------- quatMult() ----------------------------------------------------------
+	//
+	// Returns the product of quaternions q1 and q2.
+	// Note that quaternion multiplication is NOT commutative (i.e., q1 ** q2 != q2 ** q1 ).
+	//
+	// vec4 quatMult( vec4 q1, vec4 q2 )
+	// {
+		// vec4 r;
+		// r.x = q1.x*q2.x - dot( q1.yzw, q2.yzw );
+		// r.yzw = q1.x*q2.yzw + q2.x*q1.yzw + cross( q1.yzw, q2.yzw );
+		// return r;
+	// }
+
+	// ------- quatSq() --------------------------------------------------------------
+	//
+	// Returns the square of quaternion q. This function is a special (optimized)
+	// case of quatMult().
+	//
+	vec4 quat_squared(vec4 q){
+		vec4 r;
+	
+		r.x   = q.x*q.x - dot(q.yzw,q.yzw);
+		r.yzw = 2*q.x*q.yzw;
+		
+		return r;
+	}
+
+end_function
+
+begin_expression
+	int max_iterations = 50;
+	
+	float x1 = x/10.0;
+	float y1 = y/10.0;
+	float z1 = z/10.0;
+
+	vec3 p = vec3(x1,y1,z1);
+	
+	bool diverges = false;
+	
+	float r     = length(p);
+	float theta = atan(sqrt(p.x*p.x+p.y*p.y),p.z*p.z);
+	float phi   = atan(p.y,p.z);
+
+	vec3 c = vec3(r,theta,phi);
+	vec3 zeta = vec3(0,0,0);
+	//int n = 16;
+	int iteration = 0;
+
+	int i = 0;
+	for(i = 0; i<max_iterations	;i++){
+		r     = length(zeta);
+		if(r > 1.5) {
+			diverges = true;
+			break;
+		}
+		
+		theta = atan(sqrt(zeta.x*zeta.x+zeta.y*zeta.y),zeta.z*zeta.z);
+		phi   = atan(zeta.y,zeta.z);
+
+		float newx = pow(r,n)*sin(theta*n)*cos(phi*n);
+		float newy = pow(r,n)*sin(theta*n)*sin(phi*n);
+		float newz = pow(r,n)*cos(theta*n);
+		iteration++;
+		
+		zeta.x = newx+p.x;
+		zeta.y = newy+p.y;
+		zeta.z = newz+p.z;
+		
+		if(iteration>max_iterations){
+			diverges = true;
+			break;
+		}
+	}
+
+	if( !diverges){
+		 //value = 1;
+		 value = int (r*10.0);
+	 }else{
+		 value = invalid_voxel_value;
+	 }
+
+
+end_expression
