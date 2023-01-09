@@ -130,7 +130,7 @@ public:
 
 		if (render_objects_manager.define_render_object(entity_render_object, entity_object, entity_category_id)) {
 
-printf("render_objects_manager.define_render_object(entity_render_object, entity_object, entity_category_id) \n");
+//printf("render_objects_manager.define_render_object(entity_render_object, entity_object, entity_category_id) \n");
 			render_objects_manager.define_bounding_box(&scene_graph_manager, entity_id, entity_object, entity_category_id);
 			return true;
 		}

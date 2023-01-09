@@ -117,8 +117,9 @@ public:
 		voxel_generators.clear();
 		voxel_generators.shrink_to_fit();
 		for (index_type i = 0; i < voxel_hcp_objects_to_execute.size(); i++) {
-			voxel_compute_generator_class* voxel_generator = new voxel_compute_generator_class; // If this is not a pointer, application crashes when push_backing voxel_generator
-			voxel_generator->cloud = voxel_hcp_objects_to_execute[i];
+			voxel_compute_generator_class *voxel_generator = new voxel_compute_generator_class; // If this is not a pointer, application crashes when push_backing voxel_generator
+			voxel_generator->cloud     = voxel_hcp_objects_to_execute[i];
+			voxel_generator->log_panel = log_panel;
 			voxel_generators.push_back(voxel_generator);
 		}
 

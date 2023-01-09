@@ -44,7 +44,7 @@ class main_window_class : public openGl_window_basis_class
 public:
 
     main_window_class() : mIsRunning(true), GLFW_window_ptr(nullptr) {
-        ui_context     = std::make_unique<UI_context_class>();
+        ui_context = std::make_unique<UI_context_class>();
         render_context = new openGL_context_class;
     }
 
@@ -59,9 +59,9 @@ public:
     // Initialise application main window panels, variables, parameters etc.
     bool init(int width, int height, const std::string& title)
     {
-        Width  = width;
+        Width = width;
         Height = height;
-        Title  = title;
+        Title = title;
 
         render_context->init(this);
 
@@ -81,9 +81,9 @@ public:
             return false;
         }
 
-        scene_manager            = new scene_manager_class;
+        scene_manager = new scene_manager_class;
         scene_manager->log_panel = log_panel;
-        scene_graph_manager      = &scene_manager->scene_graph_manager;
+        scene_graph_manager = &scene_manager->scene_graph_manager;
 
         // Define scene entity objects category data base
         scene_entities_db_manager = &scene_manager->entities_manager;
@@ -100,22 +100,22 @@ public:
         define_outliner_import_export_managers(outliner_import_export_manager);
 
         parameter_panel.scene_manager = scene_manager;
-        parameter_panel.log_panel     = log_panel;
+        parameter_panel.log_panel = log_panel;
 
-        scene_view          = new scene_viewer_class(scene_graph_manager);
+        scene_view = new scene_viewer_class(scene_graph_manager);
 
         //scene_manager = std::make_unique<scene_manager_class>(); // Just too problematic to work with
 
 
 
-        property_panel.log_panel                  = log_panel;
-        property_panel.openGL_context             = render_context;
-        property_panel.scene_viewer               = scene_view;
-        property_panel.scene_manager              = scene_manager;
+        property_panel.log_panel = log_panel;
+        property_panel.openGL_context = render_context;
+        property_panel.scene_viewer = scene_view;
+        property_panel.scene_manager = scene_manager;
         property_panel.universal_shader_variables = scene_view->universal_shader_variables;
         define_animation_manager_categories(); //*****
-        
-        node_editor_panel.log_panel     = log_panel;
+
+        node_editor_panel.log_panel = log_panel;
         node_editor_panel.scene_manager = scene_manager; //******
         node_editor_panel.nodes_context = ImNodes::GetCurrentContext();
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -133,7 +133,7 @@ public:
         ImGuiIO& io = ImGui::GetIO();
 
         io.Fonts->Clear();
-        ImFont *mainFont = io.Fonts->AddFontFromFileTTF("Fonts/Cousine-Regular.ttf", 13.0f, &cfg);
+        ImFont* mainFont = io.Fonts->AddFontFromFileTTF("Fonts/Cousine-Regular.ttf", 13.0f, &cfg);
 
         static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 
@@ -141,7 +141,7 @@ public:
         icons_config.MergeMode = true;
         icons_config.GlyphOffset = ImVec2(0, 1);
 
-        ImFont *iconFont = io.Fonts->AddFontFromFileTTF("Fonts/fontawesome_6_solid.otf", 13.0f + 1.0, &icons_config, icons_ranges);
+        ImFont* iconFont = io.Fonts->AddFontFromFileTTF("Fonts/fontawesome_6_solid.otf", 13.0f + 1.0, &icons_config, icons_ranges);
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         return mIsRunning;
@@ -196,34 +196,34 @@ public:
     }
 
     void main_menu() {
-        if (ImGui::BeginMainMenuBar()){
-            if (ImGui::BeginMenu("File###mmfile")){
+        if (ImGui::BeginMainMenuBar()) {
+            if (ImGui::BeginMenu("File###mmfile")) {
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Voxel###mmvoxel")){
-               if (ImGui::BeginMenu("Functions to surface###mmvfs")) {
-                        if (ImGui::MenuItem("Selected###mmvfs")) { voxel_volume_to_voxel_surface(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmvfs"))   { voxel_volume_to_voxel_surface(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmvfs"))      { voxel_volume_to_voxel_surface(ALL_EXPORT); }
+            if (ImGui::BeginMenu("Voxel###mmvoxel")) {
+                if (ImGui::BeginMenu("Functions to surface###mmvfs")) {
+                    if (ImGui::MenuItem("Selected###mmvfs")) { voxel_volume_to_voxel_surface(SELECTED_EXPORT); }
+                    if (ImGui::MenuItem("Active###mmvfs")) { voxel_volume_to_voxel_surface(ACTIVE_EXPORT); }
+                    if (ImGui::MenuItem("All###mmvfs")) { voxel_volume_to_voxel_surface(ALL_EXPORT); }
                     ImGui::EndMenu();
                 }
-                 if (ImGui::BeginMenu("Export###mmve")) {
+                if (ImGui::BeginMenu("Export###mmve")) {
                     if (ImGui::BeginMenu("As Point Cloud###mmvepc")) {
                         if (ImGui::MenuItem("Selected###mmvepc")) { export_voxels_center_point_data(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmvepc"))   { export_voxels_center_point_data(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmvepc"))      { export_voxels_center_point_data(ALL_EXPORT); }
+                        if (ImGui::MenuItem("Active###mmvepc")) { export_voxels_center_point_data(ACTIVE_EXPORT); }
+                        if (ImGui::MenuItem("All###mmvepc")) { export_voxels_center_point_data(ALL_EXPORT); }
                         ImGui::EndMenu();
                     }
                     if (ImGui::BeginMenu("As Point Surface###mmveps")) {
                         if (ImGui::MenuItem("Selected###mmveps")) { export_voxels_point_surface_data(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmveps"))   { export_voxels_point_surface_data(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmveps"))      { export_voxels_point_surface_data(ALL_EXPORT); }
+                        if (ImGui::MenuItem("Active###mmveps")) { export_voxels_point_surface_data(ACTIVE_EXPORT); }
+                        if (ImGui::MenuItem("All###mmveps")) { export_voxels_point_surface_data(ALL_EXPORT); }
                         ImGui::EndMenu();
                     }
                     if (ImGui::BeginMenu("As Face Surface###mmvefs")) {
                         if (ImGui::MenuItem("Selected###mmvefs")) { export_voxels_surface_face_data(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmvefs"))   { export_voxels_surface_face_data(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmvefs"))      { export_voxels_surface_face_data(ALL_EXPORT); }
+                        if (ImGui::MenuItem("Active###mmvefs")) { export_voxels_surface_face_data(ACTIVE_EXPORT); }
+                        if (ImGui::MenuItem("All###mmvefs")) { export_voxels_surface_face_data(ALL_EXPORT); }
                         ImGui::EndMenu();
                     }
                     ImGui::EndMenu();
@@ -235,14 +235,14 @@ public:
                 if (ImGui::BeginMenu("Export###mmve")) {
                     if (ImGui::BeginMenu("As Point Cloud###mmhepc")) {
                         if (ImGui::MenuItem("Selected###mmhepc")) { export_hex_surface_center_point_data(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmhepc"))   { export_hex_surface_center_point_data(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmhepc"))      { export_hex_surface_center_point_data(ALL_EXPORT); }
+                        if (ImGui::MenuItem("Active###mmhepc")) { export_hex_surface_center_point_data(ACTIVE_EXPORT); }
+                        if (ImGui::MenuItem("All###mmhepc")) { export_hex_surface_center_point_data(ALL_EXPORT); }
                         ImGui::EndMenu();
                     }
                     if (ImGui::BeginMenu("As Face Surface###mmhefs")) {
                         if (ImGui::MenuItem("Selected###mmhefs")) { export_hex_surface_surface_face_data(SELECTED_EXPORT); }
-                        if (ImGui::MenuItem("Active###mmhefs"))   { export_hex_surface_surface_face_data(ACTIVE_EXPORT); }
-                        if (ImGui::MenuItem("All###mmhefs"))      { export_hex_surface_surface_face_data(ALL_EXPORT); }
+                        if (ImGui::MenuItem("Active###mmhefs")) { export_hex_surface_surface_face_data(ACTIVE_EXPORT); }
+                        if (ImGui::MenuItem("All###mmhefs")) { export_hex_surface_surface_face_data(ALL_EXPORT); }
                         ImGui::EndMenu();
                     }
                     ImGui::EndMenu();
@@ -269,12 +269,12 @@ public:
     }
 
 
-    void on_scroll_event(float delta) override{
-        if(scene_view->focused)  scene_view->on_mouse_wheel(delta);
+    void on_scroll_event(float delta) override {
+        if (scene_view->focused)  scene_view->on_mouse_wheel(delta);
     }
 
     void on_key_event(int key, int scancode, int action, int mods) override {
-        if (scene_view->focused) scene_view->on_key_event(key,scancode,action,mods);
+        if (scene_view->focused) scene_view->on_key_event(key, scancode, action, mods);
     }
 
     void on_mouse_button_event(int button, int state, int mods) {
@@ -303,36 +303,36 @@ private:
     //id_type *current_selected_entity_type_id = NULL;
     //id_type *current_selected_entity_id      = NULL;
 
-    node_basis_class *selected_node = NULL;//*****
+    node_basis_class* selected_node = NULL;//*****
 
     GLFWwindow* GLFW_window_ptr; // glfw 
 
     // Render contexts
     std::unique_ptr<UI_context_class>     ui_context;
-    openGL_context_class  *render_context;
+    openGL_context_class* render_context;
 
     // UI components
     property_panel_class  property_panel;
     outliner_panel_class  outliner_panel;
     parameter_panel_class parameter_panel;
-    log_panel_class       *log_panel;
+    log_panel_class* log_panel;
     node_editor_panel_class node_editor_panel;
 
 
-    scene_viewer_class   *scene_view;
+    scene_viewer_class* scene_view;
 
     bool mIsRunning;
 
     // *************
-    scene_graph_manager_class *scene_graph_manager = NULL;
-    scene_manager_class       *scene_manager       = NULL;
+    scene_graph_manager_class* scene_graph_manager = NULL;
+    scene_manager_class* scene_manager = NULL;
 
-    scene_entities_db_manager_class    *scene_entities_db_manager; // *****
-    scene_render_objects_manager_class *render_objects_manager; // *****
+    scene_entities_db_manager_class* scene_entities_db_manager; // *****
+    scene_render_objects_manager_class* render_objects_manager; // *****
 
-    outliner_import_export_manager_class *outliner_import_export_manager; // *****
+    outliner_import_export_manager_class* outliner_import_export_manager; // *****
 
-    universal_shader_variables_struct_type *universal_shader_variables = NULL;
+    universal_shader_variables_struct_type* universal_shader_variables = NULL;
 
     export_voxel_geometry_class       export_voxel_geometry;
     export_hex_surface_geometry_class export_hex_surface_geometry;
@@ -343,10 +343,10 @@ private:
     shader_db_manager_class shader_db_manager;
 
 
-    void define_entity_db_categories(scene_entities_db_manager_class *scene_entities_db_manager) {
+    void define_entity_db_categories(scene_entities_db_manager_class* scene_entities_db_manager) {
         // Define scene entity objects data base
 
-        if (scene_entities_db_manager == NULL) return ;
+        if (scene_entities_db_manager == NULL) return;
 
         // Define voxel entity db
         scene_entities_db_manager->define_new_entity_category(ENTITY_CATEGORY_HCP_VOXEL);
@@ -354,16 +354,16 @@ private:
         int index = scene_entities_db_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
 
         if (index < 0) {
-            printf("hcp_voxel_objects index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel entity category\n");
         }
         else {
-            printf("hcp_voxel_objects >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined HCP voxel entity category\n");
 
             voxel_hcp_scene_objects_class* voxel_hcp_scene_objects = new voxel_hcp_scene_objects_class;
-            if (voxel_hcp_scene_objects == NULL)
-                printf("voxel_hcp_scene_objects == NULL\n");
-            else {
-                printf("voxel_hcp_scene_objects != NULL\n");
+            if (voxel_hcp_scene_objects == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel entity category object\n");
+            } else {
+                //printf("voxel_hcp_scene_objects != NULL\n");
 
                 voxel_hcp_scene_objects->objects_category_id = scene_entities_db_manager->scene_objects[index]->objects_category_id;
 
@@ -386,16 +386,16 @@ private:
         index = scene_entities_db_manager->get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
 
         if (index < 0) {
-            printf("hex_surface_scene_objects index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface entity category\n");
         }
         else {
-            printf("hex_surface_scene_objects >= 0 : %i\n", index);
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined Hex surface entity category\n");
 
             hex_surface_scene_objects_class* hex_surface_scene_objects = new hex_surface_scene_objects_class;
-            if (hex_surface_scene_objects == NULL)
-                printf("hex_surface_scene_objects == NULL\n");
-            else {
-                printf("hex_surface_scene_objects != NULL\n");
+            if (hex_surface_scene_objects == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface entity category object\n");
+            } else {
+                //printf("hex_surface_scene_objects != NULL\n");
 
                 hex_surface_scene_objects->objects_category_id = scene_entities_db_manager->scene_objects[index]->objects_category_id;
 
@@ -410,7 +410,7 @@ private:
 
     }
 
-    void define_render_object_categories(scene_render_objects_manager_class *render_objects_manager) {
+    void define_render_object_categories(scene_render_objects_manager_class* render_objects_manager) {
 
         if (render_objects_manager == NULL) return;
 
@@ -420,16 +420,16 @@ private:
         int index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
 
         if (index < 0) {
-            printf("hcp voxel render objects index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel render category\n");
         }
         else {
-            printf("hcp voxel render objects index >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined HCP voxel render category\n");
 
             voxel_hcp_render_object_class* voxel_hcp_scene_render_object = new voxel_hcp_render_object_class;
-            if (voxel_hcp_scene_render_object == NULL)
-                printf("voxel_hcp_scene_render_object == NULL\n");
-            else {
-                printf("voxel_hcp_scene_render_object != NULL\n");
+            if (voxel_hcp_scene_render_object == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel render category object\n");
+            } else {
+                // printf("voxel_hcp_scene_render_object != NULL\n");
 
                 voxel_hcp_scene_render_object->objects_category_id = render_objects_manager->scene_render_objects[index]->objects_category_id;
                 voxel_hcp_scene_render_object->log_panel = log_panel;
@@ -460,16 +460,16 @@ private:
         index = render_objects_manager->get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
 
         if (index < 0) {
-            printf("hex_surface render objects index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface render category\n");
         }
         else {
-            printf("hex_surface render objects index >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined Hex surface render category\n");
 
             hex_surface_render_object_class* hex_surface_scene_render_object = new hex_surface_render_object_class;
-            if (hex_surface_scene_render_object == NULL)
-                printf("voxel_hcp_scene_render_object == NULL\n");
-            else {
-                printf("voxel_hcp_scene_render_object != NULL\n");
+            if (hex_surface_scene_render_object == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface render category object\n");
+            } else {
+                //printf("voxel_hcp_scene_render_object != NULL\n");
 
                 hex_surface_scene_render_object->objects_category_id = render_objects_manager->scene_render_objects[index]->objects_category_id;
                 hex_surface_scene_render_object->log_panel = log_panel;
@@ -497,7 +497,7 @@ private:
         // ADD OTHER DATA CATEGORY TYPES BELOW
     }
 
-    void define_outliner_import_export_managers(outliner_import_export_manager_class *outliner_import_export_manager) {
+    void define_outliner_import_export_managers(outliner_import_export_manager_class* outliner_import_export_manager) {
 
         if (outliner_import_export_manager == NULL) return;
 
@@ -507,16 +507,16 @@ private:
         int index = outliner_import_export_manager->get_import_export_category_index(ENTITY_CATEGORY_HCP_VOXEL);
 
         if (index < 0) {
-            printf("import_export_category voxel index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define outliner HCP voxel import/export category\n");
         }
         else {
-            printf("import_export_category voxel >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined HCP voxel import/export category\n");
 
             hcp_voxel_import_export_class* hcp_voxel_import_export = new hcp_voxel_import_export_class;
-            if (hcp_voxel_import_export == NULL)
-                printf("hcp_voxel_import_export == NULL\n");
-            else {
-                printf("hcp_voxel_import_export != NULL\n");
+            if (hcp_voxel_import_export == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel import/export category object\n");
+            } else {
+                //printf("hcp_voxel_import_export != NULL\n");
 
                 hcp_voxel_import_export->import_export_object_category_id = outliner_import_export_manager->import_export_objects[index]->import_export_object_category_id;
 
@@ -530,16 +530,16 @@ private:
         index = outliner_import_export_manager->get_import_export_category_index(ENTITY_CATEGORY_HEX_SURF);
 
         if (index < 0) {
-            printf("import_export_category hex surface index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define outliner Hex surface import/export category\n");
         }
         else {
-            printf("import_export_category hex surface >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined Hex surface import/export category\n");
 
             hex_surface_import_export_class* hex_surface_import_export = new hex_surface_import_export_class;
-            if (hex_surface_import_export == NULL)
-                printf("hex surface_import_export == NULL\n");
-            else {
-                printf("hex surface_import_export != NULL\n");
+            if (hex_surface_import_export == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface import/export category object\n");
+            } else {
+                //printf("hex surface_import_export != NULL\n");
 
                 hex_surface_import_export->import_export_object_category_id = outliner_import_export_manager->import_export_objects[index]->import_export_object_category_id;
 
@@ -557,16 +557,16 @@ private:
         int index = property_panel.animation_widget.get_animation_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
 
         if (index < 0) {
-            printf("animation_category voxel index <0 NULL\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define animation HCP voxel category\n");
         }
         else {
-            printf("animation_category voxel >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined HCP Voxel animation category\n");
 
-            scene_hsp_voxel_animation_class *scene_hsp_voxel_animation = new scene_hsp_voxel_animation_class;
-            if (scene_hsp_voxel_animation == NULL)
-                printf("scene_hsp_voxel_animation == NULL\n");
-            else {
-                printf("scene_hsp_voxel_animation != NULL\n");
+            scene_hsp_voxel_animation_class* scene_hsp_voxel_animation = new scene_hsp_voxel_animation_class;
+            if (scene_hsp_voxel_animation == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define HCP voxel animation category object\n");
+            } else {
+                //printf("scene_hsp_voxel_animation != NULL\n");
 
                 scene_hsp_voxel_animation->objects_category_id = property_panel.animation_widget.animation_objects[index]->objects_category_id;
 
@@ -580,15 +580,16 @@ private:
         index = property_panel.animation_widget.get_animation_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
 
         if (index < 0) {
-            printf("animation_category hex index <0 NULL\n");
-        } else {
-            printf("animation_category hex >= 0\n");
+            if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define animation Hex surface category\n");
+        }
+        else {
+            if (log_panel != NULL) log_panel->application_log.AddLog("Defined Hex surface animation category\n");
 
-            scene_hex_surface_animation_class *scene_hex_surface_animation = new scene_hex_surface_animation_class;
-            if (scene_hex_surface_animation == NULL)
-                printf("scene_hex_surface_animation == NULL\n");
-            else {
-                printf("scene_hex_surface_animation != NULL\n");
+            scene_hex_surface_animation_class* scene_hex_surface_animation = new scene_hex_surface_animation_class;
+            if (scene_hex_surface_animation == NULL) {
+                if (log_panel != NULL) log_panel->application_log.AddLog("APPLICATION PROBLEM :: Cound not define Hex surface animation category object\n");
+            } else {
+                // printf("scene_hex_surface_animation != NULL\n");
 
                 scene_hex_surface_animation->objects_category_id = property_panel.animation_widget.animation_objects[index]->objects_category_id;
 
@@ -609,49 +610,49 @@ private:
         }
 
         //voxel_hcp_scene_objects_class &voxel_hcp_objects = scene_manager->entities_manager.voxel_hcp_scene_objects;
-        voxel_hcp_scene_objects_class *voxel_hcp_objects = get_voxel_hcp_scene_objects();
+        voxel_hcp_scene_objects_class* voxel_hcp_objects = get_voxel_hcp_scene_objects();
 
         if (voxel_hcp_objects->size() < 1) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel surface geometry :: Cannot perform voxel volume to surface function:: No entity data in scene to export\n");
             vwDialogs::message_box("ERROR : Export voxel surface geometry", "Cannot export voxel point surface to file::No entity data in scene to export");
-            return ;
+            return;
         }
 
         voxel_object_data_class    voxel_object_surface_data;
 
         switch (selection) {
-			//case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, *outliner_panel.outliner_manager.current_selected_node_id);break;
-			case SELECTED_EXPORT : voxel_center_points_selected(*voxel_hcp_objects, globalc::get_current_selected_entity_id());break;
-			case ACTIVE_EXPORT	 : voxel_center_points_active(*voxel_hcp_objects);  break;
-			case ALL_EXPORT      : voxel_center_points_all(*voxel_hcp_objects);	   break;
+            //case SELECTED_EXPORT : voxel_center_points_selected(voxel_hcp_objects, *outliner_panel.outliner_manager.current_selected_node_id);break;
+        case SELECTED_EXPORT: voxel_center_points_selected(*voxel_hcp_objects, globalc::get_current_selected_entity_id()); break;
+        case ACTIVE_EXPORT: voxel_center_points_active(*voxel_hcp_objects);  break;
+        case ALL_EXPORT: voxel_center_points_all(*voxel_hcp_objects);	   break;
 
-		}
+        }
     }
 
-    void voxel_center_points_selected(voxel_hcp_scene_objects_class &voxel_hcp_entities, id_type entity_id) {
+    void voxel_center_points_selected(voxel_hcp_scene_objects_class& voxel_hcp_entities, id_type entity_id) {
 
         if (entity_id < 0) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: No entity selected to export\n");
             vwDialogs::message_box("Export voxel surface geometry", "Cannot export voxel point surface to file::No entity selected to export");
-            return ;
+            return;
         }
 
-        voxel_hcp_object_class *voxel_hcp_object = voxel_hcp_entities.get_voxel_hcp_object(entity_id);
+        voxel_hcp_object_class* voxel_hcp_object = voxel_hcp_entities.get_voxel_hcp_object(entity_id);
 
         if (voxel_hcp_object == NULL) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: Could not find entity in scene data to export\n");
             vwDialogs::message_box("Export voxel surface geometry", "Cannot export voxel point surface to file::Could not find entity in scene data to export");
-            return ;
+            return;
         }
 
-        create_voxel_center_point_data(voxel_hcp_object,entity_id);
+        create_voxel_center_point_data(voxel_hcp_object, entity_id);
 
-//printf("voxel_center_points_ply_selected 44 %i\n", entity_id);
+        //printf("voxel_center_points_ply_selected 44 %i\n", entity_id);
     }
 
     void voxel_center_points_active(voxel_hcp_scene_objects_class& voxel_hcp_entities_to_export) {
         for (index_type i = 0; i < voxel_hcp_entities_to_export.size(); i++) {
-            voxel_hcp_object_class *voxel_hcp_object = voxel_hcp_entities_to_export[i];
+            voxel_hcp_object_class* voxel_hcp_object = voxel_hcp_entities_to_export[i];
 
             if (voxel_hcp_object == NULL) {
                 if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: No voxel entities defined\n");
@@ -671,7 +672,7 @@ private:
 
     void voxel_center_points_all(voxel_hcp_scene_objects_class& voxel_hcp_entities_to_export) {
         for (index_type i = 0; i < voxel_hcp_entities_to_export.size(); i++) {
-            voxel_hcp_object_class *voxel_hcp_object = voxel_hcp_entities_to_export[i];
+            voxel_hcp_object_class* voxel_hcp_object = voxel_hcp_entities_to_export[i];
 
             if (voxel_hcp_object == NULL) {
                 if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel surface geometry :: Cannot export voxel point surface to file:: No voxel entities defined\n");
@@ -680,21 +681,22 @@ private:
 
             if (voxel_hcp_object->voxel_object_data.voxel_matrix_data.size() > 0) {
                 create_voxel_center_point_data(voxel_hcp_object, voxel_hcp_object->object_id);
-            } else {
+            }
+            else {
                 if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel volume to voxel surface :: Cannot convert voxel point surface for object:: %s \nNo voxel surface face mesh generated\n", voxel_hcp_object->object_name);
             }
-            
+
         }
     }
 
-    void create_voxel_center_point_data(voxel_hcp_object_class *voxel_hcp_object, id_type entity_id) {
+    void create_voxel_center_point_data(voxel_hcp_object_class* voxel_hcp_object, id_type entity_id) {
         voxel_surface_data_class voxel_surface_data;
         voxel_surface_data.cloud = voxel_hcp_object;
-//printf("create_voxel_center_point_data 00\n");
+        //printf("create_voxel_center_point_data 00\n");
 
 
         if (!voxel_surface_data.create_voxel_surface_point_data()) {
-//printf("create_voxel_center_point_data 11\n");
+            //printf("create_voxel_center_point_data 11\n");
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel volume to voxel surface :: Cannot convert voxel point surface for object:: %s \nNo voxel surface face mesh generated\n", voxel_hcp_object->object_name);
         }
 
@@ -707,7 +709,7 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel volume to voxel surface :: Cannot convert voxel point surface for object:: %s \nNo voxel normal data\n", voxel_hcp_object->object_name);
             return;
         }
-//printf("create_voxel_center_point_data 22\n");
+        //printf("create_voxel_center_point_data 22\n");
         voxel_object_data_class    voxel_object_surface_data;
         voxel_object_surface_data.create_empty_volume_cubic(voxel_hcp_object->voxel_object_data.matrix_dimension.x, voxel_hcp_object->voxel_object_data.matrix_dimension.y, voxel_hcp_object->voxel_object_data.matrix_dimension.z);
 
@@ -724,18 +726,18 @@ private:
 
         //####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
         scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(entity_id);
-//printf("create_voxel_center_point_data 33\n");
+        //printf("create_voxel_center_point_data 33\n");
 
         if (scene_voxel_object == NULL) {
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find voxel in the scene to update geometry data.\n");
-//printf("scene_voxel_object == NULL.\n");
+            //printf("scene_voxel_object == NULL.\n");
         }
         else {
-//printf("scene_voxel_object != NULL.\n");
+            //printf("scene_voxel_object != NULL.\n");
 
             if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
                 if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated.\n");
-//printf("scene_voxel_object not updated\n");
+                //printf("scene_voxel_object not updated\n");
                 return;
             }
 
@@ -751,9 +753,9 @@ private:
 
         //int i = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HCP_VOXEL);
         //voxel_hcp_scene_objects_class *voxel_hcp_entities_to_export = dynamic_cast<voxel_hcp_scene_objects_class *>(scene_manager->entities_manager.scene_objects[i]);
-        voxel_hcp_scene_objects_class *voxel_hcp_entities_to_export = get_voxel_hcp_scene_objects();
+        voxel_hcp_scene_objects_class* voxel_hcp_entities_to_export = get_voxel_hcp_scene_objects();
         if (voxel_hcp_entities_to_export == NULL) return;
-        export_voxel_geometry.export_voxel_center_points_ply(*voxel_hcp_entities_to_export,export_selection, globalc::get_current_selected_entity_id());
+        export_voxel_geometry.export_voxel_center_points_ply(*voxel_hcp_entities_to_export, export_selection, globalc::get_current_selected_entity_id());
         //export_voxel_geometry.export_voxel_center_points_ply(scene_manager->entities_manager.voxel_hcp_scene_objects,export_selection, globalc::get_current_selected_entity_id());
     }
 
@@ -794,7 +796,7 @@ private:
             if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export hex surface point geometry :: Cannot export hex surface point dat to file:: Scene Manager is undefined\n");
         }
 
-        hex_surface_scene_objects_class *hex_surface_scene_objects = get_hex_surface_scene_objects();
+        hex_surface_scene_objects_class* hex_surface_scene_objects = get_hex_surface_scene_objects();
         if (hex_surface_scene_objects == NULL) return;
         export_hex_surface_geometry.export_hex_surface_center_points_ply(*hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
         //export_hex_surface_geometry.export_hex_surface_center_points_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
@@ -811,11 +813,11 @@ private:
         //export_hex_surface_geometry.export_hex_surface_faces_ply(scene_manager->entities_manager.hex_surface_scene_objects, export_selection, globalc::get_current_selected_entity_id());
     }
 
-    hex_surface_scene_objects_class *get_hex_surface_scene_objects() {
+    hex_surface_scene_objects_class* get_hex_surface_scene_objects() {
         int i = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF);
         if (i < 0) return NULL;
 
-        hex_surface_scene_objects_class *hex_surface_scene_objects = dynamic_cast<hex_surface_scene_objects_class*>(scene_manager->entities_manager.scene_objects[i]);
+        hex_surface_scene_objects_class* hex_surface_scene_objects = dynamic_cast<hex_surface_scene_objects_class*>(scene_manager->entities_manager.scene_objects[i]);
         return hex_surface_scene_objects;
     }
 

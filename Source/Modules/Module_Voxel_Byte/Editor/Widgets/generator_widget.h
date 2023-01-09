@@ -195,7 +195,7 @@ public:
 	}
 
 	void execute_voxel_function(bool notification = true) {
-printf("Execute Function button clicked\n");
+//printf("Execute Function button clicked\n");
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
 
@@ -215,7 +215,8 @@ printf("Execute Function button clicked\n");
 //editor_logging_panel.add_log_message("INFO","Execute Buttton 111 : " + voxel_generation_item.current_selected_component_name);
 		// set voxel_generation object id to execute funtion data on
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters = voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters;
-		voxel_generator.cloud = voxel_hcp_object_to_execute;
+		voxel_generator.cloud     = voxel_hcp_object_to_execute;
+		voxel_generator.log_panel = log_panel;
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function %s 2222\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_pathname.c_str());
 
 // *************** test code only :: Delete when finished ***************************
@@ -428,9 +429,10 @@ private:
 		if (file_pathname == nullptr) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file defined to save voxel generation parameter data to\n");
 			return;
-		} else
+		} 
+		//else
 			//printf("save_generation_parameters != NULL %s \n", file_pathname);
-			printf("save_generation_parameters != NULL  \n");
+			//printf("save_generation_parameters != NULL  \n");
 
 		switch (invocation) {
 			case 0 : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation = 1;    break;
@@ -460,8 +462,8 @@ private:
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file defined to import voxel generation parameter data from.\n");
 			return;
 		}
-		else
-			printf("load_generation_parameters != NULL  \n");
+		//else
+		//	printf("load_generation_parameters != NULL  \n");
 
 		voxel_function_import_export.import_voxel_genereated_function(voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters, file_pathname);
 
@@ -479,7 +481,7 @@ private:
 	}
 
 	void clear_variables() {
-		printf("Clear Variables clicked");// replace with clear variables
+		//printf("Clear Variables clicked");// replace with clear variables
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.int_variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.bool_variables.clear();

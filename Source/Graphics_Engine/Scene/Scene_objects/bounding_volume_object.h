@@ -18,12 +18,12 @@ public :
 
 
     bool initialise() {
-printf("bounding_volume_class 000\n");
+//printf("bounding_volume_class 000\n");
        
         if ((program_id = shader.create_shader_program(v_shader_filename,"", f_shader_filename)) == 0) 
             return false;
         else
-printf("bounding_volume_class 111\n");
+//printf("bounding_volume_class 111\n");
           return true;
     }
 

@@ -1,5 +1,9 @@
 #pragma once
 
+//#include <algorithm>// *****
+//#include <execution>// *****
+//#include <thread>   // *****
+
 #include <vector>
 
 #include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
@@ -16,6 +20,19 @@
 	C++ class that generates the data values of a hcp voxel data object point cloud based on the
 	current state of the hcp voxel data object point cloud data values and the cellula Automata
 	rules defined.
+
+	After some testing, it is apparent that multithreading of the cellala automata generates incorrect
+	and unpredictable results in the
+								
+								perform_voxel_automata_step_generation
+
+	function. This should not occur as the output result of the cellula automata is not used as a basis
+	for the iteration step, but is written to a copy of the 3D matrix to overwrite the original matrix
+	data once all the cellula automata rules are completed for all cells. Evaluation of automata rules
+	uses a matrix of the current state that is constant and unchanging during the process.
+	
+	Suspect that the CPU Multithreading needs a complex algorithm to perform the task correctly, 
+	or is simply unsuitable to be used.
 */
 
 class voxel_automata_hcp_functions_class {
@@ -128,8 +145,8 @@ public:
 //	log_widget->log_message(log_display, log_message_type_enum_type::debug, "perform_voxel_automata_step_generation 00 : " + QString::number(voxel_automata_generator_parameters.x_start) + " : "+ QString::number(voxel_automata_generator_parameters.resolution_step));
 //}
 
-				//define the voxel iteration parameters that define the voxel matrix that apply to the cellula automata rules
-				// Same as for the hcp voxel point cloud generation and thus use point cloud generation parameter data
+		//define the voxel iteration parameters that define the voxel matrix that apply to the cellula automata rules
+		// Same as for the hcp voxel point cloud generation and thus use point cloud generation parameter data
 		index_data_type iX = 0, iY, iZ;
 		float fX = 0.0f, fY = 0.0f, fZ = 0.0f, fT = 0.0f;
 
@@ -172,9 +189,22 @@ public:
 
 		index_data_type  dim_x, dim_y;
 
+		float progress = 0.0f;
+		printf("Performing HCP voxel cellular automata step rules  !!! : PLease wait \n");
+
 		iZ = 0;
 		for (fZ = voxel_automata_generator_parameters.z_start; fZ < voxel_automata_generator_parameters.z_end && iZ < data_set_z_size; fZ = fZ + z_res_step) {
 			iY = 0;
+
+			// It seens that either because of ImGui or how the CPU processes functions this log panel message is not displayed until after
+			// this loop is completed. No worth executing.
+			//if (log_panel != NULL) {
+			//	log_panel->application_log.AddLog("PERFORMING CELLULAR AUTOMATA RULES !!! : PLease wait \n");
+			//}
+
+			printf("\r HCP Voxel cellular automata %5.2f %% completed", progress);
+			fflush(stdout);
+
 			dim_y = ((iZ + 1) % 2) * data_set_y_size + (iZ % 2) * (data_set_y_size - 1);
 			for (fY = voxel_automata_generator_parameters.y_start; fY < voxel_automata_generator_parameters.y_end && iY < dim_y; fY = fY + y_res_step) {
 				iX = 0;
@@ -194,8 +224,12 @@ public:
 				iY++;
 			}
 			iZ++;
+			progress = ((float) iZ/ data_set_z_size) *100.0f;
 //QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00B", QMessageBox::Ok);
 		}
+		printf("\r HCP Voxel cellular automata %5.2f %% completed", progress);
+		fflush(stdout);
+		printf("\nHCP voxel cellular automata step completed \n");
 //QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00C", QMessageBox::Ok);
 		return true;
 	}

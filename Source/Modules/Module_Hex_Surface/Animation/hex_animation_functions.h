@@ -121,7 +121,8 @@ public:
 		hex_surface_generators.shrink_to_fit();
 		for (index_type i = 0; i < hex_surface_objects_to_execute.size(); i++) {
 			hex_surface_compute_generator_class *hex_surface_generator = new hex_surface_compute_generator_class; // If this is not a pointer, application crashes when push_backing voxel_generator
-			hex_surface_generator->cloud = hex_surface_objects_to_execute[i];
+			hex_surface_generator->log_panel = log_panel;
+			hex_surface_generator->cloud     = hex_surface_objects_to_execute[i];
 			hex_surface_generators.push_back(hex_surface_generator);
 		}
 

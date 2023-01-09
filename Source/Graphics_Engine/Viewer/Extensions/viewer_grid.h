@@ -103,7 +103,7 @@ public:
 	glm::vec3 xy_grid_origin = { 0.0f,0.0f,0.0f }, xz_grid_origin = { 0.0f,0.0f,0.0f }, yz_grid_origin = { 0.0f,0.0f,0.0f };
 	
 	bool initialise() {
-printf("viewer_grid_class :: initialise\n");
+//printf("viewer_grid_class :: initialise\n");
 		if (!scene_graph_manager->add_scene_entity_render_object(GRID_ENTITY_ID)) {
 			printf("ERROR: could not add viewer grid render geometry object\n");
 			return false;

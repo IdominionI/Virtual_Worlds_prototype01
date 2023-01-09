@@ -159,24 +159,36 @@ public:
 
 		iZ = 0;
 
-			iY = 0;
-			dim_y = ((iZ+1)%2)*data_set_y_size + (iZ%2)*(data_set_y_size-1);
-			for (fY = hex_surface_automata_generator_parameters.y_start; fY < hex_surface_automata_generator_parameters.y_end && iY < dim_y; fY = fY + y_res_step) {
-				iX = 0;
-				if (iZ % 2 == 0) { // Even z level
-					dim_x = (iY+1)%2*data_set_x_size + (iY%2)*(data_set_x_size-1);
-				} else { // Odd z level
-					dim_x = (iY+1)%2*(data_set_x_size-1) + (iY%2)*data_set_x_size;
-				}
-				iX = 0 ;
+		float progress = 0.0f;
+		printf("Performing hex surface cellular automata step rules  !!! : PLease wait \n");
+
+		iY = 0;
+		dim_y = ((iZ+1)%2)*data_set_y_size + (iZ%2)*(data_set_y_size-1);
+		for (fY = hex_surface_automata_generator_parameters.y_start; fY < hex_surface_automata_generator_parameters.y_end && iY < dim_y; fY = fY + y_res_step) {
+			iX = 0;
+
+			printf("\rHex surface cellular automata %5.2f %% completed", progress);
+			fflush(stdout);
+
+			if (iZ % 2 == 0) { // Even z level
+				dim_x = (iY+1)%2*data_set_x_size + (iY%2)*(data_set_x_size-1);
+			} else { // Odd z level
+				dim_x = (iY+1)%2*(data_set_x_size-1) + (iY%2)*data_set_x_size;
+			}
+			iX = 0 ;
 //QMessageBox::information(0, "perform_hex_surface_automata_step_generation", "here00A :"+std::string::number(iX)+":"+std::string::number(iY)+":"+std::string::number(iZ)+":", QMessageBox::Ok);
 //QMessageBox::information(0, "perform_hex_surface_automata_step_generation", "here00AAA"+std::string::number(fX)+":"+std::string::number(fY)+":"+std::string::number(hex_surface_automata_generator_parameters.z_start)+":", QMessageBox::Ok);
-				for (fX = hex_surface_automata_generator_parameters.x_start; fX < hex_surface_automata_generator_parameters.x_end && iX < dim_x; fX = fX + x_res_step) {
-					perform_hex_surface_automata_rules(step,iX,iY,iZ);
-					iX++;
-				}
-				iY++;
+			for (fX = hex_surface_automata_generator_parameters.x_start; fX < hex_surface_automata_generator_parameters.x_end && iX < dim_x; fX = fX + x_res_step) {
+				perform_hex_surface_automata_rules(step,iX,iY,iZ);
+				iX++;
 			}
+			iY++;
+			progress = ((float)iY / data_set_y_size) * 100.0f;
+		}
+
+		printf("\rHex surface cellular automata %5.2f %% completed", progress);
+		fflush(stdout);
+		printf("\nHex surface cellular automata step completed \n");
 //QMessageBox::information(0, "perform_hex_surface_automata_step_generation", "here00B", QMessageBox::Ok);
 
 		return true;

@@ -128,6 +128,8 @@ private:
 		voxel_hcp_autmoata_widget.scene_manager             = scene_manager;
 		voxel_hcp_autmoata_widget.current_selected_entity_id = current_selected_object_id;
 
+		voxel_hcp_autmoata_widget.automata_functions_logging(log_panel);
+
 		voxel_hcp_autmoata_widget.display();
 	}
 };

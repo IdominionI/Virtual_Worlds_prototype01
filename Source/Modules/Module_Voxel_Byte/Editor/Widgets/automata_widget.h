@@ -60,9 +60,9 @@ public:
 
 		y_pos += 20;
 
-		ImGui::SetCursorPosX(x_pos + 10);
-		ImGui::SetCursorPosY(y_pos);
-		ImGui::Checkbox("Use\nMultithreading###vaumt", &use_multithreading);
+		//ImGui::SetCursorPosX(x_pos + 10);
+		//ImGui::SetCursorPosY(y_pos);
+		//ImGui::Checkbox("Use\nMultithreading###vaumt", &use_multithreading);
 
 		ImGui::SetCursorPosX(x_pos + 190);
 		ImGui::SetCursorPosY(y_pos);
@@ -299,8 +299,18 @@ public:
 	bool perform_automata_step(int step) {
 //printf("INFO", "perform_automata_step 00 : %i\n" , step);
 
+		// Apparently the way that Imgui or the cpu works, it seems this log message is not displayed until after
+		// the perform_voxel_automata_generation function is completed, so no advantage having it executed
+		//if (log_panel != NULL) {
+		//	log_panel->application_log.AddLog("PERFORMING CELLULAR AUTOMATA RULES !!! : PLease wait \n");
+		//}
+
 		if (!voxel_automata_hcp_functions.perform_voxel_automata_generation(step)) return false;
 //printf("INFO","perform_automata_step 01 : %i",step);
+
+		if (log_panel != NULL) {
+			log_panel->application_log.AddLog("Completed performing hcp voxel cellular automata rules !!!\n");
+		}
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
 		scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
@@ -395,6 +405,11 @@ printf("INFO thread_perform_automata_step 00 : %i\n" , step);
 */
 		return true;
 	}
+
+	void automata_functions_logging(log_panel_class *log_panel = NULL){
+		voxel_automata_hcp_functions.log_panel = log_panel;
+	}
+	
 
 private:
 	float progress = 0.0f;

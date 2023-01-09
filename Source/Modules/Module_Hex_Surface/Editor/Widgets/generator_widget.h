@@ -181,7 +181,8 @@ public:
 //editor_logging_panel.add_log_message("INFO","Execute Buttton 111 : " + voxel_generation_item.current_selected_component_name);
 		// set voxel_generation object id to execute funtion data on
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters = hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters;
-		hex_surface_compute_generator.cloud = hex_surface_object_to_execute;
+		hex_surface_compute_generator.cloud     = hex_surface_object_to_execute;
+		hex_surface_compute_generator.log_panel = log_panel;
 
 // *************** test code only :: Delete when finished ***************************
 //test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********

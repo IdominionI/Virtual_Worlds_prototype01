@@ -24,7 +24,8 @@ class compute_shader_class {
 public:
     compute_ogl_version_enum ogl_version = compute_ogl_version_enum::v45;
 
-    std::string             source_code;
+    std::string source_code;
+    std::string compute_log;
 
     GLuint progHandle = -1;
     GLuint cs         = -1;
@@ -64,8 +65,23 @@ public:
             GLchar log[10240];
             GLsizei length;
             glGetShaderInfoLog(cs, 10239, &length, log);
-            printf("Compute Shader Souce Code:\n %s\nEnd Compute Shader Souce Code:\n", source_code.c_str()); // Need to print line numbers
-            fprintf(stderr, "Compiler log:\n%s\n", log);
+            //printf("Compute Shader Souce Code:\n %s\nEnd Compute Shader Souce Code:\n", source_code.c_str());
+            //fprintf(stderr, "Compiler log:\n%s\n", log);
+
+            // +++++++++++++ Add line numbers to log file ++++++++++++++
+            std::vector<std::string> lines = FW::stringtools::split(source_code,'\n');
+
+            int n = 0;
+            std::string source_code_line_no = "";
+            for (std::string line : lines) {
+                source_code_line_no = source_code_line_no + std::to_string(n) + " : " + line + "\n";
+                n++;
+            }
+
+            // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            std::string source = "Compute Shader Souce Code:\n" + source_code_line_no + "\nEnd Compute Shader Souce Code : \n";
+            compute_log = source + log;
             return false;
         }
 
@@ -77,11 +93,14 @@ public:
             GLchar log[10240];
             GLsizei length;
             glGetProgramInfoLog(progHandle, 10239, &length, log);
-            fprintf(stderr, "Linker log:\n%s\n", log);
+            //fprintf(stderr, "Linker log:\n%s\n", log);
+
+            std::string header_text = "Linker log:\n";
+            compute_log = header_text + log ;
             return false;
         }
 
-        printf("Compute shader defined\n");
+        //printf("Compute shader defined\n");
 
         return true;
     }

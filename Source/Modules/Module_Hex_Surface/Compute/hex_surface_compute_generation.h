@@ -29,8 +29,8 @@
 
 class hex_surface_compute_generator_class : public compute_shader_class {
 public:
-	hex_surface_object_class* cloud = NULL; // pointer to the hex suface class in the virtual worlds scene data model
-	log_panel_class* log_panel = NULL;
+	hex_surface_object_class *cloud = NULL; // pointer to the hex suface class in the virtual worlds scene data model
+	log_panel_class          *log_panel = NULL;
 
 	bool generate_hex_surface_function() {
 		if (cloud == NULL) return false;
@@ -72,7 +72,11 @@ public:
 		// ********************************************
 
 		if (!define_compute_program()) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("CRITICAL : Hex surface : generate_hex_surface_function :: Could not create the compute shader program to generate hex surface.\n");
+			if (log_panel != NULL) {
+				log_panel->application_log.AddLog("CRITICAL : Hex surface : generate_hex_surface_function :: Could not create the compute shader program to generate hex surface.\n");
+				log_panel->code_log.AddLog(compute_log.c_str());
+			}
+	
 			return false;
 		}
 
@@ -183,25 +187,29 @@ public:
 		int bytes = size * sizeof(GLfloat);
 
 		if (local_x_group_work_size > GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
-			std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-			error_msg = error_msg + "The specifies number of local threads local_size_x to be used exceeds the maximum\n";
+			std::string error_msg = "voxel_generation :: Could not execute the voxel generation computation.\n";
+			error_msg = error_msg + "The specifies number of local threads  to be used exceeds the maximum\n";
 			error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
-			error_msg = error_msg + "Choose a smaller number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+			error_msg = error_msg + "Choose a smaller number for compute invocation. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
-			log_panel->application_log.AddLog(error_msg.c_str());
+			if (log_panel != NULL)
+				log_panel->application_log.AddLog(error_msg.c_str());
+
+			return false;
 		}
 
 		int number_work_groups = int(ceil(float(size) / float(local_x_group_work_size)));
 
 		if (number_work_groups > GL_MAX_COMPUTE_WORK_GROUP_COUNT) {
 			if (log_panel != NULL) {
-				std::string error_msg = "voxel_generation :: Could not ececute the voxel generation computation.\n";
-				error_msg = error_msg + "The specifies number of local threads local_size_x to be used in the compute shader is to low for\n";
+				std::string error_msg = "voxel_generation :: Could not execute the voxel generation computation.\n";
+				error_msg = error_msg + "The specifies number of local threads to be used in the compute shader is to low for\n";
 				error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
 				error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
-				error_msg = error_msg + "Choose a larger number for local_size_x. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+				error_msg = error_msg + "Choose a larger number for compute invocation. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
 
-				log_panel->application_log.AddLog(error_msg.c_str());
+				if (log_panel != NULL)
+					log_panel->application_log.AddLog(error_msg.c_str());
 			}
 			return false;
 		}

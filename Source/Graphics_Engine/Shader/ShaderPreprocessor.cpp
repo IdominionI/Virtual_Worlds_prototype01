@@ -125,7 +125,7 @@ bool findIncludeStatement( const std::string &line, std::string *out )
 
 bool findVersionStatement( const char *lineStart, int *versionNumberOut )
 {
- printf("findVersionStatement 000 \n");
+ //printf("findVersionStatement 000 \n");
 	const int VERSION_KEYWORD_LEN = 7;
 	const char *c = lineStart;
 	consumeWhiteSpace( &c );
@@ -134,7 +134,7 @@ bool findVersionStatement( const char *lineStart, int *versionNumberOut )
 	if( isTerminated( c ) || ( *c != '#' ) )
 		return false;
 	++c;
- printf("findVersionStatement 111 \n");	
+ //printf("findVersionStatement 111 \n");	
 	consumeWhiteSpace( &c );
 	
 	if( isTerminated( c ) )
@@ -198,7 +198,7 @@ std::string ShaderPreprocessor::parse(shader_format_class shader_format, const s
 //std::string ShaderPreprocessor::parse( const std::string &source, const std::filesystem::path &sourcePath, std::set<std::filesystem::path> *includedFiles )
 std::string ShaderPreprocessor::parse(shader_format_class shader_format, std::string &source, const std::filesystem::path &sourcePath, std::set<std::filesystem::path> *includedFiles)
 {
- printf("parse 000 \n");
+ //printf("parse 000 \n");
 	std::set<std::filesystem::path> localIncludeTree; // even if user didn't ask for includedFiles, keep track of them to detect recursion
 	if( ! includedFiles )
 		includedFiles = &localIncludeTree;
@@ -209,7 +209,7 @@ std::string ShaderPreprocessor::parse(shader_format_class shader_format, std::st
 	std::string sourceBody;
 	int versionNumber = -1;
 	int lineNumberStart;
- printf("parse 111 \n");
+ //printf("parse 111 \n");
 
 	// ########### Add here function to add application dynamic uniform variables ##################
 		parse_application_uniforms(shader_format, source);
@@ -349,7 +349,7 @@ bool ShaderPreprocessor::parse_application_uniforms(shader_format_class shader_f
 void ShaderPreprocessor::parseDirectives( const std::string &source, const std::filesystem::path &sourcePath, std::string *directives, std::string *sourceBody, int *versionNumber, int *lineNumberStart )
 {		
 // printf("parseDirectives 000 %i \n %s\n", source.size(), source.c_str());
- printf("parseDirectives 000 \n");
+ //printf("parseDirectives 000 \n");
 	// go through each line and find the #version directive
 	int lineNumber = 1;
 	bool hasVersionLine = false;
@@ -357,10 +357,10 @@ void ShaderPreprocessor::parseDirectives( const std::string &source, const std::
 	for( size_t lineStartPos = 0; lineStartPos < source.size(); /* */ ) {
 		size_t lineEndPos = source.find( '\n', lineStartPos );
 		if (lineEndPos == std::string::npos) {
- printf("parseDirectives lineEndPos == std::string::npos %i : \n %s \n.", source.size(), source.c_str());
+ //printf("parseDirectives lineEndPos == std::string::npos %i : \n %s \n.", source.size(), source.c_str());
 			break;
 		}
- printf("parseDirectives 111 \n");
+ //printf("parseDirectives 111 \n");
 		if( findVersionStatement( source.c_str() + lineStartPos, versionNumber ) ) {
 			// if no defines, return leaving the directive and sourceBody strings empty,
 			// thereby indicating to use the original source without modification;
@@ -368,7 +368,7 @@ void ShaderPreprocessor::parseDirectives( const std::string &source, const std::
 				*lineNumberStart = 1;
 				return;
 			}
- printf("parseDirectives 222 \n");
+ //printf("parseDirectives 222 \n");
 			// Copy #version line and everything before it to the directives string, the rest to sourceBody
 			*directives = source.substr( 0, lineEndPos + 1 );
 			*sourceBody = source.substr( lineEndPos + 1 );
@@ -381,7 +381,7 @@ void ShaderPreprocessor::parseDirectives( const std::string &source, const std::
 		lineStartPos = lineEndPos + 1;
 		lineNumber++;
 	}
- printf("parseDirectives AAAA \n");
+// printf("parseDirectives AAAA \n");
 	// if we don't have a version yet, add a default one that will be at the top
 	if( ! hasVersionLine ) {
 #if defined( CINDER_GL_ES_3 )
@@ -394,7 +394,7 @@ void ShaderPreprocessor::parseDirectives( const std::string &source, const std::
 		*lineNumberStart = 0;
 		*versionNumber = mVersion;
 	}
- printf("parseDirectives BBBB \n");
+ //printf("parseDirectives BBBB \n");
 	// append any #defines to the directives string
 	for( const auto &define : mDefineDirectives ) {
 		*directives += "#define " + define.first;
@@ -403,13 +403,13 @@ void ShaderPreprocessor::parseDirectives( const std::string &source, const std::
 
 		*directives += "\n";
 	}
- printf("parseDirectives CCCC \n");
+ //printf("parseDirectives CCCC \n");
 	// if we've made any modifications, add a #line directive to ensure debug error statements are correct.
 	if( ! mDefineDirectives.empty() || ! hasVersionLine ) {
 		*directives += getLineDirective( sourcePath, *lineNumberStart, 0, *versionNumber );
 		*lineNumberStart += 1;
 	}
- printf("parseDirectives DDDD \n");
+ //printf("parseDirectives DDDD \n");
 }
 
 std::string ShaderPreprocessor::parseTopLevel( const std::string &source, const std::filesystem::path &sourcePath, int lineNumberStart, int versionNumber, std::set<std::filesystem::path> &includedFiles )

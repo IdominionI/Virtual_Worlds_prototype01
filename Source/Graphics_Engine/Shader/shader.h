@@ -43,9 +43,9 @@ public:
 		program_id = 0;
 		shader_compile_successful = 0;
 
-printf("create_shader_program :Vertex glsl file %s\n", vertex_shader_file.c_str());
-printf("create_shader_program :Geometry glsl file %s\n", geometry_shader_file.c_str());
-printf("create_shader_program :Fragment glsl file %s\n", fragment_shader_file.c_str());
+//printf("create_shader_program :Vertex glsl file %s\n", vertex_shader_file.c_str());
+//printf("create_shader_program :Geometry glsl file %s\n", geometry_shader_file.c_str());
+//printf("create_shader_program :Fragment glsl file %s\n", fragment_shader_file.c_str());
 
 
 		if (vertex_shader_file == "") {
@@ -57,7 +57,7 @@ printf("create_shader_program :Fragment glsl file %s\n", fragment_shader_file.c_
 			compile_log = "Compile error in Fragment shader : No fragment file defined to compile \n";
 			return program_id;
 		}
-printf("\n create_shader_program vshader id 00000 :  \n");
+//printf("\n create_shader_program vshader id 00000 :  \n");
 		if (geometry_shader_file != "") have_geometry_shader = true;
 
 		//	mGlsl = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("Shaders/Default/Voxel/default_gen_TRD_VS.glsl"))
@@ -68,7 +68,7 @@ printf("\n create_shader_program vshader id 00000 :  \n");
 		//DataSourceRef		loadAsset( const fs::path &relativePath )					{ return Platform::get()->loadAsset( relativePath ); }
 
 		shader_format_class  shader_program_format;
-printf("create_shader_program ==>> vshader id 11111 :  \n");
+//printf("create_shader_program ==>> vshader id 11111 :  \n");
 		if (!shader_program_format.define_shader_to_compile(shader_type_enum::vertex, vertex_shader_file)) {
 			return shader_compile_successful;
 		}
@@ -83,25 +83,25 @@ printf("create_shader_program ==>> vshader id 11111 :  \n");
 			return shader_compile_successful;
 		}
 
-printf("create_shader_program vshader id 222222 :  \n");
+//printf("create_shader_program vshader id 222222 :  \n");
 		//shader_compile_successful = create_glsl_program(shader_program_format);
 		shader_compile_successful = create_glsl_program(shader_program_format);
 
-printf("create_shader_program vshader id 222A : \n");
-printf("create_shader_program vshader id 222B : %i \n", shader_compile_successful);
+//printf("create_shader_program vshader id 222A : \n");
+//printf("create_shader_program vshader id 222B : %i \n", shader_compile_successful);
 
 		if (shader_compile_successful <= 0) {
 			compile_log = error_log;
 			//shader_program.reset();
 			program_id = 0;
-printf("create_shader_program vshader id 3333 : %s \n ", error_log.c_str());
+//printf("create_shader_program vshader id 3333 : %s \n ", error_log.c_str());
 		}
 		else {
-printf("create_shader_program vshader id 4444 : %s \n ", error_log.c_str());
+//printf("create_shader_program vshader id 4444 : %s \n ", error_log.c_str());
 			program_id = shader_compile_successful;
 		}
 
-printf("Definitely USED create_glsl_shader_program !!!!!\n ");
+//printf("Definitely USED create_glsl_shader_program !!!!!\n ");
 		return program_id;
 	}
 
@@ -112,9 +112,9 @@ printf("Definitely USED create_glsl_shader_program !!!!!\n ");
 		program_id = 0;
 		shader_compile_successful = 0;
 
-printf("create_shader_program :Vertex glsl file %s\n", shader_program_format.glsl_vertex_shader_file_pathname.c_str());
-printf("create_shader_program :Geometry glsl file %s\n", shader_program_format.glsl_geometry_shader_file_pathname.c_str());
-printf("create_shader_program :Fragment glsl file %s\n", shader_program_format.glsl_fragment_shader_file_pathname.c_str());
+//printf("create_shader_program :Vertex glsl file %s\n", shader_program_format.glsl_vertex_shader_file_pathname.c_str());
+//printf("create_shader_program :Geometry glsl file %s\n", shader_program_format.glsl_geometry_shader_file_pathname.c_str());
+//printf("create_shader_program :Fragment glsl file %s\n", shader_program_format.glsl_fragment_shader_file_pathname.c_str());
 
 
 		if (shader_program_format.glsl_vertex_shader_file_pathname == "") {
@@ -126,7 +126,7 @@ printf("create_shader_program :Fragment glsl file %s\n", shader_program_format.g
 			compile_log = "Compile error in Fragment shader : No fragment file defined to compile \n";
 			return program_id;
 		}
-printf("\n create_shader_program vshader id 00000 :  \n");
+//printf("\n create_shader_program vshader id 00000 :  \n");
 		if (shader_program_format.glsl_geometry_shader_file_pathname != "") have_geometry_shader = true;
 
 		//	mGlsl = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("Shaders/Default/Voxel/default_gen_TRD_VS.glsl"))
@@ -136,7 +136,7 @@ printf("\n create_shader_program vshader id 00000 :  \n");
 
 		//DataSourceRef		loadAsset( const fs::path &relativePath )					{ return Platform::get()->loadAsset( relativePath ); }
 
-printf("create_shader_program ==>> vshader id 11111 :  \n");
+//printf("create_shader_program ==>> vshader id 11111 :  \n");
 		if (!shader_program_format.define_shader_to_compile(shader_type_enum::vertex, shader_program_format.glsl_vertex_shader_file_pathname.string())) {
 			return shader_compile_successful;
 		}
@@ -151,25 +151,25 @@ printf("create_shader_program ==>> vshader id 11111 :  \n");
 			return shader_compile_successful;
 		}
 
-printf("create_shader_program vshader id 222222 :  \n");
+//printf("create_shader_program vshader id 222222 :  \n");
 		//shader_compile_successful = create_glsl_program(shader_program_format);
 		shader_compile_successful = create_glsl_program(shader_program_format);
 
-printf("create_shader_program vshader id 222A : \n");
-printf("create_shader_program vshader id 222B : %i \n", shader_compile_successful);
+//printf("create_shader_program vshader id 222A : \n");
+//printf("create_shader_program vshader id 222B : %i \n", shader_compile_successful);
 
 		if (shader_compile_successful <= 0) {
 			compile_log = error_log;
 			//shader_program.reset();
 			program_id = 0;
-printf("create_shader_program vshader id 3333 : %s \n ", error_log.c_str());
+//printf("create_shader_program vshader id 3333 : %s \n ", error_log.c_str());
 		}
 		else {
-printf("create_shader_program vshader id 4444 : %s \n ", error_log.c_str());
+//printf("create_shader_program vshader id 4444 : %s \n ", error_log.c_str());
 			program_id = shader_compile_successful;
 		}
 
-printf("Definitely USED create_glsl_shader_program !!!!!\n ");
+//printf("Definitely USED create_glsl_shader_program !!!!!\n ");
 		return program_id;
 	}
 	
@@ -223,10 +223,10 @@ printf("Definitely USED create_glsl_shader_program !!!!!\n ");
 
 		if (!shaderSource.empty()) {
 			handle = glCreateShader(shaderType);
-printf("\n ==>> GlslProg loadShader 00000 : %s \n", shaderPath.string().c_str());
+//printf("\n ==>> GlslProg loadShader 00000 : %s \n", shaderPath.string().c_str());
 			if (use_preprocessor) {
 				std::set<std::filesystem::path> includedFiles;
-printf("\n ==>> GlslProg loadShader 11111AAAAA : \n");
+//printf("\n ==>> GlslProg loadShader 11111AAAAA : \n");
 				//std::string preprocessedSource = preprocessor.parse(shaderSource, shaderPath, &includedFiles);
 				std::string preprocessedSource = preprocessor.parse(shader_program_format,shaderSource, shaderPath, &includedFiles); // !!!!!!!!!!!!!!!!!!!!!!
 				if (!preprocessor.mparse_successfull_m) {
@@ -234,32 +234,32 @@ printf("\n ==>> GlslProg loadShader 11111AAAAA : \n");
 					Create_Compilation_log(preprocessedSource, shaderType, shaderPath.string(), shaderSource); // ****** mod
 					return(shader_compile_successful);// ****** mod
 				}
-printf("\n ==>> GlslProg loadShader 11111BBBBB : \n");
+//printf("\n ==>> GlslProg loadShader 11111BBBBB : \n");
 				mShaderPreprocessorIncludedFiles.insert(mShaderPreprocessorIncludedFiles.end(), includedFiles.begin(), includedFiles.end());
-printf("\n ==>> GlslProg loadShader 11111 : \n");
+//printf("\n ==>> GlslProg loadShader 11111 : \n");
 				const char* cStr = preprocessedSource.c_str();
 				glShaderSource(handle, 1, reinterpret_cast<const GLchar**>(&cStr), NULL);
 			}
 			else {
-printf("\n ==>> GlslProg loadShader 22222 : \n");
+//printf("\n ==>> GlslProg loadShader 22222 : \n");
 				const char* cStr = shaderSource.c_str();
 				glShaderSource(handle, 1, reinterpret_cast<const GLchar**>(&cStr), NULL);
 			}
-printf("\n ==>> GlslProg loadShader 33333 : \n");
+//printf("\n ==>> GlslProg loadShader 33333 : \n");
 			glCompileShader(handle);
-printf("\n ==>> GlslProg loadShader 44444 : \n");
+//printf("\n ==>> GlslProg loadShader 44444 : \n");
 			GLint status;
 			glGetShaderiv((GLuint)handle, GL_COMPILE_STATUS, &status);
 			if (status != GL_TRUE) {
 				std::string log = getShaderLog((GLuint)handle);
 
-printf("\n ==>> GlslProg loadShader 55555 : \n");
+//printf("\n ==>> GlslProg loadShader 55555 : \n");
 				// Since the GlslProg destructor will not be called after we throw, we must delete all
 				// owned GL objects here to avoid leaking. Any other attached shaders will be cleaned up
 				// when the program is deleted
 				glDeleteShader(handle);
 				glDeleteProgram(program_id);
-printf("\n ==>> GlslProg loadShader 666666 : \n");
+//printf("\n ==>> GlslProg loadShader 666666 : \n");
 				// disabled throw command and enabled a failed flag to be returned to be acted upon
 				// so as not to have the application terminated.
 				shader_compile_successful = 0;    // ****** mod flag set failed to compile value

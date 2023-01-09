@@ -42,7 +42,7 @@ public :
 
 			scene_objects_of_category->objects_category_id = entity_category_id;
 			scene_objects.push_back(scene_objects_of_category);
-printf("scene_entities_db_manager2_class:define_new_entity_category : %i\n", scene_objects.size());
+//printf("scene_entities_db_manager2_class:define_new_entity_category : %i\n", scene_objects.size());
 			return true;
 		}
 		return false;
@@ -55,11 +55,11 @@ printf("scene_entities_db_manager2_class:define_new_entity_category : %i\n", sce
 			int index = get_objects_of_category_index(entity_category_id);
 
 			if (index < 0) {
-				printf("scene_entities_db_manager2_class : add_new_entity :: scene_objects_of_category == NULL\n");
+//printf("scene_entities_db_manager2_class : add_new_entity :: scene_objects_of_category == NULL\n");
 				return false;
 			}
 
-printf("scene_entities_db_manager2_class : add_new_entity :: %i : %i  \n", scene_objects[index]->objects_category_id, entity_id);
+//printf("scene_entities_db_manager2_class : add_new_entity :: %i : %i  \n", scene_objects[index]->objects_category_id, entity_id);
 			return scene_objects[index]->add_new_object(entity_id);
 		}
 
@@ -84,7 +84,7 @@ printf("scene_entities_db_manager2_class : add_new_entity :: %i : %i  \n", scene
 		if (entity_category_id > -1 && entity_id > -1) {
 			int index = get_objects_of_category_index(entity_category_id);
 			if (index < 0) {
-printf("scene_entities_db_manager2_class : get_entity_of_category :: scene_objects_of_category == NULL\n");
+//printf("scene_entities_db_manager2_class : get_entity_of_category :: scene_objects_of_category == NULL\n");
 				return NULL;
 			}
 

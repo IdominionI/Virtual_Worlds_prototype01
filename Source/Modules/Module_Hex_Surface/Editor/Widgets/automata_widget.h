@@ -58,9 +58,9 @@ public:
 
 		y_pos += 20;
 
-		ImGui::SetCursorPosX(x_pos + 10);
-		ImGui::SetCursorPosY(y_pos);
-		ImGui::Checkbox("Use\nMultithreading###haumt", &use_multithreading);
+		//ImGui::SetCursorPosX(x_pos + 10);
+		//ImGui::SetCursorPosY(y_pos);
+		//ImGui::Checkbox("Use\nMultithreading###haumt", &use_multithreading);
 
 		ImGui::SetCursorPosX(x_pos + 190);
 		ImGui::SetCursorPosY(y_pos);
@@ -308,6 +308,10 @@ printf("automata_paused == true\n");
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
 		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_enity_id);
 //printf("voxel_hcp_autmoata_widget_class :: execute_voxel_function 11111\n");
+
+		if (log_panel != NULL) {
+			log_panel->application_log.AddLog("Completed performing hex surface cellular automata rules !!!\n");
+		}
 
 		if (scene_hex_surface_object == NULL) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel Automata : Could not find voxel in the scene to update geometry data.\n");

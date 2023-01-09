@@ -210,13 +210,14 @@ private:
 		}
 
 		if (!shader_id) {
-			printf("hex_surface_render_class: shader program not created\n");
-			printf("compile log \n %s \n", shader_db_manager.shader.compile_log.c_str());
+			//printf("hex_surface_render_class: shader program not created\n");
+			//printf("compile log \n %s \n", shader_db_manager.shader.compile_log.c_str());
+			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : hex surface shader program compilation failed\n");
 			if (log_panel != NULL) log_panel->code_log.AddLog("INFO : Shader program compilation failed\n %s\n", shader_db_manager.shader.compile_log.c_str());
 			return false;
 		}
 		else {
-			printf("voxel_hcp_render_class : shader program created : %i\n", shader_id);
+//printf("hex_surface_render_class : shader program created : %i\n", shader_id);
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : Shader program created of ID : %i\n", shader_id);
 
 			//entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = shader_id;
@@ -241,9 +242,9 @@ public:
 		bounding_volume.initialise();
 
 		if (bounding_volume.program_id < 1)
-			printf("!bounding_volume.initialise()\n");
-		else
-			printf("bounding_volume.initialiseed!!!!\n");
+			printf("hex_surface_render_object_class bounding volume not initialise()\n");
+		//else
+		//	printf("bounding_volume.initialiseed!!!!\n");
 	}
 
 	bool define_render_object(object_basis_class *entity_object, scene_node_class <render_object_class>* entity_render_object) {
@@ -261,7 +262,7 @@ public:
 		hex_surface_object_class *hex_surface_object = dynamic_cast<hex_surface_object_class*>(entity_object);
 
 		if (hex_surface_object == NULL) {
-			printf("voxel_hcp_render_object :: define_bounding_box : hex_surface_object == NULL");
+			printf("hex_surface_render_class :: define_bounding_box : hex_surface_object == NULL");
 			return false;
 		}
 
@@ -275,10 +276,10 @@ public:
 
 				if (box_object == NULL) {
 					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find bounding box geometry data for voxel %s.\n", hex_surface_object->object_name.c_str());
-					printf("box_object == NULL.\n");
+					printf("hex_surface_render_class :: define_bounding_box : box_object == NULL.\n");
 				}
 				else {
-					printf("box_object != NULL.\n");
+					//printf("box_object != NULL.\n");
 					line_class* bv = new line_class;
 					material_struct_type* bm = new material_struct_type;
 

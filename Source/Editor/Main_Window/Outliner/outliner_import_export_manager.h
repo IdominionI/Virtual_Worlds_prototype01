@@ -28,7 +28,7 @@ public:
 
 			import_export_of_category->import_export_object_category_id = import_export_object_category_id;
 			import_export_objects.push_back(import_export_of_category);
-printf("outliner_import_emport_manager_class:define_new_import_export_category : %i\n", import_export_objects.size());
+//printf("outliner_import_emport_manager_class:define_new_import_export_category : %i\n", import_export_objects.size());
 			return true;
 		}
 		return false;
@@ -38,7 +38,7 @@ printf("outliner_import_emport_manager_class:define_new_import_export_category :
 		if (import_export_object_category_id > -1) {
 			int index = get_import_export_category_index(import_export_object_category_id);
 			if (index < 0) {
-printf("outliner_import_emport_manager_class : get_import_export_of_category :: import_export_object_category_id == NULL\n");
+//printf("outliner_import_emport_manager_class : get_import_export_of_category :: import_export_object_category_id == NULL\n");
 				return NULL;
 			}
 

@@ -31,7 +31,7 @@ public:
 
 			scene_objects_of_category->objects_category_id = entity_category_id;
 			scene_render_objects.push_back(scene_objects_of_category);
-			printf("scene_entities_db_manager2_class:define_new_entity_category : %i\n", scene_render_objects.size());
+//printf("scene_entities_db_manager2_class:define_new_entity_category : %i\n", scene_render_objects.size());
 			return true;
 		}
 		return false;
