@@ -47,8 +47,7 @@ public:
 
     light_basis_class() {}
 
-    virtual void update(int shader_program_id) {
-    }
+    virtual void update(int shader_program_id) {}
 
 protected:
     shader_class shader;
@@ -149,8 +148,8 @@ class scene_lights_objects_class
 {
 public:
     std::vector<directional_light_class> directional_lights;
-    std::vector <point_light_class>      point_lights;
-    std::vector <spot_light_class>       spot_lights;
+    std::vector<point_light_class>       point_lights;
+    std::vector<spot_light_class>        spot_lights;
 
     //*****
     glm::vec3 mPosition;
