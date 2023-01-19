@@ -1,53 +1,14 @@
-#pragma once
+#include "hex_generator_widget.h"
 
 #include <Universal/ImGui/imgui.h>
 
-#include <Source/Editor/Common/definitions.h>
+#include <Source/Editor/Interface/IconsFontAwesome.h> //*****
+
 #include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
 #include <Source/Editor/Tools/dialogs.h>
-#include <Source/Editor/Main_Window/Panels/log_panel.h>
 
-#include "../../hex_surface_object/DataTypes/dt_hex_surface_generator.h"
-#include "../../Kernal/hex_surface_function_import_export.h"
 
-#include "generator_variables_widget.h"
-#include "../../Compute/hex_surface_compute_generation.h"
-#include "../../Render/hex_surface_render.h"
-
-/*
-			Hex Surface generation widget class
-
-	This class widget defines an ImGui widget and child widgets
-	that are used to define the parameters and compute shader
-	variables required to generate the values that define a
-	2D hexagonal surface.
-
-	This class widget has controls to generate the 2D hexagonal
-	surface and display the results on the computer screen in 
-	incremental steps by changing the shader variable values 
-	according to the settings that the user defines for each 
-	compute shader variable.
-*/
-
-class hex_surface_generation_widget_class {
-public:
-	hex_surface_generation_widget_class() {
-	}
-
-	~hex_surface_generation_widget_class() {}
-
-	hex_surface_generator_variables_widget_class  hex_surface_generator_variables_widget_class;
-	log_panel_class				                 *log_panel = NULL;
-
-	bool display_as_points = true;
-	
-	id_type                   current_selected_entity_id    = -1;  // entity id of the selected entity to display/modify
-	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-	scene_manager_class      *scene_manager                 = NULL;
-
-	float hex_scale_value = 1.0f;
-
-	void display() {
+void hex_surface_generation_widget_class::display() {
 		if (hex_surface_object_to_execute == NULL) {
 			return;
 		}
@@ -90,10 +51,12 @@ public:
 
 		y_pos += 30;
 		text("Min\nSurface\nValue", x_pos, y_pos);
-		integer_input("###gminsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
+		//integer_input("###gminsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
+		float_input("###gminsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
 
 		text("Max\nSurface\nValue", x_pos + 150, y_pos);
-		integer_input("###hgmaxsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
+		//integer_input("###hgmaxsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
+		float_input("###hgmaxsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
 
 		y_pos += 60;
 		text("Resolution Step", x_pos + 30, y_pos);
@@ -134,7 +97,7 @@ public:
 
 	}
 
-	void perform_decrement_variables() {
+	void hex_surface_generation_widget_class::perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (hex_surface_generator_parameter_variable_struct_type &variable : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables) {
 			if (variable.active_variable_step) variable.value -= variable.variable_step;
@@ -147,7 +110,7 @@ public:
 		execute_hex_surface_function();
 	}
 
-	void perform_increment_variables() {
+	void hex_surface_generation_widget_class::perform_increment_variables() {
 //printf("perform_increment_variables button clicked\n");// replace with decrement step
 		for (hex_surface_generator_parameter_variable_struct_type &variable : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables) {
 			if (variable.active_variable_step) variable.value += variable.variable_step; 
@@ -160,7 +123,7 @@ public:
 		execute_hex_surface_function();
 	}
 
-	void execute_hex_surface_function(bool notification = true) {
+	void hex_surface_generation_widget_class::execute_hex_surface_function(bool notification) {
 //printf("Execute Function button clicked\n");
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
@@ -197,7 +160,7 @@ public:
 // *************** test code only :: Delete when finished ***************************
 //test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_to_execute->hex_surface_object_data); // ***********
 
-		hex_surface_object_to_execute->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
+		hex_surface_object_to_execute->define_vbo_vertices(MIN_HEX_SURF_VALUE, MAX_HEX_SURF_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 //printf("hex_surface_generation_widget_class :: execute_hex_surface_function 4444\n");
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
@@ -246,11 +209,11 @@ public:
 	}
 
 
-	void initialise_parameters() {
+	void hex_surface_generation_widget_class::initialise_parameters() {
 		initialise_invocation();
 	}
 
-	void initialise_invocation() {
+	void hex_surface_generation_widget_class::initialise_invocation() {
 		switch (hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.invocation) {
 			case 1    : invocation = 0; break;
 			case 32   : invocation = 1; break;
@@ -262,9 +225,9 @@ public:
 			default   : invocation = 7; break;
 		}
 	}
-
+/*
 	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
-	void test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_data_class hex_surface_object_data) {
+	void hex_surface_generation_widget_class::test_hex_hexagon_cell_coord_from_cartesian(hex_surface_object_data_class hex_surface_object_data) {
 		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
 		glm::vec2 points[10];
 
@@ -291,19 +254,10 @@ public:
 			printf("point %i x : %f y : %f :: hexagon_cell_coord_from_cartesian  x : %i y : %i \n",i, points[i].x, points[i].y, iv.x, iv.y);
 		}
 	}
+*/
+//------------------------------------------
 
-private:
-	int invocation = 4;
-
-	float min_vscale = 0.001f, max_vscale = 1.000f;
-
-	struct Funcs { static bool ItemGetter(void* data, int n, const char** out_str) { *out_str = ((const char**)data)[n]; return true; } };
-
-	hex_surface_function_import_export_class hex_surface_function_import_export;
-	hex_surface_compute_generator_class      hex_surface_compute_generator;
-	hex_surface_render_class                 hex_surface_render;
-
-	void define_voxel_generation_parameters() {
+	void hex_surface_generation_widget_class::define_voxel_generation_parameters() {
 		switch (invocation) {
 			case 0 : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.invocation = 1;    break;
 			case 1 : hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.invocation = 32;   break;
@@ -316,8 +270,9 @@ private:
 		}
 	}
 
-	void get_expression_file() {
-printf("hex surface : Expression file button clicked");// replace with get file pathname tool
+	void hex_surface_generation_widget_class::get_expression_file() {
+
+//printf("hex surface : Expression file button clicked");// replace with get file pathname tool
 		char const* patterns[] = { "*_EXPR.txt" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
 
@@ -329,9 +284,11 @@ printf("hex surface : Expression file button clicked");// replace with get file 
 
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname = file_pathname;
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name     = vwDialogs::get_filename(file_pathname,"\\");
+
 	}
 	
-	void save_generation_parameters() {
+	void hex_surface_generation_widget_class::save_generation_parameters() {
+
 //printf("save button clicked\n");// replace with clear variables
 		char const* patterns[] = {"*.hgp"};
 		char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
@@ -361,7 +318,8 @@ printf("hex surface : Expression file button clicked");// replace with get file 
 
 	}
 
-	void load_generation_parameters() {
+	void hex_surface_generation_widget_class::load_generation_parameters() {
+
 //printf("load button clicked\n");// replace with clear variables
 		clear_variables();
 
@@ -389,13 +347,12 @@ printf("hex surface : Expression file button clicked");// replace with get file 
 			default   : invocation = 7; break;
 		}
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion hex surface generation parameter data imported from file\n %s\n", file_pathname);
+
 	}
 
-	void clear_variables() {
+	void hex_surface_generation_widget_class::clear_variables() {
 //printf("Clear Variables clicked");// replace with clear variables
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.int_variables.clear();
 		hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.bool_variables.clear();
 	}
-
-};

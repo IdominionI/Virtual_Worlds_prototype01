@@ -19,7 +19,8 @@ class openGL_frame_buffer_class{
 public:
     openGL_frame_buffer_class() : mFBO{ 0 }, mDepthId{ 0 }{}
 
-    void create_buffers(int32_t width, int32_t height) {
+   // void create_buffers(int32_t width, int32_t height) {
+    void create_buffers(int width, int height) {
         mWidth = width;
         mHeight = height;
 

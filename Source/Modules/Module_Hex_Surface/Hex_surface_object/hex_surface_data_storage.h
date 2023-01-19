@@ -4,6 +4,7 @@
 #include <Universal/3rdparty/include/glm/glm.hpp>
 
 #include <Source/Graphics_Engine/Shader/shader_parameters.h>
+#include <Source/Graphics_Engine/Shader/shader_components.h>//*****
 
 #include "hex_surface_parameters.h"
 
@@ -24,6 +25,10 @@
 
 #define DEFAULT_ACTIVE_VALUE   255
 #define DEFAULT_INACTIVE_VALUE 0 
+
+#define INVALID_HEX_SURF_VALUE 0
+#define MIN_HEX_SURF_VALUE     1
+#define MAX_HEX_SURF_VALUE     255
 
 typedef int index_data_type;
 
@@ -214,7 +219,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	glm::vec3 get_hex_surface_cartesian_coordinate(glm::ivec3 hex_surface_coord, float hex_size) {
 		hex_surface_index_data_type i = hex_surface_coord.x, j = hex_surface_coord.y, k = 0;
 
-		float sqrt3 = sqrt(3.0), third = 1.0 / 3.0, z_mult = 2.0 * sqrt(6.0) / 3.0, sqrt3_2 = sqrt(1.5);
+		float sqrt3 = sqrt(3.0f), third = 1.0f / 3.0f, z_mult = 2.0f * sqrt(6.0f) / 3.0f, sqrt3_2 = sqrt(1.5f);
 		glm::vec3 hex_cartesian_coordinate;
 
 		if (j % 2 == 0) {
@@ -226,7 +231,7 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		else {
 //QMessageBox::information(NULL, "hexBS03", "here01 :"+QString::number(j * HEX_SURFACE_BIT_NUMBER + j_bit), QMessageBox::Ok);
 
-			hex_cartesian_coordinate.x = (-1.0 + float(i) * 2 + float(k % 2) + 2 * float((k + 1) % 2)) * hex_size;
+			hex_cartesian_coordinate.x = (-1.0f + float(i) * 2.0f + float(k % 2) + 2.0f * float((k + 1) % 2)) * hex_size;
 			hex_cartesian_coordinate.y = (sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * hex_size;
 		}
 
@@ -304,24 +309,24 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		float x_size = hex_surface_generator_parameters.x_end - hex_surface_generator_parameters.x_start;
 		float y_size = hex_surface_generator_parameters.y_end - hex_surface_generator_parameters.y_start;
 
-		float x_res_step = hex_surface_generator_parameters.resolution_step * 2.0;
-		float y_res_step = hex_surface_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float x_res_step = hex_surface_generator_parameters.resolution_step * 2.0f;
+		float y_res_step = hex_surface_generator_parameters.resolution_step * (3.0f / sqrt(3.0f));
 
-		int data_set_x_size, data_set_y_size, data_set_z_size;
+		int data_set_x_size, data_set_y_size;
 
-		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0f)
 			data_set_x_size = (int)(x_size / x_res_step) + 1;
 		else
 			data_set_x_size = (int)(x_size / x_res_step);
 
-		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0f)
 			data_set_y_size = (int)(y_size / y_res_step) + 1;
 		else
 			data_set_y_size = (int)(y_size / y_res_step);
 
 //QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 00: "+QString::number(data_set_x_size)+":"+QString::number(data_set_y_size)+":"+QString::number(data_set_z_size)+":", QMessageBox::Ok);
 
-		glm::vec3 origin = { hex_surface_generator_parameters.x_start,hex_surface_generator_parameters.y_start,0.0 };
+		glm::vec3 origin = { hex_surface_generator_parameters.x_start,hex_surface_generator_parameters.y_start,0.0f };
 
 		hex_size = hex_surface_generator_parameters.resolution_step;
 
@@ -463,7 +468,7 @@ private:
 
 		if (hex_surface_matrix_data.size() > 0) { hex_surface_matrix_data.clear(); hex_surface_matrix_data.shrink_to_fit(); }
 
-		hex_surface_index_data_type surface_grid_data_size = calculate_hex_surface_matrix_data_size(xdim, ydim);
+		hex_surface_index_data_type surface_grid_data_size = calculate_hex_surface_matrix_data_size(hex_surface_index_data_type(xdim), hex_surface_index_data_type(ydim));
 
 		hex_surface_matrix_data = std::vector<hex_surface_data_type>(surface_grid_data_size, volume_data_storage);
 

@@ -8,7 +8,8 @@
 
 #include <Source/Graphics_Engine/Scene/scene_graph_manager.h>
 
-#include <Source/Editor/Main_Window/Panels/log_panel.h>
+//#include <Source/Editor/Main_Window/Panels/log_panel.h>
+#include "../Object/object_basis.h"
 
 #define BOUNDING_GEOMETRY_OFFSET 1000000 // Need to place this in a more approriate location ?????
 

@@ -286,7 +286,7 @@ printf("hcp_interaction_node_class:action 1111 %i\n",entity_id);
                         case VOXEL_INTERACTIONS_EXOR             : {if ((a_value != DEFAULT_INACTIVE_VALUE) != (b_value != DEFAULT_INACTIVE_VALUE)) 
                                                                       assign_voxel(xi, yi, zi, DEFAULT_ACTIVE_VALUE);
                                                                        break;}
-                        case VOXEL_INTERACTIONS_COMPLEMENT       : {if (!((a_value != DEFAULT_INACTIVE_VALUE) == (b_value != DEFAULT_INACTIVE_VALUE))); 
+                        case VOXEL_INTERACTIONS_COMPLEMENT       : {if (!((a_value != DEFAULT_INACTIVE_VALUE) == (b_value != DEFAULT_INACTIVE_VALUE))) 
                                                                       assign_voxel(xi, yi, zi, DEFAULT_ACTIVE_VALUE);
                                                                       break; }
                     }

@@ -32,7 +32,7 @@ public:
 
 	std::string input_line;
 
-	#define endl "\n"
+	//#define endl "\n"
 
 	void initialise(std::string _filename_to_write, log_panel_class* _log_widget) {
 		filename_to_write = _filename_to_write;
@@ -67,6 +67,7 @@ public:
 		lines = FW::stringtools::split(object_string, '\n');// Create a list of strings for each line in the expression code
 
 		line_number = 0;
+		return true;
 	}
 
 	bool export_object(object_basis_class* object, id_type category) {
@@ -934,7 +935,7 @@ private:
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		hex_surface_automata_rule.name        = line; line_number++;
 		hex_surface_automata_rule.active_rule = std::stoi(lines[line_number]); line_number++;
-		hex_surface_automata_rule.hex_state   = std::stoi(lines[line_number]); line_number++;
+		hex_surface_automata_rule.hex_state   = std::stof(lines[line_number]); line_number++;
 		hex_surface_automata_rule.start_step  = std::stoi(lines[line_number]); line_number++;
 		hex_surface_automata_rule.end_step    = std::stoi(lines[line_number]); line_number++;
 
@@ -948,7 +949,7 @@ private:
 			return false;
 		}
 
-		hex_surface_automata_rule.hex_self_rule_condition.lower_rule_value = std::stoi(rule_list[0]);
+		hex_surface_automata_rule.hex_self_rule_condition.lower_rule_value = std::stof(rule_list[0]);
 		switch (std::stoi(rule_list[1])) {
 			case HEX_NEIGHBOR_IGNOR_RULE_CODE              : hex_surface_automata_rule.hex_self_rule_condition.lower_rule = hex_lower_rule_condition_enum_type::ignore; break;
 			case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.hex_self_rule_condition.lower_rule = hex_lower_rule_condition_enum_type::LT;     break;
@@ -962,7 +963,7 @@ private:
 			case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::LT;     break;
 			case HEX_NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : hex_surface_automata_rule.hex_self_rule_condition.upper_rule = hex_upper_rule_condition_enum_type::LTEQ;   break;
 		}
-		hex_surface_automata_rule.hex_self_rule_condition.upper_rule_value = std::stoi(rule_list[3]);
+		hex_surface_automata_rule.hex_self_rule_condition.upper_rule_value = std::stof(rule_list[3]);
 
 		// next NUMBER_HEX_NEIGHBOURS lines must have the neighbour activity states for the rule
 		for (int i = 0; i < NUMBER_HEX_NEIGHBOURS; i++){
@@ -983,7 +984,7 @@ private:
 				return false;
 			}
 
-			hex_surface_automata_rule.neighbours_rule_condition[i].lower_rule_value = std::stoi(rule_list[0]);
+			hex_surface_automata_rule.neighbours_rule_condition[i].lower_rule_value = std::stof(rule_list[0]);
 			switch (std::stoi(rule_list[1])) {
 				case HEX_NEIGHBOR_IGNOR_RULE_CODE              : hex_surface_automata_rule.neighbours_rule_condition[i].lower_rule = hex_lower_rule_condition_enum_type::ignore; break;
 				case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.neighbours_rule_condition[i].lower_rule = hex_lower_rule_condition_enum_type::LT;     break;
@@ -997,7 +998,7 @@ private:
 				case HEX_NEIGHBOR_LESS_THAN_RULE_CODE          : hex_surface_automata_rule.neighbours_rule_condition[i].upper_rule = hex_upper_rule_condition_enum_type::LT;    break;
 				case HEX_NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : hex_surface_automata_rule.neighbours_rule_condition[i].upper_rule = hex_upper_rule_condition_enum_type::LTEQ;   break;
 			}
-			hex_surface_automata_rule.neighbours_rule_condition[i].upper_rule_value = std::stoi(rule_list[3]);
+			hex_surface_automata_rule.neighbours_rule_condition[i].upper_rule_value = std::stof(rule_list[3]);
 		}
 
 

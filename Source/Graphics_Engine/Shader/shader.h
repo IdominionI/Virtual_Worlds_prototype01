@@ -182,9 +182,9 @@ public:
 
 		if (!shader_program_format.vertex_source_code_defined || !shader_program_format.fragment_source_code_defined) {
 			error_log = "FATAL ERROR : Do not have a vertex or fragmant glsl source code defined for files \n";
-			error_log + shader_program_format.vertex_shader_file_pathname.string() + "\n";
-			error_log + shader_program_format.fragment_shader_file_pathname.string() + "\n";
-			error_log + "Must have source code defined for both these shader types defined as a minimum.\n";
+			error_log += shader_program_format.vertex_shader_file_pathname.string() + "\n";
+			error_log += shader_program_format.fragment_shader_file_pathname.string() + "\n";
+			error_log += "Must have source code defined for both these shader types defined as a minimum.\n";
 
 			return NULL;
 		}
@@ -492,25 +492,25 @@ public:
 		glProgramUniform4fv(shader_program_id, myLoc, 1, glm::value_ptr(vec4));
 	}
 	// ------------ Integers
-	void set_i1(GLuint shader_program_id, int v, const std::string& name) {
+	void set_i1(GLuint shader_program_id, GLint v, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		//glUniform1i(myLoc, v);
 		glProgramUniform1i(shader_program_id, myLoc, v);
 	}
 
 // glUniform2i
-	void set_i2(GLuint shader_program_id, int a, int b, const std::string& name) {
+	void set_i2(GLuint shader_program_id, GLint a, GLint b, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform2i(shader_program_id, myLoc, a, b); //Not tested
 	}
 // glUniform3i
-	void set_i3(GLuint shader_program_id, int a, int b,int c, const std::string& name) {
+	void set_i3(GLuint shader_program_id, GLint a, GLint b, GLint c, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform3i(shader_program_id, myLoc, a, b,c); //Not tested
 	}
 
 // glUniform4i 
-	void set_i4(GLuint shader_program_id, int a, int b, int c,int d, const std::string& name) {
+	void set_i4(GLuint shader_program_id, GLint a, GLint b, GLint c, GLint d, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform4i(shader_program_id, myLoc, a, b, c,d); //Not tested
 	}
@@ -543,23 +543,23 @@ public:
 
 	// ------------ Unsigned integers
 
-	void set_ui1(GLuint shader_program_id, unsigned int v, const std::string& name) {
+	void set_ui1(GLuint shader_program_id, GLuint v, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		//glUniform1i(myLoc, v);
 		glProgramUniform1ui(shader_program_id, myLoc, v);
 	}
 
-	void set_ui2(GLuint shader_program_id, unsigned int a, unsigned int b, const std::string& name) {
+	void set_ui2(GLuint shader_program_id, GLuint a, GLuint b, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform2ui(shader_program_id, myLoc, a, b); //Not tested
 	}
 
-	void set_ui3(GLuint shader_program_id, unsigned int a, unsigned int b, unsigned int c, const std::string& name) {
+	void set_ui3(GLuint shader_program_id, GLuint a, GLuint b, GLuint c, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform3ui(shader_program_id, myLoc, a, b, c); //Not tested
 	}
 
-	void set_ui4(GLuint shader_program_id, unsigned int a, unsigned int b, unsigned int c, unsigned int d, const std::string& name) {
+	void set_ui4(GLuint shader_program_id, GLuint a, GLuint b, GLuint c, GLuint d, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 		glProgramUniform4ui(shader_program_id, myLoc, a, b, c, d); //Not tested
 	}

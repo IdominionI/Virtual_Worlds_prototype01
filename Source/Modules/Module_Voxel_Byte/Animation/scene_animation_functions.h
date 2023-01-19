@@ -5,7 +5,7 @@
 #include "voxel_animation_functions.h"
 #include "../Render/voxel_hcp_render.h"
 
-class scene_hsp_voxel_animation_class : public animation_base_class {
+class scene_hcp_voxel_animation_class : public animation_base_class {
 public:
 	void clear_objects_to_execute() {
 		voxel_animation_functions.voxel_hcp_objects_to_execute.clear();
@@ -31,7 +31,7 @@ public:
 				number_objects_to_animate = 0;
 				return false;
 			} else{
-				number_objects_to_animate = voxel_animation_functions.voxel_hcp_objects_to_execute.size();
+				number_objects_to_animate = int(voxel_animation_functions.voxel_hcp_objects_to_execute.size());
 //printf("scene_hsp_voxel_animation_class::define_objects_to_execute  22 :: voxel_animation_functions.define_voxel_hcp_objects_to_execute\n", current_selected_object_type_id, current_selected_object_id, animation_selection);
 			}
 		}
@@ -44,9 +44,9 @@ public:
 	}
 
 	bool perform_animation_frame(animation_texture_model_parameters_struct_type& vw_animation_parameters, bool use_textures, bool use_automata, bool  use_multi_thread_automata,
-										 size_t frame, int max_automata_step_value, int animation_step,
+										 int frame, int max_automata_step_value, int animation_step,
 										 scene_manager_class* scene_manager) {
-	//printf("animation :: perform_animation_frame 00 : %i : %i  : %i : %i\n",frame, animation_step, vw_animation_parameters.current_frame, max_automata_step_value);
+//printf("animation :: perform_animation_frame 00 : %i : %i  : %i : %i\n",frame, animation_step, vw_animation_parameters.current_frame, max_automata_step_value);
 
 //if(scene_manager == NULL)
 //printf("animation :: perform_animation_frame 00AA scene_manager == NULL\n");

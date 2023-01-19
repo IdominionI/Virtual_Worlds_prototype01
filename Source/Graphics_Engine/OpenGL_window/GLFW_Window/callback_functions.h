@@ -28,7 +28,7 @@ template <class T>
 static void on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     auto pWindow = static_cast<T>(glfwGetWindowUserPointer(window));
-    pWindow->on_scroll_event(yoffset);
+    pWindow->on_scroll_event(float(yoffset));
 }
 
 template <class T>

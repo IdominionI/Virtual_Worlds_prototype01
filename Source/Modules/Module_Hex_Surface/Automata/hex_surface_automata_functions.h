@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
+//#include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>
 
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
@@ -31,10 +31,47 @@ public:
 
 	hex_surface_object_class *cloud = NULL;                          // Pointer to the hex surface data object that is to have cellula Automata rules applied to
 	hex_surface_object_class *hex_surface_automata_next_step_matrix; // Pointer to a copy of the hex surface data object that is to have result of cellula Automata rules applied save to
-	u_long_int                max_number_steps;
+	int                       max_number_steps;
 
 	hex_surface_object_class *hex_surface_object_to_execute = NULL;	// Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
+	int get_max_hex_surface_automata_step_value();
+	// Create an empty hex suface data object matrix in which to store the resultant cellula autoamata values to
+	bool create_hex_surface_automata_next_step_matrix();
+	bool perform_hex_surface_automata_generation(u_long_int automata_step);
+
+	// generate and save cellula automata data for cellula automata generation step 
+	// This procedure requires an initial voxel matrix that has initialised conditions set.
+	bool perform_hex_surface_automata_step_generation(int step);
+
+	// Perform the cellula automata rules for step at hex surface matrix location x_index, y_index, z_index = 0
+	// and if all rules are met assign a defined value for this case, otherwise set a rules not met value
+	bool perform_hex_surface_automata_rules(u_long_int step, hex_surface_index_data_type x_index, hex_surface_index_data_type y_index, hex_surface_index_data_type z_index);
+
+	// Return if a cellular automata rule is met for the hex suface matrix at location x_index, y_index, z_index = 0
+	// A cellular automata rule is met if all nieghbor hex surface cells rules apply
+	bool hex_surface_automata_rule_met(hex_surface_automata_rule_struct_type hex_surface_automata_byte_rule, int step, hex_surface_index_data_type x_index, hex_surface_index_data_type y_index, hex_surface_index_data_type z_index);
+
+	// Get all the hex suface neighbor cell values of hex cell at matrix location x_index, y_index, z_index = 0  stored in a std::vector list
+	std::vector<hex_surface_data_type> get_hex_surface_neighbours_state(hex_surface_index_data_type x_index, hex_surface_index_data_type y_index, hex_surface_index_data_type z_index);
+
+	// Get the neighbor cell status value of a hex cell that is at hex suface matrix location x_index, y_index, z_index = 0
+	hex_surface_data_type get_hex_surface_neighbour_state(size_t neighbour, hex_surface_index_data_type x_index, hex_surface_index_data_type y_index, hex_surface_index_data_type z_index);
+
+	hex_index_vector get_hex_surface_neighbour_index_coordinates(size_t neighbour, int x_index, int y_index, int z_index);
+
+	// Determine if hex suface cell index coordinate hex_surface_index_coordinate is valid or not
+	// Ie if it is outside the plane and limits of the hex suface matrix 
+	bool valid_index_coordinate(hex_index_vector hex_surface_index_coordinate);
+
+	void assign_no_hex_state_change(hex_index_vector hex_surface_data_index_coord);
+
+	// Copy into the cellular automata data structure variable hex_surface_automata_initial_data the cellula automata parameter values
+	// that are stored in the virtual worlds scene data model that hex surface hex_surface_automata_initial_data points to
+	bool load_hex_surface_automata_initial_data(hex_surface_object_class * hex_surface_automata_initial_data);
+	bool create_hex_surface_matrix();// Create an empty hex surface matrix
+
+/*
 	u_long_int get_max_hex_surface_automata_step_value() {
 		u_long_int max_number_steps = 0;
 		for (hex_surface_automata_rule_struct_type hcp_automata_rule : hex_surface_automata_rules) {
@@ -484,6 +521,7 @@ public:
 		else
 			return false;
 	}
+*/
 };
 
 /*

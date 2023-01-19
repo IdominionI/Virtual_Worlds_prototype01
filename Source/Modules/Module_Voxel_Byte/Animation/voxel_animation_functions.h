@@ -8,8 +8,8 @@
 #include <Source/Graphics_Engine/Shader/shader_parameters.h>
 #include "../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 
-#include "../Editor/Widgets/generator_widget.h"
-#include "../Editor/Widgets/shaders_widget.h"
+#include "../Editor/Widgets/hcp_voxel_generator_widget.h"
+#include "../Editor/Widgets/hcp_voxel_shaders_widget.h"
 
 #include "../Compute/voxel_compute_generation.h"
 
@@ -199,7 +199,7 @@ public:
 */
 	// ###############################################
 	// !!!!!!!!!!!!!!!! VOXEL OBJECT TYPE !!!!!!!!!!!!!!!!!!
-	void perform_animation_frame(animation_texture_model_parameters_struct_type& vw_animation_parameters,
+	bool perform_animation_frame(animation_texture_model_parameters_struct_type& vw_animation_parameters,
 								bool use_voxel_texture_cb, bool use_voxel_automata_cb, bool use_voxel_automata_multi_thread_cb,
 								int frame, int max_automata_step_value, int ANIMATION_STEP,
 								//scene_manager_class *scene_manager, int export_selection, id_type entity_id)
@@ -266,6 +266,8 @@ public:
 				//}
 			}
 		}
+
+		return true;
 	}
 
 	// #################################################

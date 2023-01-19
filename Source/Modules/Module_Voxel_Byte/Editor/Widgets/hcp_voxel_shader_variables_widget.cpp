@@ -1,37 +1,6 @@
-#pragma once
+#include "hcp_voxel_shader_variables_widget.h"
 
-#include <Universal/ImGui/imgui.h>
-
-#include <Source/Editor/Common/definitions.h>
-#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
-#include <Source/Editor/Common/imgui_custom.h>
-
-#include <Source/Graphics_Engine/Shader/shader_parameters.h>
-
-/*
-		Hex surface shader variables widget class
-
-	This class widget defines an ImGui widget and child widgets
-	that are used to define shader variables required to be used
-	in the OpenGl glsl shader program code that is compiled to
-	display hex surface data.
-
-	This class widget has inputs that define incremental step
-	values that each varaible can be changed by enabling the user
-	to perform incremental step changes to the shader values that
-	display the hex surface interactively.
-*/
-
-class hex_shader_variables_widget_class {
-public:
-	int current_selected_var_type_id = -1;
-	int current_selected_var_id      = -1;
-
-	int real_var_type_id = 1;
-	int int_var_type_id  = 2;
-	int bool_var_type_id = 3;
-
-	bool variables_manager(shader_parameters_struct_type *hex_surface_shader_parameters) {
+	bool shader_variables_widget_class::variables_manager(material_struct_type *voxel_shader_parameters) {
 		bool  value_changed = false;
 		static int selection_mask = (1 << 2);
 		static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick; //| ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -61,8 +30,8 @@ public:
 					current_selected_var_id = -1;
 				}
 
-				for (int j = 0; j < hex_surface_shader_parameters->variables.size(); j++) {
-					real_variable = &hex_surface_shader_parameters->variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
+				for (int j = 0; j < voxel_shader_parameters->variables.size(); j++) {
+					real_variable = &voxel_shader_parameters->variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
 
 					char* variable_name; variable_name = real_variable->variable_name.data();
 //printf("variables_manager :: real_var_open: %s \n" , real_variable.variable_name.c_str() ); //this is the group
@@ -88,7 +57,7 @@ public:
 					ImGui::SameLine(); w_id = id_prefix + std::to_string(real_var_type_id * 100 + j * 10 + 2); ImGui::SetNextItemWidth(50);ImGui::InputFloat(w_id.c_str(), &real_variable->value);
 					// ************************** Added increment/decrement buttons ********************************
 					float t_height = ImGui::GetTextLineHeight();
-					float b_height = ImGui::GetTextLineHeight() / 2.0;
+					float b_height = ImGui::GetTextLineHeight() / 2.0f;
 					float xpos = ImGui::GetCursorPosX(); float ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
 					ImGui::SameLine(); w_id = id_prefix + std::to_string(real_var_type_id * 100 + j * 10 + 8); ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -138,8 +107,8 @@ public:
 //printf("display_nodes :: group selected: %i  \n", current_selected_node_id); //this is the group
 				}
 
-				for (int j = 0; j < hex_surface_shader_parameters->int_variables.size(); j++) {
-					int_variable = &hex_surface_shader_parameters->int_variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
+				for (int j = 0; j < voxel_shader_parameters->int_variables.size(); j++) {
+					int_variable = &voxel_shader_parameters->int_variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
 
 //printf("variables_manager :: real_var_open: %s \n" , real_variable.variable_name.c_str() ); //this is the group
 					char* variable_name; variable_name = int_variable->variable_name.data();
@@ -164,7 +133,7 @@ public:
 					ImGui::SameLine(); w_id = id_prefix + std::to_string(real_var_type_id * 200 + j * 10 + 2); ImGui::SetNextItemWidth(50); ImGui::InputInt(w_id.c_str(), &int_variable->value,0);
 					// ************************** Added increment/decrement buttons ********************************
 					float t_height = ImGui::GetTextLineHeight();
-					float b_height = ImGui::GetTextLineHeight() / 2.0;
+					float b_height = ImGui::GetTextLineHeight() / 2.0f;
 					float xpos = ImGui::GetCursorPosX(); float ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
 					ImGui::SameLine(); w_id = id_prefix + std::to_string(real_var_type_id * 100 + j * 10 + 8); ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -216,8 +185,8 @@ public:
 //printf("display_nodes :: group selected: %i  \n", current_selected_node_id); //this is the group
 				}
 
-				for (int j = 0; j < hex_surface_shader_parameters->bool_variables.size(); j++) {
-					bool_variable = &hex_surface_shader_parameters->bool_variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
+				for (int j = 0; j < voxel_shader_parameters->bool_variables.size(); j++) {
+					bool_variable = &voxel_shader_parameters->bool_variables[j]; // Note :: Will not work uinless real_variable is a pointer to the entry of structure data to modify
 
 					char *variable_name; variable_name = bool_variable->variable_name.data();
 //printf("variables_manager :: real_var_open: %s \n" , real_variable.variable_name.c_str() ); //this is the group
@@ -242,27 +211,23 @@ public:
 					ImGui::SameLine(); w_id = id_prefix + std::to_string(real_var_type_id * 200 + j * 10 + 4); 
 					if(ImGui::Checkbox(w_id.c_str(), &bool_variable->value))value_changed = true;
 				}
-
-
-				//ImGui::SetCursorPosX(10.0f); ImGui::Text("bool_var_open");
 				ImGui::TreePop();
 			}
 
 			if (current_selected_var_type_id > -1 && current_selected_var_id > -1) {
 //printf("current_selected_var_id : %i\n", current_selected_var_id);
 				if (ImGui::BeginPopupContextWindow("sr1", 1, true)) {
-					if (ImGui::MenuItem("Delete Variable2")) delete_variable(current_selected_var_type_id, current_selected_var_id, hex_surface_shader_parameters);
+					if (ImGui::MenuItem("Delete Variable2")) delete_variable(current_selected_var_type_id, current_selected_var_id, voxel_shader_parameters);
 					ImGui::EndPopup();// Root
 				}
 			} else{
 				if (current_selected_var_type_id > -1 && current_selected_var_id < 0)
 					if (ImGui::BeginPopupContextWindow("sr2", 1, true)) {
-							if (ImGui::MenuItem("Add Variable")) add_variable(current_selected_var_type_id, hex_surface_shader_parameters);
+							if (ImGui::MenuItem("Add Variable")) add_variable(current_selected_var_type_id, voxel_shader_parameters);
 						ImGui::EndPopup();// Root
 					}
 				}
 // printf("real var\n");
-
 			ImGui::TreePop();
 		}
 
@@ -275,56 +240,53 @@ public:
 //printf("display_nodes :: entity selected: %i %i \n", current_selected_var_type_id, current_selected_var_id);
 	}
 
-	void add_variable(int var_type_id, shader_parameters_struct_type *hex_surface_shader_parameters) {
+	//void add_variable(int var_type_id, shader_parameters_struct_type *voxel_shader_parameters) {
+	void shader_variables_widget_class::add_variable(int var_type_id, material_struct_type *voxel_shader_parameters) {
 //printf("in add variabel %i\n", var_type_id);
 
 		// Switch cannot use var_type_id so need to rvert to if statements !!!!!!
 
 		if (var_type_id == real_var_type_id) {
 			shader_parameter_variable_struct_type real_var;
-			real_var.variable_name += std::to_string(hex_surface_shader_parameters->variables.size());
-			hex_surface_shader_parameters->variables.push_back(real_var);
+			real_var.variable_name += std::to_string(voxel_shader_parameters->variables.size());
+			voxel_shader_parameters->variables.push_back(real_var);
 			return;
 		}
 
 		if (var_type_id == int_var_type_id) {
 			shader_parameter_int_variable_struct_type int_var;
-			int_var.variable_name += std::to_string(hex_surface_shader_parameters->int_variables.size());
+			int_var.variable_name += std::to_string(voxel_shader_parameters->int_variables.size());
 
-			hex_surface_shader_parameters->int_variables.push_back(int_var);
+			voxel_shader_parameters->int_variables.push_back(int_var);
 			return;
 		}
 
 		if (var_type_id == bool_var_type_id) {
 			shader_parameter_bool_variable_struct_type bool_var;
-			bool_var.variable_name += std::to_string(hex_surface_shader_parameters->bool_variables.size());
+			bool_var.variable_name += std::to_string(voxel_shader_parameters->bool_variables.size());
 
-			hex_surface_shader_parameters->bool_variables.push_back(bool_var);
+			voxel_shader_parameters->bool_variables.push_back(bool_var);
 			return;
 		}
 	}
 
-	void delete_variable(int var_type_id,int var_id,shader_parameters_struct_type *hex_surface_shader_parameters) {
+	//void delete_variable(int var_type_id,int var_id,shader_parameters_struct_type *voxel_shader_parameters) {
+	void shader_variables_widget_class::delete_variable(int var_type_id,int var_id, material_struct_type *voxel_shader_parameters) {
 //printf("in delete variabel %i : %i\n", var_type_id, var_id);
 
 		if (var_type_id == real_var_type_id) {
-			hex_surface_shader_parameters->variables.erase(hex_surface_shader_parameters->variables.begin()+ var_id);
+			voxel_shader_parameters->variables.erase(voxel_shader_parameters->variables.begin()+ var_id);
 			return;
 		}
 
 		if (var_type_id == int_var_type_id) {
-			hex_surface_shader_parameters->int_variables.erase(hex_surface_shader_parameters->int_variables.begin() + var_id);
+			voxel_shader_parameters->int_variables.erase(voxel_shader_parameters->int_variables.begin() + var_id);
 			return;
 		}
 
 		if (var_type_id == bool_var_type_id) {
-			hex_surface_shader_parameters->bool_variables.erase(hex_surface_shader_parameters->bool_variables.begin() + var_id);
+			voxel_shader_parameters->bool_variables.erase(voxel_shader_parameters->bool_variables.begin() + var_id);
 			return;
 		}
 
 	}
-
-private:
-
-
-};

@@ -206,8 +206,8 @@ struct universal_shader_variables_struct_type {
 	//light_object_class *default_light;
 	scene_lights_objects_class *scene_lights;
 
-	float     ambience = 0.3;
-	float     specular_strength = 0.3;
+	float     ambience          = 0.3f;
+	float     specular_strength = 0.3f;
 	bool      camera_as_light = false;
 	int       type_camera_light = 0;
 	glm::vec3 camera_light_offset = { 0.0,0.0,0.0 };

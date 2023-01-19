@@ -1,9 +1,4 @@
 #pragma once
-
-// Define module entity data type includes here that are to used in the application
-//#include <Source/Modules/Module_Voxel_Byte/Editor/Scene/voxel_hcp_scene_objects.h>   // *****
-//#include <Source/Modules/Module_Hex_Surface/Editor/Scene/hex_surface_scene_objects.h>?? *****
-
 /*
 				SCENE ENTITY DB MANAGER CLASS
 

@@ -2,6 +2,7 @@
 
 #include <Universal/tinyFileDialog/tinyfiledialogs.h>
 
+#include <Universal/Framework/FWstring_tools.h>
 /*
                 APPLICATION DIALOGUE FUNCTIONS
 
@@ -20,15 +21,16 @@
 
 namespace vwDialogs {
 
-    char const* open_file(const char* startDir, char const* patterns[], int numPattern){
+    //char const* open_file(const char* startDir, char const* patterns[], int numPattern){
+    inline char const* open_file(const char* startDir, char const* patterns[], int numPattern){
         return tinyfd_openFileDialog("Load File...", startDir, numPattern, patterns, NULL, 0);
     }
 
-    char const* save_file(const char* startDir, char const* patterns[], int numPattern){
+    inline char const* save_file(const char* startDir, char const* patterns[], int numPattern){
         return tinyfd_saveFileDialog("Save File...", startDir, numPattern, patterns, NULL);
     }
 
-    char const* select_directory(const char* startDir){
+    inline char const* select_directory(const char* startDir){
         char const *dirpath = tinyfd_selectFolderDialog("Select directory ... ", startDir);
 
         if (!dirpath) return "";// Did not select a directory

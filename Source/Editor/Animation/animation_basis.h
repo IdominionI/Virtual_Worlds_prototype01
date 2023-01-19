@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Scene/scene_manager.h"
-#include "../Tools/dialogs.h"
+//#include "../Tools/dialogs.h"
 
 class animation_base_class {
 public:
@@ -9,7 +9,7 @@ public:
 
 	log_panel_class *log_panel = NULL;
 
-	size_t number_objects_to_animate = 0;
+	int number_objects_to_animate = 0;
 
 	bool geometry_exported = false;
 
@@ -20,9 +20,10 @@ public:
 	virtual void define_initial_frame_paramters(bool use_textures, bool use_automata, int max_automata_step_value,  int frame_step_end) {}
 
 	virtual bool perform_animation_frame(animation_texture_model_parameters_struct_type &vw_animation_parameters,bool use_textures,bool use_automata,bool  use_multi_thread_automata,
-										 size_t frame,int max_automata_step_value,int animation_step, 
+										 int frame,int max_automata_step_value,int animation_step, 
 										 scene_manager_class *scene_manager) { 
-				 return false;}
+//printf("animation_base_class : perform_animation_frame !!!!!\n");
+		return false;}
 
 	virtual void restore_initial_frame(bool use_textures,scene_manager_class *scene_manager) {};
 
@@ -150,7 +151,12 @@ public:
 	}
 
 	bool perform_animation_frame(int frame, int animation_step) {
+//printf("animation_manager_class :: perform_animation_frame 0000 %i \n", animation_objects.size());
 		for (animation_base_class* animation_object : animation_objects) {
+//if(animation_object != NULL)
+//printf("animation_manager_class :: perform_animation_frame 1111 animation_object != NULL  %i : %i\n", animation_object->objects_category_id, animation_object->number_objects_to_animate);
+//else
+//printf("animation_manager_class :: perform_animation_frame 1111 animation_object == NULL\n");
 			animation_object->perform_animation_frame(vw_animation_parameters,use_textures,use_automata,use_multi_thread_automata,
 													  frame,max_automata_step_value,animation_step, 
 													  scene_manager);

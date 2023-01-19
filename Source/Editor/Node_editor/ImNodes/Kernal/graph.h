@@ -78,8 +78,23 @@ protected:
 
 private:
 	id_key_manager_class<unsigned int> node_id_key;
-
-
-
-
 };
+
+// ****** VW NEXT VERSION ******
+class node_tree_class_basis {
+public:
+
+	//graph_class graph;
+
+	virtual bool create_node_tree(graph_class* graph, node_basis_class* node) {}
+	virtual bool delete_node_tree() {}
+
+	virtual bool save_node_tree(graph_class* graph, node_basis_class* node) {}
+	virtual bool load_node_tree(graph_class* graph) {}
+
+
+
+private:
+};
+
+// ****************************

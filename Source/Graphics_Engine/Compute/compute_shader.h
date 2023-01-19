@@ -30,9 +30,9 @@ public:
     GLuint progHandle = -1;
     GLuint cs         = -1;
 
-    compute_shader_class() { }
+    //compute_shader_class() { }
 
-    ~compute_shader_class() {}
+    //~compute_shader_class() {}
 
     bool define_source_code_from_file(std::string shader_pathname) {
 
@@ -107,7 +107,8 @@ public:
 
 private:
     GLint  error_status;
-    bool   have_error = GL_FALSE;
+    GLint  have_error = GL_FALSE;
+    //bool   have_error = GL_FALSE;
 
 
 };

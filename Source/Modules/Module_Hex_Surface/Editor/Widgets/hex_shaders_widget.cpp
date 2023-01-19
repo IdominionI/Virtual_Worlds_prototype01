@@ -1,48 +1,13 @@
-#pragma once
+#include "hex_shaders_widget.h"
 
 #include <Universal/ImGui/imgui.h>
 
-#include <Source/Editor/Common/definitions.h>
+#include <Source/Editor/Interface/IconsFontAwesome.h> //*****
 #include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
 #include <Source/Editor/Tools/dialogs.h>
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
-#include <Source/Graphics_Engine/Shader/shader_parameters.h>
-
-#include "shader_variables_widget.h"
-
-#include "../../Hex_surface_object/hex_surface_object.h"
-#include "../../Kernal/hex_surface_function_import_export.h"
-
-#include "generation_selection_widget.h"
-
-/*
-			Hex Surface shader widget class
-
-	This class widget defines an ImGui widget and child widgets
-	that are used to define the parameters and shader variables
-	required to display a 2D hexagonal surface.
-
-	This class widget has controls to change the display of the
-	2D hexagonal surface on the computer screen in incremental 
-	steps by changing the shader variable values according to 
-	the settings that the user defines for each shader variable.
-*/
-
-class hex_surface_shaders_widget_class {
-public:
-	material_struct_type                *hex_surface_shader_parameters = NULL;
-	shader_variables_widget_class        shader_variables_widget;
-	hex_surface_genertion_selection_widget_class *hex_surface_generation_widget;
-
-	log_panel_class                     *log_panel = NULL;
-
-	id_type                   current_selected_entity_id    = -1;   // entity id of the selected entity to display/modify
-	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-
-	scene_manager_class      *scene_manager = NULL;
-
-	void display() {
+	void hex_surface_shaders_widget_class::display() {
 //printf("voxel_shaders_widget_class::display() 0000 :current_selected_enity_id < 0 %i\n", current_selected_enity_id);
 		initialise_parameters();
 
@@ -151,7 +116,7 @@ public:
 	//		   and
 	//         <variable>.value +-= <variable>.variable_step; 
 	//          
-	void perform_decrement_variables() {
+	void hex_surface_shaders_widget_class::perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (shader_parameter_variable_struct_type &variable : hex_surface_shader_parameters->variables) {
 			if (variable.active_variable_step) {
@@ -180,7 +145,7 @@ public:
 		update_shader_variables();
 	}
 
-	void perform_increment_variables() {
+	void hex_surface_shaders_widget_class::perform_increment_variables() {
 //printf("perform_increment_variables button clicked\n");// replace with decrement step
 		for (shader_parameter_variable_struct_type &variable : hex_surface_shader_parameters->variables) {
 			if (variable.active_variable_step) {
@@ -209,7 +174,7 @@ public:
 		update_shader_variables();
 	}
 
-	void update_shader_variables() { // not sure this is needed as render node does this task
+	void hex_surface_shaders_widget_class::update_shader_variables() { // not sure this is needed as render node does this task
 //printf("voxel_shaders_widget_class::update voxel shaders clicked\n");// replace with update variables
 		// Get the scene render object that stores the object render properties
 		scene_node_class <render_object_class> *entity_render_object = scene_manager->get_render_object(current_selected_entity_id);
@@ -228,7 +193,7 @@ public:
 //printf("voxel_shaders_widget_class::update_shader_variables 333\n");
 	}
 
-	void update_hex_shaders(bool notification = true) {
+	void hex_surface_shaders_widget_class::update_hex_shaders(bool notification) {
 //printf("execute_shader_function button clicked\n");
 
 		if (hex_surface_shader_parameters == NULL) {
@@ -289,7 +254,7 @@ public:
 	}
 
 	//bool initialise_parameters(shader_parameters_struct_type *hex_surface_shader_parameters) {
-	bool initialise_parameters() {
+	bool hex_surface_shaders_widget_class::initialise_parameters() {
 		if (hex_surface_object_to_execute == NULL) {
 //printf("voxel_shaders_widget_class :: initialise_parameters :hex_surface_object_to_execute == NULL\n");
 			return false;
@@ -322,13 +287,9 @@ public:
 		return true;
 	}
 
-private:
-	voxel_texture_import_export_class  hex_surface_texture_import_export_data;
-	hex_surface_render_class	       hex_surface_render;
+//-----------------------------------------------
 
-	bool display_bounding_area;
-
-	void save_shader_parameters() {
+	void hex_surface_shaders_widget_class::save_shader_parameters() {
 //printf("save button clicked\n");// replace with clear variables
 		char const* patterns[] = {"*.twm"};
 		char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
@@ -347,7 +308,7 @@ private:
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data saved to file\n %s\n", file_pathname);
 	}
 
-	void load_shader_parameters() {
+	void hex_surface_shaders_widget_class::load_shader_parameters() {
 //printf("load button clicked\n");// replace with clear variables
 		clear_variables();
 
@@ -370,7 +331,7 @@ private:
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data imported from file\n %s\n", file_pathname);
 	}
 
-	void select_vertex_shader_file() {
+	void hex_surface_shaders_widget_class::select_vertex_shader_file() {
 		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 //printf("select_vertex_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = {"*_VS.glsl"};
@@ -390,7 +351,7 @@ private:
 		//hex_surface_shader_parameters->vertex_shader_file_name     = vwDialogs::get_filename(s, "/");
 	}
 
-	void select_point_geometry_shader_file() {
+	void hex_surface_shaders_widget_class::select_point_geometry_shader_file() {
 		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 
 //printf("select_point_geometry_shader_file button pressed.\n");// replace with get file pathname tool
@@ -411,7 +372,7 @@ private:
 
 	}
 
-	void select_fragment_shader_file() {
+	void hex_surface_shaders_widget_class::select_fragment_shader_file() {
 		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 
 //printf("select_fragment_shader_file button pressed.\n");// replace with get file pathname tool
@@ -429,11 +390,9 @@ private:
 		hex_surface_shader_parameters->fragment_shader_file_pathname = s;
 	}
 
-	void clear_variables() {
+	void hex_surface_shaders_widget_class::clear_variables() {
 		printf("Clear Variables clicked");// replace with clear variables
 		hex_surface_shader_parameters->variables.clear();
 		hex_surface_shader_parameters->int_variables.clear();
 		hex_surface_shader_parameters->bool_variables.clear();
 	}
-
-};

@@ -7,6 +7,7 @@
 #include "../../Scene/scene_manager.h"
 
 #include "../../Tools/dialogs.h"
+#include "../../Interface/IconsFontAwesome.h"
 
 // Module entity data type animation functions to be animated goes here
 //#include <Source/Modules/Module_Voxel_Byte/Animation/voxel_animation_functions.h>
@@ -332,7 +333,7 @@ public:
 			return; // Initialise the entity data type objects for animation
 		}
 
-		number_animation_frames = end_frame - start_frame;
+		//number_animation_frames = end_frame - start_frame;
 
 		if (!define_objects_to_execute()) return;
 
@@ -394,7 +395,7 @@ public:
 			}
 		}
 
-		number_animation_frames = end_frame - start_frame;
+		//number_animation_frames = end_frame - start_frame;
 
 		return true;
 	}
@@ -522,6 +523,7 @@ private:
 		if (!define_objects_to_execute()) return false;
 
 		animation_stopped = false;
+		number_animation_frames = end_frame - start_frame;
 
 //QMessageBox::information(NULL, "","in play animation 04 : ", QMessageBox::Ok);
 		define_animation_parameters();

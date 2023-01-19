@@ -213,15 +213,12 @@ public:
 	bool create_voxel_surface_face_point_data() {
 		index_data_type voxel_index, vertex_id = 0;
 		size_t          number_voxels = cloud->voxel_object_data.voxel_matrix_data.size(), face_id = 0;
-		size_t          voxel_neighbour_0, voxel_neighbour_1;
 		glm::ivec3    voxel_coordinate;
 
 		surface_vertices_struct_type        surface_vertex;
 		surface_vertices_normal_struct_type surface_vertex_normal;
 
 		glm::vec3 voxel_normal = { 0.0f,0.0f,0.0f };
-
-		glm::ivec3 voxel_hcp_neighbours_face_connection_coord[2];
 
 //printf("create_voxel_surface_face_point_data 00 : %i\n", number_voxels);
 		for (voxel_index = 0; voxel_index < number_voxels; voxel_index++) {
@@ -260,8 +257,8 @@ public:
 	// THE FOLLOWING FACE CREATION ALGORITIM WORKS FOR A CUBE VOXEL SHAPE, BUT HAS ISSUES WITH SURFACE VOXELS OR ARBRITARY SHAPES AND DOES
 	// NOT CREATE COMPLETE SURFACES AS THE SURFACE VOXELS IS INCOMPETE. SOMETHING TO COME BACK TO AT A LATTER TIME
 	bool create_voxel_surface_faces_data() {
-		index_data_type voxel_index, vertex_id = 0;
-		size_t          number_voxels = cloud->voxel_object_data.voxel_matrix_data.size(), face_id = 0;
+		index_data_type voxel_index, vertex_id = 0, face_id = 0;
+		size_t          number_voxels = cloud->voxel_object_data.voxel_matrix_data.size();
 		size_t          voxel_neighbour_0, voxel_neighbour_1;
 		glm::ivec3    voxel_coordinate;
 
@@ -444,8 +441,7 @@ public:
 	bool create_voxel_surface_faces() {
 		index_data_type voxel_index, vertex_id = 0;
 		size_t          number_voxels = cloud->voxel_object_data.voxel_matrix_data.size(), face_id = 0;
-		size_t          voxel_neighbour_0, voxel_neighbour_1;
-		glm::ivec3    voxel_coordinate;
+		glm::ivec3      voxel_coordinate;
 
 		vertices.clear();
 		vertices.shrink_to_fit();
@@ -484,7 +480,7 @@ public:
 	void define_voxel_surface(glm::ivec3 voxel_coordinate, int neighbour) {
 		glm::vec3 voxel_cartesian_coordinate = cloud->voxel_object_data.get_voxel_cartesian_coordinate(voxel_coordinate);
 
-		int vertex_index = vertices.size();
+		int vertex_index = int(vertices.size());
 		std::array<int, 4> vertex_face;
 
 		if (voxel_coordinate.z % 2 == 0) {// even z level
@@ -521,7 +517,7 @@ public:
 	// A simple algorithim to remove duplicate vertex points for a suface of non duplicate faces
 	void  remove_duplicate_vertices() {
 		int vertices_vertex_index, face_index, face_vertex_index;
-		int number_faces = faces.size();
+		int number_faces = int(faces.size());
 
 		std::vector<glm::vec3> new_vertices; // The vector to store single unique surface coordinates that faces reference
 		std::vector<glm::vec3> new_normals;  // The vector to store single unique surface normals at the surface vertex coordinate
@@ -538,7 +534,7 @@ public:
 				// Have not found the vertex coordinate in the new_vertices list : create one and assign the index of this
 				// created vector entry to vertices_vertex_index
 				if (new_vertices_vertex_index < 0) {
-					new_vertices_vertex_index = new_vertices.size();
+					new_vertices_vertex_index = int(new_vertices.size());
 					new_vertices.push_back(vertices[vertices_vertex_index]);
 					new_normals.push_back(normals[vertices_vertex_index]);
 				}
@@ -569,7 +565,7 @@ public:
 	// and vertex of face_vertex_index that that face is equivalent to.
 	// If not found return -1.
 	int find_new_vertices_vertex_id(int vertices_vertex_index, std::vector<glm::vec3>& new_vertices) {
-		int number_new_vertices = new_vertices.size(), new_vertices_vertex_index;
+		int number_new_vertices = int(new_vertices.size()), new_vertices_vertex_index;
 
 		glm::vec3 vertex_coord_to_find = vertices[vertices_vertex_index];
 
@@ -581,7 +577,7 @@ public:
 	}
 
 	void normalize_vertex_normals() {
-		int number_vertices = normals.size();
+		int number_vertices = int(normals.size());
 		for (int i = 0; i < number_vertices; i++)
 			glm::normalize(normals[i]);
 	}

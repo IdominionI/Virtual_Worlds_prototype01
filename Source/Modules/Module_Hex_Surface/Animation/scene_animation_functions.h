@@ -32,7 +32,7 @@ public:
 				return false;
 			}
 			else {
-				number_objects_to_animate = hex_surface_animation_functions.hex_surface_objects_to_execute.size();
+				number_objects_to_animate = int(hex_surface_animation_functions.hex_surface_objects_to_execute.size());
 //printf("scene_hsp_voxel_animation_class::define_objects_to_execute  22 :: hex_surface_animation_functions.define_hex_surface_objects_to_execute\n", current_selected_object_type_id, current_selected_object_id, animation_selection);
 			}
 		}
@@ -45,8 +45,8 @@ public:
 	}
 
 	bool perform_animation_frame(animation_texture_model_parameters_struct_type& vw_animation_parameters, bool use_textures, bool use_automata, bool  use_multi_thread_automata,
-		size_t frame, int max_automata_step_value, int animation_step,
-		scene_manager_class* scene_manager) {
+								 int frame, int max_automata_step_value, int animation_step,
+								 scene_manager_class* scene_manager) {
 		//printf("animation :: perform_animation_frame 00 : %i : %i  : %i : %i\n",frame, animation_step, vw_animation_parameters.current_frame, max_automata_step_value);
 
 	//if(scene_manager == NULL)
@@ -73,7 +73,7 @@ public:
 			}
 			else {
 				//printf("animation :: perform_animation_frame 44::scene_voxel_object != NULL.\n");
-				if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
+				if (!hex_surface_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
 					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated for voxel object %s %i\n", voxel_hcp_object->object_name.c_str());
 					//printf("animation :: perform_animation_frame 55:: scene_voxel_object not updated\n");
 				}
@@ -101,7 +101,7 @@ public:
 			}
 			else {
 //printf("restore_initial_frame 33 scene_voxel_object != NULL.\n");
-				if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
+				if (!hex_surface_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
 					if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated for voxel object %s %i\n", voxel_hcp_object->object_name.c_str());
 //printf("restore_initial_frame 44 \n");
 				}
@@ -140,6 +140,6 @@ public:
 
 private:
 	hex_surface_animation_functions_class hex_surface_animation_functions;
-	hex_surface_render_class			  voxel_hcp_render;
+	hex_surface_render_class			  hex_surface_render;
 
 };

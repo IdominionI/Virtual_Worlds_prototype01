@@ -130,7 +130,7 @@ struct vertex_basis_class {
     }
 
     int number_of_vertices() {
-        return mVertices.size();
+        return int(mVertices.size());
     }
 
     void clear() {
@@ -147,8 +147,8 @@ public:
 
     void add_vertex(const glm::vec4& v) { mVertices.push_back(v); }
     void add_vertex(float x, float y, float z = 0, float w = 1) { mVertices.push_back(glm::vec4(x, y, z, w)); }
-	void add_vertex(const glm::vec2& v) { mVertices.push_back(glm::vec4(v.x, v.y, 0, 1)); }
-	void add_vertex(const glm::vec3& v) { mVertices.push_back(glm::vec4(v.x, v.y, v.z, 1)); }
+	void add_vertex(const glm::vec2& v) { mVertices.push_back(glm::vec4(v.x, v.y, 0.0f, 1.0f)); }
+	void add_vertex(const glm::vec3& v) { mVertices.push_back(glm::vec4(v.x, v.y, v.z, 1.0f)); }
 	void add_vertex(const glm::vec4& v, const ColorAf& c) {
 		mColors.push_back(c);
         mVertices.push_back(v);
@@ -343,9 +343,7 @@ public:
 
     // Initialize by string to be tokenized
     // TODO: Better handle outside of this class
-    point_vertex_class(const std::vector<std::string> tokens)
-    {
-    }
+    //point_vertex_class(const std::vector<std::string> tokens)
 
     point_vertex_class(const glm::vec3& pos, const glm::vec3& normal)
         : mPos(pos), mNormal(normal)

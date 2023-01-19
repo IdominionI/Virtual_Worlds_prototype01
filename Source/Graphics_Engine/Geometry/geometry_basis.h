@@ -74,5 +74,5 @@ public :
 	// Vertices and indices
 	std::vector<unsigned int>  vertex_indices;
 
-	int number_vertices = 0;
+	size_t number_vertices = 0;
 };

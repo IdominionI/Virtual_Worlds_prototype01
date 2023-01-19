@@ -6,6 +6,9 @@
 #include "Datatypes/dt_voxel_generator.h"
 
 #include <Source/Graphics_Engine/Shader/shader_parameters.h>
+#include <Source/Graphics_Engine/Shader/shader_components.h>//*****
+
+
 #include "DataTypes/dt_voxel_automata.h"
 
 // Because OpenGL GLSL does not have a prefered 8 bit unsigned char datatype,
@@ -297,7 +300,7 @@ public:
 	glm::vec3 get_voxel_cartesian_coordinate(glm::ivec3 voxel_coord, float voxel_size) {
 		index_data_type i = voxel_coord.x, j = voxel_coord.y, k = voxel_coord.z;
 
-		float sqrt3 = sqrt(3.0), third = 1.0 / 3.0, z_mult = 2.0 * sqrt(6.0) / 3.0, sqrt3_2 = sqrt(1.5);
+		float sqrt3 = sqrt(3.0f), third = 1.0f / 3.0f, z_mult = 2.0f * sqrt(6.0f) / 3.0f, sqrt3_2 = sqrt(1.5f);
 		glm::vec3 voxel_cartesian_coordinate;
 
 		if (j % 2 == 0) {
@@ -308,7 +311,7 @@ public:
 		else {
 //QMessageBox::information(NULL, "voxelBS03", "here01 :"+QString::number(j * VOXEL_BIT_NUMBER + j_bit), QMessageBox::Ok);
 			//voxel_cartesian_coordinate.setX((1.0 + float(i) * 2 + float(k % 2)) * voxel_size - 2.0 * (k % 2)); the old wrong one
-			voxel_cartesian_coordinate.x = ((-1.0 + float(i) * 2 + float(k % 2) + 2 * float((k + 1) % 2)) * voxel_size);
+			voxel_cartesian_coordinate.x = ((-1.0f + float(i) * 2.0f + float(k % 2) + 2.0f * float((k + 1) % 2)) * voxel_size);
 			voxel_cartesian_coordinate.y = ((sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * voxel_size);
 		}
 
@@ -390,10 +393,10 @@ public:
 		float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
 		float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
 		float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
-		float z_mult = 2.0 * sqrt(6.0) / 3.0;
+		float z_mult = 2.0f * sqrt(6.0f) / 3.0f;
 
-		float x_res_step = voxel_generator_parameters.resolution_step * 2.0;
-		float y_res_step = voxel_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float x_res_step = voxel_generator_parameters.resolution_step * 2.0f;
+		float y_res_step = voxel_generator_parameters.resolution_step * (3.0f / sqrt(3.0f));
 		float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
 
 		int data_set_x_size, data_set_y_size, data_set_z_size;
@@ -495,14 +498,14 @@ public:
 	// (x,y,z) will be found to be within the bounds of a 3D voxel cell.
 	glm::ivec3 hcp_voxel_cell_coord_from_cartesian(float x, float y, float z) {
 		float voxel_radius = voxel_size;
-		float voxel_height = voxel_radius * (sqrt(1.5f) + sqrt(6) / 3);
+		float voxel_height = voxel_radius * (sqrt(1.5f) + sqrt(6.0f) / 3.0f);
 		float grid_x, grid_y;
 
 		float grid_z = z - matrix_origin.z;
 
 		int level;
 
-		if(grid_z < -sqrt(6)/3)
+		if(grid_z < -sqrt(6.0f)/3.0f)
 			level = (int)((grid_z- voxel_height) / voxel_height);
 		else
 			level = (int)(grid_z / voxel_height);
@@ -596,13 +599,13 @@ public:
 		// and if it is below the plane (ie distance negative) it is in the voxel, otherwise
 		// it is in the neighbouring voxel of the upper level.
 
-		float m0 = -1 / sqrt(3);//slope of line in xy plane from point point 6 to point 3
-		float m1 =  1 / sqrt(3);//slope of line in xy plane from point point 5 to point 2
+		float m0 = -1 / sqrt(3.0f);//slope of line in xy plane from point point 6 to point 3
+		float m1 =  1 / sqrt(3.0f);//slope of line in xy plane from point point 5 to point 2
 
 		glm::vec3 pq_vector = { rel_x,rel_y,rel_z - sqrt(1.5f) }; //distance vector from rel_z to top voxel vertex point.
 
 		if (rel_x >= 0 && rel_y > m0 * rel_x) {// region 0 
-			glm::vec3 normal_vector = { 1.0f,1.0f / sqrt(3.0f),(2.0 * sqrt(6.0f)) / 3.0f };
+			glm::vec3 normal_vector = { 1.0f,1.0f / sqrt(3.0f),(2.0f * sqrt(6.0f)) / 3.0f };
 
 			if (distance_to_plane(normal_vector, pq_vector) < 0)
 				voxel_coord.z = level;
@@ -615,7 +618,7 @@ public:
 		}
 
 		if (rel_y <= m0*rel_x && rel_y < m1 * rel_x) {// region 1 
-			glm::vec3 normal_vector = { 0.0f,-1.0f / sqrt(3.0f),(2.0 * sqrt(6.0f)) / 3.0f };
+			glm::vec3 normal_vector = { 0.0f,-1.0f / sqrt(3.0f),(2.0f * sqrt(6.0f)) / 3.0f };
 
 			if (distance_to_plane(normal_vector, pq_vector) < 0)
 				voxel_coord.z = level;
@@ -717,8 +720,8 @@ public:
 		// and if it is below the plane (ie distance negative) it is in the voxel, otherwise
 		// it is in the neighbouring voxel of the upper level.
 
-		float m0 = -1 / sqrt(3);//slope of line in xy plane from point point 6 to point 3
-		float m1 =  1 / sqrt(3);//slope of line in xy plane from point point 5 to point 2
+		float m0 = -1 / sqrt(3.0f);//slope of line in xy plane from point point 6 to point 3
+		float m1 =  1 / sqrt(3.0f);//slope of line in xy plane from point point 5 to point 2
 
 		glm::vec3 pq_vector = { rel_x,rel_y,rel_z - sqrt(1.5f) }; //distance vector from rel_z to top voxel vertex point.
 
@@ -782,7 +785,7 @@ private:
 
 		if (voxel_matrix_data.size() > 0) { voxel_matrix_data.clear(); voxel_matrix_data.shrink_to_fit(); }
 
-		index_data_type voxel_matrix_data_size = calculate_voxel_matrix_data_size(xdim, ydim, zdim);
+		index_data_type voxel_matrix_data_size = calculate_voxel_matrix_data_size(index_data_type(xdim), index_data_type(ydim), index_data_type(zdim));
 
 		voxel_matrix_data = std::vector<voxel_data_type>(voxel_matrix_data_size, volume_data_storage);
 

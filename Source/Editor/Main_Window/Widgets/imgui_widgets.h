@@ -1,9 +1,14 @@
 #pragma once
 
-#include <Source/Graphics_Engine/Common/pch.h>
+//#include <Source/Graphics_Engine/Common/pch.h>
+
+#include <string>
 
 #include <Universal/ImGui/imgui.h>
 #include <Universal/ImGui/imgui_internal.h>
+
+#include "../../Common/imgui_custom.h"//*****
+#include <Universal/3rdparty/include/glm/glm.hpp> //******
 
 /*
 	Derivations of various commonly used Imgui Widgets set as a
@@ -24,7 +29,7 @@ enum class imgui_text_location_enum {left,right, above, below, center};
 	static void title(std::string text_string) {
 		float w = ImGui::GetWindowWidth();
 		ImGui::SetCursorPosX(w / 2.0f - 50.0f);
-		ImGui::SetWindowFontScale(1.1);
+		ImGui::SetWindowFontScale(1.1f);
 		ImGui::Text(text_string.c_str());
 	}
 
@@ -62,7 +67,7 @@ enum class imgui_text_location_enum {left,right, above, below, center};
 		ImGui::SetNextItemWidth(width);
 		ImGui::InputFloat(id_string.c_str(), &value);
 
-		float b_height = ImGui::GetTextLineHeight() / 2.0;
+		float b_height = ImGui::GetTextLineHeight() / 2.0f;
 
 		ImGui::SetCursorPosX(x_pos + width + 3);
 		ImGui::SetCursorPosY(y_pos - 3);
@@ -110,7 +115,7 @@ enum class imgui_text_location_enum {left,right, above, below, center};
 		ImGui::SetNextItemWidth(width);
 		ImGui::InputInt(id_string.c_str(), &value, 0);
 
-		float b_height = ImGui::GetTextLineHeight() / 2.0;
+		float b_height = ImGui::GetTextLineHeight() / 2.0f;
 
 		ImGui::SetCursorPosX(x_pos + width + 3);
 		ImGui::SetCursorPosY(y_pos - 3);

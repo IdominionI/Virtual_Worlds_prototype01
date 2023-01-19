@@ -26,7 +26,7 @@
 #define MAX_NUMBER_POINT_LIGHTS       10
 #define MAX_NUMBER_SPOT_LIGHTS        10
 
-#define SCENE_LIGHT_ERROR_NUMBER_PERMITTED_LIGHTS_EXCEEDED -1
+#define SCENE_LIGHT_ERROR_NUMBER_PERMITTED_LIGHTS_EXCEEDED 1
 #define SCENE_LIGHT_ERROR_NUMBER_LIGHT_CREATED             0
 
 enum class light_type_enum{none,directional, point, spotlight};
@@ -45,7 +45,7 @@ public:
     float diffuse;
     float specular;
 
-    light_basis_class() {}
+    //light_basis_class() {}
 
     virtual void update(int shader_program_id) {}
 
@@ -78,10 +78,10 @@ public:
 
 class point_light_class : public light_basis_class {
 public:
-    float constant;
-    float linear;
-    float quadratic;
-    float attenuation_factor;
+    float constant  = 0;
+    float linear    = 0;
+    float quadratic = 0;
+    float attenuation_factor = 0;
 
     point_light_class() {
        // light_type = light_type_enum::point;
@@ -108,14 +108,14 @@ public:
 
 class spot_light_class : public light_basis_class {
 public:
-    glm::vec3 direction;
+    glm::vec3 direction = {0.0,0.0,0.0};
 
-    float constant;
-    float linear;
-    float quadratic;
-    float cutOff;
-    float outerCutOff;
-    float attenuation_factor;
+    float constant = 0;
+    float linear = 0;
+    float quadratic = 0;
+    float cutOff = 0;
+    float outerCutOff = 0;
+    float attenuation_factor = 0;
 
     spot_light_class() {
         // light_type = light_type_enum::point;
@@ -152,8 +152,8 @@ public:
     std::vector<spot_light_class>        spot_lights;
 
     //*****
-    glm::vec3 mPosition;
-    glm::vec3 mColor;
+    glm::vec3 mPosition = { 0.0,0.0,0.0 };
+    glm::vec3 mColor    = { 1.0,1.0,1.0 };
 
     float mStrength;
     //****
@@ -250,9 +250,9 @@ public:
 
         //end Testing only
 
-        shader.set_i1(shader_program_id, directional_lights.size(), "number_directional_lights");
-        shader.set_i1(shader_program_id, point_lights.size(),       "number_point_lights");
-        shader.set_i1(shader_program_id, spot_lights.size(),        "number_spot_lights");
+        shader.set_i1(shader_program_id, GLint(directional_lights.size()), "number_directional_lights");
+        shader.set_i1(shader_program_id, GLint(point_lights.size()),       "number_point_lights");
+        shader.set_i1(shader_program_id, GLint(spot_lights.size()),        "number_spot_lights");
 
         for (int i = 0; i < directional_lights.size();i++) {
             directional_lights[i].update(shader_program_id,i);
@@ -343,8 +343,8 @@ private:
         return SCENE_LIGHT_ERROR_NUMBER_LIGHT_CREATED;
     }
 
-    int delete_directional_light(int light_id) {
-        for (int i = 0; i = directional_lights.size(); i++) {
+    bool delete_directional_light(int light_id) {
+        for (int i = 0; i < directional_lights.size(); i++) {
             if (directional_lights[i].light_id == light_id) {
                 directional_lights.erase(directional_lights.begin() + i);
                 return true;
@@ -353,8 +353,8 @@ private:
         return false;
     }
 
-    int delete_point_light(int light_id) {
-        for (int i = 0; i = point_lights.size(); i++) {
+    bool delete_point_light(int light_id) {
+        for (int i = 0; i < point_lights.size(); i++) {
             if (point_lights[i].light_id == light_id) {
                 point_lights.erase(point_lights.begin() + i);
                 return true;
@@ -363,8 +363,8 @@ private:
         return false;
     }
 
-    int delete_spot_light(int light_id) {
-        for (int i = 0; i = spot_lights.size(); i++) {
+    bool delete_spot_light(int light_id) {
+        for (int i = 0; i < spot_lights.size(); i++) {
             if (spot_lights[i].light_id == light_id) {
                 spot_lights.erase(spot_lights.begin() + i);
                 return true;

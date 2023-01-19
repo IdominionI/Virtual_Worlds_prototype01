@@ -15,6 +15,7 @@
 // Compilor has linking problems with using glm vec1, ivec1 and uvec1 datatypes
 // this not utilised or used !!!!
 enum application_default_shader_variable_type_enum {
+	none,
 	Bool,
 	Float1,Int1,UInt1,
 	Float2,Floatv2,Int2,Intv2,UInt2,UIntv2,

@@ -238,8 +238,6 @@ public:
 	}
 
 	void update_viewer_grid_uniform(int uniform_to_update_id) {
-		std::string grid_axis_name;
-		glm::vec4   grid_color;
 
 if(display_xy_plane == true)
 	printf("display_xy_plane == true\n");

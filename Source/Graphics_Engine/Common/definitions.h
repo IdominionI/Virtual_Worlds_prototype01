@@ -4,7 +4,7 @@
 	unversal defined paramter data that is to be used in multiple header files and/or classes
 */
 
-//#include <string>
+#include <string>
 
 typedef std::string  string_type;
 typedef unsigned int idu_type;

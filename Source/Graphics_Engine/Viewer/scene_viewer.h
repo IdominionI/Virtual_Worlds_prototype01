@@ -118,11 +118,13 @@ public:
 
     quat qRot = quat(1.f, 0.f, 0.f, 0.f);
 
-    void resize(int32_t width, int32_t height) {
-        size.x = width;
-        size.y = height;
+    //void resize(int32_t width, int32_t height) {
+    void resize(int width, int height) {
+        size.x = float(width);
+        size.y = float(height);
 
-       frame_buffer->create_buffers((int32_t)size.x, (int32_t)size.y);
+       //frame_buffer->create_buffers((int32_t)size.x, (int32_t)size.y);
+       frame_buffer->create_buffers(width, height);
     }
 
     void render() {
@@ -253,7 +255,7 @@ public:
         switch (button) {
             case GLFW_MOUSE_BUTTON_1: camera->move_forward(); break;
             case GLFW_MOUSE_BUTTON_2: camera->move_backward(); break;
-            case GLFW_MOUSE_BUTTON_3: glClearColor(.9, .5, .5, .5); break;
+            case GLFW_MOUSE_BUTTON_3: glClearColor(0.9f, 0.5f, 0.5f, 0.5f); break;
         }
     }
 

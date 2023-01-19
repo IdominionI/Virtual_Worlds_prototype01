@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "../hex_surface_parameters.h"
+
 /*
 	Structures and definitions that define the parameters
 	and variables used to generate a hexagonal 2d surface 
@@ -61,11 +63,12 @@ struct hex_surface_generator_parameters_struct_type {
 	float	 resolution_step = 0.01f;
 	//float	 generation_threshold = 0.1f;
 	float    e_time = 0.0f;// , c_time = 0.0f;
-	float    frame = 0.0f;
+	int    frame = 0;
+	//float    frame = 0.0f;
 
 	int      invocation = 256;// this value may need to be changed to a maximum value
 
-	int  	max_surface_value = 255, min_surface_value = 1; // *****
+	hex_surface_data_type max_surface_value = 255.0f, min_surface_value = 1.0f; // *****
 
 	std::vector<hex_surface_generator_parameter_variable_struct_type>      variables;
 	std::vector<hex_surface_generator_parameter_int_variable_struct_type>  int_variables;

@@ -69,6 +69,99 @@
     <ClCompile Include="Source\Graphics_Engine\Shader\shader_format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_parameters_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generation_selection_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Render\hex_surface_render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Hex_surface_object\hex_surface_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_variables_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_generation_selection_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_generator_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\cart_to_voxel_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Kernal\voxel_function_import_export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_shaders_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_shader_variables_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Voxel_hcp_object\voxel_hcp_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_rules_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Automata\automata_bye_import_export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Automata\voxel_automata_functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Render\voxel_hcp_render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\Main_Window\Widgets\scene_node_editor_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Render\voxel_hcp_render_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Universal\ImGui\imconfig.h">
@@ -242,19 +335,19 @@
     <ClInclude Include="Source\Editor\Common\imgui_custom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Editor\Common\imgui_custom_definitions.h">
+    <ClInclude Include="Source\Editor\Interface\imgui_custom_definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Editor\Common\IconsFontAwesome.h">
+    <ClInclude Include="Source\Editor\Interface\IconsFontAwesome.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Kernal\id_key_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_generator_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generator_variables_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_generator_variables_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Tools\dialogs.h">
@@ -287,13 +380,13 @@
     <ClInclude Include="Source\Editor\Main_Window\Widgets\log_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shaders_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_shaders_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\parameters_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_parameters_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\shader_variables_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_shader_variables_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Main_Window\Widgets\lighting_properties_widget.h">
@@ -317,10 +410,10 @@
     <ClInclude Include="Source\Graphics_Engine\Viewer\Bindings\user_interaction_event_binding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\automata_rules_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_rules_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\automata_byte_import_export.h">
@@ -392,22 +485,22 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generator_variables_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_variables_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\shader_variables_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\shaders_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\automata_rules_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h">
@@ -443,7 +536,7 @@
     <ClInclude Include="Universal\Framework\FWid_key_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\generation_selection_widget.h">
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_generation_selection_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_volume_object.h">
@@ -452,7 +545,7 @@
     <ClInclude Include="Source\Graphics_Engine\Scene\Scene_objects\bounding_area_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\generation_selection_widget.h">
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_generation_selection_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Main_Window\Panels\node_editor_panel.h">
@@ -543,6 +636,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Animation\scene_animation_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Main_Window\Widgets\parameters_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Interface\theme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics_Engine\OpenGL_window\GLFW_Window\callback_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Render\voxel_hcp_render_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,8 @@
 #include <Universal/3rdparty/include/glm/glm.hpp>
 
 #include "../../../Common/definitions.h"
+#include "../../../Kernal/id_key_manager.h"//*****
+#include "../../../Scene/scene_manager.h"//*****
 
 #include "../imnodes.h"
 
@@ -244,6 +246,11 @@ public:
     float node_width = 100.f;
     float node_height = 0.0f;
 
+    // ****** VW NEXT VERSION ******
+    ImVec2 node_graph_coordinate;
+
+    // ****************************
+
     //UI_Node_struct_type ui_node; // This does not work as the way ImNodes is implemented
                                    // it seems that creating a vector of classes to store
                                    // the node ui_node data crashes the program.
@@ -330,7 +337,7 @@ protected:
 
         pins.add_input_pin(pin);
 
-        int i = pins.input_pins.size() - 1;
+        int i = int(pins.input_pins.size()) - 1;
 //printf("node_basis_class :: define_node_input_value_of_type 0000 %i : % i\n",i, pins.input_pins.size());
         if (i > INVALID_ID) {
             inputs.push_back(pins.input_pins[i].pin_id);
@@ -363,7 +370,7 @@ protected:
 
         pins.add_output_pin(pin);
 
-        int i = pins.output_pins.size() - 1;
+        int i = int(pins.output_pins.size()) - 1;
 //printf("node_basis_class :: define_node_output_value_of_type 0000 %i : % i\n",i, pins.input_pins.size());
         if (i > INVALID_ID) {
             outputs.push_back(pins.output_pins[i].pin_id);
@@ -394,7 +401,7 @@ protected:
 
     void draw_node_header(std::string header_label) {
         ImNodes::BeginNodeTitleBar();
-        int title_width = ImGui::CalcTextSize(label.c_str()).x;
+        float title_width = ImGui::CalcTextSize(label.c_str()).x;
         ImGui::TextUnformatted(header_label.c_str());
         if (title_width > node_width) node_width = title_width;
         ImNodes::EndNodeTitleBar();
@@ -402,7 +409,7 @@ protected:
 
     void draw_node_header() {
         ImNodes::BeginNodeTitleBar();
-        int title_width = ImGui::CalcTextSize(label.c_str()).x;
+        float title_width = ImGui::CalcTextSize(label.c_str()).x;
         ImGui::TextUnformatted(label.c_str());
         if (title_width > node_width) node_width = title_width;
         ImNodes::EndNodeTitleBar();

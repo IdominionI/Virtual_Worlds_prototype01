@@ -6,7 +6,7 @@
 	import - export requirements
 */
 
-//#define endl "\n"
+#define endl "\n"
 //#define ENDL "\n"
 
 #define SCENE_BLOCK_START "|-"

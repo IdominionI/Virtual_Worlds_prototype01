@@ -120,7 +120,7 @@ public:
 
 	// ++++++++++++++++++++++++ Voxel generation data ++++++++++++++++++++++++++++++++++++++
 	//								Assign Data values
-	bool define_hcp_parameter_values(object_id_type object_id, voxel_generator_parameters_struct_type data) {
+	bool define_hcp_parameter_values(object_id_type object_id, hex_surface_generator_parameters_struct_type data) {
 		int object_index = get_object_index(object_id);
 		if (object_index < 0) return false;
 
@@ -129,17 +129,17 @@ public:
 		hex_surface_object_class* hex_surface_object = at(object_index);
 
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.expression_file_pathname = data.expression_file_pathname;
-		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name = data.expression_file_name;
+		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name     = data.expression_file_name;
 
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.x_start = data.x_start;
-		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.x_end = data.x_end;
+		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.x_end   = data.x_end;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.y_start = data.y_start;
-		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.y_end = data.y_end;
+		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.y_end   = data.y_end;
 
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.invocation = data.invocation;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value = data.min_surface_value;
 		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value = data.max_surface_value;
-		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.resolution_step = data.resolution_step;
+		hex_surface_object->hex_surface_object_data.hex_surface_generator_parameters.resolution_step   = data.resolution_step;
 
 		return true;
 	}

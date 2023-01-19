@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Source/Graphics_Engine/Compute/compute_shader.h>
-#include <Source/Graphics_Engine/Compute/import_compute_expression_code.h>
+//#include <Source/Graphics_Engine/Compute/import_compute_expression_code.h>
 
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 
@@ -32,6 +32,12 @@ public:
 	hex_surface_object_class *cloud = NULL; // pointer to the hex suface class in the virtual worlds scene data model
 	log_panel_class          *log_panel = NULL;
 
+	bool generate_hex_surface_function();
+	bool update_hex_surface_generation();
+	void create_compute_shader_source_code();
+	bool hex_surface_generation_execute(hex_surface_data_type* buffer, int size, int local_x_group_work_size);
+	bool create_hex_surface_matrix(hex_surface_object_class* cloud, hex_surface_generator_parameters_struct_type  hex_surface_generator_parameters);
+/*
 	bool generate_hex_surface_function() {
 		if (cloud == NULL) return false;
 
@@ -91,7 +97,7 @@ public:
 		hex_surface_data_type* buffer = cloud->hex_surface_object_data.hex_surface_matrix_data.data();
 
 		hex_surface_generation_execute(buffer, size, hex_surface_generator_parameters.invocation);
-
+*/
 		// Following code block is for testing only
 		/*int i = 110;
 		if (log_panel != NULL) {
@@ -122,7 +128,7 @@ public:
 				out << "test_compute01  :: i " + std::to_string(i) + "  x: " + std::to_string(cart_coord.x()) + "  y: " + std::to_string(cart_coord.y()) + "  z: " + std::to_string(cart_coord.z()) + " val: " + std::to_string(cloud->hex_surface_object_data.voxel_matrix_data[i]) + '\n';
 			}
 		}*/
-
+/*
 		return true;// testing
 	}
 
@@ -233,9 +239,9 @@ public:
 		shader.set_vec2(progHandle, cloud->hex_surface_object_data.grid_origin, "origin"); // this works
 		shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.x, "matrix_dimension_x"); // this works
 		shader.set_i1(progHandle, cloud->hex_surface_object_data.grid_dimension.y, "matrix_dimension_y"); // this works
-		shader.set_i1(progHandle, MIN_VOXEL_VALUE, "min_hex_value"); // this works
-		shader.set_i1(progHandle, MAX_VOXEL_VALUE, "max_hex_value"); // this works
-		shader.set_i1(progHandle, INVALID_VOXEL_VALUE, "invalid_hex_value"); // this works
+		shader.set_i1(progHandle, MIN_HEX_SURF_VALUE, "min_hex_value"); // this works
+		shader.set_i1(progHandle, MAX_HEX_SURF_VALUE, "max_hex_value"); // this works
+		shader.set_i1(progHandle, INVALID_HEX_SURF_VALUE, "invalid_hex_value"); // this works
 
 		// +++++++++++ User dynamicly defined uniforms ++++++++++++++
 		for (hex_surface_generator_parameter_variable_struct_type variable : hex_surface_generator_parameters.variables) {
@@ -302,7 +308,7 @@ public:
 		else
 			return false;
 	}
-
+*/
 private:
 	shader_class shader;
 
@@ -313,6 +319,15 @@ private:
 	std::string version_s, work_group_invocations_s, reserved_uniforms_s, functions_s, main_s, output_s;
 	std::string user_uniforms_s, user_functions_s, user_main_s;
 
+	void define_compute_version();
+	void define_work_group_invocations(int invocations);
+	void define_reserved_uniforms();
+	void define_user_uniforms();
+	void define_function_s();
+	void define_main();
+	void define_ouput();
+
+/*
 	void define_compute_version() {
 		if (ogl_version == compute_ogl_version_enum::v45)
 			version_s = "#version 450\n";
@@ -442,6 +457,6 @@ private:
 		output_s = "    buffer_out[matrix_index] = output_result; // output the voxel volume result\n";
 		output_s += "}\n";
 	}
-
+*/
 
 };

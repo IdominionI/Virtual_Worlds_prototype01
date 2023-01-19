@@ -1,7 +1,7 @@
 #pragma once
 
-#include "imgui_custom_definitions.h"
-#include "IconsFontAwesome.h"
+//#include "imgui_custom_definitions.h"
+//#include "IconsFontAwesome.h"
 
 /*
     structure of input filters to define ASCII characters that can be entered by the user using an ImGui text entry widget
@@ -34,7 +34,7 @@ struct Input_Filters
 /*
     function to customise the apperance of the ImGui interface
 */
-
+/*
 void tron_style() {
       ImGuiStyle  &style = ImGui::GetStyle();
       style.WindowPadding                     = ImVec2(8.00f, 8.00f);
@@ -119,7 +119,7 @@ void tron_style() {
       colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(1.00f, 0.00f, 0.00f, 0.35f);
 
 }
-
+*/
 /*
       float       Alpha;                      // Global alpha applies to everything in Dear ImGui.
       float       DisabledAlpha;              // Additional alpha multiplier applied by BeginDisabled(). Multiply over current value of Alpha.

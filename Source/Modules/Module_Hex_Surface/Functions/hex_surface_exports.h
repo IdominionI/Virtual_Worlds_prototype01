@@ -34,7 +34,7 @@ public:
 
 	log_panel_class	*log_panel = NULL;
 
-	#define endl "\n"
+	//#define endl "\n"
 
 	int open_file_stream(std::string filename) {
 		filename_to_write = filename;
@@ -358,7 +358,7 @@ private:
 	}
 
 	bool export_hex_face_data_ply_format(hex_surface_object_data_class &hex_surface_object_data) {
-		index_data_type first_hex_surface_export_index, last_hex_surface_export_index;
+		//index_data_type first_hex_surface_export_index, last_hex_surface_export_index;
 
 		size_t number_vertices_to_export = hex_surface_object_data.hex_surface_matrix_data.size();
 		size_t number_faces_to_export = get_number_hex_surface_faces_to_export(hex_surface_object_data);
@@ -412,7 +412,7 @@ private:
 		glm::ivec3 hex_coordinate;
 		glm::vec3  hex_cartesian_coordinate;
 
-		for (size_t hex_index = 0; hex_index < number_vertices_to_export; hex_index++) {
+		for (int hex_index = 0; hex_index < number_vertices_to_export; hex_index++) {
 			hex_surface_value = hex_surface_object_data.extract_hex_surface_data_element_value(hex_surface_data_storage_type_enum::value, hex_index);
 
 			hex_coordinate           = hex_surface_object_data.get_matrix_coordinate(hex_index);

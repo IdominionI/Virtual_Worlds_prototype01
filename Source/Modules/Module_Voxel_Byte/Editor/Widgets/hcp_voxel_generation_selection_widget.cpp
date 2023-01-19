@@ -1,4 +1,4 @@
-#pragma once
+#include "hcp_voxel_generation_selection_widget.h"
 
 #include <Universal/ImGui/imgui.h>
 
@@ -10,29 +10,11 @@
 #include "../../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
-#include "generator_widget.h" // *****
 
-#include "generator_variables_widget.h"
+#include "hcp_voxel_generator_variables_widget.h"
 #include "../../Compute/voxel_compute_generation.h"
 
-#include "cart_to_voxel_generator.h"
-
-class hcp_voxel_genertion_selection_widget_class {
-public:
-	//hcp_voxel_genertion_selection_widget_class() {
-	//}
-
-	//~hcp_voxel_genertion_selection_widget_class() {}
-
-	log_panel_class* log_panel = NULL;
-
-	id_type                  current_selected_entity_id   = -1;  // entity id of the selected entity to display/modify
-	voxel_hcp_object_class  *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-	scene_manager_class     *scene_manager = NULL;
-
-	bool display_as_points = true;
-
-	void display() {
+	void hcp_voxel_genertion_selection_widget_class::display() {
 		if (voxel_hcp_object_to_execute == NULL) {
 			return;
 		}
@@ -81,7 +63,7 @@ public:
 
 	}
 
-	void change_voxels_display() {
+	void hcp_voxel_genertion_selection_widget_class::change_voxels_display() {
 			scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 			if (scene_voxel_object != NULL && scene_manager != NULL) {
@@ -94,7 +76,7 @@ public:
 			}
 	}
 
-	void update_voxel_size() {
+	void hcp_voxel_genertion_selection_widget_class::update_voxel_size() {
 		scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		if (scene_voxel_object != NULL) {
@@ -106,22 +88,15 @@ public:
 
 			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "voxSize");
 
-			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
+			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0f * sqrt(6.0f) / 3.0f;
 
 			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_z_increment, "voxel_hcp_z_increment");
 		}
 	}
 
-private:
-	int hcp_generation_type = 0;
+//-------------------------------------
 
-	float voxel_scale_value = 1.0f;
-	float min_vscale = 0.001f, max_vscale = 1.000f;
-
-	cart_to_voxel_widget_class		  cart_to_voxel_widget;
-	voxel_hcp_generation_widget_class voxel_hcp_generation_widget;
-
-	void display_cart_to_voxel_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
+	void hcp_voxel_genertion_selection_widget_class::display_cart_to_voxel_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
 		cart_to_voxel_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
 
 		if (cart_to_voxel_widget.voxel_hcp_object_to_execute == NULL) {
@@ -136,7 +111,7 @@ private:
 		cart_to_voxel_widget.display();
 	}
 
-	void display_voxel_generation_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
+	void hcp_voxel_genertion_selection_widget_class::display_voxel_generation_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute, id_type current_selected_object_id) {
 		voxel_hcp_generation_widget.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
 
 		if (voxel_hcp_generation_widget.voxel_hcp_object_to_execute == NULL) {
@@ -150,5 +125,3 @@ private:
 //printf("parameter_panel_class :: display_voxel_hcp_generation_widget22\n");
 		voxel_hcp_generation_widget.display();
 	}
-
-};

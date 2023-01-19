@@ -59,7 +59,8 @@ struct voxel_generator_parameters_struct_type {
 	float	 resolution_step      = 1.0f;
 	float	 generation_threshold = 0.1f;
 	float    e_time = 0.0f;// , c_time = 0.0f;
-	float    frame  = 0.0f;
+	int    frame  = 0;
+	//float    frame  = 0.0f;
 
 	int   invocation = 256;// this value may need to be changed to a maximum value
 

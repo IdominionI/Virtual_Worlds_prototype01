@@ -1,8 +1,11 @@
 #pragma once
-//#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
+#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
 #include <Source/Editor/Node_editor/ImNodes/Kernal/graph.h>
+#include <Source/Editor/Scene/scene_manager.h>
+#include <Source/Editor/Interface/IconsFontAwesome.h>
 
 #include "../hcp_voxel_node_definitions.h"
+#include "../../Render/voxel_hcp_render.h"
 
 class hcp_voxel_translation_node_class : public node_basis_class {
 public:
@@ -98,7 +101,7 @@ public:
         ImGui::SameLine(); w_id = w_id_prefix + "2"; ImGui::SetNextItemWidth(75); ImGui::InputFloat(w_id.c_str(), &translation_step[0]);
         // ************************** Added increment/decrement buttons ********************************
         float t_height = ImGui::GetTextLineHeight();
-        float b_height = ImGui::GetTextLineHeight() / 2.0;
+        float b_height = ImGui::GetTextLineHeight() / 2.0f;
         float xpos = ImGui::GetCursorPosX(); float ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "5"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -122,7 +125,7 @@ public:
 
         // ************************** Added increment/decrement buttons ********************************
         t_height = ImGui::GetTextLineHeight();
-        b_height = ImGui::GetTextLineHeight() / 2.0;
+        b_height = ImGui::GetTextLineHeight() / 2.0f;
         xpos = ImGui::GetCursorPosX(); ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "7"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -151,7 +154,7 @@ public:
         ImGui::SameLine(); w_id = w_id_prefix + "2"; ImGui::SetNextItemWidth(75); ImGui::InputFloat(w_id.c_str(), &translation_step[1]);
         // ************************** Added increment/decrement buttons ********************************
         t_height = ImGui::GetTextLineHeight();
-        b_height = ImGui::GetTextLineHeight() / 2.0;
+        b_height = ImGui::GetTextLineHeight() / 2.0f;
         xpos = ImGui::GetCursorPosX(); ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "5"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -175,7 +178,7 @@ public:
 
         // ************************** Added increment/decrement buttons ********************************
         t_height = ImGui::GetTextLineHeight();
-        b_height = ImGui::GetTextLineHeight() / 2.0;
+        b_height = ImGui::GetTextLineHeight() / 2.0f;
         xpos = ImGui::GetCursorPosX(); ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "7"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -202,7 +205,7 @@ public:
         ImGui::SameLine(); w_id = w_id_prefix + "2"; ImGui::SetNextItemWidth(75); ImGui::InputFloat(w_id.c_str(), &translation_step[2]);
         // ************************** Added increment/decrement buttons ********************************
         t_height = ImGui::GetTextLineHeight();
-        b_height = ImGui::GetTextLineHeight() / 2.0;
+        b_height = ImGui::GetTextLineHeight() / 2.0f;
         xpos = ImGui::GetCursorPosX(); ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "5"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);
@@ -226,7 +229,7 @@ public:
 
         // ************************** Added increment/decrement buttons ********************************
         t_height = ImGui::GetTextLineHeight();
-        b_height = ImGui::GetTextLineHeight() / 2.0;
+        b_height = ImGui::GetTextLineHeight() / 2.0f;
         xpos = ImGui::GetCursorPosX(); ypos = ImGui::GetCursorPosY();// These x,y positions seem to be strangely aligned with the diplayed widgets
 
         ImGui::SameLine(); w_id = w_id_prefix + "7"; ImGui::SetNextItemWidth(15);// ImGui::SetCursorPosY(-3);

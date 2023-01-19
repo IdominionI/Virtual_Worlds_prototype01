@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 
-#include "../hex_surface_data_storage.h"
+//#include "../hex_surface_data_storage.h"
+
+#include "../hex_surface_parameters.h"
 
 /*
 	Structures and definitions that define the parameters

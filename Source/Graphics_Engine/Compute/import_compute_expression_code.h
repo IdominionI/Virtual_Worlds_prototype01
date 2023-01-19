@@ -82,7 +82,7 @@ public:
 
 	bool define_compute_expression() {
 //QMessageBox::information(0, "Function Expression test", "Test 01\n"+ filename_to_read +'\n'+ expression_string, QMessageBox::Ok);
-		int line;
+		//int line;
 
 		if (!define_function_block_code()) return false; // Get user defined glsl function code
 //printf(" Import of the compute file defined_function_block_code %s \n" , function_code.c_str());
@@ -130,7 +130,7 @@ public:
 		numchar = FW::stringtools::indexOf(expression_string, END_COMPUTE_FUNCTION_BLOCK_FLAG, 0);
 //printf("import_compute_expression_class :: import_function_block 000\n %s: %i \n", expression_string.c_str(), numchar);
 		function_code = expression_string.substr(0,numchar);
-		numchar = (FW::stringtools::indexOf(function_code,START_COMPUTE_FUNCTION_BLOCK_FLAG, 0) + start_block_string.length());
+		numchar = (FW::stringtools::indexOf(function_code,START_COMPUTE_FUNCTION_BLOCK_FLAG, 0) + int(start_block_string.length()));
 //printf("import_compute_expression_class :: import_function_block 111 %s: %i %i %i\n",function_code.c_str(), function_code.length(), FW::stringtools::indexOf(function_code, START_COMPUTE_FUNCTION_BLOCK_FLAG, 0), start_block_string.length());
 		function_code = function_code.substr(numchar, function_code.length());
 //printf("import_compute_expression_class :: import_function_block 222: %s\n",function_code.c_str());
@@ -174,7 +174,7 @@ public:
 		expression_code = expression_string.substr(0, numchar);
 //printf("import_compute_expression_class :: import_function_block 111 %s: %i %i %i\n", expression_code.c_str(), expression_code.length(), FW::stringtools::indexOf(expression_code, START_COMPUTE_FUNCTION_BLOCK_FLAG, 0), start_block_string.length());
 
-		numchar = (FW::stringtools::indexOf(expression_string, START_COMPUTE_EXPRESSION_BLOCK_FLAG, 0) + start_block_string.length());
+		numchar = (FW::stringtools::indexOf(expression_string, START_COMPUTE_EXPRESSION_BLOCK_FLAG, 0) + int(start_block_string.length()));
 		expression_code = expression_code.substr(numchar, expression_code.length());
 //printf("import_compute_expression_class :: import_function_block 222: %s\n", expression_code.c_str());
 	}

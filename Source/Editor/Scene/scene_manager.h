@@ -2,11 +2,6 @@
 
 #include <Source/Graphics_Engine/Scene/scene_graph_manager.h>
 
-
-// ++++++ DEFINE MODULE RENDER INCLUDE CLASSES HERE ++++++
-#include <Source/Modules/Module_Voxel_Byte/Render/voxel_hcp_render.h>
-#include <Source/Modules/Module_Hex_Surface/Render/hex_surface_render.h>
-
 // -------------------------------------------------------
 #include "scene_render_object_manager.h" // *****
 #include "scene_entities_db_manager.h"
@@ -79,11 +74,6 @@ public:
 
 		return true;
 	}
-
-	// Test adding an entity to the scene graph : delete/modify when testing complete
-	//bool add_entity(idu_type entity_id) {
-	//	return scene_graph_manager.add_scene_entity_render_object(entity_id);
-	//}
 
 	bool delete_entity(id_type entity_id, id_type entity_category_id) {
 //printf("Scene Manager : 00000 %i :\n", entity_id);//message to log

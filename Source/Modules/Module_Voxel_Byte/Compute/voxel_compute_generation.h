@@ -26,6 +26,8 @@
 	compilation
 */
 
+//class voxel_hcp_object_class;
+
 class voxel_compute_generator_class : public compute_shader_class {
 public:
 	voxel_hcp_object_class *cloud     = NULL;// pointer to the hcp voxel class in the virtual worlds scene data model
@@ -81,7 +83,7 @@ public:
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
 		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-		int size = cloud->voxel_object_data.voxel_matrix_data.size();
+		int size = int(cloud->voxel_object_data.voxel_matrix_data.size());
 //for(int i = 0; i< size;i++){
 //	printf("generate_voxel_function 0000 : %i \n", cloud->voxel_object_data.voxel_matrix_data[i]);
 //}
@@ -135,7 +137,7 @@ if (log_widget != NULL) {
 
 		// It seems that for the compute shader to function and work referencing the voxel data, need to create a pointer to the QVector data 
 		// as there is a problem using the QVector data() function within the opengl glBufferData and glGetBufferSubData functions
-		int              size = cloud->voxel_object_data.voxel_matrix_data.size();
+		int              size = int(cloud->voxel_object_data.voxel_matrix_data.size());
 		voxel_data_type* buffer = cloud->voxel_object_data.voxel_matrix_data.data();
 
 		return voxel_generation_execute(buffer, size, voxel_generator_parameters.invocation);
@@ -188,10 +190,10 @@ if (log_widget != NULL) {
 
 		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_size, "voxel_size"); // this works unsigned int shader_program_id, float v, const std::string& name
 		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.generation_threshold, "threshold"); // this works
-		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.min_surface_value, "min_surface_value"); // this works
-		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.max_surface_value, "max_surface_value"); // this works
+		shader.set_i1(progHandle, GLint(cloud->voxel_object_data.voxel_generator_parameters.min_surface_value), "min_surface_value"); // this works
+		shader.set_i1(progHandle, GLint(cloud->voxel_object_data.voxel_generator_parameters.max_surface_value), "max_surface_value"); // this works
 		shader.set_f1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.e_time, "e_time"); // this works
-		shader.set_i1(progHandle, cloud->voxel_object_data.voxel_generator_parameters.frame, "frame"); // this works
+		shader.set_i1(progHandle, GLint(cloud->voxel_object_data.voxel_generator_parameters.frame), "frame"); // this works
 
 		shader.set_vec3(progHandle, cloud->voxel_object_data.matrix_origin, "origin"); // this works
 		shader.set_i1(progHandle, cloud->voxel_object_data.matrix_dimension.x, "matrix_dimension_x"); // this works
@@ -235,10 +237,10 @@ if (log_widget != NULL) {
 		float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
 		float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
 		float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
-		float z_mult = 2.0 * sqrt(6.0) / 3.0;
+		float z_mult = 2.0f * sqrt(6.0f) / 3.0f;
 
-		float x_res_step = voxel_generator_parameters.resolution_step * 2.0;
-		float y_res_step = voxel_generator_parameters.resolution_step * (3.0 / sqrt(3.0));
+		float x_res_step = voxel_generator_parameters.resolution_step * 2.0f;
+		float y_res_step = voxel_generator_parameters.resolution_step * (3.0f / sqrt(3.0f));
 		float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
 
 		int data_set_x_size, data_set_y_size, data_set_z_size;

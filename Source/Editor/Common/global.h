@@ -2,9 +2,6 @@
 
 #include <Source/Graphics_Engine/Common/definitions.h>
 
-//#include "../Scene/scene_manager.h"
-//#include "../Main_Window/Panels/log_panel.h"
-
 #include "../Kernal/id_key_manager.h"
 
 // Singleton class to store global variables and functions
@@ -29,14 +26,13 @@ public:
 	static id_type get_current_selected_entity_type_id() { return get().current_selected_entity_type_id; }
 	static void    set_current_selected_entity_type_id(id_type n) { get().current_selected_entity_type_id = n; }
 
-	//static scene_manager_class *get_scene_manager() { return get().scene_manager; }
-	//static void set_scene_manager(scene_manager_class *sceen_manager_) { get().scene_manager = sceen_manager_; }
+	// The get and set outliner selection global variables are so as to set the above gloabal entity and entity type
+	// variables correctly between the outliner and node editor selection of scene entities. Without this the user
+	// would need to deselect the node in the node editor before selecting an entity in the outliner widget, otherwise
+	// no entity other than the selected node entity will be designated as the current selected entity. 
+	static bool get_outliner_selection() { return get().outliner_selection; }
+	static void set_outliner_selection(bool n) { get().outliner_selection = n; }
 
-	//static log_panel_class *get_log_panel() { return get().log_panel; }
-	//static void set_scene_manager(log_panel_class *log_panel_) { get().log_panel = log_panel_; }
-
-	//static node_basis_class *get_selected_node() { return get().selected_node; }
-	//static void set_selected_node(node_basis_class *selected_node_) { get().selected_node = selected_node_; }
 
 	static idu_type get_available_entity_id() { return get().entity_id_key.get_available_id_key(); }
 	static void     assign_free_entity_id(idu_type entity_id) { get().entity_id_key.assign_free_id_key(entity_id); };
@@ -47,6 +43,8 @@ private:
 
 	id_type current_selected_entity_id      = -1;
 	id_type current_selected_entity_type_id = -1;
+
+	bool outliner_selection = false;
 
 	// Not sure the following pointers is best here
 	// to be reviewed and decided :: 

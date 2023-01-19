@@ -679,7 +679,7 @@ private:
 	}
 
 	bool export_surface2_data_obj_format(voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data) {
-		index_data_type first_voxel_export_index, last_voxel_export_index;
+		//index_data_type first_voxel_export_index, last_voxel_export_index;
 
 		size_t number_vertices_to_export = voxel_surface_data.surface_vertices.size();
 		size_t number_vertex_normals_to_export = voxel_surface_data.surface_vertices_normals.size();
@@ -757,7 +757,7 @@ private:
 	}
 
 	bool export_surface_point_data_ply_format(voxel_object_data_class& voxel_object_data, voxel_surface_data_class& voxel_surface_data, bool export_colors, bool export_faces) {
-		index_data_type first_voxel_export_index, last_voxel_export_index;
+		//index_data_type first_voxel_export_index, last_voxel_export_index;
 
 		size_t number_vertices_to_export = voxel_surface_data.surface_vertices.size();
 		size_t number_vertex_normals_to_export = voxel_surface_data.surface_vertices_normals.size();
@@ -839,8 +839,8 @@ private:
 		index_data_type index;
 
 		bool                    surface_error = false;
-		glm::ivec3            voxel_coordinate;
-		glm::vec3               voxel_cartesian_coordinate;
+		//glm::ivec3            voxel_coordinate;
+		//glm::vec3               voxel_cartesian_coordinate;
 
 		std::vector<surface_faces_struct_type> surface_faces = surface_data.surface_faces;
 		index_data_type vertex1_id, vertex2_id, vertex3_id;
@@ -924,7 +924,7 @@ private:
 	}
 
 	bool export_face_data_ply_format(voxel_object_data_class& voxel_object_data, voxel_surface_face_class& voxel_face_data) {
-		index_data_type first_voxel_export_index, last_voxel_export_index;
+		//index_data_type first_voxel_export_index, last_voxel_export_index;
 
 		size_t number_vertices_to_export = voxel_face_data.vertices.size();
 		size_t number_vertex_normals_to_export = voxel_face_data.normals.size();

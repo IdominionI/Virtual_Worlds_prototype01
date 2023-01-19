@@ -9,6 +9,8 @@
 	that all entity objects must have and thus inherit
 */
 
+class scene_manager_class; // Critical to include this forward declaration. 
+						   //Cannot find circular declarations that cause error C2061
 
 class object_basis_class {
 public:
@@ -25,16 +27,21 @@ public:
 
 	virtual void clear_shader_variables() {}
 
-	object_basis_class() {
-	}
+	//******
+	//virtual void display_parameters(scene_manager_class *scene_manager = NULL, log_panel_class *log_panel = NULL, id_type current_selected_object_id = -1) { }
+	//******
 
-	~object_basis_class() {
-	}
+	//object_basis_class() {
+	//}
+
+	//~object_basis_class() {
+	//}
 
 private:
 
 };
 
+#include "../Main_Window/Panels/log_panel.h" //*****
 
 class object_import_export_basis_class {
 public:

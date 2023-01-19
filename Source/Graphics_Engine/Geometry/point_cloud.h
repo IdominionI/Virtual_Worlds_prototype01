@@ -347,7 +347,7 @@ public:
     }
 
     void render() {
-        vertex_buffer->draw_points(number_vertices);
+        vertex_buffer->draw_points(int(number_vertices));
     }
 
     std::vector<point_data_value_class> vertices;

@@ -1,38 +1,11 @@
-#pragma once
+#include "hex_generation_selection_widget.h"
 
 #include <Universal/ImGui/imgui.h>
 
 #include <Source/Editor/Common/definitions.h>
 #include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
-#include <Source/Editor/Tools/dialogs.h>
-#include <Source/Editor/Main_Window/Panels/log_panel.h>
 
-#include "../../hex_surface_object/DataTypes/dt_hex_surface_generator.h"
-#include "../../Kernal/hex_surface_function_import_export.h"
-
-#include "generator_widget.h" // *****
-
-#include "generator_variables_widget.h"
-#include "../../Compute/hex_surface_compute_generation.h"
-
-#include "cart_to_hex_generator.h"
-
-class hex_surface_genertion_selection_widget_class {
-public:
-	hex_surface_genertion_selection_widget_class() {
-	}
-
-	~hex_surface_genertion_selection_widget_class() {}
-
-	log_panel_class* log_panel = NULL;
-
-	id_type                    current_selected_entity_id   = -1;  // entity id of the selected entity to display/modify
-	hex_surface_object_class  *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-	scene_manager_class       *scene_manager = NULL;
-
-	bool display_as_points = true;
-
-	void display() {
+	void hex_surface_generation_selection_widget_class::display() {
 		if (hex_surface_object_to_execute == NULL) {
 			return;
 		}
@@ -71,7 +44,7 @@ public:
 		y_pos += 20;
 
 		if (float_min_max_slider("v", x_pos, y_pos, 200.0f, min_vscale, max_vscale, hex_scale_value, 50.0f)) {
-			hex_surface_generation_widget.hex_scale_value = hex_scale_value;
+			//hex_surface_generation_widget.hex_scale_value = hex_scale_value;
 			update_hex_size();// needs testing 
 		}
 
@@ -82,7 +55,7 @@ public:
 
 	}
 
-	void change_hex_display() {
+	void hex_surface_generation_selection_widget_class::change_hex_display() {
 		scene_node_class <render_object_class>* scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		if (scene_hex_surface_object != NULL && scene_manager != NULL) {
@@ -95,9 +68,11 @@ public:
 
 			update_hex_size();// *****
 		}
+
 	}
 
-	void update_hex_size() {
+
+	void hex_surface_generation_selection_widget_class::update_hex_size() {
 		scene_node_class <render_object_class>* scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
 
 		// This method of using a unversal array of unform variables that can be used between classes or modules or funtions etc has been found to be no
@@ -128,16 +103,9 @@ printf("update_hex_size : created hexSize %i : %f : %f\n", hex_size_index, vox_s
 		}
 	}
 
-private:
-	int hcp_generation_type = 0;
+//------------------------------------------------
 
-	float hex_scale_value = 1.0f;
-	float min_vscale = 0.001f, max_vscale = 1.000f;
-
-	cart_to_hex_widget_class            cart_to_hex_widget;
-	hex_surface_generation_widget_class hex_surface_generation_widget;
-
-	void display_cart_to_hex_widget(hex_surface_object_class *hex_surface_object_to_execute, id_type current_selected_object_id) {
+	void hex_surface_generation_selection_widget_class::display_cart_to_hex_widget(hex_surface_object_class *hex_surface_object_to_execute, id_type current_selected_object_id) {
 		cart_to_hex_widget.hex_surface_object_to_execute = hex_surface_object_to_execute;
 
 		if (cart_to_hex_widget.hex_surface_object_to_execute == NULL) {
@@ -150,9 +118,10 @@ private:
 		cart_to_hex_widget.current_selected_entity_id = current_selected_object_id;
 //printf("parameter_panel_class :: display_voxel_hcp_generation_widget22\n");
 		cart_to_hex_widget.display();
+
 	}
 
-	void display_hex_surface_generation_widget(hex_surface_object_class *hex_surface_object_to_execute, id_type current_selected_object_id) {
+	void hex_surface_generation_selection_widget_class::display_hex_surface_generation_widget(hex_surface_object_class *hex_surface_object_to_execute, id_type current_selected_object_id) {
 
 		hex_surface_generation_widget.hex_surface_object_to_execute = hex_surface_object_to_execute;
 
@@ -166,6 +135,5 @@ private:
 		hex_surface_generation_widget.current_selected_entity_id = current_selected_object_id;
 
 		hex_surface_generation_widget.display();
-	}
 
-};
+	}

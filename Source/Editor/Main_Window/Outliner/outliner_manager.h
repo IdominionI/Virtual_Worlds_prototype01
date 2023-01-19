@@ -141,6 +141,7 @@ public:
 
 				if (ImGui::IsItemClicked() || ImGui::IsItemHovered()){
 					globalc::set_current_selected_entity_id(group->entity_id);
+					globalc::set_outliner_selection(true);// *****
 					if (ImGui::IsItemClicked()) {
 						current_selected_entity_id  = INVALID_ID;
 						globalc::set_current_selected_entity_type_id(INVALID_ID);
@@ -229,9 +230,11 @@ public:
 						if (ImGui::IsItemClicked() || ImGui::IsItemHovered()){
 							//*current_selected_node_id = entity->entity_id;
 							globalc::set_current_selected_entity_id(entity->entity_id);
+							globalc::set_outliner_selection(true);// *****
 							if (ImGui::IsItemClicked()) {
 								current_selected_entity_id      = entity->entity_id;
 								globalc::set_current_selected_entity_type_id(entity->category_id);
+
 								//*current_selected_entity_type_id = entity->category_id;
 							}
 //printf("display_nodes :: entity selected: %i  \n", current_selected_node_id); //this is the group
@@ -367,9 +370,9 @@ public:
 	void clear_scene() {
 //printf("outliner_manager_class :: clear_scene 00  \n");
 
-		int number_groups = root_node->children.size();
+		size_t number_groups = root_node->children.size();
 
-		for (int i = number_groups - 1; i > -1; i--) {
+		for (int i = int(number_groups) - 1; i > -1; i--) {
 			delete_group(root_node->children[i]);
 		}
 
@@ -393,7 +396,7 @@ public:
 	outliner_node_class *get_outliner_group_node(id_type group_id) {
 		outliner_node_class *group_node = NULL;
 
-		for (int i = 0; i < root_node->children.size(); i++) {
+		for (size_t i = 0; i < root_node->children.size(); i++) {
 			group_node = root_node->children[i];
 //printf("get_outliner_group_node 000 %i %i \n", group_node->entity_id, group_id);
 
@@ -437,11 +440,11 @@ public:
 			return;
 		}
 
-		int number_children = group_to_delete->children.size();
+		size_t number_children = group_to_delete->children.size();
 
 //printf("outliner_manager_class 44 :: Delete Group MenuItem selected#### %i %i \n", group_to_delete->entity_id,group_to_delete->children.size());
 
-		for (int i = number_children - 1; i > -1; i--) {
+		for (int i = int(number_children) - 1; i > -1; i--) {
 			scene_manager->delete_entity(group_to_delete->children[i]->entity_id, group_to_delete->children[i]->category_id);
 
 			//entity_id_key.assign_free_id_key(group_to_delete->children[i]->entity_id);// Free entity ID number to be reused when a new entity is created
@@ -881,7 +884,7 @@ private:
 		bool export_scene_data_to_file(outliner_node_class* scene, scene_manager_class* scene_manager) {
 
 			stream << SCENE_BLOCK_START << endl;
-			index_type number_object_groups = scene->children.size();
+			size_t number_object_groups = scene->children.size();
 
 			for (index_type i = 0; i < number_object_groups; i++) {
 				outliner_node_class *object_group = scene->children[i];

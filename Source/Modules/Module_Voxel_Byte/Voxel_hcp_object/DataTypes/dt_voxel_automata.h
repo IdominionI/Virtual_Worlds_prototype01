@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 
-#include "../voxel_data_storage.h"
+//#include "../voxel_data_storage.h"
+
+#include "../parameters.h"
 
 /*
 	Structures and definitions that define the parameters

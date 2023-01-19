@@ -84,7 +84,7 @@ public:
 
     bool set_Icon(const std::vector<GLFWimage>& iconCandidates_) {
         if (!GLFW_window_ptr) return false;
-        glfwSetWindowIcon(GLFW_window_ptr, iconCandidates_.size(), iconCandidates_.data());
+        glfwSetWindowIcon(GLFW_window_ptr, int(iconCandidates_.size()), iconCandidates_.data());
         return true;
     }
 

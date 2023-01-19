@@ -9,8 +9,8 @@
 #include "../Hex_surface_object/DataTypes/dt_hex_surface_generator.h"
 #include "../Hex_surface_object/hex_surface_object.h"
 
-#include "../Editor/Widgets/generator_widget.h"
-#include "../Editor/Widgets/shaders_widget.h"
+#include "../Editor/Widgets/hex_generator_widget.h"
+#include "../Editor/Widgets/hex_shaders_widget.h"
 
 #include "../Compute/hex_surface_compute_generation.h"
 
@@ -102,7 +102,7 @@ public:
 		hex_surface_objects_to_execute.clear();
 		hex_surface_objects_to_execute.shrink_to_fit();
 
-		int selection;
+		//int selection;
 
 		int index = scene_manager->entities_manager.get_objects_of_category_index(ENTITY_CATEGORY_HEX_SURF); // ****
 		if (index < 0) return false; // ****

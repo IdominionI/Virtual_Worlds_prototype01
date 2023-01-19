@@ -1,3 +1,4 @@
+//#pragma once
 #include <Source/Graphics_Engine/Common/pch.h>
 #include <Source/vw_application.h>
 

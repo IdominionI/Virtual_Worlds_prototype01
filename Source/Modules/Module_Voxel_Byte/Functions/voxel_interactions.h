@@ -1,5 +1,5 @@
 #pragma once
-
+#include <Source/Editor/Common/global.h>
 
 #include "../Voxel_hcp_object/voxel_hcp_object.h"
 
@@ -204,25 +204,25 @@ public:
         float x_size = boundary_max.x - boundary_min.x;
         float y_size = boundary_max.y - boundary_min.y;
         float z_size = boundary_max.z - boundary_min.z;
-        float z_mult = 2.0 * sqrt(6.0) / 3.0;
+        float z_mult = 2.0f * sqrt(6.0f) / 3.0f;
 
-        float x_res_step = interaction_object->voxel_object_data.voxel_size * 2.0;
-        float y_res_step = interaction_object->voxel_object_data.voxel_size * (3.0 / sqrt(3.0));
+        float x_res_step = interaction_object->voxel_object_data.voxel_size * 2.0f;
+        float y_res_step = interaction_object->voxel_object_data.voxel_size * (3.0f / sqrt(3.0f));
         float z_res_step = interaction_object->voxel_object_data.voxel_size * z_mult;
 
         int data_set_x_size, data_set_y_size, data_set_z_size;
 
-        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0f)
             data_set_x_size = (int)(x_size / x_res_step) + 1;
         else
             data_set_x_size = (int)(x_size / x_res_step);
 
-        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0f)
             data_set_y_size = (int)(y_size / y_res_step) + 1;
         else
             data_set_y_size = (int)(y_size / y_res_step);
 
-        if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0)
+        if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0f)
             data_set_z_size = (int)(z_size / z_res_step) + 1;
         else
             data_set_z_size = (int)(z_size / z_res_step);
@@ -248,22 +248,22 @@ public:
         float voxel_size = interaction_object->voxel_object_data.voxel_size;
 
         //start indexes for voxel matrix A
-        xs = ((interaction_object->voxel_object_data.matrix_origin.x - voxel_hcp_object_A->voxel_object_data.matrix_origin.x) / voxel_size) + 0.5;
-        ys = ((interaction_object->voxel_object_data.matrix_origin.y - voxel_hcp_object_A->voxel_object_data.matrix_origin.y) / voxel_size) + 0.5;
-        zs = ((interaction_object->voxel_object_data.matrix_origin.z - voxel_hcp_object_A->voxel_object_data.matrix_origin.z) / voxel_size) + 0.5;
+        xs = ((interaction_object->voxel_object_data.matrix_origin.x - voxel_hcp_object_A->voxel_object_data.matrix_origin.x) / voxel_size) + 0.5f;
+        ys = ((interaction_object->voxel_object_data.matrix_origin.y - voxel_hcp_object_A->voxel_object_data.matrix_origin.y) / voxel_size) + 0.5f;
+        zs = ((interaction_object->voxel_object_data.matrix_origin.z - voxel_hcp_object_A->voxel_object_data.matrix_origin.z) / voxel_size) + 0.5f;
 
-        if (xs <= 1.0) a_start.x = 0; else a_start.x = (int)floor(xs)*voxel_size;
-        if (ys <= 1.0) a_start.y = 0; else a_start.y = (int)floor(ys)*voxel_size;
-        if (zs <= 1.0) a_start.z = 0; else a_start.z = (int)floor(zs)*voxel_size;
+        if (xs <= 1.0f) a_start.x = 0; else a_start.x = int(floor(xs)*voxel_size);
+        if (ys <= 1.0f) a_start.y = 0; else a_start.y = int(floor(ys)*voxel_size);
+        if (zs <= 1.0f) a_start.z = 0; else a_start.z = int(floor(zs)*voxel_size);
 
         //start indexes for voxel matrix B
-        xs = ((interaction_object->voxel_object_data.matrix_origin.x - voxel_hcp_object_B->voxel_object_data.matrix_origin.x) / voxel_size) + 0.5;
-        ys = ((interaction_object->voxel_object_data.matrix_origin.y - voxel_hcp_object_B->voxel_object_data.matrix_origin.y) / voxel_size) + 0.5;
-        zs = ((interaction_object->voxel_object_data.matrix_origin.z - voxel_hcp_object_B->voxel_object_data.matrix_origin.z) / voxel_size) + 0.5;
+        xs = ((interaction_object->voxel_object_data.matrix_origin.x - voxel_hcp_object_B->voxel_object_data.matrix_origin.x) / voxel_size) + 0.5f;
+        ys = ((interaction_object->voxel_object_data.matrix_origin.y - voxel_hcp_object_B->voxel_object_data.matrix_origin.y) / voxel_size) + 0.5f;
+        zs = ((interaction_object->voxel_object_data.matrix_origin.z - voxel_hcp_object_B->voxel_object_data.matrix_origin.z) / voxel_size) + 0.5f;
 
-        if (xs <= 1.0) b_start.x = 0; else b_start.x = (int)floor(xs)*voxel_size;
-        if (ys <= 1.0) b_start.y = 0; else b_start.y = (int)floor(ys)*voxel_size;
-        if (zs <= 1.0) b_start.z = 0; else b_start.z = (int)floor(zs)*voxel_size;
+        if (xs <= 1.0f) b_start.x = 0; else b_start.x = int(floor(xs)*voxel_size);
+        if (ys <= 1.0f) b_start.y = 0; else b_start.y = int(floor(ys)*voxel_size);
+        if (zs <= 1.0f) b_start.z = 0; else b_start.z = int(floor(zs)*voxel_size);
 
         // Calculate coordinates at end of entity matrices :: Is this needed ???????
         // Included here as comment to uncomment and put in seperate method if needed

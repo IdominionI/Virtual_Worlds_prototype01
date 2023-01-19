@@ -4,11 +4,10 @@
 #include <Source/Editor/Main_Window/Panels/log_panel.h>
 #include <Source/Editor/Import_Export/vw_import_export_parameters.h>
 
-#include <Source/Editor/Object/object_basis.h> // *****
+#include <Source/Editor/Object/object_basis.h>
 
 #include "voxel_hcp_object.h"
 
-//#include "../Kernal/voxel_function_import_export.h"
 /*
 	hcp_voxel_import_export_class
 
@@ -32,20 +31,11 @@ class outliner_manager_class; // Forward reference to avoid circular dependancy 
 //class hcp_voxel_import_export_class {
 class hcp_voxel_import_export_class : public object_import_export_basis_class {
 public:
-	//int line_number = 0;
-	//std::vector<std::string> lines;
-
-	//log_panel_class	*log_panel = NULL;
-
-	//#define endl "\n"
-
-	//std::fstream stream;
-
 	std::string filename_to_write;
 
 	std::string input_line;
 
-	#define endl "\n"
+	//#define endl "\n"
 
 	//******
 	void initialise(std::string _filename_to_write, log_panel_class *_log_widget){
@@ -81,6 +71,7 @@ public:
 		lines = FW::stringtools::split(object_string, '\n');// Create a list of strings for each line in the expression code
 
 		line_number = 0;
+		return true;
 	}
 
 	bool export_object(object_basis_class *object, id_type category) { 
@@ -663,8 +654,8 @@ private:
 		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.resolution_step      = std::stof(lines[line_number]); line_number++;
 		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.generation_threshold = std::stof(lines[line_number]); line_number++;
 
-		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.min_surface_value = std::stof(lines[line_number]); line_number++;
-		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.max_surface_value = std::stof(lines[line_number]); line_number++;
+		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.min_surface_value = std::stoi(lines[line_number]); line_number++;
+		voxel_hcp_object->voxel_object_data.voxel_generator_parameters.max_surface_value = std::stoi(lines[line_number]); line_number++;
 
 		if (!FW::stringtools::contains(lines[line_number], FLOAT_VARIABLE_BLOCK_START)) {
 			vwDialogs::message_box("Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start of float variable data to import float variables");

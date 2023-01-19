@@ -1,8 +1,9 @@
 #pragma once
-
+#include <Source/Editor/Common/global.h>
 
 #include "../hex_surface_object/hex_surface_object.h"
-
+#include "../Render/hex_surface_render.h"
+#include "../Hex_surface_object/hex_surface_parameters.h"
 
 class hex_surface_interactions_class {
 public:
@@ -118,7 +119,7 @@ public:
         // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE VOXEL VERTICES FUNCTION !!!!!!!!!!!!!!
     void update_voxel_verticies(hex_surface_object_class *hex_surface_object) {
 //printf("hcp_voxel_interactions_class:update_voxel_verticies 0000\n");        
-        hex_surface_object->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);
+        hex_surface_object->define_vbo_vertices(MIN_HEX_VALUE, MAX_HEX_VALUE);
 
         //####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
         scene_node_class <render_object_class>* scene_hex_surface_object = scene_manager->get_render_object(hex_surface_object->object_id);
@@ -172,17 +173,17 @@ public:
         float x_size = boundary_max.x - boundary_min.x;
         float y_size = boundary_max.y - boundary_min.y;
 
-        float x_res_step = interaction_object->hex_surface_object_data.hex_size * 2.0;
-        float y_res_step = interaction_object->hex_surface_object_data.hex_size * (3.0 / sqrt(3.0));
+        float x_res_step = interaction_object->hex_surface_object_data.hex_size * 2.0f;
+        float y_res_step = interaction_object->hex_surface_object_data.hex_size * (3.0f / sqrt(3.0f));
 
         int data_set_x_size, data_set_y_size;
 
-        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+        if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0f)
             data_set_x_size = (int)(x_size / x_res_step) + 1;
         else
             data_set_x_size = (int)(x_size / x_res_step);
 
-        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+        if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0f)
             data_set_y_size = (int)(y_size / y_res_step) + 1;
         else
             data_set_y_size = (int)(y_size / y_res_step);
@@ -207,18 +208,18 @@ public:
         float hex_size = interaction_object->hex_surface_object_data.hex_size;
 
         //start indexes for voxel matrix A
-        xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_A->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5;
-        ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_A->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5;
+        xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_A->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5f;
+        ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_A->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5f;
 
-        if (xs <= 1.0) a_start.x = 0; else a_start.x = (int)floor(xs)*hex_size;
-        if (ys <= 1.0) a_start.y = 0; else a_start.y = (int)floor(ys)*hex_size;
+        if (xs <= 1.0f) a_start.x = 0; else a_start.x = int(floor(xs)*hex_size);
+        if (ys <= 1.0f) a_start.y = 0; else a_start.y = int(floor(ys)*hex_size);
 
         //start indexes for voxel matrix B
-        xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_B->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5;
-        ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_B->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5;
+        xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_B->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5f;
+        ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_B->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5f;
 
-        if (xs <= 1.0) b_start.x = 0; else b_start.x = (int)floor(xs)*hex_size;
-        if (ys <= 1.0) b_start.y = 0; else b_start.y = (int)floor(ys)*hex_size;
+        if (xs <= 1.0f) b_start.x = 0; else b_start.x = int(floor(xs)*hex_size);
+        if (ys <= 1.0f) b_start.y = 0; else b_start.y = int(floor(ys)*hex_size);
 
         // Calculate coordinates at end of entity matrices :: Is this needed ???????
         // Included here as comment to uncomment and put in seperate method if needed

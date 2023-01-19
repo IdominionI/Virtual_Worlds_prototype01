@@ -153,9 +153,9 @@ public:
         // If ever to use texture coordinates define here
 
         // ################################################################################################
-
-
         glBindVertexArray(0); //: Not sure need this
+        
+        return true;
     }
 
     void delete_vertex3DD_buffer() {

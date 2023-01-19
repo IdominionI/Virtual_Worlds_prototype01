@@ -1,51 +1,13 @@
-#pragma once
+#include "hcp_voxel_generator_widget.h"
 
 #include <Universal/ImGui/imgui.h>
 
 #include <Source/Editor/Common/definitions.h>
 #include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
 #include <Source/Editor/Tools/dialogs.h>
-#include <Source/Editor/Main_Window/Panels/log_panel.h>
+#include <Source/Editor/Interface/IconsFontAwesome.h> //*****
 
-#include "../../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
-#include "../../Kernal/voxel_function_import_export.h"
-
-#include "generator_variables_widget.h"
-#include "../../Compute/voxel_compute_generation.h"
-
-/*
-		HCP Voxel Volume generation widget class
-
-	This class widget defines an ImGui widget and child widgets
-	that are used to define the parameters and compute shader
-	variables required to generate the values that define a
-	3D HCP Voxel Volume.
-
-	This class widget has controls to generate the 3D HCP Voxel
-	Volume and display the results on the computer screen in
-	incremental steps by changing the shader variable values
-	according to the settings that the user defines for each
-	compute shader variable.
-*/
-
-class voxel_hcp_generation_widget_class {
-public:
-	voxel_hcp_generation_widget_class() {
-	}
-
-	~voxel_hcp_generation_widget_class() {}
-
-	generator_variables_widget_class  generator_variables_widget_class;
-	log_panel_class				     *log_panel = NULL;
-
-	//bool display_as_points = true;
-	float voxel_scale_value = 1.0f;// *****
-	
-	id_type                  current_selected_entity_id   = -1;  // entity id of the selected entity to display/modify
-	voxel_hcp_object_class  *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-	scene_manager_class     *scene_manager = NULL;
-
-	void display() {
+	void voxel_hcp_generation_widget_class::display() {
 		if (voxel_hcp_object_to_execute == NULL) {
 			return;
 		}
@@ -157,7 +119,7 @@ public:
 
 	}
 /*
-	void change_voxels_display() {
+	void voxel_hcp_generation_widget_class::change_voxels_display() {
 			scene_node_class <render_object_class> *scene_voxel_object = scene_manager->get_render_object(current_selected_entity_id);
 
 			if (scene_voxel_object != NULL && scene_manager != NULL) {
@@ -168,7 +130,7 @@ public:
 			}
 	}
 */
-	void perform_decrement_variables() {
+	void voxel_hcp_generation_widget_class::perform_decrement_variables() {
 //printf("perform_decrement_variables button clicked\n");// replace with decrement step
 		for (voxel_generator_parameter_variable_struct_type &variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables) {
 			if (variable.active_variable_step) variable.value -= variable.variable_step;
@@ -181,7 +143,7 @@ public:
 		execute_voxel_function();
 	}
 
-	void perform_increment_variables() {
+	void voxel_hcp_generation_widget_class::perform_increment_variables() {
 //printf("perform_increment_variables button clicked\n");// replace with decrement step
 		for (voxel_generator_parameter_variable_struct_type &variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables) {
 			if (variable.active_variable_step) variable.value += variable.variable_step; 
@@ -194,7 +156,7 @@ public:
 		execute_voxel_function();
 	}
 
-	void execute_voxel_function(bool notification = true) {
+	void voxel_hcp_generation_widget_class::execute_voxel_function(bool notification) {
 //printf("Execute Function button clicked\n");
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
@@ -259,7 +221,7 @@ public:
 
 			shader.set_vec3(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_object_to_execute->voxel_object_data.matrix_origin, "voxel_origin");
 
-			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0 * sqrt(6.0) / 3.0;
+			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0f * sqrt(6.0f) / 3.0f;
 			shader.set_f1(scene_voxel_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, voxel_hcp_z_increment, "voxel_hcp_z_increment");
 
 			//voxel surface display data
@@ -277,11 +239,11 @@ public:
 	}
 
 
-	void initialise_parameters() {
+	void voxel_hcp_generation_widget_class::initialise_parameters() {
 		initialise_invocation();
 	}
 
-	void initialise_invocation() {
+	void voxel_hcp_generation_widget_class::initialise_invocation() {
 		switch (voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation) {
 			case 1    : invocation = 0; break;
 			case 32   : invocation = 1; break;
@@ -310,7 +272,7 @@ public:
 	}
 */
 	// test_hex_hexagon_cell_coord_from_cartesian for testing only. Delete when complete
-	void test_voxel_cell_coord_from_cartesian(voxel_object_data_class voxel_object_data) {
+	void voxel_hcp_generation_widget_class::test_voxel_cell_coord_from_cartesian(voxel_object_data_class voxel_object_data) {
 		printf("test_hex_hexagon_cell_coord_from_cartesian()000\n");
 		glm::vec3 points[10];
 /*		// even level test
@@ -381,19 +343,9 @@ public:
 		}
 	}
 
-private:
-	int invocation = 4;
+//-----------------------------------------------
 
-	//float voxel_scale_value = 1.0f;
-	//float min_vscale = 0.001f, max_vscale = 1.000f;
-
-	struct Funcs { static bool ItemGetter(void* data, int n, const char** out_str) { *out_str = ((const char**)data)[n]; return true; } };
-
-	voxel_function_import_export_class voxel_function_import_export;
-	voxel_compute_generator_class      voxel_generator;
-	voxel_hcp_render_class             voxel_hcp_render;
-
-	void define_voxel_generation_parameters() {
+	void voxel_hcp_generation_widget_class::define_voxel_generation_parameters() {
 		switch (invocation) {
 			case 0 : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation = 1;    break;
 			case 1 : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation = 32;   break;
@@ -406,7 +358,7 @@ private:
 		}
 	}
 
-	void get_expression_file() {
+	void voxel_hcp_generation_widget_class::get_expression_file() {
 //printf("Expression file button clicked");// replace with get file pathname tool
 		char const* patterns[] = { "*_EXPR.txt" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -421,7 +373,7 @@ private:
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name     = vwDialogs::get_filename(file_pathname,"\\");
 	}
 	
-	void save_generation_parameters() {
+	void voxel_hcp_generation_widget_class::save_generation_parameters() {
 //printf("save button clicked\n");// replace with clear variables
 		char const* patterns[] = { "*.vgp" };
 		char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
@@ -451,7 +403,7 @@ private:
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data saved to file\n %s\n", file_pathname);
 	}
 
-	void load_generation_parameters() {
+	void voxel_hcp_generation_widget_class::load_generation_parameters() {
 //printf("load button clicked\n");// replace with clear variables
 		clear_variables();
 
@@ -480,11 +432,9 @@ private:
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data imported from file\n %s\n", file_pathname);
 	}
 
-	void clear_variables() {
+	void voxel_hcp_generation_widget_class::clear_variables() {
 		//printf("Clear Variables clicked");// replace with clear variables
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.int_variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.bool_variables.clear();
 	}
-
-};

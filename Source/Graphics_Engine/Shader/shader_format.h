@@ -24,8 +24,8 @@ enum class shader_type_enum{vertex,geometry,fragment,tesselation,compute};
 enum class shader_source_type_enum{pathname,code};
 
 struct uniform_struct_type {
-	std::string                                   name;
-	application_default_shader_variable_type_enum data_type;
+	std::string                                   name      = "";
+	application_default_shader_variable_type_enum data_type = application_default_shader_variable_type_enum::none;
 };
 
 

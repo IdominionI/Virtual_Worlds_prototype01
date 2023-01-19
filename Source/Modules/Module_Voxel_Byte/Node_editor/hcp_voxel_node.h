@@ -1,5 +1,6 @@
 #pragma once
 #include <Source/Editor/Node_editor/ImNodes/Kernal/node.h>
+#include <Source/Editor/Scene/scene_manager.h>
 
 #include "hcp_voxel_node_definitions.h"
 #include "../Voxel_hcp_object/DataTypes/dt_voxel_generator.h"
