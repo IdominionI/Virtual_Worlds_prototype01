@@ -155,11 +155,12 @@ if (log_widget != NULL) {
 			error_msg = error_msg + "The specifies number of local threads to be used exceeds the maximum\n";
 			error_msg = error_msg + "permissable number of work group invocations  " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT);
 			error_msg = error_msg + "Choose a smaller number for compute invocation. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+			error_msg = error_msg + "\n";
 
 			if (log_panel != NULL)
 				log_panel->application_log.AddLog(error_msg.c_str());
 
-			//printf("Critical : %s\n", error_msg.c_str());
+//printf("Critical : %s\n", error_msg.c_str());
 			return false;
 		}
 
@@ -171,11 +172,12 @@ if (log_widget != NULL) {
 			error_msg = error_msg + "the number of data points to be processed by the GPU and causes the maximum number of permissable\n";
 			error_msg = error_msg + "work groups " + std::to_string(GL_MAX_COMPUTE_WORK_GROUP_COUNT) + " to be excceded\n";
 			error_msg = error_msg + "Choose a larger number for the compute invocation. The minimum such number for this voxel matrix is " + std::to_string(int(ceil(float(size) / float(GL_MAX_COMPUTE_WORK_GROUP_COUNT))));
+			error_msg = error_msg + "\n";
 
 			if (log_panel != NULL)
 				log_panel->application_log.AddLog(error_msg.c_str());
 
-			//printf("Critical : %s\n", error_msg.c_str());
+//printf("Critical : %s\n", error_msg.c_str());
 			return false;
 		}
 

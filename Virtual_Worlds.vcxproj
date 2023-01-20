@@ -167,6 +167,8 @@
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp" />
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp" />
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.cpp" />
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.cpp" />
+    <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Plugin\hex_surface_defines.cpp" />
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.cpp" />
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.cpp" />
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.cpp" />
@@ -183,6 +185,8 @@
     <ClCompile Include="Source\Modules\Module_Hex_Surface\Render\hex_surface_render_object.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Automata\automata_bye_import_export.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Automata\voxel_automata_functions.cpp" />
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Menus\main_window_menu_functions.cpp" />
+    <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Plugin\voxel_defines.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_rules_widget.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_widget.cpp" />
     <ClCompile Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\cart_to_voxel_generator.cpp" />
@@ -291,6 +295,9 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Menus\main_window_menu_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Plugin\hex_surface_defines.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Scene\hex_surface_scene_objects.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.h" />
@@ -321,6 +328,7 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\automata_byte_import_export.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Automata\voxel_automata_functions.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Compute\voxel_compute_generation.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Plugin\voxel_defines.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_rules_widget.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Widgets\hcp_voxel_automata_widget.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h" />

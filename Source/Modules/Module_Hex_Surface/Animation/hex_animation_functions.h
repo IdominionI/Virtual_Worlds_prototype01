@@ -252,7 +252,7 @@ public:
 		}
 
 //printf("hex_surface_animation_functions_class :: generate_animation_frame::44\n");
-		hex_surface_objects_to_execute[index]->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
+		hex_surface_objects_to_execute[index]->define_vbo_vertices(MIN_HEX_SURF_VALUE, MAX_HEX_SURF_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 //printf("hex_surface_animation_functions_class :: generate_animation_frame::55\n");
 	}
 	// #######################################################
@@ -286,7 +286,7 @@ public:
 
 				hex_surface_generators[i]->generate_hex_surface_function();
 
-				hex_surface_objects_to_execute[i]->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
+				hex_surface_objects_to_execute[i]->define_vbo_vertices(MIN_HEX_SURF_VALUE, MAX_HEX_SURF_VALUE);// need to define values for min/max voxel value range or have incorrect to misleading display
 			}
 		}
 	}

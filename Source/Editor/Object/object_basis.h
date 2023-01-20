@@ -41,6 +41,8 @@ private:
 
 };
 
+#include <fstream>
+
 #include "../Main_Window/Panels/log_panel.h" //*****
 
 class object_import_export_basis_class {
