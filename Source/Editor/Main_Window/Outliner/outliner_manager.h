@@ -2,15 +2,10 @@
 
 #include "outliner_node.h"
 #include "../../Kernal/id_key_manager.h"
-
 #include "../Panels/log_panel.h"
-
 #include "../../Common/imgui_custom.h"
-
 #include "../../Scene/scene_manager.h"
-
-#include <Source/Modules/Module_Voxel_Byte/Voxel_hcp_object/voxel_hcp_import_export.h>
-#include <Source/Modules/Module_Hex_Surface/Hex_surface_object/hex_surface_import_export.h>
+#include "../../Import_Export/vw_import_export_parameters.h"
 
 #include "outliner_import_export_manager.h"
 

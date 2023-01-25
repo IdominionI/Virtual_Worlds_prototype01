@@ -680,6 +680,21 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_category_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\Nodes\hcp_voxel_editor_nodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Node_editor\Nodes\hex_surface_editor_nodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Universal\ImGui\.editorconfig" />

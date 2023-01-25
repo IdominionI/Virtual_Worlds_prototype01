@@ -240,7 +240,7 @@ public:
 //printf("translation action 66666AAA %f : %f: %f \n", location.x, location.y, location.z);
         
         // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE VOXEL VERTICES FUNCTION !!!!!!!!!!!!!!
-        hex_surface_object->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);
+        hex_surface_object->define_vbo_vertices(MIN_HEX_SURF_VALUE, MAX_HEX_SURF_VALUE);
 
         //####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
 		scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(modify_node->entity_id);

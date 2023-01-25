@@ -242,6 +242,9 @@
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\graph.h" />
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node.h" />
     <ClInclude Include="Source\Editor\Node_editor\ImNodes\Kernal\node_editor.h" />
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_definitions.h" />
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_basis.h" />
+    <ClInclude Include="Source\Editor\Node_editor\node_editor_category_manager.h" />
     <ClInclude Include="Source\Editor\Object\object_basis.h" />
     <ClInclude Include="Source\Editor\Scene\objects_category_basis.h" />
     <ClInclude Include="Source\Editor\Scene\object_render_basis.h" />
@@ -296,6 +299,7 @@
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.h" />
+    <ClInclude Include="Source\Modules\Module_Hex_Surface\Node_editor\Nodes\hex_surface_editor_nodes.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Editor\Menus\main_window_menu_functions.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Plugin\hex_surface_defines.h" />
     <ClInclude Include="Source\Modules\Module_Hex_Surface\Editor\Scene\hex_surface_scene_objects.h" />
@@ -345,6 +349,7 @@
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Functions\vw_voxel_exports.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Kernal\voxel_function_import_export.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Marching\voxel_hcp_marching_data.h" />
+    <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\Nodes\hcp_voxel_editor_nodes.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\Operators\interaction_node.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\hcp_voxel_node.h" />
     <ClInclude Include="Source\Modules\Module_Voxel_Byte\Node_editor\hcp_voxel_node_definitions.h" />

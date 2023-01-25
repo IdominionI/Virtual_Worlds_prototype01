@@ -20,6 +20,8 @@
 
 #include "Panels/node_editor_panel.h"
 
+#include "../Node_editor/node_editor_category_manager.h"//*****
+
 // ######## Include Module plugin defines  ################
 
 #include <Source/Modules/Module_Hex_Surface/Editor/Plugin/hex_surface_defines.h>
@@ -119,7 +121,7 @@ public:
         property_panel.universal_shader_variables = scene_view->universal_shader_variables;
 
         node_editor_panel.log_panel = log_panel;
-        node_editor_panel.scene_manager = scene_manager; //******
+        node_editor_panel.scene_manager = scene_manager;
         node_editor_panel.nodes_context = ImNodes::GetCurrentContext();
 
 
@@ -127,11 +129,15 @@ public:
         // ######## Must be placed here after all panels and managers 
         // ######## have been created and defined
 
+
+        node_editor_category_manager = new node_editor_category_manager_class;//****
+
         hex_surface_defines.application_module_defines(scene_entities_db_manager,
                                                        render_objects_manager,
                                                        outliner_import_export_manager,
                                                        &property_panel.animation_widget,
                                                        &parameter_panel.parameters_widget_manager,
+                                                       node_editor_category_manager, //****
                                                        log_panel,
                                                        scene_manager);
 
@@ -140,8 +146,11 @@ public:
                                                     outliner_import_export_manager,
                                                     &property_panel.animation_widget,
                                                     &parameter_panel.parameters_widget_manager,
+                                                    node_editor_category_manager, //****
                                                     log_panel,
                                                     scene_manager);
+
+       node_editor_panel.scene_node_editor.node_editor_category_manager = node_editor_category_manager; //****
 
        // ADD OTHER MODULE PLUGIN DEFINES HERE
 
@@ -373,5 +382,5 @@ private:
 
     //--------- Testing only -------------
     //mesh_class *mesh;
-
+    node_editor_category_manager_class *node_editor_category_manager;//*****
 };

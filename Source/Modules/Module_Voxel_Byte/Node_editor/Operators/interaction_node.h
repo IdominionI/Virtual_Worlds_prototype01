@@ -16,7 +16,7 @@
 #define VOXEL_INTERACTIONS_COMPLEMENT         7
 
 class hcp_interaction_node_class : public node_basis_class {
-	public:
+public:
     //hcp_voxel_translation_node_class(graph_class *graph_) : graph(graph_) { This creates a copile error
         hcp_interaction_node_class() {
         node_width = 60.0f;

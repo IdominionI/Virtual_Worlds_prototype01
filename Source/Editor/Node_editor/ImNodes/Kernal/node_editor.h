@@ -17,7 +17,10 @@ protected:
 
     int hover_node_id, hover_link_id, hover_pin_id;
     int current_selected_node_id = -1;
-    int num_selected_nodes;
+    int num_selected_nodes = 0;
+
+    int current_selected_link_id = -1;//*****
+    int num_selected_links = 0;//*****
 
     bool inside_editor_canvas(ImVec2 location) {
         if (location.x >= nodes_context->CanvasRectScreenSpace.Min.x &&
